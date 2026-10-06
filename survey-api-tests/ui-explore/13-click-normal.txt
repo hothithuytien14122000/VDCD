@@ -1,0 +1,109 @@
+Đánh giá CĐS
+Bộ Dân tộc và Tôn giáo
+Quản trị hệ thống
+Người dùng
+Nhóm người dùng
+Ma trận phân quyền
+Đơn vị hành chính cấp tỉnh
+Loại đơn vị
+Đơn vị
+Chính sách phân quyền
+Nhật ký phân quyền
+Bộ chỉ số DTI
+Trụ cột
+Nhóm chỉ số
+Chỉ số
+Bộ chỉ số
+Quản lý tự đánh giá
+Đánh giá CĐS
+Đến hạn tự đánh giá
+Kết quả tự đánh giá
+Khảo sát hài lòng
+Đợt khảo sát
+Cập nhật kết quả
+Kết quả khảo sát
+Báo cáo thống kê
+Dashboard đơn vị
+Bảng xếp hạng
+So sánh đơn vị
+QA
+QA Super Admin
+Super Admin (QA)
+Bộ chỉ số DTI
+Quản lý tự đánh giá
+8
+Quản lý tự đánh giá
+
+Thiết lập kỳ đánh giá định kỳ và đột xuất
+
+Định kỳ
+Đột xuất
+Xuất Excel
+Thêm mới
+STT	Tên đánh giá	Bộ chỉ số	Loại	Trạng thái	Thao tác
+
+STT
+	
+Tên đánh giá
+	
+Bộ chỉ số
+	
+Loại
+	
+Trạng thái
+	
+Thao tác
+
+1	Cơ cấu tổ chức	Bộ chỉ số chuyển đổi số của cơ quan, đơn vị thuộc Bộ	
+Định kỳ	
+Nháp	
+Xem chi tiết
+
+2	test định kỳ 9:21	Bộ chỉ số chuyển đổi số của cơ quan, đơn vị thuộc Bộ	
+Định kỳ	
+Đã phê duyệt	
+Xem chi tiết
+
+3	test 4:39 month	Bộ chỉ số chuyển đổi số của cơ quan, đơn vị thuộc Bộ	
+Định kỳ	
+Đã phê duyệt	
+Xem chi tiết
+
+4	TEST CNMH	Bộ chỉ số chuyển đổi số của cơ quan, đơn vị thuộc Bộ	
+Định kỳ	
+Đã phê duyệt	
+Xem chi tiết
+
+5	Trịnh Văn Mạnh	Bộ chỉ số chuyển đổi số của cơ quan, đơn vị thuộc Bộ	
+Định kỳ	
+Nháp	
+Xem chi tiết
+
+6	Tự đánh giá CĐS định kỳ Quý I/2027 - Khối Bộ	Bộ chỉ số chuyển đổi số của cơ quan, đơn vị thuộc Bộ	
+Định kỳ	
+Đã phê duyệt	
+Xem chi tiết
+
+7	Tự đánh giá CĐS định kỳ Quý I/2028 - Khối địa phương	Bộ chỉ tiêu đánh giá kết quả CĐS - Sở, Ban, Ngành địa phương	
+Định kỳ	
+Đã phê duyệt	
+Xem chi tiết
+
+8	cds	Bộ chỉ tiêu đánh giá kết quả CĐS - Sở, Ban, Ngành địa phương	
+Định kỳ	
+Đã phê duyệt	
+Xem chi tiết
+
+9	Nhật ký hệ thống	Bộ chỉ số chuyển đổi số của cơ quan, đơn vị thuộc Bộ	
+Định kỳ	
+Đã phê duyệt	
+Xem chi tiết
+
+10	TRINH VAN MANH	Bộ chỉ số chuyển đổi số của cơ quan, đơn vị thuộc Bộ	
+Định kỳ	
+Đã phê duyệt	
+Xem chi tiết
+1
+2
+10 / trang
+0%

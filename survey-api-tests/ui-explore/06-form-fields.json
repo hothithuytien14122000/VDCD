@@ -1,0 +1,578 @@
+[
+  {
+    "tag": "BUTTON",
+    "type": "submit",
+    "placeholder": null,
+    "id": null,
+    "name": null,
+    "text": "Quản trị hệ thống",
+    "required": null
+  },
+  {
+    "tag": "BUTTON",
+    "type": "submit",
+    "placeholder": null,
+    "id": null,
+    "name": null,
+    "text": "Người dùng",
+    "required": null
+  },
+  {
+    "tag": "BUTTON",
+    "type": "submit",
+    "placeholder": null,
+    "id": null,
+    "name": null,
+    "text": "Nhóm người dùng",
+    "required": null
+  },
+  {
+    "tag": "BUTTON",
+    "type": "submit",
+    "placeholder": null,
+    "id": null,
+    "name": null,
+    "text": "Ma trận phân quyền",
+    "required": null
+  },
+  {
+    "tag": "BUTTON",
+    "type": "submit",
+    "placeholder": null,
+    "id": null,
+    "name": null,
+    "text": "Đơn vị hành chính cấp tỉnh",
+    "required": null
+  },
+  {
+    "tag": "BUTTON",
+    "type": "submit",
+    "placeholder": null,
+    "id": null,
+    "name": null,
+    "text": "Loại đơn vị",
+    "required": null
+  },
+  {
+    "tag": "BUTTON",
+    "type": "submit",
+    "placeholder": null,
+    "id": null,
+    "name": null,
+    "text": "Đơn vị",
+    "required": null
+  },
+  {
+    "tag": "BUTTON",
+    "type": "submit",
+    "placeholder": null,
+    "id": null,
+    "name": null,
+    "text": "Chính sách phân quyền",
+    "required": null
+  },
+  {
+    "tag": "BUTTON",
+    "type": "submit",
+    "placeholder": null,
+    "id": null,
+    "name": null,
+    "text": "Nhật ký phân quyền",
+    "required": null
+  },
+  {
+    "tag": "BUTTON",
+    "type": "submit",
+    "placeholder": null,
+    "id": null,
+    "name": null,
+    "text": "Bộ chỉ số DTI",
+    "required": null
+  },
+  {
+    "tag": "BUTTON",
+    "type": "submit",
+    "placeholder": null,
+    "id": null,
+    "name": null,
+    "text": "Trụ cột",
+    "required": null
+  },
+  {
+    "tag": "BUTTON",
+    "type": "submit",
+    "placeholder": null,
+    "id": null,
+    "name": null,
+    "text": "Nhóm chỉ số",
+    "required": null
+  },
+  {
+    "tag": "BUTTON",
+    "type": "submit",
+    "placeholder": null,
+    "id": null,
+    "name": null,
+    "text": "Chỉ số",
+    "required": null
+  },
+  {
+    "tag": "BUTTON",
+    "type": "submit",
+    "placeholder": null,
+    "id": null,
+    "name": null,
+    "text": "Bộ chỉ số",
+    "required": null
+  },
+  {
+    "tag": "BUTTON",
+    "type": "submit",
+    "placeholder": null,
+    "id": null,
+    "name": null,
+    "text": "Quản lý tự đánh giá",
+    "required": null
+  },
+  {
+    "tag": "BUTTON",
+    "type": "submit",
+    "placeholder": null,
+    "id": null,
+    "name": null,
+    "text": "Đánh giá CĐS",
+    "required": null
+  },
+  {
+    "tag": "BUTTON",
+    "type": "submit",
+    "placeholder": null,
+    "id": null,
+    "name": null,
+    "text": "Đến hạn tự đánh giá",
+    "required": null
+  },
+  {
+    "tag": "BUTTON",
+    "type": "submit",
+    "placeholder": null,
+    "id": null,
+    "name": null,
+    "text": "Kết quả tự đánh giá",
+    "required": null
+  },
+  {
+    "tag": "BUTTON",
+    "type": "submit",
+    "placeholder": null,
+    "id": null,
+    "name": null,
+    "text": "Khảo sát hài lòng",
+    "required": null
+  },
+  {
+    "tag": "BUTTON",
+    "type": "submit",
+    "placeholder": null,
+    "id": null,
+    "name": null,
+    "text": "Đợt khảo sát",
+    "required": null
+  },
+  {
+    "tag": "BUTTON",
+    "type": "submit",
+    "placeholder": null,
+    "id": null,
+    "name": null,
+    "text": "Cập nhật kết quả",
+    "required": null
+  },
+  {
+    "tag": "BUTTON",
+    "type": "submit",
+    "placeholder": null,
+    "id": null,
+    "name": null,
+    "text": "Kết quả khảo sát",
+    "required": null
+  },
+  {
+    "tag": "BUTTON",
+    "type": "submit",
+    "placeholder": null,
+    "id": null,
+    "name": null,
+    "text": "Báo cáo thống kê",
+    "required": null
+  },
+  {
+    "tag": "BUTTON",
+    "type": "submit",
+    "placeholder": null,
+    "id": null,
+    "name": null,
+    "text": "Dashboard đơn vị",
+    "required": null
+  },
+  {
+    "tag": "BUTTON",
+    "type": "submit",
+    "placeholder": null,
+    "id": null,
+    "name": null,
+    "text": "Bảng xếp hạng",
+    "required": null
+  },
+  {
+    "tag": "BUTTON",
+    "type": "submit",
+    "placeholder": null,
+    "id": null,
+    "name": null,
+    "text": "So sánh đơn vị",
+    "required": null
+  },
+  {
+    "tag": "INPUT",
+    "type": "radio",
+    "placeholder": null,
+    "id": null,
+    "name": "_r_g_",
+    "text": null,
+    "required": null
+  },
+  {
+    "tag": "INPUT",
+    "type": "radio",
+    "placeholder": null,
+    "id": null,
+    "name": "_r_g_",
+    "text": null,
+    "required": null
+  },
+  {
+    "tag": "BUTTON",
+    "type": "button",
+    "placeholder": null,
+    "id": null,
+    "name": null,
+    "text": "Xuất Excel",
+    "required": null
+  },
+  {
+    "tag": "BUTTON",
+    "type": "button",
+    "placeholder": null,
+    "id": null,
+    "name": null,
+    "text": "Thêm mới",
+    "required": null
+  },
+  {
+    "tag": "INPUT",
+    "type": "text",
+    "placeholder": "Tìm kiếm tên đánh giá",
+    "id": "search",
+    "name": null,
+    "text": null,
+    "required": null
+  },
+  {
+    "tag": "BUTTON",
+    "type": "button",
+    "placeholder": null,
+    "id": null,
+    "name": null,
+    "text": "",
+    "required": null
+  },
+  {
+    "tag": "BUTTON",
+    "type": "button",
+    "placeholder": null,
+    "id": null,
+    "name": null,
+    "text": "Xem chi tiết",
+    "required": null
+  },
+  {
+    "tag": "BUTTON",
+    "type": "button",
+    "placeholder": null,
+    "id": null,
+    "name": null,
+    "text": "",
+    "required": null
+  },
+  {
+    "tag": "BUTTON",
+    "type": "button",
+    "placeholder": null,
+    "id": null,
+    "name": null,
+    "text": "Xem chi tiết",
+    "required": null
+  },
+  {
+    "tag": "BUTTON",
+    "type": "button",
+    "placeholder": null,
+    "id": null,
+    "name": null,
+    "text": "",
+    "required": null
+  },
+  {
+    "tag": "BUTTON",
+    "type": "button",
+    "placeholder": null,
+    "id": null,
+    "name": null,
+    "text": "Xem chi tiết",
+    "required": null
+  },
+  {
+    "tag": "BUTTON",
+    "type": "button",
+    "placeholder": null,
+    "id": null,
+    "name": null,
+    "text": "",
+    "required": null
+  },
+  {
+    "tag": "BUTTON",
+    "type": "button",
+    "placeholder": null,
+    "id": null,
+    "name": null,
+    "text": "Xem chi tiết",
+    "required": null
+  },
+  {
+    "tag": "BUTTON",
+    "type": "button",
+    "placeholder": null,
+    "id": null,
+    "name": null,
+    "text": "",
+    "required": null
+  },
+  {
+    "tag": "BUTTON",
+    "type": "button",
+    "placeholder": null,
+    "id": null,
+    "name": null,
+    "text": "Xem chi tiết",
+    "required": null
+  },
+  {
+    "tag": "BUTTON",
+    "type": "button",
+    "placeholder": null,
+    "id": null,
+    "name": null,
+    "text": "",
+    "required": null
+  },
+  {
+    "tag": "BUTTON",
+    "type": "button",
+    "placeholder": null,
+    "id": null,
+    "name": null,
+    "text": "Xem chi tiết",
+    "required": null
+  },
+  {
+    "tag": "BUTTON",
+    "type": "button",
+    "placeholder": null,
+    "id": null,
+    "name": null,
+    "text": "",
+    "required": null
+  },
+  {
+    "tag": "BUTTON",
+    "type": "button",
+    "placeholder": null,
+    "id": null,
+    "name": null,
+    "text": "Xem chi tiết",
+    "required": null
+  },
+  {
+    "tag": "BUTTON",
+    "type": "button",
+    "placeholder": null,
+    "id": null,
+    "name": null,
+    "text": "",
+    "required": null
+  },
+  {
+    "tag": "BUTTON",
+    "type": "button",
+    "placeholder": null,
+    "id": null,
+    "name": null,
+    "text": "Xem chi tiết",
+    "required": null
+  },
+  {
+    "tag": "BUTTON",
+    "type": "button",
+    "placeholder": null,
+    "id": null,
+    "name": null,
+    "text": "",
+    "required": null
+  },
+  {
+    "tag": "BUTTON",
+    "type": "button",
+    "placeholder": null,
+    "id": null,
+    "name": null,
+    "text": "Xem chi tiết",
+    "required": null
+  },
+  {
+    "tag": "BUTTON",
+    "type": "button",
+    "placeholder": null,
+    "id": null,
+    "name": null,
+    "text": "",
+    "required": null
+  },
+  {
+    "tag": "BUTTON",
+    "type": "button",
+    "placeholder": null,
+    "id": null,
+    "name": null,
+    "text": "Xem chi tiết",
+    "required": null
+  },
+  {
+    "tag": "BUTTON",
+    "type": "button",
+    "placeholder": null,
+    "id": null,
+    "name": null,
+    "text": "",
+    "required": null
+  },
+  {
+    "tag": "BUTTON",
+    "type": "button",
+    "placeholder": null,
+    "id": null,
+    "name": null,
+    "text": "",
+    "required": null
+  },
+  {
+    "tag": "BUTTON",
+    "type": "button",
+    "placeholder": null,
+    "id": null,
+    "name": null,
+    "text": "",
+    "required": null
+  },
+  {
+    "tag": "INPUT",
+    "type": "search",
+    "placeholder": null,
+    "id": "_r_s_",
+    "name": null,
+    "text": null,
+    "required": null
+  },
+  {
+    "tag": "BUTTON",
+    "type": "button",
+    "placeholder": null,
+    "id": null,
+    "name": null,
+    "text": "",
+    "required": null
+  },
+  {
+    "tag": "INPUT",
+    "type": "search",
+    "placeholder": null,
+    "id": "type",
+    "name": null,
+    "text": null,
+    "required": "true"
+  },
+  {
+    "tag": "INPUT",
+    "type": "search",
+    "placeholder": null,
+    "id": "indicatorSetId",
+    "name": null,
+    "text": null,
+    "required": "true"
+  },
+  {
+    "tag": "INPUT",
+    "type": "text",
+    "placeholder": null,
+    "id": "name",
+    "name": null,
+    "text": null,
+    "required": "true"
+  },
+  {
+    "tag": "INPUT",
+    "type": "text",
+    "placeholder": "Chọn thời điểm",
+    "id": "startDate",
+    "name": null,
+    "text": null,
+    "required": "true"
+  },
+  {
+    "tag": "INPUT",
+    "type": "text",
+    "placeholder": "Chọn thời điểm",
+    "id": "endDate",
+    "name": null,
+    "text": null,
+    "required": "true"
+  },
+  {
+    "tag": "INPUT",
+    "type": "text",
+    "placeholder": "VD: 7",
+    "id": "reminderDaysBeforeDue",
+    "name": null,
+    "text": null,
+    "required": null
+  },
+  {
+    "tag": "BUTTON",
+    "type": "button",
+    "placeholder": null,
+    "id": null,
+    "name": null,
+    "text": "Huỷ",
+    "required": null
+  },
+  {
+    "tag": "BUTTON",
+    "type": "button",
+    "placeholder": null,
+    "id": null,
+    "name": null,
+    "text": "Thêm mới",
+    "required": null
+  }
+]

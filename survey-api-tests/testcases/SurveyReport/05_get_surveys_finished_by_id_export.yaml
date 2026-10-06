@@ -1,0 +1,94 @@
+# =====================================================================================
+# Test case API - Phan he: Khao sat muc do hai long cua nguoi dan
+# Nhom (tag Swagger): SurveyReport
+# Endpoint: GET /api/v1/survey/surveys/finished/{id}/export
+# =====================================================================================
+
+module: Khao sat muc do hai long cua nguoi dan
+api_group: SurveyReport
+endpoint: GET /api/v1/survey/surveys/finished/{id}/export
+test_cases:
+
+  # ---------- Happy path ----------
+  - id: TC_SURVEYREPORT_011
+    title: Xuat Excel chi tiet khao sat da hoan thanh (sheet thong tin + sheet ket qua)
+    priority: Cao
+    category: Happy path
+    preconditions:
+      - "Id cua khao sat da hoan thanh"
+    steps:
+      - "Gui request GET /api/v1/survey/surveys/finished/{id}/export"
+    expected_result:
+      - "Status code 200"
+      - "Content-Type la file Excel"
+      - "File tai ve co du 2 sheet: \"Thong tin khao sat\" va \"Danh sach ket qua khao sat\" (ten sheet thuc te co the khac - CAN XAC NHAN)"
+
+  - id: TC_SURVEYREPORT_011b
+    title: Kiem tra noi dung sheet thong tin khao sat
+    priority: Trung binh
+    category: Happy path
+    steps:
+      - "Tai file Excel, mo sheet thong tin khao sat"
+    expected_result:
+      - "Sheet co day du: ten, ma, don vi, thoi gian, hinh thuc, tong quan (participants, satisfied, unsatisfied, satisfiedRate), khop voi du lieu tu API GET /finished/{id}"
+
+  - id: TC_SURVEYREPORT_011c
+    title: Kiem tra noi dung sheet danh sach ket qua khao sat
+    priority: Trung binh
+    category: Happy path
+    steps:
+      - "Tai file Excel, mo sheet danh sach ket qua"
+    expected_result:
+      - "So dong du lieu = participants (tong so nguoi tham gia)"
+      - "Moi dong co: hinh thuc, thoi gian gui, cau tra loi tung cau (hoac ket qua tong hop), ghi chu (neu co)"
+
+  - id: TC_SURVEYREPORT_011d
+    title: Xuat Excel khao sat khong co nguoi tham gia (participants = 0)
+    priority: Thap
+    category: Boundary
+    preconditions:
+      - "Khao sat da hoan thanh nhung participants = 0"
+    steps:
+      - "Gui request GET /api/v1/survey/surveys/finished/{id}/export"
+    expected_result:
+      - "Status code 200, file tra ve co sheet ket qua rong (chi co header), khong loi"
+
+  # ---------- Negative ----------
+  - id: TC_SURVEYREPORT_012
+    title: Xuat Excel chi tiet khao sat voi id khong ton tai
+    priority: Thap
+    category: Negative
+    steps:
+      - "Gui request GET /api/v1/survey/surveys/finished/{id}/export voi id ngau nhien khong ton tai"
+    expected_result:
+      - "Status code 404 Not Found"
+
+  - id: TC_SURVEYREPORT_012b
+    title: Xuat Excel cho khao sat chua Finished (vi du dang Dang dien ra)
+    priority: Trung binh
+    category: Negative
+    steps:
+      - "Gui request GET /api/v1/survey/surveys/finished/{id}/export voi id cua khao sat status=5"
+    expected_result:
+      - "Status code 404 Not Found"
+
+  # ---------- Security ----------
+  - id: TC_SURVEYREPORT_SEC_040
+    title: "[Security] Xuat Excel khi khong co token"
+    priority: Cao
+    category: Security
+    steps:
+      - "Gui request GET /api/v1/survey/surveys/finished/{id}/export KHONG kem Authorization"
+    expected_result:
+      - "Status code 401 Unauthorized"
+
+  - id: TC_SURVEYREPORT_SEC_041
+    title: "[Security] Noi dung gop y chua ky tu dac biet khong gay CSV/Formula Injection khi xuat Excel"
+    priority: Thap
+    category: Security
+    preconditions:
+      - "Co phieu voi note bat dau bang dau \"=\", \"+\", \"-\", \"@\" (vi du \"=1+1\", \"=HYPERLINK(...)\")"
+    steps:
+      - "Gui request GET /api/v1/survey/surveys/finished/{id}/export cho khao sat co phieu nhu tren"
+    expected_result:
+      - "File Excel xuat ra phai ESCAPE cac gia tri bat dau bang ky tu cong thuc (vi du them dau nhay don truoc, hoac dinh dang o la Text) de tranh thuc thi cong thuc/injection khi mo bang Excel"

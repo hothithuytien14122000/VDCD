@@ -1,0 +1,610 @@
+[
+  {
+    "id": "2ddb13e1-8541-4327-aa9f-89faa8e24c97",
+    "code": "KS-2026-200",
+    "name": "[Auto-test] Khao sat 1791266998815_6918",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "bc34ae00-6e8a-4917-8343-47bbe8e974d8",
+    "code": "KS-2026-199",
+    "name": "[Auto-test] Khao sat 1791266998210_4221",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "41b3d0d2-35ff-4f1e-96dc-9981e541fdf0",
+    "code": "KS-2026-197",
+    "name": "[Auto-test] Khao sat 1791266990211_9095",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "7fe1dcc2-5785-4bf7-9ec8-0c9c2bb3e038",
+    "code": "KS-2026-194",
+    "name": "[Auto-test] Khao sat nhap ket qua 1791266984014_6711",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "36230c3c-d8c4-40b5-81d7-6855fa274c17",
+    "code": "KS-2026-188",
+    "name": "[Auto-test] Khao sat nhap ket qua 1791266982074_5257",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "2d07610c-8457-42d5-a193-36a928207628",
+    "code": "KS-2026-187",
+    "name": "[Auto-test] Khao sat nhap ket qua 1791266981593_3113",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "faa9d878-f882-44c8-9881-2f4da27d57b5",
+    "code": "KS-2026-185",
+    "name": "[Auto-test] Khao sat nhap ket qua 1791266981106_8048",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "4b5d522b-3fe8-481c-8e7e-1f72f13d37df",
+    "code": "KS-2026-184",
+    "name": "[Auto-test] Khao sat gui duyet 1791266981099_2558",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "8e2e9038-f86e-46d1-ba9a-3f20e050a8d1",
+    "code": "KS-2026-182",
+    "name": "[Auto-test] Khao sat nhap ket qua 1791266980281_1774",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "97bc9c9c-aaab-4962-a074-8a8157e9ff42",
+    "code": "KS-2026-180",
+    "name": "[Auto-test] Khao sat nhap ket qua 1791266979800_6538",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "1d534f25-4d53-452c-8ffd-e181f639b64d",
+    "code": "KS-2026-179",
+    "name": "[Auto-test] Khao sat nhap ket qua 1791266979247_7457",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "29754b76-33a8-4a9b-86a4-8ce2f26435fd",
+    "code": "KS-2026-173",
+    "name": "[Auto-test] Khao sat 1791266351963_4426",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "112b9dd2-d8e6-4552-b72c-83173d1975f5",
+    "code": "KS-2026-172",
+    "name": "[Auto-test] Khao sat 1791266351377_1931",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "79ff0bb3-ebf1-478d-a612-23eb5e9a6a88",
+    "code": "KS-2026-170",
+    "name": "[Auto-test] Khao sat 1791266343904_3887",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "1163eb5d-9fb4-4f45-a328-745c3a4393b5",
+    "code": "KS-2026-167",
+    "name": "[Auto-test] Khao sat nhap ket qua 1791266337568_3385",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "292332a2-75a3-4c9a-b238-69124fbd0e04",
+    "code": "KS-2026-160",
+    "name": "[Auto-test] Khao sat nhap ket qua 1791266334938_1209",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "4803af0c-2d1a-4048-b2e4-1d2ccd5b69b1",
+    "code": "KS-2026-158",
+    "name": "[Auto-test] Khao sat nhap ket qua 1791266334441_5967",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "e09e2132-d3a6-4c8b-8366-1c1a14e10e43",
+    "code": "KS-2026-157",
+    "name": "[Auto-test] Khao sat gui duyet 1791266334328_8385",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "a565514a-02f6-4b49-bc62-b309b78c1a76",
+    "code": "KS-2026-156",
+    "name": "[Auto-test] Khao sat nhap ket qua 1791266333960_8638",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "e920f3c1-21b8-4100-9978-c67a4d224557",
+    "code": "KS-2026-153",
+    "name": "[Auto-test] Khao sat nhap ket qua 1791266332975_7272",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "39c9b2b1-322b-4a52-887d-2ba566f0ccc1",
+    "code": "KS-2026-152",
+    "name": "[Auto-test] Khao sat nhap ket qua 1791266332464_5849",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "086aeda2-b46c-46b3-95da-c9ec70cc2137",
+    "code": "KS-2026-151",
+    "name": "[Auto-test] Khao sat nhap ket qua 1791266331647_8159",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "f8ee1677-1ebc-43bb-89df-3c6e3eda07ae",
+    "code": "KS-2026-146",
+    "name": "[Auto-test] Khao sat 1791264465951_2362",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "85f75ed1-e146-4598-b140-99d043ab4b4b",
+    "code": "KS-2026-145",
+    "name": "[Auto-test] Khao sat 1791264465377_2218",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "a35ccec4-915f-4bf9-930f-a8ad42f6e42c",
+    "code": "KS-2026-143",
+    "name": "[Auto-test] Khao sat 1791264459768_803",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "90472441-b590-4904-a455-5ae486326590",
+    "code": "KS-2026-140",
+    "name": "[Auto-test] Khao sat nhap ket qua 1791264453547_8199",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "fa32a4d6-f4f7-40d3-bf51-edd9c09ecd05",
+    "code": "KS-2026-132",
+    "name": "[Auto-test] Khao sat nhap ket qua 1791264451612_4155",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "d4f5d09a-3dde-4549-8408-476bbf41242b",
+    "code": "KS-2026-130",
+    "name": "[Auto-test] Khao sat nhap ket qua 1791264451142_3042",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "baa8f9d9-8786-42cd-893c-c4d8ae9f1ceb",
+    "code": "KS-2026-129",
+    "name": "[Auto-test] Khao sat gui duyet 1791264450784_5755",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "2192a1e7-2c3f-4923-88b4-0753f026bef5",
+    "code": "KS-2026-128",
+    "name": "[Auto-test] Khao sat nhap ket qua 1791264450689_5217",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "0f93b8b0-a2c4-4a26-a54d-556e756bab29",
+    "code": "KS-2026-126",
+    "name": "[Auto-test] Khao sat nhap ket qua 1791264449934_368",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "c3659069-9291-4fad-8704-d83d179e3ff7",
+    "code": "KS-2026-125",
+    "name": "[Auto-test] Khao sat nhap ket qua 1791264449514_4410",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "dbcd22b0-d238-49a3-88db-6ad94ffb7d7d",
+    "code": "KS-2026-124",
+    "name": "[Auto-test] Khao sat nhap ket qua 1791264448846_2771",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "d1f9e5c0-4080-4e64-b2de-4b2d353a7b36",
+    "code": "KS-2026-118",
+    "name": "[Auto-test] Khao sat 1791264434014_6738",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "8ba3e779-f670-4637-9280-ae33e059d395",
+    "code": "KS-2026-117",
+    "name": "[Auto-test] Khao sat 1791264433385_3881",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "066c8a08-7653-46b5-9952-f8a97e8caed7",
+    "code": "KS-2026-115",
+    "name": "[Auto-test] Khao sat 1791264427619_7373",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "8dca1f2a-22f5-4640-b034-bb3e6aab5d62",
+    "code": "KS-2026-112",
+    "name": "[Auto-test] Khao sat nhap ket qua 1791264420844_2965",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "4d5d6975-3dd7-44e3-9327-0ed3887de5e1",
+    "code": "KS-2026-104",
+    "name": "[Auto-test] Khao sat nhap ket qua 1791264418752_511",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "0b7822bb-a743-4272-96b3-34a2aa44f568",
+    "code": "KS-2026-102",
+    "name": "[Auto-test] Khao sat nhap ket qua 1791264418345_721",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "3a8afa8c-4506-41bb-896d-41e8a4fad0d5",
+    "code": "KS-2026-100",
+    "name": "[Auto-test] Khao sat gui duyet 1791264417969_5572",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "9ecac108-fbad-4d08-980b-34e4ed2ac5aa",
+    "code": "KS-2026-099",
+    "name": "[Auto-test] Khao sat nhap ket qua 1791264417935_108",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "e746a6cf-8d68-40f2-a3d1-22d770b3bd7a",
+    "code": "KS-2026-097",
+    "name": "[Auto-test] Khao sat nhap ket qua 1791264417172_7763",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "d7e9fbf2-5599-46a6-99d6-54f274519c0b",
+    "code": "KS-2026-095",
+    "name": "[Auto-test] Khao sat nhap ket qua 1791264416742_3839",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "d1a9eb5b-e270-47f1-86f1-711b9d71dd23",
+    "code": "KS-2026-094",
+    "name": "[Auto-test] Khao sat nhap ket qua 1791264416216_4040",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "c41f0f87-fa93-492d-914b-c1bdb75d9003",
+    "code": "KS-2026-088",
+    "name": "[Auto-test] Khao sat 1791263985992_409",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "432834f9-e5c5-4a7e-99a3-47ce41de1711",
+    "code": "KS-2026-087",
+    "name": "[Auto-test] Khao sat 1791263985389_7614",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "ae9726bd-e63b-4e9a-ab48-0e45f27ab488",
+    "code": "KS-2026-085",
+    "name": "[Auto-test] Khao sat 1791263979740_5443",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "0c5992e2-b734-4961-b4c8-55c07073b310",
+    "code": "KS-2026-082",
+    "name": "[Auto-test] Khao sat nhap ket qua 1791263971884_1821",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "c8cdb7b6-1b56-4ba4-86d3-b635be25bbc7",
+    "code": "KS-2026-075",
+    "name": "[Auto-test] Khao sat nhap ket qua 1791263969424_4413",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "c42d5a3a-7338-4dba-9515-9a377121c79b",
+    "code": "KS-2026-073",
+    "name": "[Auto-test] Khao sat nhap ket qua 1791263968991_2938",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "f1718f16-b00c-478f-93c1-13644847ba14",
+    "code": "KS-2026-072",
+    "name": "[Auto-test] Khao sat gui duyet 1791263968690_952",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "ffa496ea-c178-420d-ac68-c714e3965fab",
+    "code": "KS-2026-071",
+    "name": "[Auto-test] Khao sat nhap ket qua 1791263968578_7177",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "c5d6f41f-7400-42da-8e3b-23cb44187243",
+    "code": "KS-2026-069",
+    "name": "[Auto-test] Khao sat nhap ket qua 1791263967818_142",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "069c0efa-1789-4f88-ad67-440a6137f22c",
+    "code": "KS-2026-068",
+    "name": "[Auto-test] Khao sat nhap ket qua 1791263967339_9670",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "9e0b823c-acc0-4bd8-a93f-16276a649939",
+    "code": "KS-2026-067",
+    "name": "[Auto-test] Khao sat nhap ket qua 1791263966765_9075",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "0e28b482-8427-4315-a64a-99b86772bcc1",
+    "code": "KS-2026-062",
+    "name": "[Auto-test] Khao sat 1791263250133_355",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "ac9dbf75-ba41-4a4c-9104-3b74d3a03ae0",
+    "code": "KS-2026-061",
+    "name": "[Auto-test] Khao sat 1791263249576_4393",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "a229dac1-1f30-4a7a-8b28-637cc7920341",
+    "code": "KS-2026-059",
+    "name": "[Auto-test] Khao sat 1791263244224_1746",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "64aba473-8ffb-406d-b055-80237b87c221",
+    "code": "KS-2026-056",
+    "name": "[Auto-test] Khao sat gui duyet 1791263233803_6639",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "9b819946-7287-4f9e-bf8c-47c1662bc181",
+    "code": "KS-2026-055",
+    "name": "[Auto-test] Khao sat nhap ket qua 1791263209835_9135",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "f58bd997-9c9e-4141-ba2d-601de6457692",
+    "code": "KS-2026-051",
+    "name": "[Auto-test] Khao sat nhap ket qua 1791263208045_8617",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "e098e2ca-a4cf-4107-81ba-82368d8d5f74",
+    "code": "KS-2026-050",
+    "name": "[Auto-test] Khao sat nhap ket qua 1791263207664_5252",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "6e985c5e-ab99-4bec-9f86-b815ac9e4ecd",
+    "code": "KS-2026-049",
+    "name": "[Auto-test] Khao sat nhap ket qua 1791263207279_6887",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "34e63f3b-6260-4ced-99df-e72db7675028",
+    "code": "KS-2026-047",
+    "name": "[Auto-test] Khao sat nhap ket qua 1791263206563_6209",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "59939f61-ea9b-4d18-a737-9dd84c113c46",
+    "code": "KS-2026-046",
+    "name": "[Auto-test] Khao sat nhap ket qua 1791263206165_9187",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "7273af2c-3c36-46fd-9f4a-5ba9212ee1e2",
+    "code": "KS-2026-045",
+    "name": "[Auto-test] Khao sat nhap ket qua 1791263205646_7052",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "e39f25a9-b5fd-4c8d-8fa8-54ebf6b9dc6a",
+    "code": "KS-2026-044",
+    "name": "[Auto-test] Khao sat gui duyet 1791262202784_8193",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "77317ace-32e0-4887-8da9-b23d005638e3",
+    "code": "KS-2026-042",
+    "name": "[Auto-test] Khao sat nhap ket qua 1791262201063_9995",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "06f1784c-5545-4e27-ab4c-de514272fbad",
+    "code": "KS-2026-041",
+    "name": "[Auto-test] Khao sat nhap ket qua 1791262200345_8440",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "53818ff6-aee2-4efb-a39b-a5832de1993e",
+    "code": "KS-2026-040",
+    "name": "[Auto-test] Khao sat nhap ket qua 1791262199402_1891",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "f1ba89af-72ac-4f73-8444-712f8891349f",
+    "code": "KS-2026-035",
+    "name": "Khao sat test gui duyet test",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "40000000-0000-0000-0000-000000000016"
+  },
+  {
+    "id": "c6c9637a-ac5e-4543-ab01-a4e75e19e22a",
+    "code": "KS-2026-033",
+    "name": "[Auto-test] debug status transition 1791257453939",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "af5db803-9c70-4537-8be2-b621dec9bee3",
+    "code": "KS-2026-031",
+    "name": "[Auto-test] Khao sat nhap ket qua 1791257442006_4741",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "4d3fb87e-11db-4395-a168-979f77e5e917",
+    "code": "KS-2026-030",
+    "name": "[Auto-test] Khao sat nhap ket qua 1791257441585_2303",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "0c4f4e96-f71c-4384-a32f-49b06c90fd90",
+    "code": "KS-2026-029",
+    "name": "[Auto-test] Khao sat nhap ket qua 1791257441027_868",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  },
+  {
+    "id": "40113ac2-3599-4b44-90ef-3a4ad1afbdfe",
+    "code": "KS-2026-028",
+    "name": "[Auto-test] Khao sat gui duyet 1791257430983_3109",
+    "status": 3,
+    "statusName": "Đã phê duyệt",
+    "organizationId": "30000000-0000-0000-0000-000000000001"
+  }
+]

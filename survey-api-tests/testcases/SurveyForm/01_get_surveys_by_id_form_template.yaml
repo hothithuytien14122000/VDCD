@@ -1,0 +1,138 @@
+# =====================================================================================
+# Test case API - Phan he: Khao sat muc do hai long cua nguoi dan
+# Nhom (tag Swagger): SurveyForm
+# Endpoint: GET /api/v1/survey/surveys/{id}/form-template
+# =====================================================================================
+
+module: Khao sat muc do hai long cua nguoi dan
+api_group: SurveyForm
+endpoint: GET /api/v1/survey/surveys/{id}/form-template
+test_cases:
+
+  # ---------- Happy path ----------
+  - id: TC_SURVEYFORM_001
+    title: Tai mau phieu khao sat (.doc) cua khao sat da duoc phe duyet
+    priority: Cao
+    category: Happy path
+    preconditions:
+      - "Co khao sat voi status = 3 (Da phe duyet), 5 (Dang dien ra) hoac 6 (Da ket thuc)"
+    steps:
+      - "Gui request GET /api/v1/survey/surveys/{id}/form-template voi id hop le"
+    expected_result:
+      - "Status code 200"
+      - "Response header Content-Type la dang file Word (application/msword hoac application/vnd.openxmlformats-officedocument.wordprocessingml.document)"
+      - "Body tra ve la file nhi phan (binary), co the luu thanh file .doc/.docx hop le, mo duoc"
+
+  - id: TC_SURVEYFORM_001b
+    title: Kiem tra header Content-Disposition (ten file tai ve)
+    priority: Trung binh
+    category: Happy path
+    steps:
+      - "Gui request GET /api/v1/survey/surveys/{id}/form-template voi id cua khao sat da phe duyet"
+    expected_result:
+      - "Status code 200"
+      - "Response header Content-Disposition co dang \"attachment; filename=...\" voi ten file hop ly (vi du chua ma khao sat, khong chua ky tu dac biet gay loi khi luu file)"
+
+  - id: TC_SURVEYFORM_001c
+    title: Noi dung mau phieu phan anh dung cau hoi cua khao sat
+    priority: Trung binh
+    category: Happy path
+    preconditions:
+      - "Khao sat da phe duyet co N cau hoi cu the"
+    steps:
+      - "Tai file .doc va mo noi dung (kiem tra thu cong hoac bang thu vien doc file docx)"
+    expected_result:
+      - "File chua du N cau hoi, dung thu tu order, dung noi dung tung cau"
+
+  # ---------- Negative / business rule ----------
+  - id: TC_SURVEYFORM_002
+    title: Tai mau phieu khao sat khi khao sat con dang Nhap
+    priority: Cao
+    category: Negative
+    preconditions:
+      - "Co khao sat voi status = 1 (Nhap)"
+    steps:
+      - "Gui request GET /api/v1/survey/surveys/{id}/form-template voi id cua khao sat tren"
+    expected_result:
+      - "Status code 400 hoac 409 (khong cho phep tai mau khi khao sat chua duoc phe duyet)"
+
+  - id: TC_SURVEYFORM_002b
+    title: Tai mau phieu khao sat khi khao sat dang Cho phe duyet
+    priority: Trung binh
+    category: Negative
+    preconditions:
+      - "Co khao sat voi status = 2 (Cho phe duyet)"
+    steps:
+      - "Gui request GET /api/v1/survey/surveys/{id}/form-template"
+    expected_result:
+      - "Status code 400 hoac 409"
+
+  - id: TC_SURVEYFORM_002c
+    title: Tai mau phieu khao sat khi khao sat Bi tu choi
+    priority: Trung binh
+    category: Negative
+    preconditions:
+      - "Co khao sat voi status = 4 (Bi tu choi)"
+    steps:
+      - "Gui request GET /api/v1/survey/surveys/{id}/form-template"
+    expected_result:
+      - "Status code 400 hoac 409"
+
+  - id: TC_SURVEYFORM_002d
+    title: Tai mau phieu cua khao sat da phe duyet nhung KHONG co hinh thuc Truc tiep/Gian tiep (chi Truc tuyen)
+    priority: Trung binh
+    category: Negative
+    preconditions:
+      - "Khao sat da phe duyet, methods = [1] (chi Truc tuyen, khong co phieu giay de in)"
+    steps:
+      - "Gui request GET /api/v1/survey/surveys/{id}/form-template"
+    expected_result:
+      - "Status code 400 (khong co y nghia tai mau phieu giay cho khao sat chi co hinh thuc truc tuyen), hoac 200 neu he thong van cho tai mau du khong can dung (CAN XAC NHAN quy tac nghiep vu)"
+
+  - id: TC_SURVEYFORM_002e
+    title: Tai mau phieu cua khao sat da phe duyet nhung chua co cau hoi nao (truong hop hiem, neu co the xay ra)
+    priority: Thap
+    category: Negative
+    steps:
+      - "Gui request GET /api/v1/survey/surveys/{id}/form-template voi khao sat khong co cau hoi"
+    expected_result:
+      - "Status code 400 (khong the sinh mau phieu khi khong co cau hoi), hoac tra ve file chi co phan thong tin chung (CAN XAC NHAN)"
+
+  - id: TC_SURVEYFORM_003
+    title: Tai mau phieu khao sat voi id khong ton tai
+    priority: Trung binh
+    category: Negative
+    steps:
+      - "Gui request GET /api/v1/survey/surveys/{id}/form-template voi id ngau nhien khong ton tai"
+    expected_result:
+      - "Status code 404 Not Found"
+
+  - id: TC_SURVEYFORM_003b
+    title: Tai mau phieu voi id sai dinh dang (khong phai uuid)
+    priority: Thap
+    category: Negative
+    steps:
+      - "Gui request GET /api/v1/survey/surveys/abc-khong-phai-uuid/form-template"
+    expected_result:
+      - "Status code 404 Not Found"
+
+  # ---------- Security ----------
+  - id: TC_SURVEYFORM_004
+    title: Tai mau phieu khao sat khi khong co quyen / khong co token
+    priority: Trung binh
+    category: Security
+    steps:
+      - "Gui request GET /api/v1/survey/surveys/{id}/form-template KHONG kem header Authorization"
+    expected_result:
+      - "Status code 401 Unauthorized"
+
+  - id: TC_SURVEYFORM_004b
+    title: Tai mau phieu bang tai khoan khong co quyen xem khao sat do (khac don vi)
+    priority: Thap
+    category: Security
+    preconditions:
+      - "Co tai khoan bi gioi han theo don vi, khao sat thuoc don vi khac"
+    steps:
+      - "Gui request GET /api/v1/survey/surveys/{id}/form-template bang token tai khoan do"
+    expected_result:
+      - "Status code 403 Forbidden hoac 404 Not Found (CAN XAC NHAN - tuy co ap dung gioi han theo don vi cho phan he nay hay khong, tham khao ghi chu \"Cross-company\" o Swagger)"

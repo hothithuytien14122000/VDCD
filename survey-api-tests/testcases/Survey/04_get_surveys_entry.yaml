@@ -1,0 +1,113 @@
+# =====================================================================================
+# Test case API - Phan he: Khao sat muc do hai long cua nguoi dan
+# Nhom (tag Swagger): Survey
+# Endpoint: GET /api/v1/survey/surveys/entry
+# =====================================================================================
+
+module: Khao sat muc do hai long cua nguoi dan
+api_group: Survey
+endpoint: GET /api/v1/survey/surveys/entry
+test_cases:
+
+  - id: TC_SURVEY_020
+    title: Lay danh sach khao sat can cap nhat ket qua (entry) - mac dinh
+    priority: Cao
+    category: Happy path
+    preconditions:
+      - "Co it nhat 1 khao sat dang dien ra (status = 5) voi hinh thuc Truc tiep hoac Gian tiep qua phieu"
+    steps:
+      - "Gui request GET /api/v1/survey/surveys/entry"
+    expected_result:
+      - "Status code 200"
+      - "Tat ca ban ghi tra ve co status = 5 (Dang dien ra)"
+      - "Tat ca ban ghi tra ve co methods chua gia tri 2 (Truc tiep) hoac 3 (Gian tiep qua phieu)"
+      - "Khong co ban ghi nao chi co method Truc tuyen (methods = [1]) ma khong co 2/3"
+
+  - id: TC_SURVEY_021
+    title: Lay danh sach khao sat can cap nhat ket qua - tim theo keyword
+    priority: Trung binh
+    category: Happy path
+    steps:
+      - "Gui request GET /api/v1/survey/surveys/entry?keyword=<ten-hoac-ma-khao-sat-da-biet>&page=1&size=10"
+    expected_result:
+      - "Status code 200"
+      - "Danh sach tra ve chi gom cac ban ghi co ten/ma/ten don vi chua keyword"
+
+  - id: TC_SURVEY_021b
+    title: Phan trang danh sach entry
+    priority: Thap
+    category: Happy path
+    steps:
+      - "Gui request GET /api/v1/survey/surveys/entry?page=1&size=5"
+    expected_result:
+      - "Status code 200"
+      - "So luong ban ghi tra ve <= 5"
+
+  - id: TC_SURVEY_021c
+    title: Sap xep danh sach entry (sort)
+    priority: Thap
+    category: Happy path
+    steps:
+      - "Gui request GET /api/v1/survey/surveys/entry?sort=endDate asc"
+    expected_result:
+      - "Status code 200"
+      - "Danh sach duoc sap xep theo endDate tang dan (uu tien khao sat sap ket thuc len truoc - hop ly ve UX)"
+
+  - id: TC_SURVEY_BV_020
+    title: Keyword khong khop ban ghi nao
+    priority: Thap
+    category: Boundary
+    steps:
+      - "Gui request GET /api/v1/survey/surveys/entry?keyword=tu-khoa-khong-ton-tai-xyz-123"
+    expected_result:
+      - "Status code 200, danh sach tra ve rong"
+
+  - id: TC_SURVEY_BV_021
+    title: Keyword rong (truyen keyword=)
+    priority: Thap
+    category: Boundary
+    steps:
+      - "Gui request GET /api/v1/survey/surveys/entry?keyword="
+    expected_result:
+      - "Status code 200, tuong duong khong truyen keyword (tra ve toan bo danh sach entry)"
+
+  - id: TC_SURVEY_SEC_020
+    title: "[Security] Keyword chua ky tu dac biet / SQL injection"
+    priority: Trung binh
+    category: Security
+    steps:
+      - "Gui request GET /api/v1/survey/surveys/entry?keyword=' OR '1'='1"
+    expected_result:
+      - "Status code 200 (khong phai 500), danh sach tra ve dung hoac rong, khong lo du lieu toan bang"
+
+  - id: TC_SURVEY_021d
+    title: Goi API khi khong co token => 401
+    priority: Trung binh
+    category: Security
+    steps:
+      - "Gui request GET /api/v1/survey/surveys/entry KHONG kem Authorization"
+    expected_result:
+      - "Status code 401 Unauthorized"
+
+  - id: TC_SURVEY_DC_020
+    title: Doi chieu danh sach entry voi dieu kien loc tuong duong tren danh sach chinh
+    priority: Trung binh
+    category: Data consistency
+    steps:
+      - "Gui request GET /api/v1/survey/surveys/entry"
+      - "Gui request GET /api/v1/survey/surveys?filter={\"status\":5}"
+    expected_result:
+      - "Tap hop id trong ket qua entry phai la TAP CON cua tap hop id co status=5 tu danh sach chinh (vi entry con loc them dieu kien ve methods chua Truc tiep/Gian tiep qua phieu)"
+
+  - id: TC_SURVEY_BV_022
+    title: "[BUG dung chung voi TC_SURVEY_008b] Sort nhieu truong: tang dan roi giam dan gay 500"
+    priority: Trung binh
+    category: Negative
+    steps:
+      - "Gui request GET /api/v1/survey/surveys/entry?sort=code,-startDate"
+    expected_result:
+      - "KY VONG: Status code 200"
+      - "THUC TE (DA XAC NHAN 2026-10-06): Status code 500 - cung 1 loi goc voi TC_SURVEY_008b
+        (GET /api/v1/survey/surveys), vi 2 endpoint dung chung 1 ham sap xep phia backend
+        (ApplySorting/GeneatThenByDescending). Dieu kien gay loi giong het: truong dau TANG DAN,
+        co truong sau GIAM DAN."

@@ -1,0 +1,27 @@
+BỘ DÂN TỘC VÀ TÔN GIÁO
+TRUNG TÂM CHUYỂN ĐỔI SỐ
+HỆ THỐNG ĐÁNH GIÁ CHUYỂN ĐỔI SỐ
+Đo lường chuyển đổi số
+minh bạch trên từng chỉ số.
+
+Đánh giá, phê duyệt và theo dõi kết quả chuyển đổi số của các đơn vị trên một nền tảng thống nhất.
+
+01
+Đánh giá theo bộ chỉ số DTI
+02
+Trình duyệt, phê duyệt và gửi kết quả đánh giá
+03
+Theo dõi kết quả, xếp hạng các đơn vị
+04
+Khảo sát sự hài lòng của người dân
+Đăng nhập
+
+Sử dụng tài khoản do Quản trị hệ thống cấp để truy cập.
+
+Tên đăng nhập *
+Mật khẩu *
+Mã xác nhận *
+7K4MP
+Ghi nhớ đăng nhập
+Quên mật khẩu?
+Đăng nhập

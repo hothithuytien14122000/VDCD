@@ -1,0 +1,101 @@
+# =====================================================================================
+# Test case API - Phan he: Khao sat muc do hai long cua nguoi dan
+# Nhom (tag Swagger): SurveyReport
+# Endpoint: GET /api/v1/survey/surveys/finished/export
+# =====================================================================================
+
+module: Khao sat muc do hai long cua nguoi dan
+api_group: SurveyReport
+endpoint: GET /api/v1/survey/surveys/finished/export
+test_cases:
+
+  - id: TC_SURVEYREPORT_005
+    title: Xuat danh sach khao sat da hoan thanh ra Excel (khong phan trang)
+    priority: Cao
+    category: Happy path
+    steps:
+      - Gui request GET /api/v1/survey/surveys/finished/export voi cung tham so filter/sort nhu danh sach
+    expected_result:
+      - Status code 200
+      - Content-Type tra ve la file Excel (application/vnd.openxmlformats-officedocument.spreadsheetml.sheet)
+      - File tai ve mo duoc, so dong du lieu trung khop voi so ban ghi thoa dieu kien loc (khong phan trang)
+
+  - id: TC_SURVEYREPORT_005b
+    title: Kiem tra noi dung cot trong file Excel xuat ra
+    priority: Trung binh
+    category: Happy path
+    steps:
+      - Tai file Excel va mo kiem tra
+    expected_result:
+      - File co du cac cot tuong ung voi du lieu hien thi tren man hinh danh sach (ten, ma khao sat,
+        don vi, thoi gian, so nguoi tham gia, hai long, chua hai long, ty le hai long)
+      - Du lieu trong file KHOP voi du lieu tra ve tu API GET /finished (cung dieu kien filter)
+
+  - id: TC_SURVEYREPORT_005c
+    title: Kiem tra header Content-Disposition (ten file xuat)
+    priority: Thap
+    category: Happy path
+    steps:
+      - Gui request GET /api/v1/survey/surveys/finished/export
+    expected_result:
+      - Header Content-Disposition co dang attachment; filename=..., ten file hop ly, khong co ky tu
+        gay loi khi luu (vi du dau cach, ky tu dac biet duoc encode dung chuan)
+
+  - id: TC_SURVEYREPORT_006
+    title: Xuat Excel danh sach khao sat da hoan thanh khi khong co du lieu phu hop
+    priority: Thap
+    category: Boundary
+    steps:
+      - Gui request GET /api/v1/survey/surveys/finished/export?filter={"keyword":"tu-khoa-khong-ton-tai-xyz"}
+    expected_result:
+      - Status code 200
+      - File Excel tra ve chi co header, khong co dong du lieu (hoac theo thiet ke thuc te - CAN XAC NHAN)
+
+  - id: TC_SURVEYREPORT_006b
+    title: Xuat Excel voi so luong ban ghi rat lon (kiem tra hieu nang / timeout)
+    priority: Thap
+    category: Boundary
+    preconditions:
+      - He thong co nhieu ban ghi khao sat da hoan thanh (hoac mo phong voi du lieu test)
+    steps:
+      - Gui request GET /api/v1/survey/surveys/finished/export khong filter (lay toan bo)
+    expected_result:
+      - Status code 200 trong thoi gian hop ly (vi du < 30s), khong timeout, khong gay loi 500
+
+  - id: TC_SURVEYREPORT_SEC_010
+    title: "[Security] Xuat Excel khi khong co token"
+    priority: Cao
+    category: Security
+    steps:
+      - Gui request GET /api/v1/survey/surveys/finished/export KHONG kem Authorization
+    expected_result:
+      - Status code 401 Unauthorized
+
+  - id: TC_SURVEYREPORT_SEC_011
+    title: "[Security] filter chua ky tu dac biet khi xuat Excel"
+    priority: Thap
+    category: Security
+    steps:
+      - "Gui request GET /api/v1/survey/surveys/finished/export?filter={\"keyword\":\"=CMD(...)\"}"
+    expected_result:
+      - "Status code 200/400, va QUAN TRONG: gia tri keyword KHONG duoc ghi nguyen van vao o dau tien cua file Excel theo kieu co the kich hoat CSV/Formula Injection (vi du bat dau bang =, +, -, @) - neu keyword duoc hien thi trong file, phai duoc escape an toan"
+
+  - id: TC_SURVEYREPORT_DC_010
+    title: So dong trong file Excel = totalElements cua danh sach tuong ung (khong phan trang)
+    priority: Trung binh
+    category: Data consistency
+    steps:
+      - Gui GET /api/v1/survey/surveys/finished?filter=<F> de lay totalElements
+      - Gui GET /api/v1/survey/surveys/finished/export?filter=<F> (cung filter F)
+    expected_result:
+      - So dong du lieu (khong tinh dong header) trong file Excel = totalElements
+
+  - id: TC_SURVEYREPORT_BV_003
+    title: "[BUG dung chung voi TC_SURVEY_008b] Sort nhieu truong: tang dan roi giam dan gay 500"
+    priority: Trung binh
+    category: Negative
+    steps:
+      - "Gui request GET /api/v1/survey/surveys/finished/export?sort=name,-startDate"
+    expected_result:
+      - "KY VONG: Status code 200"
+      - "THUC TE (DA XAC NHAN 2026-10-06): Status code 500 - cung 1 loi goc voi TC_SURVEY_008b"

@@ -1,0 +1,52 @@
+# =====================================================================================
+# Test case API - Phan he: Khao sat muc do hai long cua nguoi dan
+# Nhom (tag Swagger): Survey
+# Endpoint: GET /api/v1/survey/surveys/entry/count
+# =====================================================================================
+
+module: Khao sat muc do hai long cua nguoi dan
+api_group: Survey
+endpoint: GET /api/v1/survey/surveys/entry/count
+test_cases:
+
+  - id: TC_SURVEY_022
+    title: Lay so luong khao sat can cap nhat ket qua (hien thi o menu)
+    priority: Trung binh
+    category: Happy path
+    steps:
+      - "Gui request GET /api/v1/survey/surveys/entry/count"
+    expected_result:
+      - "Status code 200"
+      - "Response.data la mot so nguyen >= 0"
+
+  - id: TC_SURVEY_022b
+    title: Doi chieu entry/count voi tong so ban ghi cua GET /entry (khong phan trang)
+    priority: Trung binh
+    category: Data consistency
+    steps:
+      - "Gui request GET /api/v1/survey/surveys/entry/count"
+      - "Gui request GET /api/v1/survey/surveys/entry?page=1&size=1"
+    expected_result:
+      - "Gia tri tra ve tu /entry/count phai BANG totalElements cua danh sach /entry"
+
+  - id: TC_SURVEY_022c
+    title: Goi API khi khong co token => 401
+    priority: Trung binh
+    category: Security
+    steps:
+      - "Gui request GET /api/v1/survey/surveys/entry/count KHONG kem Authorization"
+    expected_result:
+      - "Status code 401 Unauthorized"
+
+  - id: TC_SURVEY_022d
+    title: Gia tri tra ve ngay sau khi 1 khao sat moi chuyen sang dieu kien entry (tang dung 1 don vi)
+    priority: Thap
+    category: Data consistency
+    preconditions:
+      - "Co the kich hoat/mo phong 1 khao sat moi thoa dieu kien entry (status=5, co method 2 hoac 3)"
+    steps:
+      - "Goi GET /entry/count, ghi nhan gia tri N"
+      - "Tao dieu kien de co them 1 khao sat moi thoa dieu kien entry"
+      - "Goi lai GET /entry/count"
+    expected_result:
+      - "Gia tri lan goi sau = N + 1"

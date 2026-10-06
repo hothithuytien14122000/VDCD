@@ -1,0 +1,80 @@
+# =====================================================================================
+# Test case API - Phan he: Khao sat muc do hai long cua nguoi dan
+# Nhom (tag Swagger): SurveyResult
+# Endpoint: GET /api/v1/survey/surveys/{surveyId}/results/{id}
+# =====================================================================================
+
+module: Khao sat muc do hai long cua nguoi dan
+api_group: SurveyResult
+endpoint: GET /api/v1/survey/surveys/{surveyId}/results/{id}
+test_cases:
+
+  - id: TC_SURVEYRESULT_008
+    title: Lay chi tiet 1 ket qua khao sat theo id
+    priority: Cao
+    category: Happy path
+    preconditions:
+      - "Co id phieu ket qua ton tai"
+    steps:
+      - "Gui request GET /api/v1/survey/surveys/{surveyId}/results/{id}"
+    expected_result:
+      - "Status code 200"
+      - "Response.data.id trung voi id da truyen, du lieu answers/method/note dung nhu da ghi nhan"
+
+  - id: TC_SURVEYRESULT_008b
+    title: Lay chi tiet 1 phieu Truc tuyen (do cong dan gui)
+    priority: Trung binh
+    category: Happy path
+    preconditions:
+      - "Co phieu voi method = 1 duoc gui qua SurveyPublic"
+    steps:
+      - "Gui request GET /api/v1/survey/surveys/{surveyId}/results/{id} voi id cua phieu do"
+    expected_result:
+      - "Status code 200, tra ve day du thong tin phieu, method = 1"
+
+  - id: TC_SURVEYRESULT_009
+    title: Lay chi tiet ket qua khao sat voi id khong ton tai
+    priority: Trung binh
+    category: Negative
+    steps:
+      - "Gui request GET /api/v1/survey/surveys/{surveyId}/results/{id} voi id ngau nhien khong ton tai"
+    expected_result:
+      - "Status code 404 Not Found"
+
+  - id: TC_SURVEYRESULT_009b
+    title: Id ket qua ton tai nhung thuoc 1 khao sat KHAC (khong phai {surveyId} trong URL)
+    priority: Trung binh
+    category: Negative / Security
+    preconditions:
+      - "Co 2 khao sat A va B deu co ket qua; id phieu thuoc khao sat A"
+    steps:
+      - "Gui request GET /api/v1/survey/surveys/{B}/results/{id-cua-phieu-thuoc-A}"
+    expected_result:
+      - "Status code 404 Not Found (khong duoc tra ve du lieu phieu khi surveyId trong URL khong khop voi khao sat thuc su cua phieu do - tranh loi IDOR/tra nham du lieu)"
+
+  - id: TC_SURVEYRESULT_009c
+    title: Id sai dinh dang (khong phai uuid)
+    priority: Thap
+    category: Negative
+    steps:
+      - "Gui request GET /api/v1/survey/surveys/{surveyId}/results/abc-khong-phai-uuid"
+    expected_result:
+      - "Status code 404 Not Found"
+
+  - id: TC_SURVEYRESULT_SEC_020
+    title: "[Security] Goi API khi khong co token"
+    priority: Cao
+    category: Security
+    steps:
+      - "Gui request GET /api/v1/survey/surveys/{surveyId}/results/{id} KHONG kem Authorization"
+    expected_result:
+      - "Status code 401 Unauthorized"
+
+  - id: TC_SURVEYRESULT_SEC_021
+    title: "[Security/Privacy] Phieu Truc tuyen khong lo thong tin dinh danh nguoi gui"
+    priority: Trung binh
+    category: Security / Data exposure
+    steps:
+      - "Gui request GET /api/v1/survey/surveys/{surveyId}/results/{id} voi 1 phieu Truc tuyen (method=1)"
+    expected_result:
+      - "Response khong chua thong tin dinh danh ca nhan (ten that, sdt, email, dia chi IP cua nguoi gui)"

@@ -1,0 +1,105 @@
+# =====================================================================================
+# Test case API - Phan he: Khao sat muc do hai long cua nguoi dan
+# Nhom (tag Swagger): Survey
+# Endpoint: DELETE /api/v1/survey/surveys/{id}
+# Muc do anh huong: XOA DU LIEU THAT - gan nhan [Mutation]
+# =====================================================================================
+
+module: Khao sat muc do hai long cua nguoi dan
+api_group: Survey
+endpoint: DELETE /api/v1/survey/surveys/{id}
+test_cases:
+
+  - id: TC_SURVEY_030
+    title: "[Mutation] Xoa khao sat thanh cong"
+    priority: Cao
+    tags: [mutation]
+    category: Happy path
+    preconditions:
+      - "Co khao sat test (tao rieng cho test case nay, khong dung du lieu that) o trang thai cho phep xoa"
+    steps:
+      - "Gui request DELETE /api/v1/survey/surveys/{id}"
+      - "Sau do goi GET /api/v1/survey/surveys/{id} de kiem tra lai"
+    expected_result:
+      - "Request DELETE tra ve status code 200, isSuccess = true"
+      - "Request GET sau do tra ve 404 Not Found (khao sat da bi xoa)"
+
+  - id: TC_SURVEY_030b
+    title: "[Mutation] Xoa khao sat roi kiem tra khong con xuat hien trong danh sach / counts"
+    priority: Trung binh
+    tags: [mutation]
+    category: Data consistency
+    steps:
+      - "Ghi nhan counts.total truoc khi xoa"
+      - "Gui request DELETE /api/v1/survey/surveys/{id}"
+      - "Goi lai GET /api/v1/survey/surveys/counts va GET /api/v1/survey/surveys?filter={\"keyword\":\"<ma-khao-sat>\"}"
+    expected_result:
+      - "counts.total giam di 1 so voi truoc khi xoa"
+      - "Danh sach loc theo ma khao sat da xoa tra ve rong"
+
+  - id: TC_SURVEY_031
+    title: "[Mutation] Xoa khao sat voi id khong ton tai"
+    priority: Trung binh
+    tags: [mutation]
+    category: Negative
+    steps:
+      - "Gui request DELETE /api/v1/survey/surveys/{id} voi id ngau nhien khong ton tai"
+    expected_result:
+      - "Status code 404 Not Found"
+
+  - id: TC_SURVEY_031b
+    title: "[Mutation] Xoa khao sat dang Dang dien ra / Da co ket qua - kiem tra rang buoc nghiep vu"
+    priority: Trung binh
+    tags: [mutation]
+    category: Negative
+    preconditions:
+      - "Khao sat dang o trang thai Dang dien ra (status = 5) va/hoac da co phieu ket qua (resultCount > 0)"
+    steps:
+      - "Gui request DELETE /api/v1/survey/surveys/{id}"
+    expected_result:
+      - "Status code 400/409 neu he thong khong cho xoa khao sat dang dien ra hoac da co ket qua (CAN XAC NHAN quy tac nghiep vu thuc te - hien Swagger khong mo ta rang buoc nay)"
+
+  - id: TC_SURVEY_031c
+    title: "[Mutation] Xoa khao sat voi id sai dinh dang (khong phai uuid)"
+    priority: Thap
+    tags: [mutation]
+    category: Negative
+    steps:
+      - "Gui request DELETE /api/v1/survey/surveys/abc-khong-phai-uuid"
+    expected_result:
+      - "Status code 404 Not Found"
+
+  - id: TC_SURVEY_IDEM_002
+    title: "[Mutation] Goi DELETE 2 lan lien tiep tren cung 1 id (idempotency)"
+    priority: Trung binh
+    tags: [mutation]
+    category: Idempotency
+    steps:
+      - "Gui request DELETE /api/v1/survey/surveys/{id} (lan 1 - thanh cong)"
+      - "Gui lai request DELETE /api/v1/survey/surveys/{id} (lan 2 - cung id)"
+    expected_result:
+      - "Lan 1 tra ve 200"
+      - "Lan 2 tra ve 404 Not Found (khong duoc tra ve 200 \"xoa thanh cong\" lan nua cho ban ghi da khong con ton tai)"
+
+  - id: TC_SURVEY_SEC_040
+    title: "[Mutation][Security] Xoa khao sat khi khong co token"
+    priority: Cao
+    tags: [mutation]
+    category: Security
+    steps:
+      - "Gui request DELETE /api/v1/survey/surveys/{id} KHONG kem Authorization"
+    expected_result:
+      - "Status code 401 Unauthorized"
+      - "Khao sat khong bi xoa (kiem tra lai bang GET)"
+
+  - id: TC_SURVEY_SEC_041
+    title: "[Mutation][Security] Xoa khao sat bang tai khoan khong du quyen"
+    priority: Cao
+    tags: [mutation]
+    category: Security
+    preconditions:
+      - "Co tai khoan khong co quyen xoa khao sat (vi du role Can bo thong thuong neu nghiep vu quy dinh chi Lanh dao/Admin moi duoc xoa)"
+    steps:
+      - "Gui request DELETE /api/v1/survey/surveys/{id} bang token cua tai khoan do"
+    expected_result:
+      - "Status code 403 Forbidden, khao sat khong bi xoa"

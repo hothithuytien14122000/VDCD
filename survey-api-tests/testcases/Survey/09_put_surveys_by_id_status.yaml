@@ -1,0 +1,171 @@
+# =====================================================================================
+# Test case API - Phan he: Khao sat muc do hai long cua nguoi dan
+# Nhom (tag Swagger): Survey
+# Endpoint: PUT /api/v1/survey/surveys/{id}/status
+# Lien quan use case: UC-E.3 (Phe duyet dot khao sat)
+# Muc do anh huong: SUA DU LIEU THAT - gan nhan [Mutation]
+# =====================================================================================
+
+module: Khao sat muc do hai long cua nguoi dan
+api_group: Survey
+endpoint: PUT /api/v1/survey/surveys/{id}/status
+test_cases:
+
+  # ---------- Happy path ----------
+  - id: TC_SURVEY_032
+    title: "[Mutation] Phe duyet khao sat dang Cho phe duyet"
+    priority: Cao
+    tags: [mutation]
+    category: Happy path
+    preconditions:
+      - "Co khao sat dang o trang thai Cho phe duyet (status = 2)"
+      - "Tai khoan dang dang nhap co quyen phe duyet (Lanh dao)"
+    steps:
+      - "Gui request PUT /api/v1/survey/surveys/{id}/status voi body {\"status\": 3}"
+    expected_result:
+      - "Status code 200"
+      - "Response.data.status = 3 (Da phe duyet)"
+      - "Response.data.histories duoc bo sung them 1 ban ghi lich su voi status=3"
+
+  - id: TC_SURVEY_033
+    title: "[Mutation] Tu choi phe duyet khao sat dang Cho phe duyet"
+    priority: Cao
+    tags: [mutation]
+    category: Happy path
+    preconditions:
+      - "Co khao sat dang o trang thai Cho phe duyet (status = 2)"
+    steps:
+      - "Gui request PUT /api/v1/survey/surveys/{id}/status voi body {\"status\": 4}"
+    expected_result:
+      - "Status code 200"
+      - "Response.data.status = 4 (Bi tu choi)"
+
+  - id: TC_SURVEY_033b
+    title: "[Mutation] Sau khi tu choi, sua lai va gui duyet lai thanh cong"
+    priority: Trung binh
+    tags: [mutation]
+    category: Happy path
+    steps:
+      - "Khao sat {id} dang Bi tu choi (status=4) tu TC_SURVEY_033"
+      - "Gui PUT /api/v1/survey/surveys/{id} voi status=2 (gui duyet lai)"
+      - "Gui PUT /api/v1/survey/surveys/{id}/status voi status=3 (phe duyet)"
+    expected_result:
+      - "Ca 2 request deu tra ve 200"
+      - "Khao sat cuoi cung co status = 3 (Da phe duyet), histories ghi nhan du cac buoc: Nhap -> Cho phe duyet -> Bi tu choi -> Cho phe duyet -> Da phe duyet"
+
+  # ---------- Negative / business rule ----------
+  - id: TC_SURVEY_034
+    title: "[Mutation] Phe duyet/tu choi khao sat KHONG o trang thai Cho phe duyet"
+    priority: Trung binh
+    tags: [mutation]
+    category: Negative
+    preconditions:
+      - "Co khao sat dang o trang thai Nhap (status = 1)"
+    steps:
+      - "Gui request PUT /api/v1/survey/surveys/{id}/status voi body {\"status\": 3}"
+    expected_result:
+      - "Status code 400 hoac 409 (khong hop le vi khao sat chua duoc trinh duyet)"
+
+  - id: TC_SURVEY_034b
+    title: "[Mutation] Phe duyet khao sat da o trang thai Da phe duyet (phe duyet 2 lan)"
+    priority: Trung binh
+    tags: [mutation]
+    category: Negative
+    preconditions:
+      - "Khao sat dang o trang thai Da phe duyet (status = 3)"
+    steps:
+      - "Gui request PUT /api/v1/survey/surveys/{id}/status voi body {\"status\": 3}"
+    expected_result:
+      - "Status code 400 hoac 409 (khong the phe duyet lai khao sat da duoc phe duyet)"
+
+  - id: TC_SURVEY_034c
+    title: "[Mutation] Gui status = Nhap(1) hoac Dang dien ra(5) hoac Da ket thuc(6) qua API nay"
+    priority: Trung binh
+    tags: [mutation]
+    category: Negative
+    preconditions:
+      - "Khao sat dang o trang thai Cho phe duyet (status = 2)"
+    steps:
+      - "Gui request PUT /api/v1/survey/surveys/{id}/status voi body {\"status\": 1}"
+      - "Gui them request voi {\"status\": 5}"
+      - "Gui them request voi {\"status\": 6}"
+    expected_result:
+      - "Status code 400 Bad Request cho ca 3 request (API nay CHI cho phep chuyen sang Approved(3) hoac Rejected(4) theo mo ta Swagger, khong duoc dung de gan cac trang thai khac)"
+
+  - id: TC_SURVEY_035
+    title: "[Mutation] Cap nhat status voi gia tri khong hop le (khac Approved/Rejected)"
+    priority: Thap
+    tags: [mutation]
+    category: Negative
+    steps:
+      - "Gui request PUT /api/v1/survey/surveys/{id}/status voi body {\"status\": 99}"
+    expected_result:
+      - "Status code 400 Bad Request"
+
+  - id: TC_SURVEY_035b
+    title: "[Mutation] Phe duyet/tu choi voi id khong ton tai"
+    priority: Thap
+    tags: [mutation]
+    category: Negative
+    steps:
+      - "Gui request PUT /api/v1/survey/surveys/{id}/status voi id ngau nhien khong ton tai"
+    expected_result:
+      - "Status code 404 Not Found"
+
+  - id: TC_SURVEY_NEG_030
+    title: "[Mutation] Khong truyen status trong body ({})"
+    priority: Thap
+    tags: [mutation]
+    category: Negative
+    steps:
+      - "Gui request PUT /api/v1/survey/surveys/{id}/status voi body = {}"
+    expected_result:
+      - "Status code 400 Bad Request"
+
+  # ---------- Security / phan quyen ----------
+  - id: TC_SURVEY_SEC_050
+    title: "[Mutation][Security] Phe duyet khi khong co token"
+    priority: Cao
+    tags: [mutation]
+    category: Security
+    steps:
+      - "Gui request PUT /api/v1/survey/surveys/{id}/status KHONG kem Authorization"
+    expected_result:
+      - "Status code 401 Unauthorized"
+
+  - id: TC_SURVEY_SEC_051
+    title: "[Mutation][Security] Phe duyet bang tai khoan KHONG co quyen Lanh dao (vi du tai khoan Can bo)"
+    priority: Cao
+    tags: [mutation]
+    category: Security
+    preconditions:
+      - "Theo UC-E.3, chi \"Lanh dao don vi, Lanh dao dia phuong\" duoc phe duyet. Can co 1 tai khoan role Can bo (khong phai Lanh dao) de kiem tra"
+    steps:
+      - "Gui request PUT /api/v1/survey/surveys/{id}/status bang token tai khoan Can bo (khong phai Lanh dao)"
+    expected_result:
+      - "Status code 403 Forbidden - xac nhan dung phan quyen theo UC-E.3 (day la test case QUAN TRONG can co tai khoan rieng de kiem tra, hien chua kiem thu duoc vi chi co 1 token SUPER_ADMIN)"
+
+  - id: TC_SURVEY_SEC_052
+    title: "[Mutation][Security] Nguoi tao khao sat tu phe duyet chinh khao sat cua minh (tach biet vai tro)"
+    priority: Trung binh
+    tags: [mutation]
+    category: Security
+    preconditions:
+      - "Theo nguyen tac phan tach nhiem vu (segregation of duties), nguoi trinh duyet khong nen la nguoi phe duyet"
+    steps:
+      - "Tai khoan A tao va trinh duyet khao sat"
+      - "Van tai khoan A (khong phai Lanh dao) co gang phe duyet khao sat do"
+    expected_result:
+      - "Status code 403 Forbidden neu he thong co kiem tra vai tro, HOAC neu tai khoan A co ca 2 quyen thi van cho phep (CAN XAC NHAN quy tac nghiep vu that co tach biet vai tro hay khong)"
+
+  # ---------- Data consistency ----------
+  - id: TC_SURVEY_DC_040
+    title: "[Mutation] Sau khi tu choi, resultCount va cac so lieu khac khong bi anh huong"
+    priority: Thap
+    tags: [mutation]
+    category: Data consistency
+    steps:
+      - "Ghi nhan resultCount truoc khi tu choi"
+      - "Gui PUT /api/v1/survey/surveys/{id}/status voi status=4"
+    expected_result:
+      - "resultCount sau khi tu choi khong doi so voi truoc do (hanh dong tu choi khong lam mat du lieu ket qua da co)"
