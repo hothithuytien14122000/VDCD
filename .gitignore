@@ -7,3 +7,4 @@ blob-report/
 playwright/.cache/
 ~$*
 .claude/scheduled_tasks.lock
+workspace/
