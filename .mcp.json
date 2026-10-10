@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "reqwise-figma": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["C:/TienHT/VDCD/CĐS/reqwise-figma-mcp/dist/server/index.js"]
+    }
+  }
+}
