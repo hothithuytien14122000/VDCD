@@ -1,0 +1,19 @@
+schema_version: "1.0"
+meta: {uc_id: "UC0.0"}
+automation_config: {locators: {btn_add: {strategy: null, value: null, status: missing}}}
+requirements:
+  - {id: MF-1, type: main_flow, text: x, status: clear}
+  - {id: BR-1, type: business_rule, text: y, status: clear}
+test_cases:
+  - id: TC_UC0.0_001
+    title: Thêm mới
+    type: positive
+    priority: high
+    requirement_refs: [MF-1]
+    preconditions: ["Đã đăng nhập"]
+    test_data: {code: "HN"}
+    steps:
+      - {seq: 1, action: click, target: btn_add, input: null, description: "Nhấn Thêm", expected: {description: "Hiện form", assertions: []}}
+      - {seq: 2, action: fill, target: txt_code, input: "${code}", description: "Nhập HN", expected: {description: "—", assertions: []}}
+    expected_result: "Thêm thành công"
+    automation: {automatable: partial, blockers: ["thiếu locator"]}
