@@ -1,0 +1,1429 @@
+schema_version: '1.0'
+meta:
+  uc_id: E4.1
+  uc_title: UC4.1 Xuất danh sách kết quả các đợt khảo sát (Phân hệ E)
+  source_file: '[DTI] Tài liệu SRS.docx (mục 3.4.1)'
+  generated_at: '2026-10-16'
+  language: vi
+  total_test_cases: 24
+automation_config:
+  framework: playwright
+  base_url: ${env:BASE_URL}
+  route_hint: Trang nội bộ và trang công khai dùng ${env:BASE_URL} (.env); chưa có URL route cụ thể trong SRS
+  credentials:
+    can_bo:
+      username: ${env:CANBO_USERNAME}
+      password: ${env:CANBO_PASSWORD}
+    lanh_dao_don_vi:
+      username: ${env:LANHDAO_USERNAME}
+      password: ${env:LANHDAO_PASSWORD}
+    can_bo_dia_phuong:
+      username: ${env:CANBO_DP_USERNAME}
+      password: ${env:CANBO_DP_PASSWORD}
+    lanh_dao_dia_phuong:
+      username: ${env:LANHDAO_DP_USERNAME}
+      password: ${env:LANHDAO_DP_PASSWORD}
+  locators:
+    btn_page_2:
+      strategy: null
+      value: null
+      status: missing
+    btn_xuat_excel:
+      strategy: null
+      value: null
+      status: missing
+    dd_hinh_thuc:
+      strategy: null
+      value: null
+      status: missing
+    dd_nam:
+      strategy: null
+      value: null
+      status: missing
+    dd_trang_thai:
+      strategy: null
+      value: null
+      status: missing
+    file_xlsx:
+      strategy: null
+      value: null
+      status: missing
+    menu_khao_sat_hai_long:
+      strategy: null
+      value: null
+      status: missing
+    tab_trang_thai:
+      strategy: null
+      value: null
+      status: missing
+    toast_message:
+      strategy: null
+      value: null
+      status: missing
+    txt_search:
+      strategy: null
+      value: null
+      status: missing
+  api_endpoints: {}
+  action_mapping:
+    click: null
+requirements:
+- id: E4.1-BR-1
+  type: business_rule
+  text: Dùng bộ lọc đang áp dụng tại UC1.1 (từ khóa, trạng thái, hình thức, năm); không xuất theo từ khóa chưa nhấn Enter
+  status: clear
+- id: E4.1-BR-2
+  type: business_rule
+  text: Xuất toàn bộ kết quả khớp bộ lọc và phạm vi (không chỉ 10 dòng), thứ tự theo danh sách, đợt nhiều hình thức một dòng
+  status: clear
+- id: E4.1-BR-3
+  type: business_rule
+  text: Lọc Đã kết thúc xuất kết quả Chính thức; trạng thái khác vẫn xuất, phân biệt trạng thái đợt và tính chất số liệu
+  status: clear
+- id: E4.1-BR-4
+  type: business_rule
+  text: Không thay cho xuất chi tiết một đợt; không xuất từng phiếu/mẫu phiếu
+  status: clear
+- id: E4.1-BR-5
+  type: business_rule
+  text: Chặn bấm lặp khi tạo tệp; kiểm tra quyền/phạm vi khi xuất; không đưa dữ liệu vừa mất quyền vào tệp
+  status: clear
+- id: E4.1-BR-6
+  type: business_rule
+  text: Cấu trúc cột theo phần Excel; đợt chưa mở thu thập vẫn có dòng, ô kết quả để trống
+  status: clear
+- id: E4.1-MF
+  type: main_flow
+  text: Lọc ở UC1.1 rồi Xuất Excel, nhận tệp
+  status: clear
+- id: E4.1-AF1
+  type: alt_flow
+  text: Chỉ xuất đợt Đã kết thúc (Chính thức)
+  status: clear
+- id: E4.1-AF2
+  type: alt_flow
+  text: Xuất lại sau khi đổi bộ lọc
+  status: clear
+- id: E4.1-EF1
+  type: exception_flow
+  text: Không có đợt phù hợp MSG-023
+  status: clear
+- id: E4.1-EF2
+  type: exception_flow
+  text: Quyền/phạm vi MSG-043/045/044
+  status: clear
+- id: E4.1-EF3
+  type: exception_flow
+  text: Xuất thất bại MSG-024/026
+  status: clear
+- id: E4.1-XLS
+  type: field
+  text: Cấu trúc sheet Danh sách kết quả, cột, tên tệp
+  status: clear
+open_questions:
+- id: OQ-1
+  text: 'UC4.1 BR-3: ''các trạng thái khác vẫn được xuất theo thiết kế đã chốt'' — Nháp/Chờ phê duyệt/Bị từ chối có xuất không và nếu có thì các ô số liệu để trống? (BR-6 chỉ nêu đợt chưa mở thu thập).'
+  requirement_refs:
+  - E4.1-BR-3
+- id: OQ-2
+  text: 'UC4.1: mốc dữ liệu của tệp danh sách nhiều đợt (khác thời điểm tên tệp) lấy tại thời điểm nào; và STT/tên báo cáo/thứ tự dòng đầu sheet (tên báo cáo, thời điểm xuất, mốc, từ khóa, bộ lọc) chưa
+    nêu vị trí ô.'
+  requirement_refs:
+  - E4.1-XLS
+test_cases:
+- id: TC_E4.1_001
+  title: Xuất Excel danh sách đợt theo bộ lọc đang áp dụng, nhận tệp tên Danh_sach_ket_qua_khao_sat_YYYYMMDD_HHmmss.xlsx
+  type: positive
+  techniques:
+  - UC_FLOW
+  priority: high
+  requirement_refs:
+  - E4.1-MF
+  - E4.1-BR-1
+  - E4.1-XLS
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ có quyền xem và quyền xuất kết quả trong phạm vi
+  - Có đợt Đang diễn ra
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: select
+    target: dd_trang_thai
+    input: Đang diễn ra
+    description: Lọc trạng thái Đang diễn ra
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: btn_xuat_excel
+    input: null
+    description: Chọn Xuất Excel
+    expected:
+      description: Tạo tệp, tải về, nút Xuất Excel được mở lại
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: verify
+    target: file_xlsx
+    input: null
+    description: Mở tệp
+    expected:
+      description: Một sheet 'Danh sách kết quả'; đầu sheet ghi tên báo cáo, thời điểm xuất, mốc dữ liệu, từ khóa và các bộ lọc đã áp dụng; mỗi dòng một đợt
+      assertions: []
+      status: confirmed
+  expected_result: Tải tệp .xlsx đúng bộ lọc, không thay đổi số liệu
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần đọc tệp tải về
+  notes: null
+- id: TC_E4.1_002
+  title: 'Cột tệp: STT toàn tập xuất, Mã/Tên/Đơn vị, Hình thức, Ngày bắt đầu/kết thúc, Trạng thái, Tính chất/Mốc số liệu, Mục tiêu, Số phiếu/Tổng lượt, Lượt Hài lòng/Chưa hài lòng, Tỷ lệ'
+  type: positive
+  techniques:
+  - EP
+  priority: high
+  requirement_refs:
+  - E4.1-XLS
+  - E4.1-BR-6
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ có quyền xem và quyền xuất kết quả trong phạm vi
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xuat_excel
+    input: null
+    description: Chọn Xuất Excel
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: verify
+    target: file_xlsx
+    input: null
+    description: Kiểm tra cột và kiểu ô
+    expected:
+      description: Đúng danh sách cột; số đếm/tỷ lệ là ô số, tỷ lệ chưa làm tròn định dạng 0,00%; ngày là ô ngày; mục tiêu để trống khi không cấu hình; ô không có dữ liệu để trống, không ghi '-'
+      assertions: []
+      status: confirmed
+  expected_result: Đúng cấu trúc cột và kiểu dữ liệu
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần đọc tệp tải về
+  notes: null
+- id: TC_E4.1_003
+  title: Xuất toàn bộ kết quả khớp bộ lọc, không chỉ 10 dòng của trang đang xem; STT 1..n toàn tập
+  type: boundary
+  techniques:
+  - BVA
+  priority: high
+  requirement_refs:
+  - E4.1-BR-2
+  - E4.1-XLS
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ có quyền xem và quyền xuất kết quả trong phạm vi
+  - Phạm vi có 25 đợt
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_page_2
+    input: null
+    description: Chuyển trang 2
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: btn_xuat_excel
+    input: null
+    description: Chọn Xuất Excel
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: verify
+    target: file_xlsx
+    input: null
+    description: Đếm dòng
+    expected:
+      description: Số dòng = tổng số đợt sau lọc (vd. 25); STT liên tục từ 1; thứ tự theo danh sách
+      assertions: []
+      status: confirmed
+  expected_result: Xuất đủ tập
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần đọc tệp
+  notes: null
+- id: TC_E4.1_004
+  title: Đợt nhiều hình thức chỉ một dòng, các hình thức gộp trong một ô
+  type: positive
+  techniques:
+  - EP
+  priority: medium
+  requirement_refs:
+  - E4.1-BR-2
+  - E4.1-XLS
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ có quyền xem và quyền xuất kết quả trong phạm vi
+  - Có đợt nhiều hình thức
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xuat_excel
+    input: null
+    description: Xuất Excel
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: verify
+    target: file_xlsx
+    input: null
+    description: Kiểm tra
+    expected:
+      description: Đợt Trực tuyến + Trực tiếp có một dòng, ô Hình thức gộp hai hình thức
+      assertions: []
+      status: confirmed
+  expected_result: Không nhân dòng
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần đọc tệp
+  notes: null
+- id: TC_E4.1_005
+  title: 'Xuất theo bộ lọc Đã kết thúc: số liệu Chính thức, tính chất và mốc chốt đúng'
+  type: state_transition
+  techniques:
+  - ST
+  priority: high
+  requirement_refs:
+  - E4.1-AF1
+  - E4.1-BR-3
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ có quyền xem và quyền xuất kết quả trong phạm vi
+  - Có đợt Đã kết thúc
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: tab_trang_thai
+    input: null
+    description: Chọn tab Đã kết thúc
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: btn_xuat_excel
+    input: null
+    description: Xuất Excel
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: verify
+    target: file_xlsx
+    input: null
+    description: Kiểm tra
+    expected:
+      description: Chỉ đợt Đã kết thúc; Tính chất = Chính thức; mốc = thời điểm chốt
+      assertions: []
+      status: confirmed
+  expected_result: Số liệu Chính thức
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần đọc tệp
+  notes: null
+- id: TC_E4.1_006
+  title: 'Xuất đợt Đang diễn ra: tính chất Tạm tính, trạng thái đợt tách biệt tính chất số liệu'
+  type: decision_table
+  techniques:
+  - DT
+  priority: high
+  requirement_refs:
+  - E4.1-BR-3
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ có quyền xem và quyền xuất kết quả trong phạm vi
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: select
+    target: dd_trang_thai
+    input: Đang diễn ra
+    description: Lọc Đang diễn ra
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: btn_xuat_excel
+    input: null
+    description: Xuất Excel
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: verify
+    target: file_xlsx
+    input: null
+    description: Kiểm tra
+    expected:
+      description: Trạng thái đợt = Đang diễn ra; Tính chất = Tạm tính + mốc số liệu
+      assertions: []
+      status: confirmed
+  expected_result: Phân biệt trạng thái và tính chất
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần đọc tệp
+  notes: null
+- id: TC_E4.1_007
+  title: 'Xuất đợt Nháp (chưa mở thu thập): có dòng thông tin đợt, ô tính chất/mốc/kết quả để trống'
+  type: decision_table
+  techniques:
+  - DT
+  priority: medium
+  requirement_refs:
+  - E4.1-BR-6
+  - E4.1-BR-3
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ có quyền xem và quyền xuất kết quả trong phạm vi
+  - Có đợt Nháp
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: select
+    target: dd_trang_thai
+    input: Nháp
+    description: Lọc Nháp
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: btn_xuat_excel
+    input: null
+    description: Xuất Excel
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: verify
+    target: file_xlsx
+    input: null
+    description: Kiểm tra
+    expected:
+      description: Có dòng đợt Nháp; các ô Tính chất, Mốc, kết quả để trống (không '-', không 0)
+      assertions: []
+      status: needs_confirmation
+  expected_result: Đúng BR-6
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần đọc tệp
+  notes: null
+- id: TC_E4.1_008
+  title: 'Xuất đợt Chờ phê duyệt (chưa mở thu thập): có dòng thông tin đợt, ô tính chất/mốc/kết quả để trống'
+  type: decision_table
+  techniques:
+  - DT
+  priority: medium
+  requirement_refs:
+  - E4.1-BR-6
+  - E4.1-BR-3
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ có quyền xem và quyền xuất kết quả trong phạm vi
+  - Có đợt Chờ phê duyệt
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: select
+    target: dd_trang_thai
+    input: Chờ phê duyệt
+    description: Lọc Chờ phê duyệt
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: btn_xuat_excel
+    input: null
+    description: Xuất Excel
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: verify
+    target: file_xlsx
+    input: null
+    description: Kiểm tra
+    expected:
+      description: Có dòng đợt Chờ phê duyệt; các ô Tính chất, Mốc, kết quả để trống (không '-', không 0)
+      assertions: []
+      status: needs_confirmation
+  expected_result: Đúng BR-6
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần đọc tệp
+  notes: null
+- id: TC_E4.1_009
+  title: 'Xuất đợt Bị từ chối (chưa mở thu thập): có dòng thông tin đợt, ô tính chất/mốc/kết quả để trống'
+  type: decision_table
+  techniques:
+  - DT
+  priority: medium
+  requirement_refs:
+  - E4.1-BR-6
+  - E4.1-BR-3
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ có quyền xem và quyền xuất kết quả trong phạm vi
+  - Có đợt Bị từ chối
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: select
+    target: dd_trang_thai
+    input: Bị từ chối
+    description: Lọc Bị từ chối
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: btn_xuat_excel
+    input: null
+    description: Xuất Excel
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: verify
+    target: file_xlsx
+    input: null
+    description: Kiểm tra
+    expected:
+      description: Có dòng đợt Bị từ chối; các ô Tính chất, Mốc, kết quả để trống (không '-', không 0)
+      assertions: []
+      status: needs_confirmation
+  expected_result: Đúng BR-6
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần đọc tệp
+  notes: null
+- id: TC_E4.1_010
+  title: 'Xuất đợt Đã phê duyệt (chưa mở thu thập): có dòng thông tin đợt, ô tính chất/mốc/kết quả để trống'
+  type: decision_table
+  techniques:
+  - DT
+  priority: medium
+  requirement_refs:
+  - E4.1-BR-6
+  - E4.1-BR-3
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ có quyền xem và quyền xuất kết quả trong phạm vi
+  - Có đợt Đã phê duyệt
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: select
+    target: dd_trang_thai
+    input: Đã phê duyệt
+    description: Lọc Đã phê duyệt
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: btn_xuat_excel
+    input: null
+    description: Xuất Excel
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: verify
+    target: file_xlsx
+    input: null
+    description: Kiểm tra
+    expected:
+      description: Có dòng đợt Đã phê duyệt; các ô Tính chất, Mốc, kết quả để trống (không '-', không 0)
+      assertions: []
+      status: needs_confirmation
+  expected_result: Đúng BR-6
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần đọc tệp
+  notes: null
+- id: TC_E4.1_011
+  title: Từ khóa chưa nhấn Enter không được dùng làm điều kiện xuất
+  type: negative
+  techniques:
+  - EP
+  priority: medium
+  requirement_refs:
+  - E4.1-BR-1
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ có quyền xem và quyền xuất kết quả trong phạm vi
+  test_data:
+    kw: KS-2026
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: fill
+    target: txt_search
+    input: ${kw}
+    description: Nhập từ khóa nhưng không nhấn Enter
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: btn_xuat_excel
+    input: null
+    description: Xuất Excel
+    expected:
+      description: Tệp theo bộ lọc đã áp dụng trước đó, không theo từ khóa chưa Enter
+      assertions: []
+      status: confirmed
+  expected_result: Dùng bộ lọc đã áp dụng
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần đọc tệp
+  notes: null
+- id: TC_E4.1_012
+  title: Từ khóa đã Enter + trạng thái + hình thức + năm được ghi vào đầu sheet và áp dụng đúng
+  type: decision_table
+  techniques:
+  - DT
+  priority: high
+  requirement_refs:
+  - E4.1-BR-1
+  - E4.1-AF2
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ có quyền xem và quyền xuất kết quả trong phạm vi
+  test_data:
+    kw: KS
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: fill
+    target: txt_search
+    input: ${kw}
+    description: Nhập từ khóa
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: press
+    target: txt_search
+    input: Enter
+    description: Nhấn Enter
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: select
+    target: dd_hinh_thuc
+    input: Trực tuyến
+    description: Lọc hình thức
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: select
+    target: dd_nam
+    input: '2026'
+    description: Lọc năm
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 6
+    action: click
+    target: btn_xuat_excel
+    input: null
+    description: Xuất Excel
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 7
+    action: verify
+    target: file_xlsx
+    input: null
+    description: Kiểm tra
+    expected:
+      description: Đầu sheet ghi từ khóa, hình thức, năm; dữ liệu khớp
+      assertions: []
+      status: confirmed
+  expected_result: Tệp ghi đúng bộ lọc
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần đọc tệp
+  notes: null
+- id: TC_E4.1_013
+  title: 'Đổi bộ lọc rồi xuất lại: mỗi tệp ghi bộ lọc và mốc dữ liệu của chính lần xuất'
+  type: positive
+  techniques:
+  - UC_FLOW
+  priority: medium
+  requirement_refs:
+  - E4.1-AF2
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ có quyền xem và quyền xuất kết quả trong phạm vi
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: select
+    target: dd_trang_thai
+    input: Nháp
+    description: Lọc Nháp
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: btn_xuat_excel
+    input: null
+    description: Xuất lần 1
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: select
+    target: dd_trang_thai
+    input: Đã kết thúc
+    description: Đổi bộ lọc
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: click
+    target: btn_xuat_excel
+    input: null
+    description: Xuất lần 2
+    expected:
+      description: Tệp 2 ghi bộ lọc Đã kết thúc
+      assertions: []
+      status: confirmed
+  expected_result: Hai tệp độc lập
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần đọc tệp
+  notes: null
+- id: TC_E4.1_014
+  title: 'Tỷ lệ Hài lòng theo lượt: mẫu số 0 để trống; số đếm thực tế 0 ghi số 0'
+  type: boundary
+  techniques:
+  - BVA
+  priority: high
+  requirement_refs:
+  - E4.1-XLS
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ có quyền xem và quyền xuất kết quả trong phạm vi
+  - Đợt Đang diễn ra chưa có phiếu
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xuat_excel
+    input: null
+    description: Xuất Excel
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: verify
+    target: file_xlsx
+    input: null
+    description: Kiểm tra đợt Đang diễn ra chưa có phiếu
+    expected:
+      description: Số phiếu = 0, Tổng lượt = 0, Hài lòng = 0, Chưa hài lòng = 0 (ô số 0); Tỷ lệ để trống
+      assertions: []
+      status: confirmed
+  expected_result: Phân biệt 0 và trống
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần đọc tệp
+  notes: null
+- id: TC_E4.1_015
+  title: Tệp không chứa danh tính người dân, câu đánh giá chung hay từng phiếu/mẫu phiếu
+  type: negative
+  techniques:
+  - EP
+  priority: medium
+  requirement_refs:
+  - E4.1-BR-4
+  - E4.1-XLS
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ có quyền xem và quyền xuất kết quả trong phạm vi
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xuat_excel
+    input: null
+    description: Xuất Excel
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: verify
+    target: file_xlsx
+    input: null
+    description: Kiểm tra
+    expected:
+      description: Không có sheet/cột phiếu, mẫu phiếu, danh tính, câu đánh giá chung
+      assertions: []
+      status: confirmed
+  expected_result: Đúng phạm vi UC4.1
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần đọc tệp
+  notes: null
+- id: TC_E4.1_016
+  title: 'Không có đợt phù hợp: MSG-023, không tạo tệp, giữ bộ lọc'
+  type: negative
+  techniques:
+  - EP
+  priority: high
+  requirement_refs:
+  - E4.1-EF1
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ có quyền xem và quyền xuất kết quả trong phạm vi
+  test_data:
+    kw: zzzz
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: fill
+    target: txt_search
+    input: ${kw}
+    description: Nhập từ khóa không có kết quả
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: press
+    target: txt_search
+    input: Enter
+    description: Nhấn Enter
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: click
+    target: btn_xuat_excel
+    input: null
+    description: Chọn Xuất Excel
+    expected:
+      description: Báo 'Không có dữ liệu để xuất', không tải tệp
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Không có dữ liệu để xuất
+      status: confirmed
+  - seq: 5
+    action: verify
+    target: txt_search
+    input: null
+    description: Kiểm tra
+    expected:
+      description: Giữ bộ lọc
+      assertions: []
+      status: confirmed
+  expected_result: Báo MSG-023, không tạo tệp rỗng
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E4.1_017
+  title: 'Quyền/phạm vi khi xuất: MSG-043, không đưa dữ liệu không được phép vào tệp'
+  type: permission
+  techniques:
+  - PERM
+  priority: high
+  requirement_refs:
+  - E4.1-EF2
+  - E4.1-BR-5
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ có quyền xem và quyền xuất kết quả trong phạm vi
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: api_call
+    target: null
+    input: null
+    description: Thu hồi quyền xuất/phạm vi (hoặc mở link nội dung không được xem)
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: btn_xuat_excel
+    input: null
+    description: Chọn Xuất Excel
+    expected:
+      description: Báo MSG-043, không xuất
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Bạn không có quyền thực hiện thao tác này
+      status: confirmed
+  expected_result: Báo MSG-043
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần đổi quyền giữa chừng
+  notes: null
+- id: TC_E4.1_018
+  title: 'Quyền/phạm vi khi xuất: MSG-045, không đưa dữ liệu không được phép vào tệp'
+  type: permission
+  techniques:
+  - PERM
+  priority: high
+  requirement_refs:
+  - E4.1-EF2
+  - E4.1-BR-5
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ có quyền xem và quyền xuất kết quả trong phạm vi
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: api_call
+    target: null
+    input: null
+    description: Thu hồi quyền xuất/phạm vi (hoặc mở link nội dung không được xem)
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: btn_xuat_excel
+    input: null
+    description: Chọn Xuất Excel
+    expected:
+      description: Báo MSG-045, không xuất
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Bạn không có quyền truy cập dữ liệu của đơn vị này
+      status: confirmed
+  expected_result: Báo MSG-045
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần đổi quyền giữa chừng
+  notes: null
+- id: TC_E4.1_019
+  title: 'Quyền/phạm vi khi xuất: MSG-044, không đưa dữ liệu không được phép vào tệp'
+  type: permission
+  techniques:
+  - PERM
+  priority: high
+  requirement_refs:
+  - E4.1-EF2
+  - E4.1-BR-5
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ có quyền xem và quyền xuất kết quả trong phạm vi
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: api_call
+    target: null
+    input: null
+    description: Thu hồi quyền xuất/phạm vi (hoặc mở link nội dung không được xem)
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: btn_xuat_excel
+    input: null
+    description: Chọn Xuất Excel
+    expected:
+      description: Báo MSG-044, không xuất
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Nội dung không còn tồn tại hoặc bạn không có quyền xem
+      status: confirmed
+  expected_result: Báo MSG-044
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần đổi quyền giữa chừng
+  notes: null
+- id: TC_E4.1_020
+  title: Tài khoản không có quyền xuất không thấy nút Xuất Excel
+  type: permission
+  techniques:
+  - PERM
+  priority: medium
+  requirement_refs:
+  - E4.1-EF2
+  preconditions:
+  - Đã đăng nhập tài khoản có quyền xem nhưng không có quyền xuất
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: verify
+    target: btn_xuat_excel
+    input: null
+    description: Kiểm tra nút
+    expected:
+      description: Không hiển thị
+      assertions: []
+      status: needs_confirmation
+  expected_result: Không xuất được
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E4.1_021
+  title: Phạm vi tài khoản quyết định tập đợt xuất (Đơn vị / Đơn vị và con / Toàn hệ thống)
+  type: permission
+  techniques:
+  - PERM
+  - DT
+  priority: high
+  requirement_refs:
+  - E4.1-BR-5
+  - E4.1-MF
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ có quyền xem và quyền xuất kết quả trong phạm vi
+  - Tài khoản phạm vi Đơn vị; có đợt đơn vị khác
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xuat_excel
+    input: null
+    description: Xuất Excel
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: verify
+    target: file_xlsx
+    input: null
+    description: Kiểm tra
+    expected:
+      description: Chỉ đợt trong phạm vi tài khoản
+      assertions: []
+      status: confirmed
+  expected_result: Không lộ đợt ngoài phạm vi
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần đọc tệp
+  notes: null
+- id: TC_E4.1_022
+  title: 'Xuất thất bại: MSG-024, giữ bộ lọc, mở lại nút, không báo tải thành công'
+  type: error_handling
+  techniques:
+  - ERR
+  priority: high
+  requirement_refs:
+  - E4.1-EF3
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ có quyền xem và quyền xuất kết quả trong phạm vi
+  - Giả lập lỗi
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: select
+    target: dd_trang_thai
+    input: Nháp
+    description: Lọc Nháp
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: btn_xuat_excel
+    input: null
+    description: Xuất Excel khi lỗi
+    expected:
+      description: Báo MSG-024, không tải tệp
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Xuất dữ liệu thất bại. Vui lòng thử lại
+      status: confirmed
+  - seq: 4
+    action: verify
+    target: btn_xuat_excel
+    input: null
+    description: Kiểm tra
+    expected:
+      description: Nút được mở lại; bộ lọc giữ nguyên
+      assertions: []
+      status: confirmed
+  expected_result: Báo MSG-024
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần giả lập lỗi
+  notes: null
+- id: TC_E4.1_023
+  title: 'Xuất thất bại: MSG-026, giữ bộ lọc, mở lại nút, không báo tải thành công'
+  type: error_handling
+  techniques:
+  - ERR
+  priority: high
+  requirement_refs:
+  - E4.1-EF3
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ có quyền xem và quyền xuất kết quả trong phạm vi
+  - Giả lập lỗi
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: select
+    target: dd_trang_thai
+    input: Nháp
+    description: Lọc Nháp
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: btn_xuat_excel
+    input: null
+    description: Xuất Excel khi lỗi
+    expected:
+      description: Báo MSG-026, không tải tệp
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Không thể kết nối đến máy chủ. Vui lòng kiểm tra đường truyền
+      status: confirmed
+  - seq: 4
+    action: verify
+    target: btn_xuat_excel
+    input: null
+    description: Kiểm tra
+    expected:
+      description: Nút được mở lại; bộ lọc giữ nguyên
+      assertions: []
+      status: confirmed
+  expected_result: Báo MSG-026
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần giả lập lỗi
+  notes: null
+- id: TC_E4.1_024
+  title: Chặn bấm lặp nút Xuất Excel trong khi tạo tệp (chỉ một tệp)
+  type: negative
+  techniques:
+  - ERR
+  priority: medium
+  requirement_refs:
+  - E4.1-BR-5
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ có quyền xem và quyền xuất kết quả trong phạm vi
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xuat_excel
+    input: null
+    description: Bấm Xuất Excel nhiều lần liên tiếp
+    expected:
+      description: Nút vô hiệu khi xử lý; chỉ tạo một tệp
+      assertions: []
+      status: confirmed
+  expected_result: Chỉ một lần xuất
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần đếm file tải
+  notes: null

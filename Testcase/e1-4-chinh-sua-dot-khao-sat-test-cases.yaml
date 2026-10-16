@@ -1,0 +1,1734 @@
+schema_version: '1.0'
+meta:
+  uc_id: E1.4
+  uc_title: UC1.4 Chỉnh sửa đợt khảo sát (Phân hệ E)
+  source_file: '[DTI] Tài liệu SRS.docx (mục 3.1.4)'
+  generated_at: '2026-10-16'
+  language: vi
+  total_test_cases: 21
+automation_config:
+  framework: playwright
+  base_url: ${env:BASE_URL}
+  route_hint: Trang nội bộ và trang công khai dùng ${env:BASE_URL} (.env); chưa có URL route cụ thể trong SRS
+  credentials:
+    can_bo:
+      username: ${env:CANBO_USERNAME}
+      password: ${env:CANBO_PASSWORD}
+    lanh_dao_don_vi:
+      username: ${env:LANHDAO_USERNAME}
+      password: ${env:LANHDAO_PASSWORD}
+    can_bo_dia_phuong:
+      username: ${env:CANBO_DP_USERNAME}
+      password: ${env:CANBO_DP_PASSWORD}
+    lanh_dao_dia_phuong:
+      username: ${env:LANHDAO_DP_USERNAME}
+      password: ${env:LANHDAO_DP_PASSWORD}
+  locators:
+    btn_dlg_them_nhom:
+      strategy: null
+      value: null
+      status: missing
+    btn_dong_y:
+      strategy: null
+      value: null
+      status: missing
+    btn_huy:
+      strategy: null
+      value: null
+      status: missing
+    btn_khong_dong_y:
+      strategy: null
+      value: null
+      status: missing
+    btn_luu_nhap:
+      strategy: null
+      value: null
+      status: missing
+    btn_them_cau:
+      strategy: null
+      value: null
+      status: missing
+    btn_them_nhom:
+      strategy: null
+      value: null
+      status: missing
+    btn_trinh_duyet:
+      strategy: null
+      value: null
+      status: missing
+    btn_xem_chi_tiet:
+      strategy: null
+      value: null
+      status: missing
+    chk_truc_tiep:
+      strategy: null
+      value: null
+      status: missing
+    dp_ngay_bd:
+      strategy: null
+      value: null
+      status: missing
+    dp_ngay_kt:
+      strategy: null
+      value: null
+      status: missing
+    frm_soan:
+      strategy: null
+      value: null
+      status: missing
+    lbl_don_vi:
+      strategy: null
+      value: null
+      status: missing
+    lbl_ly_do:
+      strategy: null
+      value: null
+      status: missing
+    lbl_ma_dot:
+      strategy: null
+      value: null
+      status: missing
+    lbl_trang_thai:
+      strategy: null
+      value: null
+      status: missing
+    lnk_sua_dot:
+      strategy: null
+      value: null
+      status: missing
+    menu_khao_sat_hai_long:
+      strategy: null
+      value: null
+      status: missing
+    mnu_chinh_sua:
+      strategy: null
+      value: null
+      status: missing
+    tbl_lich_su:
+      strategy: null
+      value: null
+      status: missing
+    toast_message:
+      strategy: null
+      value: null
+      status: missing
+    txt_cau_hoi:
+      strategy: null
+      value: null
+      status: missing
+    txt_muc_tieu:
+      strategy: null
+      value: null
+      status: missing
+    txt_ten_dot:
+      strategy: null
+      value: null
+      status: missing
+    txt_ten_nhom:
+      strategy: null
+      value: null
+      status: missing
+  api_endpoints: {}
+  action_mapping:
+    click: null
+requirements:
+- id: E1.4-BR-1
+  type: business_rule
+  text: Chỉ sửa đợt Nháp hoặc Bị từ chối; Chờ phê duyệt không sửa/xóa/thu hồi; sau duyệt khóa nội dung và thời gian
+  status: clear
+- id: E1.4-BR-2
+  type: business_rule
+  text: Áp dụng quy tắc UC1.3; không tạo đợt mới/không đổi phiếu
+  status: clear
+- id: E1.4-BR-3
+  type: business_rule
+  text: Bị từ chối hiển thị lý do và lịch sử; lưu không xóa lịch sử, không tự chuyển Chờ phê duyệt
+  status: clear
+- id: E1.4-BR-4
+  type: business_rule
+  text: Trình lại sau hết hạn phải sửa thời gian hợp lệ
+  status: clear
+- id: E1.4-BR-5
+  type: business_rule
+  text: Kiểm tra lại trạng thái/quyền/dữ liệu mới nhất khi lưu; không ghi đè thay đổi của người khác
+  status: clear
+- id: E1.4-MF
+  type: main_flow
+  text: Sửa và Lưu nháp giữ trạng thái
+  status: clear
+- id: E1.4-AF1
+  type: alt_flow
+  text: Trình/trình lại từ form sửa
+  status: clear
+- id: E1.4-AF2
+  type: alt_flow
+  text: Sửa nhóm/câu hoặc hủy MSG-009
+  status: clear
+- id: E1.4-EF1
+  type: exception_flow
+  text: Không còn quyền/sai trạng thái MSG-043/045/020
+  status: clear
+- id: E1.4-EF2
+  type: exception_flow
+  text: Dữ liệu không hợp lệ theo UC1.3
+  status: clear
+- id: E1.4-EF3
+  type: exception_flow
+  text: Xung đột cập nhật MSG-020
+  status: clear
+- id: E1.4-EF4
+  type: exception_flow
+  text: Lưu thất bại MSG-025/026
+  status: clear
+- id: E1.4-UI
+  type: field
+  text: Điền sẵn dữ liệu, lý do từ chối/lịch sử chỉ đọc
+  status: clear
+open_questions:
+- id: OQ-1
+  text: 'UC1.4: đợt Nháp/Bị từ chối có ngày bắt đầu đã ở quá khứ khi mở sửa/lưu nháp — chặn bằng MSG-096 hay cho giữ nguyên? BR-3 UC1.3 chỉ nêu ''không trước ngày hiện tại khi lưu nháp hoặc trình''.'
+  requirement_refs:
+  - E1.4-BR-4
+test_cases:
+- id: TC_E1.4_001
+  title: 'Sửa đợt Nháp và Lưu nháp: giữ nguyên trạng thái Nháp, giữ mã'
+  type: state_transition
+  techniques:
+  - ST
+  - UC_FLOW
+  priority: high
+  requirement_refs:
+  - E1.4-MF
+  - E1.4-BR-3
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ, phạm vi dữ liệu Đơn vị
+  - Có đợt Nháp
+  test_data:
+    ten: Tên đợt đã sửa
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở menu Xem chi tiết của đợt
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: mnu_chinh_sua
+    input: null
+    description: Chọn Chỉnh sửa
+    expected:
+      description: Mở form sửa, điền sẵn dữ liệu
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: fill
+    target: txt_ten_dot
+    input: ${ten}
+    description: Sửa Tên đợt
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: click
+    target: btn_luu_nhap
+    input: null
+    description: Chọn Lưu nháp
+    expected:
+      description: Lưu thành công
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Lưu thành công
+      status: confirmed
+  - seq: 6
+    action: verify
+    target: lbl_trang_thai
+    input: null
+    description: Kiểm tra trạng thái
+    expected:
+      description: Vẫn là Nháp, không tự chuyển Chờ phê duyệt
+      assertions: []
+      status: confirmed
+  - seq: 7
+    action: verify
+    target: lbl_ma_dot
+    input: null
+    description: Kiểm tra mã
+    expected:
+      description: Mã nhận diện không đổi
+      assertions: []
+      status: confirmed
+  - seq: 8
+    action: verify
+    target: tbl_lich_su
+    input: null
+    description: Kiểm tra lịch sử
+    expected:
+      description: Lịch sử cũ (kể cả từ chối) được giữ
+      assertions: []
+      status: confirmed
+  expected_result: Lưu vào đúng đợt, giữ trạng thái Nháp, mã và lịch sử
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E1.4_002
+  title: 'Sửa đợt Bị từ chối và Lưu nháp: giữ nguyên trạng thái Bị từ chối, giữ mã'
+  type: state_transition
+  techniques:
+  - ST
+  - UC_FLOW
+  priority: high
+  requirement_refs:
+  - E1.4-MF
+  - E1.4-BR-3
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ, phạm vi dữ liệu Đơn vị
+  - Có đợt Bị từ chối
+  test_data:
+    ten: Tên đợt đã sửa
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở menu Xem chi tiết của đợt
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: mnu_chinh_sua
+    input: null
+    description: Chọn Chỉnh sửa
+    expected:
+      description: Mở form sửa, điền sẵn dữ liệu
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: verify
+    target: lbl_ly_do
+    input: null
+    description: Kiểm tra lý do từ chối/lịch sử
+    expected:
+      description: Hiển thị lý do từ chối và lịch sử, chỉ đọc
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: fill
+    target: txt_ten_dot
+    input: ${ten}
+    description: Sửa Tên đợt
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 6
+    action: click
+    target: btn_luu_nhap
+    input: null
+    description: Chọn Lưu nháp
+    expected:
+      description: Lưu thành công
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Lưu thành công
+      status: confirmed
+  - seq: 7
+    action: verify
+    target: lbl_trang_thai
+    input: null
+    description: Kiểm tra trạng thái
+    expected:
+      description: Vẫn là Bị từ chối, không tự chuyển Chờ phê duyệt
+      assertions: []
+      status: confirmed
+  - seq: 8
+    action: verify
+    target: lbl_ma_dot
+    input: null
+    description: Kiểm tra mã
+    expected:
+      description: Mã nhận diện không đổi
+      assertions: []
+      status: confirmed
+  - seq: 9
+    action: verify
+    target: tbl_lich_su
+    input: null
+    description: Kiểm tra lịch sử
+    expected:
+      description: Lịch sử cũ (kể cả từ chối) được giữ
+      assertions: []
+      status: confirmed
+  expected_result: Lưu vào đúng đợt, giữ trạng thái Bị từ chối, mã và lịch sử
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E1.4_003
+  title: Form sửa điền sẵn dữ liệu; mã và đơn vị thực hiện không sửa được
+  type: ui
+  techniques:
+  - UC_FLOW
+  priority: medium
+  requirement_refs:
+  - E1.4-UI
+  - E1.4-BR-2
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ, phạm vi dữ liệu Đơn vị
+  - Có đợt Nháp
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở menu Xem chi tiết của đợt
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: mnu_chinh_sua
+    input: null
+    description: Chọn Chỉnh sửa
+    expected:
+      description: Mở form sửa, điền sẵn dữ liệu
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: verify
+    target: frm_soan
+    input: null
+    description: Kiểm tra dữ liệu điền sẵn
+    expected:
+      description: Tên, mô tả, thời gian, hình thức, mục tiêu, nhóm/câu đúng dữ liệu đã lưu
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: verify
+    target: lbl_ma_dot
+    input: null
+    description: Kiểm tra Mã đợt
+    expected:
+      description: Chỉ xem
+      assertions: []
+      status: confirmed
+  - seq: 6
+    action: verify
+    target: lbl_don_vi
+    input: null
+    description: Kiểm tra Đơn vị
+    expected:
+      description: Chỉ xem
+      assertions: []
+      status: confirmed
+  expected_result: Điền sẵn đúng, mã/đơn vị không đổi
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E1.4_004
+  title: Sửa thời gian, hình thức, nhóm/câu theo quy tắc UC1.3 và lưu thành công
+  type: positive
+  techniques:
+  - UC_FLOW
+  priority: high
+  requirement_refs:
+  - E1.4-BR-2
+  - E1.4-AF2
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ, phạm vi dữ liệu Đơn vị
+  - Có đợt Nháp
+  test_data:
+    kt: hôm nay + 45
+    tn: Nhóm bổ sung
+    cau: Câu bổ sung?
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở menu Xem chi tiết của đợt
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: mnu_chinh_sua
+    input: null
+    description: Chọn Chỉnh sửa
+    expected:
+      description: Mở form sửa, điền sẵn dữ liệu
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: fill
+    target: dp_ngay_kt
+    input: ${kt}
+    description: Đổi Ngày kết thúc
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: check
+    target: chk_truc_tiep
+    input: null
+    description: Thêm hình thức Trực tiếp
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 6
+    action: click
+    target: btn_them_nhom
+    input: null
+    description: Thêm nhóm mới
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 7
+    action: fill
+    target: txt_ten_nhom
+    input: ${tn}
+    description: Nhập tên nhóm
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 8
+    action: click
+    target: btn_dlg_them_nhom
+    input: null
+    description: Thêm nhóm
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 9
+    action: click
+    target: btn_them_cau
+    input: null
+    description: Thêm câu
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 10
+    action: fill
+    target: txt_cau_hoi
+    input: ${cau}
+    description: Nhập câu
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 11
+    action: click
+    target: btn_luu_nhap
+    input: null
+    description: Chọn Lưu nháp
+    expected:
+      description: Lưu thành công
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Lưu thành công
+      status: confirmed
+  expected_result: Lưu thay đổi vào đúng đợt
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E1.4_005
+  title: 'Sửa rồi bấm Trình duyệt: kiểm tra điều kiện và chuyển UC1.6 (trình lại với đợt Bị từ chối)'
+  type: positive
+  techniques:
+  - UC_FLOW
+  priority: high
+  requirement_refs:
+  - E1.4-AF1
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ, phạm vi dữ liệu Đơn vị
+  - Có đợt Bị từ chối đã sửa thời gian hợp lệ
+  test_data:
+    ten: Tên sau khi sửa
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở menu Xem chi tiết của đợt
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: mnu_chinh_sua
+    input: null
+    description: Chọn Chỉnh sửa
+    expected:
+      description: Mở form sửa, điền sẵn dữ liệu
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: fill
+    target: txt_ten_dot
+    input: ${ten}
+    description: Sửa tên
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: click
+    target: btn_trinh_duyet
+    input: null
+    description: Chọn Trình duyệt
+    expected:
+      description: Hiển thị xác nhận trình (UC1.6)
+      assertions: []
+      status: confirmed
+  expected_result: Chuyển UC1.6
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E1.4_006
+  title: 'Hủy khi có thay đổi: đồng ý'
+  type: negative
+  techniques:
+  - ERR
+  priority: medium
+  requirement_refs:
+  - E1.4-AF2
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ, phạm vi dữ liệu Đơn vị
+  - Có đợt Nháp
+  test_data:
+    ten: Thay đổi chưa lưu
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở menu Xem chi tiết của đợt
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: mnu_chinh_sua
+    input: null
+    description: Chọn Chỉnh sửa
+    expected:
+      description: Mở form sửa, điền sẵn dữ liệu
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: fill
+    target: txt_ten_dot
+    input: ${ten}
+    description: Sửa tên
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: click
+    target: btn_huy
+    input: null
+    description: Chọn Hủy/Quay lại
+    expected:
+      description: Hiển thị MSG-009
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Các thay đổi chưa lưu sẽ bị mất
+      status: confirmed
+  - seq: 6
+    action: click
+    target: btn_dong_y
+    input: null
+    description: Chọn câu trả lời
+    expected:
+      description: Đồng ý thì thoát, không lưu
+      assertions: []
+      status: confirmed
+  expected_result: Hiển thị MSG-009; Đồng ý thì thoát, không lưu
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E1.4_007
+  title: 'Hủy khi có thay đổi: không đồng ý'
+  type: negative
+  techniques:
+  - ERR
+  priority: medium
+  requirement_refs:
+  - E1.4-AF2
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ, phạm vi dữ liệu Đơn vị
+  - Có đợt Nháp
+  test_data:
+    ten: Thay đổi chưa lưu
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở menu Xem chi tiết của đợt
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: mnu_chinh_sua
+    input: null
+    description: Chọn Chỉnh sửa
+    expected:
+      description: Mở form sửa, điền sẵn dữ liệu
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: fill
+    target: txt_ten_dot
+    input: ${ten}
+    description: Sửa tên
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: click
+    target: btn_huy
+    input: null
+    description: Chọn Hủy/Quay lại
+    expected:
+      description: Hiển thị MSG-009
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Các thay đổi chưa lưu sẽ bị mất
+      status: confirmed
+  - seq: 6
+    action: click
+    target: btn_khong_dong_y
+    input: null
+    description: Chọn câu trả lời
+    expected:
+      description: Không đồng ý thì ở lại form
+      assertions: []
+      status: confirmed
+  expected_result: Hiển thị MSG-009; Không đồng ý thì ở lại form
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E1.4_008
+  title: Đợt Chờ phê duyệt không được chỉnh sửa
+  type: state_transition
+  techniques:
+  - ST
+  - DT
+  priority: high
+  requirement_refs:
+  - E1.4-BR-1
+  - E1.4-EF1
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ, phạm vi dữ liệu Đơn vị
+  - Có đợt Chờ phê duyệt
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở menu thao tác của đợt Chờ phê duyệt
+    expected:
+      description: Không có mục Chỉnh sửa (hoặc bị vô hiệu)
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: navigate
+    target: lnk_sua_dot
+    input: null
+    description: Truy cập trực tiếp link sửa đợt
+    expected:
+      description: Hệ thống từ chối lưu/sửa
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Dữ liệu đã được người khác thay đổi
+      status: needs_confirmation
+  expected_result: Không cho sửa đợt Chờ phê duyệt (không sửa/xóa/thu hồi)
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: 'UC không nêu rõ mã khi truy cập link sửa đợt sai trạng thái (EF1: MSG-020)'
+- id: TC_E1.4_009
+  title: Đợt Đã phê duyệt không được chỉnh sửa
+  type: state_transition
+  techniques:
+  - ST
+  - DT
+  priority: high
+  requirement_refs:
+  - E1.4-BR-1
+  - E1.4-EF1
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ, phạm vi dữ liệu Đơn vị
+  - Có đợt Đã phê duyệt
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở menu thao tác của đợt Đã phê duyệt
+    expected:
+      description: Không có mục Chỉnh sửa (hoặc bị vô hiệu)
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: navigate
+    target: lnk_sua_dot
+    input: null
+    description: Truy cập trực tiếp link sửa đợt
+    expected:
+      description: Hệ thống từ chối lưu/sửa
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Dữ liệu đã được người khác thay đổi
+      status: needs_confirmation
+  expected_result: Không cho sửa đợt Đã phê duyệt (không sửa/xóa/thu hồi)
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: 'UC không nêu rõ mã khi truy cập link sửa đợt sai trạng thái (EF1: MSG-020)'
+- id: TC_E1.4_010
+  title: Đợt Đang diễn ra không được chỉnh sửa
+  type: state_transition
+  techniques:
+  - ST
+  - DT
+  priority: high
+  requirement_refs:
+  - E1.4-BR-1
+  - E1.4-EF1
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ, phạm vi dữ liệu Đơn vị
+  - Có đợt Đang diễn ra
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở menu thao tác của đợt Đang diễn ra
+    expected:
+      description: Không có mục Chỉnh sửa (hoặc bị vô hiệu)
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: navigate
+    target: lnk_sua_dot
+    input: null
+    description: Truy cập trực tiếp link sửa đợt
+    expected:
+      description: Hệ thống từ chối lưu/sửa
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Dữ liệu đã được người khác thay đổi
+      status: needs_confirmation
+  expected_result: Không cho sửa đợt Đang diễn ra (không sửa/xóa/thu hồi)
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: 'UC không nêu rõ mã khi truy cập link sửa đợt sai trạng thái (EF1: MSG-020)'
+- id: TC_E1.4_011
+  title: Đợt Đã kết thúc không được chỉnh sửa
+  type: state_transition
+  techniques:
+  - ST
+  - DT
+  priority: high
+  requirement_refs:
+  - E1.4-BR-1
+  - E1.4-EF1
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ, phạm vi dữ liệu Đơn vị
+  - Có đợt Đã kết thúc
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở menu thao tác của đợt Đã kết thúc
+    expected:
+      description: Không có mục Chỉnh sửa (hoặc bị vô hiệu)
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: navigate
+    target: lnk_sua_dot
+    input: null
+    description: Truy cập trực tiếp link sửa đợt
+    expected:
+      description: Hệ thống từ chối lưu/sửa
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Dữ liệu đã được người khác thay đổi
+      status: needs_confirmation
+  expected_result: Không cho sửa đợt Đã kết thúc (không sửa/xóa/thu hồi)
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: 'UC không nêu rõ mã khi truy cập link sửa đợt sai trạng thái (EF1: MSG-020)'
+- id: TC_E1.4_012
+  title: 'Trạng thái đổi khi đang sửa (đợt đã bị trình): lưu bị từ chối MSG-020'
+  type: error_handling
+  techniques:
+  - ERR
+  priority: high
+  requirement_refs:
+  - E1.4-EF1
+  - E1.4-BR-5
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ, phạm vi dữ liệu Đơn vị
+  - Hai phiên cùng tài khoản/đơn vị
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở menu Xem chi tiết của đợt
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: mnu_chinh_sua
+    input: null
+    description: Chọn Chỉnh sửa
+    expected:
+      description: Mở form sửa, điền sẵn dữ liệu
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: api_call
+    target: null
+    input: null
+    description: Người khác trình đợt trong lúc mở form sửa
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: click
+    target: btn_luu_nhap
+    input: null
+    description: Chọn Lưu nháp
+    expected:
+      description: Báo MSG-020, yêu cầu tải lại, không lưu
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Dữ liệu đã được người khác thay đổi. Vui lòng tải lại trang
+      status: confirmed
+  expected_result: Không lưu, MSG-020
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần 2 phiên
+  notes: null
+- id: TC_E1.4_013
+  title: 'Không còn quyền/phạm vi khi sửa: MSG-043'
+  type: permission
+  techniques:
+  - PERM
+  priority: high
+  requirement_refs:
+  - E1.4-EF1
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ, phạm vi dữ liệu Đơn vị
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở menu Xem chi tiết của đợt
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: mnu_chinh_sua
+    input: null
+    description: Chọn Chỉnh sửa
+    expected:
+      description: Mở form sửa, điền sẵn dữ liệu
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: api_call
+    target: null
+    input: null
+    description: Thu hồi quyền sửa/phạm vi khi form đang mở
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: click
+    target: btn_luu_nhap
+    input: null
+    description: Chọn Lưu nháp
+    expected:
+      description: Báo MSG-043, không lưu
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Bạn không có quyền thực hiện thao tác này
+      status: confirmed
+  expected_result: Từ chối lưu, MSG-043
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần đổi quyền giữa chừng
+  notes: null
+- id: TC_E1.4_014
+  title: 'Không còn quyền/phạm vi khi sửa: MSG-045'
+  type: permission
+  techniques:
+  - PERM
+  priority: high
+  requirement_refs:
+  - E1.4-EF1
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ, phạm vi dữ liệu Đơn vị
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở menu Xem chi tiết của đợt
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: mnu_chinh_sua
+    input: null
+    description: Chọn Chỉnh sửa
+    expected:
+      description: Mở form sửa, điền sẵn dữ liệu
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: api_call
+    target: null
+    input: null
+    description: Thu hồi quyền sửa/phạm vi khi form đang mở
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: click
+    target: btn_luu_nhap
+    input: null
+    description: Chọn Lưu nháp
+    expected:
+      description: Báo MSG-045, không lưu
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Bạn không có quyền truy cập dữ liệu của đơn vị này
+      status: confirmed
+  expected_result: Từ chối lưu, MSG-045
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần đổi quyền giữa chừng
+  notes: null
+- id: TC_E1.4_015
+  title: 'Dữ liệu không hợp lệ khi sửa: Tên đợt trống (MSG-010)'
+  type: negative
+  techniques:
+  - EP
+  priority: high
+  requirement_refs:
+  - E1.4-EF2
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ, phạm vi dữ liệu Đơn vị
+  - Có đợt Nháp
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở menu Xem chi tiết của đợt
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: mnu_chinh_sua
+    input: null
+    description: Chọn Chỉnh sửa
+    expected:
+      description: Mở form sửa, điền sẵn dữ liệu
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: fill
+    target: txt_ten_dot
+    input: ''
+    description: Xóa trống Tên đợt
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: click
+    target: btn_luu_nhap
+    input: null
+    description: Chọn Lưu nháp
+    expected:
+      description: Báo lỗi tại trường tương ứng, không lưu
+      assertions: []
+      status: confirmed
+  expected_result: Không lưu, giữ form để sửa
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E1.4_016
+  title: 'Dữ liệu không hợp lệ khi sửa: Số phiếu mục tiêu = 0 (MSG-098)'
+  type: negative
+  techniques:
+  - EP
+  priority: high
+  requirement_refs:
+  - E1.4-EF2
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ, phạm vi dữ liệu Đơn vị
+  - Có đợt Nháp
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở menu Xem chi tiết của đợt
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: mnu_chinh_sua
+    input: null
+    description: Chọn Chỉnh sửa
+    expected:
+      description: Mở form sửa, điền sẵn dữ liệu
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: fill
+    target: txt_muc_tieu
+    input: '0'
+    description: Nhập mục tiêu 0
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: click
+    target: btn_luu_nhap
+    input: null
+    description: Chọn Lưu nháp
+    expected:
+      description: Báo lỗi tại trường tương ứng, không lưu
+      assertions: []
+      status: confirmed
+  expected_result: Không lưu, giữ form để sửa
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E1.4_017
+  title: 'Dữ liệu không hợp lệ khi sửa: Ngày kết thúc trước ngày bắt đầu (MSG-097)'
+  type: negative
+  techniques:
+  - EP
+  priority: high
+  requirement_refs:
+  - E1.4-EF2
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ, phạm vi dữ liệu Đơn vị
+  - Có đợt Nháp
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở menu Xem chi tiết của đợt
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: mnu_chinh_sua
+    input: null
+    description: Chọn Chỉnh sửa
+    expected:
+      description: Mở form sửa, điền sẵn dữ liệu
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: fill
+    target: dp_ngay_kt
+    input: trước ngày bắt đầu
+    description: Chọn ngày kết thúc trước ngày bắt đầu
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: click
+    target: btn_luu_nhap
+    input: null
+    description: Chọn Lưu nháp
+    expected:
+      description: Báo lỗi tại trường tương ứng, không lưu
+      assertions: []
+      status: confirmed
+  expected_result: Không lưu, giữ form để sửa
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E1.4_018
+  title: 'Đợt Bị từ chối đã hết hạn: phải sửa thời gian hợp lệ trước khi trình lại'
+  type: negative
+  techniques:
+  - ST
+  priority: high
+  requirement_refs:
+  - E1.4-BR-4
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ, phạm vi dữ liệu Đơn vị
+  - Đợt Bị từ chối do tự từ chối hết hạn
+  test_data:
+    bd: hôm nay
+    kt: hôm nay + 30
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở menu Xem chi tiết của đợt
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: mnu_chinh_sua
+    input: null
+    description: Chọn Chỉnh sửa
+    expected:
+      description: Mở form sửa, điền sẵn dữ liệu
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: click
+    target: btn_trinh_duyet
+    input: null
+    description: Chọn Trình duyệt khi ngày bắt đầu đã qua
+    expected:
+      description: Báo lỗi ngày (MSG-096), không sang UC1.6
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Ngày bắt đầu không được trước ngày hiện tại
+      status: confirmed
+  - seq: 5
+    action: fill
+    target: dp_ngay_bd
+    input: ${bd}
+    description: Sửa Ngày bắt đầu hợp lệ
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 6
+    action: fill
+    target: dp_ngay_kt
+    input: ${kt}
+    description: Sửa Ngày kết thúc hợp lệ
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 7
+    action: click
+    target: btn_trinh_duyet
+    input: null
+    description: Chọn Trình duyệt
+    expected:
+      description: Sang UC1.6
+      assertions: []
+      status: confirmed
+  expected_result: Phải sửa thời gian hợp lệ mới trình lại được
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E1.4_019
+  title: 'Xung đột cập nhật: MSG-020, không ghi đè, giữ bản đang sửa'
+  type: error_handling
+  techniques:
+  - ERR
+  priority: high
+  requirement_refs:
+  - E1.4-EF3
+  - E1.4-BR-5
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ, phạm vi dữ liệu Đơn vị
+  - Hai phiên cùng sửa 1 đợt
+  test_data:
+    ten: Bản của A
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở menu Xem chi tiết của đợt
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: mnu_chinh_sua
+    input: null
+    description: Chọn Chỉnh sửa
+    expected:
+      description: Mở form sửa, điền sẵn dữ liệu
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: api_call
+    target: null
+    input: null
+    description: Người dùng B sửa và lưu cùng đợt
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: fill
+    target: txt_ten_dot
+    input: ${ten}
+    description: Người dùng A sửa tên
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 6
+    action: click
+    target: btn_luu_nhap
+    input: null
+    description: A chọn Lưu nháp
+    expected:
+      description: Báo MSG-020, không ghi đè thay đổi của B, giữ bản đang sửa của A
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Dữ liệu đã được người khác thay đổi. Vui lòng tải lại trang
+      status: confirmed
+  expected_result: Không ghi đè dữ liệu của B, yêu cầu tải lại
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần 2 phiên
+  notes: null
+- id: TC_E1.4_020
+  title: 'Lỗi lưu khi sửa: MSG-025, giữ dữ liệu và thử lại'
+  type: error_handling
+  techniques:
+  - ERR
+  priority: medium
+  requirement_refs:
+  - E1.4-EF4
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ, phạm vi dữ liệu Đơn vị
+  - Giả lập lỗi
+  test_data:
+    ten: Bản sửa
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở menu Xem chi tiết của đợt
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: mnu_chinh_sua
+    input: null
+    description: Chọn Chỉnh sửa
+    expected:
+      description: Mở form sửa, điền sẵn dữ liệu
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: fill
+    target: txt_ten_dot
+    input: ${ten}
+    description: Sửa tên
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: click
+    target: btn_luu_nhap
+    input: null
+    description: Chọn Lưu nháp khi lỗi
+    expected:
+      description: Báo MSG-025
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Đã xảy ra lỗi hệ thống. Vui lòng thử lại sau
+      status: confirmed
+  - seq: 6
+    action: verify
+    target: txt_ten_dot
+    input: null
+    description: Kiểm tra dữ liệu
+    expected:
+      description: Giữ nội dung đang sửa
+      assertions: []
+      status: confirmed
+  expected_result: Báo MSG-025, giữ dữ liệu
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần giả lập lỗi
+  notes: null
+- id: TC_E1.4_021
+  title: 'Lỗi lưu khi sửa: MSG-026, giữ dữ liệu và thử lại'
+  type: error_handling
+  techniques:
+  - ERR
+  priority: medium
+  requirement_refs:
+  - E1.4-EF4
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ, phạm vi dữ liệu Đơn vị
+  - Giả lập lỗi
+  test_data:
+    ten: Bản sửa
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở menu Xem chi tiết của đợt
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: mnu_chinh_sua
+    input: null
+    description: Chọn Chỉnh sửa
+    expected:
+      description: Mở form sửa, điền sẵn dữ liệu
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: fill
+    target: txt_ten_dot
+    input: ${ten}
+    description: Sửa tên
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: click
+    target: btn_luu_nhap
+    input: null
+    description: Chọn Lưu nháp khi lỗi
+    expected:
+      description: Báo MSG-026
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Không thể kết nối đến máy chủ. Vui lòng kiểm tra đường truyền
+      status: confirmed
+  - seq: 6
+    action: verify
+    target: txt_ten_dot
+    input: null
+    description: Kiểm tra dữ liệu
+    expected:
+      description: Giữ nội dung đang sửa
+      assertions: []
+      status: confirmed
+  expected_result: Báo MSG-026, giữ dữ liệu
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần giả lập lỗi
+  notes: null

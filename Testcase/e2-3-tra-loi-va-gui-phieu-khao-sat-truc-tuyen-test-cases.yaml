@@ -1,0 +1,2952 @@
+schema_version: '1.0'
+meta:
+  uc_id: E2.3
+  uc_title: UC2.3 Trả lời và gửi phiếu khảo sát trực tuyến (Phân hệ E)
+  source_file: '[DTI] Tài liệu SRS.docx (mục 3.2.3)'
+  generated_at: '2026-10-16'
+  language: vi
+  total_test_cases: 33
+automation_config:
+  framework: playwright
+  base_url: ${env:BASE_URL}
+  route_hint: Trang nội bộ và trang công khai dùng ${env:BASE_URL} (.env); chưa có URL route cụ thể trong SRS
+  credentials:
+    can_bo:
+      username: ${env:CANBO_USERNAME}
+      password: ${env:CANBO_PASSWORD}
+    lanh_dao_don_vi:
+      username: ${env:LANHDAO_USERNAME}
+      password: ${env:LANHDAO_PASSWORD}
+    can_bo_dia_phuong:
+      username: ${env:CANBO_DP_USERNAME}
+      password: ${env:CANBO_DP_PASSWORD}
+    lanh_dao_dia_phuong:
+      username: ${env:LANHDAO_DP_USERNAME}
+      password: ${env:LANHDAO_DP_PASSWORD}
+  locators:
+    btn_cac_khao_sat:
+      strategy: null
+      value: null
+      status: missing
+    btn_gui:
+      strategy: null
+      value: null
+      status: missing
+    btn_xem_khac:
+      strategy: null
+      value: null
+      status: missing
+    err_cau_1:
+      strategy: null
+      value: null
+      status: missing
+    err_cau_2:
+      strategy: null
+      value: null
+      status: missing
+    err_cau_6:
+      strategy: null
+      value: null
+      status: missing
+    err_gop_y:
+      strategy: null
+      value: null
+      status: missing
+    frm_tra_loi:
+      strategy: null
+      value: null
+      status: missing
+    lbl_cam_on:
+      strategy: null
+      value: null
+      status: missing
+    lbl_huong_dan:
+      strategy: null
+      value: null
+      status: missing
+    lbl_ten_dot_tc:
+      strategy: null
+      value: null
+      status: missing
+    lbl_tien_do:
+      strategy: null
+      value: null
+      status: missing
+    lnk_public:
+      strategy: null
+      value: null
+      status: missing
+    pg_khong_truy_cap:
+      strategy: null
+      value: null
+      status: missing
+    rd_cau_1_chl:
+      strategy: null
+      value: null
+      status: missing
+    rd_cau_1_hl:
+      strategy: null
+      value: null
+      status: missing
+    rd_cau_2_hl:
+      strategy: null
+      value: null
+      status: missing
+    rd_cau_3_hl:
+      strategy: null
+      value: null
+      status: missing
+    rd_cau_4_hl:
+      strategy: null
+      value: null
+      status: missing
+    rd_cau_5_hl:
+      strategy: null
+      value: null
+      status: missing
+    rd_cau_6_hl:
+      strategy: null
+      value: null
+      status: missing
+    toast_message:
+      strategy: null
+      value: null
+      status: missing
+    txt_gop_y:
+      strategy: null
+      value: null
+      status: missing
+  api_endpoints: {}
+  action_mapping:
+    click: null
+requirements:
+- id: E2.3-BR-1
+  type: business_rule
+  text: Mỗi câu bắt buộc chọn đúng một mức; chọn mức còn lại thay thế mức của chính câu đó
+  status: clear
+- id: E2.3-BR-2
+  type: business_rule
+  text: Mở form mới không chọn sẵn đáp án
+  status: clear
+- id: E2.3-BR-3
+  type: business_rule
+  text: Tiến độ = số câu đã chọn/tổng số câu; góp ý không tính; 4/6 ≈ 66,67%
+  status: clear
+- id: E2.3-BR-4
+  type: business_rule
+  text: Góp ý thêm không bắt buộc, tối đa 1.000 ký tự; trống vẫn gửi được
+  status: clear
+- id: E2.3-BR-5
+  type: business_rule
+  text: Gửi phải đủ đáp án mọi câu; thiếu thì không lưu, MSG-079 tại câu và đưa tới câu thiếu đầu tiên
+  status: clear
+- id: E2.3-BR-6
+  type: business_rule
+  text: Máy chủ kiểm tra đợt đã duyệt, có Trực tuyến, còn thời gian trước khi lưu; hết ngày kết thúc thì chặn, không gửi bù
+  status: clear
+- id: E2.3-BR-7
+  type: business_rule
+  text: Phiếu thuộc đúng đợt, hình thức Trực tuyến, hệ thống tự ghi thời điểm
+  status: clear
+- id: E2.3-BR-8
+  type: business_rule
+  text: Vô hiệu nút Gửi khi xử lý; bấm lặp/thử lại cùng lần gửi chỉ một phiếu; chỉ báo thành công sau khi xác nhận lưu
+  status: clear
+- id: E2.3-BR-9
+  type: business_rule
+  text: Phiếu và đáp án lưu đầy đủ trước khi tính thống kê
+  status: clear
+- id: E2.3-BR-10
+  type: business_rule
+  text: Không lưu nháp/khôi phục sau tải lại; lỗi giữ nội dung trên màn nếu trang còn mở
+  status: clear
+- id: E2.3-BR-11
+  type: business_rule
+  text: Không đăng nhập/xác thực/nhận diện người duy nhất; không chặn một phiếu mỗi người/trình duyệt
+  status: clear
+- id: E2.3-BR-12
+  type: business_rule
+  text: Không có câu đánh giá chung, Không áp dụng, Chọn tất cả Hài lòng trên form người dân
+  status: clear
+- id: E2.3-MF
+  type: main_flow
+  text: Trả lời đủ câu, gửi, MSG-080
+  status: clear
+- id: E2.3-AF1
+  type: alt_flow
+  text: Đổi lựa chọn trước khi gửi
+  status: clear
+- id: E2.3-AF2
+  type: alt_flow
+  text: Không nhập góp ý
+  status: clear
+- id: E2.3-AF3
+  type: alt_flow
+  text: Xem khảo sát khác sau khi thành công
+  status: clear
+- id: E2.3-AF4
+  type: alt_flow
+  text: Rời form trước khi gửi, không lưu nháp
+  status: clear
+- id: E2.3-AF5
+  type: alt_flow
+  text: Thử lại lần gửi đã lưu nhưng mất phản hồi
+  status: clear
+- id: E2.3-EF1
+  type: exception_flow
+  text: Còn câu chưa trả lời MSG-079
+  status: clear
+- id: E2.3-EF2
+  type: exception_flow
+  text: Góp ý vượt giới hạn MSG-013
+  status: clear
+- id: E2.3-EF3
+  type: exception_flow
+  text: Hết thời gian khi điền/gửi MSG-077
+  status: clear
+- id: E2.3-EF4
+  type: exception_flow
+  text: Đợt không còn hợp lệ MSG-076/078
+  status: clear
+- id: E2.3-EF5
+  type: exception_flow
+  text: Lỗi hệ thống/kết nối MSG-025/026
+  status: clear
+- id: E2.3-EF6
+  type: exception_flow
+  text: Bấm gửi liên tiếp
+  status: clear
+- id: E2.3-UI
+  type: field
+  text: Màn thành công UI-2.3.1, tiến độ, web/mobile
+  status: clear
+open_questions:
+- id: OQ-1
+  text: 'UC2.3 AF5: ''cùng một lần gửi'' được nhận diện bằng cơ chế nào (mã idempotency)? UC không nêu nên TC thử lại do mất phản hồi cần hỗ trợ kỹ thuật.'
+  requirement_refs:
+  - E2.3-BR-8
+- id: OQ-2
+  text: 'UC2.3 EF1: ''câu thiếu đầu tiên'' — cuộn/focus tới câu nào khi nhiều câu thiếu thuộc nhiều nhóm (theo thứ tự hiển thị?).'
+  requirement_refs:
+  - E2.3-BR-5
+- id: OQ-3
+  text: 'UC2.3: Góp ý chỉ gồm khoảng trắng được coi là trống hay là nội dung? UC không nêu.'
+  requirement_refs:
+  - E2.3-BR-4
+test_cases:
+- id: TC_E2.3_001
+  title: 'Trả lời đủ câu, bỏ trống góp ý, gửi thành công: màn UI-2.3.1 hiển thị MSG-080 và đúng tên đợt'
+  type: positive
+  techniques:
+  - UC_FLOW
+  priority: high
+  requirement_refs:
+  - E2.3-MF
+  - E2.3-AF2
+  - E2.3-BR-7
+  - E2.3-BR-9
+  - E2.3-UI
+  preconditions:
+  - Người dân truy cập trang công khai, không đăng nhập
+  - Đợt Đang diễn ra Trực tuyến, 6 câu
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: lnk_public
+    input: null
+    description: Mở form khảo sát của đợt có 6 câu (3 nhóm)
+    expected:
+      description: Hiển thị form trả lời
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: rd_cau_1_hl
+    input: null
+    description: Chọn Hài lòng cho câu 1
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: rd_cau_2_hl
+    input: null
+    description: Chọn Hài lòng cho câu 2
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: click
+    target: rd_cau_3_hl
+    input: null
+    description: Chọn Hài lòng cho câu 3
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: click
+    target: rd_cau_4_hl
+    input: null
+    description: Chọn Hài lòng cho câu 4
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 6
+    action: click
+    target: rd_cau_5_hl
+    input: null
+    description: Chọn Hài lòng cho câu 5
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 7
+    action: click
+    target: rd_cau_6_hl
+    input: null
+    description: Chọn Hài lòng cho câu 6
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 8
+    action: verify
+    target: lbl_tien_do
+    input: null
+    description: Kiểm tra tiến độ
+    expected:
+      description: Đã trả lời 6/6, thanh 100%
+      assertions: []
+      status: confirmed
+  - seq: 9
+    action: click
+    target: btn_gui
+    input: null
+    description: Chọn Gửi đánh giá
+    expected:
+      description: 'Hiển thị UI-2.3.1: dấu tích xanh, ''Cảm ơn bạn đã tham gia khảo sát'', ''Đánh giá của bạn đã được ghi nhận cho'' + tên đợt'
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Cảm ơn bạn đã tham gia khảo sát
+      status: confirmed
+  - seq: 10
+    action: verify
+    target: lbl_ten_dot_tc
+    input: null
+    description: Kiểm tra tên đợt
+    expected:
+      description: Đúng tên đợt vừa gửi
+      assertions: []
+      status: confirmed
+  - seq: 11
+    action: verify
+    target: btn_xem_khac
+    input: null
+    description: Kiểm tra màn
+    expected:
+      description: Không còn form/nút gửi lại; có nút Xem khảo sát khác
+      assertions: []
+      status: confirmed
+  expected_result: Lưu một phiếu Trực tuyến của đúng đợt; số phiếu +1
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E2.3_002
+  title: Trả lời đủ câu kèm góp ý hợp lệ và gửi thành công
+  type: positive
+  techniques:
+  - UC_FLOW
+  priority: high
+  requirement_refs:
+  - E2.3-MF
+  - E2.3-BR-4
+  preconditions: &id001
+  - Người dân truy cập trang công khai, không đăng nhập
+  test_data:
+    gop_y: Cần rút ngắn thời gian xử lý
+  steps:
+  - seq: 1
+    action: navigate
+    target: lnk_public
+    input: null
+    description: Mở form khảo sát của đợt có 6 câu (3 nhóm)
+    expected:
+      description: Hiển thị form trả lời
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: rd_cau_1_hl
+    input: null
+    description: Chọn Hài lòng cho câu 1
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: rd_cau_2_hl
+    input: null
+    description: Chọn Hài lòng cho câu 2
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: click
+    target: rd_cau_3_hl
+    input: null
+    description: Chọn Hài lòng cho câu 3
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: click
+    target: rd_cau_4_hl
+    input: null
+    description: Chọn Hài lòng cho câu 4
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 6
+    action: click
+    target: rd_cau_5_hl
+    input: null
+    description: Chọn Hài lòng cho câu 5
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 7
+    action: click
+    target: rd_cau_6_hl
+    input: null
+    description: Chọn Hài lòng cho câu 6
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 8
+    action: fill
+    target: txt_gop_y
+    input: ${gop_y}
+    description: Nhập góp ý
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 9
+    action: click
+    target: btn_gui
+    input: null
+    description: Chọn Gửi đánh giá
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 10
+    action: verify
+    target: lbl_cam_on
+    input: null
+    description: Kiểm tra
+    expected:
+      description: MSG-080
+      assertions:
+      - type: text_contains
+        target: lbl_cam_on
+        value: Cảm ơn bạn đã tham gia khảo sát
+      status: confirmed
+  expected_result: Phiếu lưu cùng góp ý
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E2.3_003
+  title: Phiếu sau khi gửi xuất hiện ở Cán bộ UC3.1 với hình thức Trực tuyến, thời điểm ghi nhận tự động, Ngày thu '-'
+  type: positive
+  techniques:
+  - UC_FLOW
+  priority: high
+  requirement_refs:
+  - E2.3-BR-7
+  - E2.3-BR-9
+  preconditions: *id001
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: lnk_public
+    input: null
+    description: Mở form khảo sát của đợt có 6 câu (3 nhóm)
+    expected:
+      description: Hiển thị form trả lời
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: rd_cau_1_hl
+    input: null
+    description: Chọn Hài lòng cho câu 1
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: rd_cau_2_hl
+    input: null
+    description: Chọn Hài lòng cho câu 2
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: click
+    target: rd_cau_3_hl
+    input: null
+    description: Chọn Hài lòng cho câu 3
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: click
+    target: rd_cau_4_hl
+    input: null
+    description: Chọn Hài lòng cho câu 4
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 6
+    action: click
+    target: rd_cau_5_hl
+    input: null
+    description: Chọn Hài lòng cho câu 5
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 7
+    action: click
+    target: rd_cau_6_hl
+    input: null
+    description: Chọn Hài lòng cho câu 6
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 8
+    action: click
+    target: btn_gui
+    input: null
+    description: Chọn Gửi đánh giá
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 9
+    action: api_call
+    target: null
+    input: null
+    description: Cán bộ mở tab Phiếu của đợt (UC3.1)
+    expected:
+      description: Có thêm 1 phiếu Hình thức Trực tuyến; Ghi nhận lúc = thời điểm gửi; Ngày thu phiếu '-'; Câu hài lòng 6/6
+      assertions: []
+      status: confirmed
+  expected_result: Phiếu lưu đúng đợt/hình thức
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần tài khoản Cán bộ
+  notes: null
+- id: TC_E2.3_004
+  title: Mỗi lần mở form mới không chọn sẵn đáp án, tiến độ 0/6, thanh 0%
+  type: positive
+  techniques:
+  - BVA
+  priority: high
+  requirement_refs:
+  - E2.3-BR-2
+  - E2.3-BR-3
+  preconditions: *id001
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: lnk_public
+    input: null
+    description: Mở form khảo sát của đợt có 6 câu (3 nhóm)
+    expected:
+      description: Hiển thị form trả lời
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: verify
+    target: lbl_tien_do
+    input: null
+    description: Kiểm tra
+    expected:
+      description: Đã trả lời 0/6, thanh 0%; không câu nào được chọn; không có 4/6 mặc định
+      assertions: []
+      status: confirmed
+  expected_result: Không chọn sẵn
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E2.3_005
+  title: 'Tiến độ cập nhật: chọn 1/6 câu → ''Đã trả lời 1/6'' (≈ 16,67%)'
+  type: boundary
+  techniques:
+  - BVA
+  - EP
+  priority: medium
+  requirement_refs:
+  - E2.3-BR-3
+  preconditions: *id001
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: lnk_public
+    input: null
+    description: Mở form khảo sát của đợt có 6 câu (3 nhóm)
+    expected:
+      description: Hiển thị form trả lời
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: rd_cau_1_hl
+    input: null
+    description: Chọn Hài lòng cho câu 1
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: verify
+    target: lbl_tien_do
+    input: null
+    description: Kiểm tra tiến độ
+    expected:
+      description: Đã trả lời 1/6; thanh ≈ 16,67%; không phải tỷ lệ hài lòng
+      assertions: []
+      status: confirmed
+  expected_result: Tiến độ đúng
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E2.3_006
+  title: 'Tiến độ cập nhật: chọn 3/6 câu → ''Đã trả lời 3/6'' (≈ 50%)'
+  type: boundary
+  techniques:
+  - BVA
+  - EP
+  priority: medium
+  requirement_refs:
+  - E2.3-BR-3
+  preconditions: *id001
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: lnk_public
+    input: null
+    description: Mở form khảo sát của đợt có 6 câu (3 nhóm)
+    expected:
+      description: Hiển thị form trả lời
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: rd_cau_1_hl
+    input: null
+    description: Chọn Hài lòng cho câu 1
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: rd_cau_2_hl
+    input: null
+    description: Chọn Hài lòng cho câu 2
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: click
+    target: rd_cau_3_hl
+    input: null
+    description: Chọn Hài lòng cho câu 3
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: verify
+    target: lbl_tien_do
+    input: null
+    description: Kiểm tra tiến độ
+    expected:
+      description: Đã trả lời 3/6; thanh ≈ 50%; không phải tỷ lệ hài lòng
+      assertions: []
+      status: confirmed
+  expected_result: Tiến độ đúng
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E2.3_007
+  title: 'Tiến độ cập nhật: chọn 4/6 câu → ''Đã trả lời 4/6'' (≈ 66,67%)'
+  type: boundary
+  techniques:
+  - BVA
+  - EP
+  priority: medium
+  requirement_refs:
+  - E2.3-BR-3
+  preconditions: *id001
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: lnk_public
+    input: null
+    description: Mở form khảo sát của đợt có 6 câu (3 nhóm)
+    expected:
+      description: Hiển thị form trả lời
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: rd_cau_1_hl
+    input: null
+    description: Chọn Hài lòng cho câu 1
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: rd_cau_2_hl
+    input: null
+    description: Chọn Hài lòng cho câu 2
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: click
+    target: rd_cau_3_hl
+    input: null
+    description: Chọn Hài lòng cho câu 3
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: click
+    target: rd_cau_4_hl
+    input: null
+    description: Chọn Hài lòng cho câu 4
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 6
+    action: verify
+    target: lbl_tien_do
+    input: null
+    description: Kiểm tra tiến độ
+    expected:
+      description: Đã trả lời 4/6; thanh ≈ 66,67%; không phải tỷ lệ hài lòng
+      assertions: []
+      status: confirmed
+  expected_result: Tiến độ đúng
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E2.3_008
+  title: 'Tiến độ cập nhật: chọn 5/6 câu → ''Đã trả lời 5/6'' (≈ 83,33%)'
+  type: boundary
+  techniques:
+  - BVA
+  - EP
+  priority: medium
+  requirement_refs:
+  - E2.3-BR-3
+  preconditions: *id001
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: lnk_public
+    input: null
+    description: Mở form khảo sát của đợt có 6 câu (3 nhóm)
+    expected:
+      description: Hiển thị form trả lời
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: rd_cau_1_hl
+    input: null
+    description: Chọn Hài lòng cho câu 1
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: rd_cau_2_hl
+    input: null
+    description: Chọn Hài lòng cho câu 2
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: click
+    target: rd_cau_3_hl
+    input: null
+    description: Chọn Hài lòng cho câu 3
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: click
+    target: rd_cau_4_hl
+    input: null
+    description: Chọn Hài lòng cho câu 4
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 6
+    action: click
+    target: rd_cau_5_hl
+    input: null
+    description: Chọn Hài lòng cho câu 5
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 7
+    action: verify
+    target: lbl_tien_do
+    input: null
+    description: Kiểm tra tiến độ
+    expected:
+      description: Đã trả lời 5/6; thanh ≈ 83,33%; không phải tỷ lệ hài lòng
+      assertions: []
+      status: confirmed
+  expected_result: Tiến độ đúng
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E2.3_009
+  title: Góp ý không tính vào tiến độ
+  type: positive
+  techniques:
+  - EP
+  priority: medium
+  requirement_refs:
+  - E2.3-BR-3
+  preconditions: *id001
+  test_data:
+    gop_y: Góp ý thử
+  steps:
+  - seq: 1
+    action: navigate
+    target: lnk_public
+    input: null
+    description: Mở form khảo sát của đợt có 6 câu (3 nhóm)
+    expected:
+      description: Hiển thị form trả lời
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: fill
+    target: txt_gop_y
+    input: ${gop_y}
+    description: Nhập góp ý khi chưa chọn câu nào
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: verify
+    target: lbl_tien_do
+    input: null
+    description: Kiểm tra
+    expected:
+      description: Vẫn 0/6
+      assertions: []
+      status: confirmed
+  expected_result: Góp ý không đổi tiến độ
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E2.3_010
+  title: 'Đổi lựa chọn của một câu: thay thế mức trước, không đổi câu khác, không tăng số câu đã trả lời'
+  type: positive
+  techniques:
+  - EP
+  priority: high
+  requirement_refs:
+  - E2.3-AF1
+  - E2.3-BR-1
+  preconditions: *id001
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: lnk_public
+    input: null
+    description: Mở form khảo sát của đợt có 6 câu (3 nhóm)
+    expected:
+      description: Hiển thị form trả lời
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: rd_cau_1_hl
+    input: null
+    description: Chọn Hài lòng câu 1
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: rd_cau_2_hl
+    input: null
+    description: Chọn Hài lòng câu 2
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: click
+    target: rd_cau_1_chl
+    input: null
+    description: Đổi câu 1 sang Chưa hài lòng
+    expected:
+      description: Câu 1 chỉ còn Chưa hài lòng
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: verify
+    target: lbl_tien_do
+    input: null
+    description: Kiểm tra
+    expected:
+      description: Vẫn 2/6; câu 2 giữ Hài lòng
+      assertions: []
+      status: confirmed
+  expected_result: Mỗi câu đúng một mức
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E2.3_011
+  title: Không có câu đánh giá chung, lựa chọn Không áp dụng, nút Chọn tất cả Hài lòng
+  type: ui
+  techniques:
+  - EP
+  priority: medium
+  requirement_refs:
+  - E2.3-BR-12
+  preconditions: *id001
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: lnk_public
+    input: null
+    description: Mở form khảo sát của đợt có 6 câu (3 nhóm)
+    expected:
+      description: Hiển thị form trả lời
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: verify
+    target: frm_tra_loi
+    input: null
+    description: Kiểm tra form
+    expected:
+      description: Không có câu đánh giá chung riêng, không có Không áp dụng, không có nút Chọn tất cả Hài lòng
+      assertions: []
+      status: confirmed
+  expected_result: Đúng BR-12
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E2.3_012
+  title: 'Gửi khi còn thiếu 1 câu: MSG-079 dưới câu thiếu, đưa tới câu đó, không lưu phiếu'
+  type: negative
+  techniques:
+  - EP
+  priority: high
+  requirement_refs:
+  - E2.3-EF1
+  - E2.3-BR-5
+  preconditions: *id001
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: lnk_public
+    input: null
+    description: Mở form khảo sát của đợt có 6 câu (3 nhóm)
+    expected:
+      description: Hiển thị form trả lời
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: rd_cau_1_hl
+    input: null
+    description: Chọn Hài lòng cho câu 1
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: rd_cau_2_hl
+    input: null
+    description: Chọn Hài lòng cho câu 2
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: click
+    target: rd_cau_3_hl
+    input: null
+    description: Chọn Hài lòng cho câu 3
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: click
+    target: rd_cau_4_hl
+    input: null
+    description: Chọn Hài lòng cho câu 4
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 6
+    action: click
+    target: rd_cau_5_hl
+    input: null
+    description: Chọn Hài lòng cho câu 5
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 7
+    action: click
+    target: btn_gui
+    input: null
+    description: Chọn Gửi đánh giá
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 8
+    action: verify
+    target: err_cau_6
+    input: null
+    description: Kiểm tra lỗi
+    expected:
+      description: Hiển thị 'Vui lòng chọn mức độ hài lòng cho <nội dung câu 6>' dưới câu 6; cuộn/focus tới câu 6
+      assertions:
+      - type: text_contains
+        target: err_cau_6
+        value: Vui lòng chọn mức độ hài lòng cho
+      status: confirmed
+  - seq: 9
+    action: verify
+    target: lbl_tien_do
+    input: null
+    description: Kiểm tra
+    expected:
+      description: Giữ đáp án đã chọn; nút Gửi được mở lại
+      assertions: []
+      status: confirmed
+  expected_result: Không lưu phiếu, MSG-079
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E2.3_013
+  title: 'Gửi khi chưa chọn câu nào: MSG-079 dưới mọi câu, đưa tới câu đầu tiên'
+  type: negative
+  techniques:
+  - EP
+  - BVA
+  priority: high
+  requirement_refs:
+  - E2.3-EF1
+  - E2.3-BR-5
+  preconditions: *id001
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: lnk_public
+    input: null
+    description: Mở form khảo sát của đợt có 6 câu (3 nhóm)
+    expected:
+      description: Hiển thị form trả lời
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_gui
+    input: null
+    description: Chọn Gửi đánh giá
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: verify
+    target: err_cau_1
+    input: null
+    description: Kiểm tra
+    expected:
+      description: MSG-079 dưới cả 6 câu; cuộn tới câu 1
+      assertions:
+      - type: text_contains
+        target: err_cau_1
+        value: Vui lòng chọn mức độ hài lòng cho
+      status: confirmed
+  expected_result: Không lưu phiếu
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E2.3_014
+  title: 'Thiếu nhiều câu ở các nhóm khác nhau: đưa tới câu thiếu đầu tiên theo thứ tự hiển thị'
+  type: negative
+  techniques:
+  - EP
+  priority: medium
+  requirement_refs:
+  - E2.3-EF1
+  preconditions: *id001
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: lnk_public
+    input: null
+    description: Mở form khảo sát của đợt có 6 câu (3 nhóm)
+    expected:
+      description: Hiển thị form trả lời
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: rd_cau_1_hl
+    input: null
+    description: Trả lời câu 1, 3, 5
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: btn_gui
+    input: null
+    description: Chọn Gửi đánh giá
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: verify
+    target: err_cau_2
+    input: null
+    description: Kiểm tra
+    expected:
+      description: MSG-079 ở câu 2, 4, 6; focus câu 2
+      assertions: []
+      status: needs_confirmation
+  expected_result: Đưa tới câu thiếu đầu tiên
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E2.3_015
+  title: Góp ý 999 ký tự
+  type: boundary
+  techniques:
+  - BVA
+  priority: high
+  requirement_refs:
+  - E2.3-BR-4
+  - E2.3-EF2
+  preconditions: *id001
+  test_data:
+    gop_y: chuỗi 999 ký tự
+  steps:
+  - seq: 1
+    action: navigate
+    target: lnk_public
+    input: null
+    description: Mở form khảo sát của đợt có 6 câu (3 nhóm)
+    expected:
+      description: Hiển thị form trả lời
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: rd_cau_1_hl
+    input: null
+    description: Chọn Hài lòng cho câu 1
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: rd_cau_2_hl
+    input: null
+    description: Chọn Hài lòng cho câu 2
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: click
+    target: rd_cau_3_hl
+    input: null
+    description: Chọn Hài lòng cho câu 3
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: click
+    target: rd_cau_4_hl
+    input: null
+    description: Chọn Hài lòng cho câu 4
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 6
+    action: click
+    target: rd_cau_5_hl
+    input: null
+    description: Chọn Hài lòng cho câu 5
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 7
+    action: click
+    target: rd_cau_6_hl
+    input: null
+    description: Chọn Hài lòng cho câu 6
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 8
+    action: fill
+    target: txt_gop_y
+    input: ${gop_y}
+    description: Nhập góp ý 999 ký tự
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 9
+    action: click
+    target: btn_gui
+    input: null
+    description: Chọn Gửi đánh giá
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 10
+    action: verify
+    target: lbl_cam_on
+    input: null
+    description: Kiểm tra
+    expected:
+      description: Gửi thành công
+      assertions:
+      - type: text_contains
+        target: lbl_cam_on
+        value: Cảm ơn bạn đã tham gia khảo sát
+      status: confirmed
+  expected_result: Gửi thành công
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E2.3_016
+  title: Góp ý 1.000 ký tự (biên)
+  type: boundary
+  techniques:
+  - BVA
+  priority: high
+  requirement_refs:
+  - E2.3-BR-4
+  - E2.3-EF2
+  preconditions: *id001
+  test_data:
+    gop_y: chuỗi 1000 ký tự
+  steps:
+  - seq: 1
+    action: navigate
+    target: lnk_public
+    input: null
+    description: Mở form khảo sát của đợt có 6 câu (3 nhóm)
+    expected:
+      description: Hiển thị form trả lời
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: rd_cau_1_hl
+    input: null
+    description: Chọn Hài lòng cho câu 1
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: rd_cau_2_hl
+    input: null
+    description: Chọn Hài lòng cho câu 2
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: click
+    target: rd_cau_3_hl
+    input: null
+    description: Chọn Hài lòng cho câu 3
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: click
+    target: rd_cau_4_hl
+    input: null
+    description: Chọn Hài lòng cho câu 4
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 6
+    action: click
+    target: rd_cau_5_hl
+    input: null
+    description: Chọn Hài lòng cho câu 5
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 7
+    action: click
+    target: rd_cau_6_hl
+    input: null
+    description: Chọn Hài lòng cho câu 6
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 8
+    action: fill
+    target: txt_gop_y
+    input: ${gop_y}
+    description: Nhập góp ý 1.000 ký tự (biên)
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 9
+    action: click
+    target: btn_gui
+    input: null
+    description: Chọn Gửi đánh giá
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 10
+    action: verify
+    target: lbl_cam_on
+    input: null
+    description: Kiểm tra
+    expected:
+      description: Gửi thành công
+      assertions:
+      - type: text_contains
+        target: lbl_cam_on
+        value: Cảm ơn bạn đã tham gia khảo sát
+      status: confirmed
+  expected_result: Gửi thành công
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E2.3_017
+  title: Góp ý 1.001 ký tự
+  type: boundary
+  techniques:
+  - BVA
+  priority: high
+  requirement_refs:
+  - E2.3-BR-4
+  - E2.3-EF2
+  preconditions: *id001
+  test_data:
+    gop_y: chuỗi 1001 ký tự
+  steps:
+  - seq: 1
+    action: navigate
+    target: lnk_public
+    input: null
+    description: Mở form khảo sát của đợt có 6 câu (3 nhóm)
+    expected:
+      description: Hiển thị form trả lời
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: rd_cau_1_hl
+    input: null
+    description: Chọn Hài lòng cho câu 1
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: rd_cau_2_hl
+    input: null
+    description: Chọn Hài lòng cho câu 2
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: click
+    target: rd_cau_3_hl
+    input: null
+    description: Chọn Hài lòng cho câu 3
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: click
+    target: rd_cau_4_hl
+    input: null
+    description: Chọn Hài lòng cho câu 4
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 6
+    action: click
+    target: rd_cau_5_hl
+    input: null
+    description: Chọn Hài lòng cho câu 5
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 7
+    action: click
+    target: rd_cau_6_hl
+    input: null
+    description: Chọn Hài lòng cho câu 6
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 8
+    action: fill
+    target: txt_gop_y
+    input: ${gop_y}
+    description: Nhập góp ý 1.001 ký tự
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 9
+    action: click
+    target: btn_gui
+    input: null
+    description: Chọn Gửi đánh giá
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 10
+    action: verify
+    target: err_gop_y
+    input: null
+    description: Kiểm tra
+    expected:
+      description: MSG-013 'Góp ý thêm tối đa 1000 ký tự' dưới ô góp ý; không cắt ngầm; giữ đáp án và góp ý
+      assertions:
+      - type: text_contains
+        target: err_gop_y
+        value: Góp ý thêm tối đa 1000 ký tự
+      status: confirmed
+  expected_result: Không lưu, MSG-013
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E2.3_018
+  title: Máy chủ kiểm tra góp ý > 1.000 ký tự khi bỏ qua kiểm tra giao diện
+  type: negative
+  techniques:
+  - BVA
+  - ERR
+  priority: medium
+  requirement_refs:
+  - E2.3-EF2
+  - E2.3-BR-4
+  preconditions: *id001
+  test_data: {}
+  steps:
+  - seq: 1
+    action: api_call
+    target: null
+    input: null
+    description: Gửi trực tiếp request lưu phiếu với góp ý 1.001 ký tự
+    expected:
+      description: Máy chủ từ chối, không lưu, không cắt ngầm
+      assertions: []
+      status: needs_confirmation
+  expected_result: Không lưu, MSG-013
+  automation:
+    automatable: 'no'
+    blockers:
+    - Chưa có endpoint API
+  notes: null
+- id: TC_E2.3_019
+  title: Góp ý chỉ gồm khoảng trắng
+  type: negative
+  techniques:
+  - EP
+  priority: low
+  requirement_refs:
+  - E2.3-BR-4
+  preconditions: *id001
+  test_data:
+    gop_y: '   '
+  steps:
+  - seq: 1
+    action: navigate
+    target: lnk_public
+    input: null
+    description: Mở form khảo sát của đợt có 6 câu (3 nhóm)
+    expected:
+      description: Hiển thị form trả lời
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: rd_cau_1_hl
+    input: null
+    description: Chọn Hài lòng cho câu 1
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: rd_cau_2_hl
+    input: null
+    description: Chọn Hài lòng cho câu 2
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: click
+    target: rd_cau_3_hl
+    input: null
+    description: Chọn Hài lòng cho câu 3
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: click
+    target: rd_cau_4_hl
+    input: null
+    description: Chọn Hài lòng cho câu 4
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 6
+    action: click
+    target: rd_cau_5_hl
+    input: null
+    description: Chọn Hài lòng cho câu 5
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 7
+    action: click
+    target: rd_cau_6_hl
+    input: null
+    description: Chọn Hài lòng cho câu 6
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 8
+    action: fill
+    target: txt_gop_y
+    input: ${gop_y}
+    description: Nhập toàn khoảng trắng
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 9
+    action: click
+    target: btn_gui
+    input: null
+    description: Chọn Gửi đánh giá
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 10
+    action: verify
+    target: lbl_cam_on
+    input: null
+    description: Kiểm tra
+    expected:
+      description: Gửi được (coi là trống) hoặc lưu nguyên
+      assertions:
+      - type: text_contains
+        target: lbl_cam_on
+        value: Cảm ơn bạn đã tham gia khảo sát
+      status: needs_confirmation
+  expected_result: Không báo lỗi thiếu dữ liệu ở Góp ý
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E2.3_020
+  title: 'Hết ngày kết thúc khi đang điền: gửi bị chặn, MSG-077 (UI-2.2.2), không tạo phiếu, không gửi bù'
+  type: boundary
+  techniques:
+  - BVA
+  - ST
+  priority: high
+  requirement_refs:
+  - E2.3-EF3
+  - E2.3-BR-6
+  preconditions: *id001
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: lnk_public
+    input: null
+    description: Mở form khảo sát của đợt có 6 câu (3 nhóm)
+    expected:
+      description: Hiển thị form trả lời
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: rd_cau_1_hl
+    input: null
+    description: Chọn Hài lòng cho câu 1
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: rd_cau_2_hl
+    input: null
+    description: Chọn Hài lòng cho câu 2
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: click
+    target: rd_cau_3_hl
+    input: null
+    description: Chọn Hài lòng cho câu 3
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: click
+    target: rd_cau_4_hl
+    input: null
+    description: Chọn Hài lòng cho câu 4
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 6
+    action: click
+    target: rd_cau_5_hl
+    input: null
+    description: Chọn Hài lòng cho câu 5
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 7
+    action: click
+    target: rd_cau_6_hl
+    input: null
+    description: Chọn Hài lòng cho câu 6
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 8
+    action: api_call
+    target: null
+    input: null
+    description: Đợt qua ngày kết thúc khi form còn mở
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 9
+    action: click
+    target: btn_gui
+    input: null
+    description: Chọn Gửi đánh giá
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 10
+    action: verify
+    target: pg_khong_truy_cap
+    input: null
+    description: Kiểm tra
+    expected:
+      description: Hiển thị UI-2.2.2 với MSG-077; không lưu phiếu
+      assertions:
+      - type: text_contains
+        target: pg_khong_truy_cap
+        value: Đợt khảo sát đã kết thúc
+      status: confirmed
+  expected_result: Không tạo phiếu sau hạn
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần điều khiển thời gian
+  notes: null
+- id: TC_E2.3_021
+  title: 'Đợt chưa hợp lệ/không còn Trực tuyến/bị hủy khi gửi: MSG-076, không lưu'
+  type: negative
+  techniques:
+  - ERR
+  priority: medium
+  requirement_refs:
+  - E2.3-EF4
+  preconditions: *id001
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: lnk_public
+    input: null
+    description: Mở form khảo sát của đợt có 6 câu (3 nhóm)
+    expected:
+      description: Hiển thị form trả lời
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: rd_cau_1_hl
+    input: null
+    description: Chọn Hài lòng cho câu 1
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: rd_cau_2_hl
+    input: null
+    description: Chọn Hài lòng cho câu 2
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: click
+    target: rd_cau_3_hl
+    input: null
+    description: Chọn Hài lòng cho câu 3
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: click
+    target: rd_cau_4_hl
+    input: null
+    description: Chọn Hài lòng cho câu 4
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 6
+    action: click
+    target: rd_cau_5_hl
+    input: null
+    description: Chọn Hài lòng cho câu 5
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 7
+    action: click
+    target: rd_cau_6_hl
+    input: null
+    description: Chọn Hài lòng cho câu 6
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 8
+    action: api_call
+    target: null
+    input: null
+    description: Đợt bị đổi (không còn Trực tuyến/không tìm thấy)
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 9
+    action: click
+    target: btn_gui
+    input: null
+    description: Chọn Gửi đánh giá
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 10
+    action: verify
+    target: pg_khong_truy_cap
+    input: null
+    description: Kiểm tra
+    expected:
+      description: UI-2.2.2 với MSG-076
+      assertions:
+      - type: text_contains
+        target: pg_khong_truy_cap
+        value: Đường dẫn khảo sát không hợp lệ hoặc đã hết hạn
+      status: needs_confirmation
+  expected_result: Không lưu phiếu
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần thay đổi dữ liệu giữa chừng
+  notes: null
+- id: TC_E2.3_022
+  title: 'Gửi khi đợt chưa đến ngày bắt đầu (request trực tiếp): MSG-078, không lưu'
+  type: negative
+  techniques:
+  - ERR
+  priority: medium
+  requirement_refs:
+  - E2.3-EF4
+  - E2.3-BR-6
+  preconditions: *id001
+  test_data: {}
+  steps:
+  - seq: 1
+    action: api_call
+    target: null
+    input: null
+    description: Gửi request lưu phiếu của đợt chưa bắt đầu
+    expected:
+      description: Máy chủ từ chối MSG-078
+      assertions: []
+      status: needs_confirmation
+  expected_result: Không lưu phiếu
+  automation:
+    automatable: 'no'
+    blockers:
+    - Chưa có endpoint API
+  notes: null
+- id: TC_E2.3_023
+  title: 'Lỗi khi gửi: MSG-025, không hiện màn thành công, giữ đáp án/góp ý, nút Gửi mở lại, thử lại được'
+  type: error_handling
+  techniques:
+  - ERR
+  priority: high
+  requirement_refs:
+  - E2.3-EF5
+  - E2.3-BR-8
+  - E2.3-BR-10
+  preconditions:
+  - Người dân truy cập trang công khai, không đăng nhập
+  - Giả lập lỗi lần đầu
+  test_data:
+    gop_y: Giữ lại khi lỗi
+  steps:
+  - seq: 1
+    action: navigate
+    target: lnk_public
+    input: null
+    description: Mở form khảo sát của đợt có 6 câu (3 nhóm)
+    expected:
+      description: Hiển thị form trả lời
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: rd_cau_1_hl
+    input: null
+    description: Chọn Hài lòng cho câu 1
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: rd_cau_2_hl
+    input: null
+    description: Chọn Hài lòng cho câu 2
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: click
+    target: rd_cau_3_hl
+    input: null
+    description: Chọn Hài lòng cho câu 3
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: click
+    target: rd_cau_4_hl
+    input: null
+    description: Chọn Hài lòng cho câu 4
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 6
+    action: click
+    target: rd_cau_5_hl
+    input: null
+    description: Chọn Hài lòng cho câu 5
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 7
+    action: click
+    target: rd_cau_6_hl
+    input: null
+    description: Chọn Hài lòng cho câu 6
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 8
+    action: fill
+    target: txt_gop_y
+    input: ${gop_y}
+    description: Nhập góp ý
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 9
+    action: click
+    target: btn_gui
+    input: null
+    description: Chọn Gửi đánh giá
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 10
+    action: verify
+    target: toast_message
+    input: null
+    description: Kiểm tra
+    expected:
+      description: Báo MSG-025; không hiển thị UI-2.3.1
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Đã xảy ra lỗi hệ thống. Vui lòng thử lại sau
+      status: confirmed
+  - seq: 11
+    action: verify
+    target: txt_gop_y
+    input: null
+    description: Kiểm tra dữ liệu
+    expected:
+      description: Đáp án và góp ý được giữ
+      assertions: []
+      status: confirmed
+  - seq: 12
+    action: verify
+    target: btn_gui
+    input: null
+    description: Kiểm tra nút
+    expected:
+      description: Nút Gửi đánh giá bật lại
+      assertions: []
+      status: confirmed
+  - seq: 13
+    action: click
+    target: btn_gui
+    input: null
+    description: Chọn Gửi đánh giá
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  expected_result: Báo MSG-025, giữ nội dung, thử lại được
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần giả lập lỗi
+  notes: null
+- id: TC_E2.3_024
+  title: 'Lỗi khi gửi: MSG-026, không hiện màn thành công, giữ đáp án/góp ý, nút Gửi mở lại, thử lại được'
+  type: error_handling
+  techniques:
+  - ERR
+  priority: high
+  requirement_refs:
+  - E2.3-EF5
+  - E2.3-BR-8
+  - E2.3-BR-10
+  preconditions:
+  - Người dân truy cập trang công khai, không đăng nhập
+  - Giả lập lỗi lần đầu
+  test_data:
+    gop_y: Giữ lại khi lỗi
+  steps:
+  - seq: 1
+    action: navigate
+    target: lnk_public
+    input: null
+    description: Mở form khảo sát của đợt có 6 câu (3 nhóm)
+    expected:
+      description: Hiển thị form trả lời
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: rd_cau_1_hl
+    input: null
+    description: Chọn Hài lòng cho câu 1
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: rd_cau_2_hl
+    input: null
+    description: Chọn Hài lòng cho câu 2
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: click
+    target: rd_cau_3_hl
+    input: null
+    description: Chọn Hài lòng cho câu 3
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: click
+    target: rd_cau_4_hl
+    input: null
+    description: Chọn Hài lòng cho câu 4
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 6
+    action: click
+    target: rd_cau_5_hl
+    input: null
+    description: Chọn Hài lòng cho câu 5
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 7
+    action: click
+    target: rd_cau_6_hl
+    input: null
+    description: Chọn Hài lòng cho câu 6
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 8
+    action: fill
+    target: txt_gop_y
+    input: ${gop_y}
+    description: Nhập góp ý
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 9
+    action: click
+    target: btn_gui
+    input: null
+    description: Chọn Gửi đánh giá
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 10
+    action: verify
+    target: toast_message
+    input: null
+    description: Kiểm tra
+    expected:
+      description: Báo MSG-026; không hiển thị UI-2.3.1
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Không thể kết nối đến máy chủ. Vui lòng kiểm tra đường truyền
+      status: confirmed
+  - seq: 11
+    action: verify
+    target: txt_gop_y
+    input: null
+    description: Kiểm tra dữ liệu
+    expected:
+      description: Đáp án và góp ý được giữ
+      assertions: []
+      status: confirmed
+  - seq: 12
+    action: verify
+    target: btn_gui
+    input: null
+    description: Kiểm tra nút
+    expected:
+      description: Nút Gửi đánh giá bật lại
+      assertions: []
+      status: confirmed
+  - seq: 13
+    action: click
+    target: btn_gui
+    input: null
+    description: Chọn Gửi đánh giá
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  expected_result: Báo MSG-026, giữ nội dung, thử lại được
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần giả lập lỗi
+  notes: null
+- id: TC_E2.3_025
+  title: 'Bấm Gửi đánh giá liên tiếp: nút bị vô hiệu khi xử lý, chỉ một phiếu được lưu'
+  type: negative
+  techniques:
+  - ERR
+  priority: high
+  requirement_refs:
+  - E2.3-EF6
+  - E2.3-BR-8
+  preconditions: *id001
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: lnk_public
+    input: null
+    description: Mở form khảo sát của đợt có 6 câu (3 nhóm)
+    expected:
+      description: Hiển thị form trả lời
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: rd_cau_1_hl
+    input: null
+    description: Chọn Hài lòng cho câu 1
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: rd_cau_2_hl
+    input: null
+    description: Chọn Hài lòng cho câu 2
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: click
+    target: rd_cau_3_hl
+    input: null
+    description: Chọn Hài lòng cho câu 3
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: click
+    target: rd_cau_4_hl
+    input: null
+    description: Chọn Hài lòng cho câu 4
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 6
+    action: click
+    target: rd_cau_5_hl
+    input: null
+    description: Chọn Hài lòng cho câu 5
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 7
+    action: click
+    target: rd_cau_6_hl
+    input: null
+    description: Chọn Hài lòng cho câu 6
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 8
+    action: click
+    target: btn_gui
+    input: null
+    description: Bấm Gửi đánh giá nhiều lần liên tiếp
+    expected:
+      description: Nút bị vô hiệu trong khi xử lý; chỉ một yêu cầu gửi
+      assertions: []
+      status: confirmed
+  - seq: 9
+    action: verify
+    target: lbl_cam_on
+    input: null
+    description: Kiểm tra
+    expected:
+      description: Hiển thị thành công một lần
+      assertions: []
+      status: confirmed
+  - seq: 10
+    action: api_call
+    target: null
+    input: null
+    description: Cán bộ kiểm tra số phiếu
+    expected:
+      description: Tăng đúng 1
+      assertions: []
+      status: confirmed
+  expected_result: Chỉ một phiếu
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần đếm số phiếu
+  notes: null
+- id: TC_E2.3_026
+  title: 'Thử lại cùng lần gửi đã lưu nhưng mất phản hồi: chỉ một phiếu, trả kết quả cũ, thống kê không cộng lần nữa'
+  type: error_handling
+  techniques:
+  - ERR
+  priority: high
+  requirement_refs:
+  - E2.3-AF5
+  - E2.3-BR-8
+  preconditions: *id001
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: lnk_public
+    input: null
+    description: Mở form khảo sát của đợt có 6 câu (3 nhóm)
+    expected:
+      description: Hiển thị form trả lời
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: rd_cau_1_hl
+    input: null
+    description: Chọn Hài lòng cho câu 1
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: rd_cau_2_hl
+    input: null
+    description: Chọn Hài lòng cho câu 2
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: click
+    target: rd_cau_3_hl
+    input: null
+    description: Chọn Hài lòng cho câu 3
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: click
+    target: rd_cau_4_hl
+    input: null
+    description: Chọn Hài lòng cho câu 4
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 6
+    action: click
+    target: rd_cau_5_hl
+    input: null
+    description: Chọn Hài lòng cho câu 5
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 7
+    action: click
+    target: rd_cau_6_hl
+    input: null
+    description: Chọn Hài lòng cho câu 6
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 8
+    action: click
+    target: btn_gui
+    input: null
+    description: Chọn Gửi đánh giá
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 9
+    action: api_call
+    target: null
+    input: null
+    description: Mất phản hồi sau khi lưu, bấm Gửi lại (cùng lần gửi)
+    expected:
+      description: Hiển thị thành công UI-2.3.1; không tạo thêm phiếu; thống kê không cộng thêm
+      assertions: []
+      status: needs_confirmation
+  expected_result: Idempotent theo lần gửi
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần giả lập mất phản hồi/idempotency
+  notes: null
+- id: TC_E2.3_027
+  title: 'Thử lại sau ngày kết thúc nhưng phiếu đã lưu hợp lệ trước hạn: chỉ trả kết quả phiếu cũ, không nhận phiếu mới'
+  type: boundary
+  techniques:
+  - BVA
+  - ERR
+  priority: medium
+  requirement_refs:
+  - E2.3-AF5
+  preconditions: *id001
+  test_data: {}
+  steps:
+  - seq: 1
+    action: api_call
+    target: null
+    input: null
+    description: Thử lại lần gửi đã lưu trước hạn nhưng gửi lại sau 00:00 ngày kế tiếp
+    expected:
+      description: Trả kết quả phiếu cũ; không tạo phiếu mới
+      assertions: []
+      status: needs_confirmation
+  expected_result: Không nhận phiếu mới sau hạn
+  automation:
+    automatable: 'no'
+    blockers:
+    - Cần điều khiển thời gian/idempotency
+  notes: null
+- id: TC_E2.3_028
+  title: 'Không lưu nháp: tải lại trang hoặc đóng/mở lại thì các đáp án bị xóa; có hướng dẫn ''không lưu tạm'''
+  type: negative
+  techniques:
+  - UC_FLOW
+  priority: medium
+  requirement_refs:
+  - E2.3-BR-10
+  - E2.3-UI
+  preconditions: *id001
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: lnk_public
+    input: null
+    description: Mở form khảo sát của đợt có 6 câu (3 nhóm)
+    expected:
+      description: Hiển thị form trả lời
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: rd_cau_1_hl
+    input: null
+    description: Chọn Hài lòng cho câu 1
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: rd_cau_2_hl
+    input: null
+    description: Chọn Hài lòng cho câu 2
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: click
+    target: rd_cau_3_hl
+    input: null
+    description: Chọn Hài lòng cho câu 3
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: verify
+    target: lbl_huong_dan
+    input: null
+    description: Kiểm tra hướng dẫn
+    expected:
+      description: Hiển thị 'Trả lời đủ 6 câu để gửi. Không cần đăng nhập, không lưu tạm.'
+      assertions: []
+      status: confirmed
+  - seq: 6
+    action: navigate
+    target: lnk_public
+    input: null
+    description: Tải lại trang
+    expected:
+      description: Form trống 0/6
+      assertions: []
+      status: confirmed
+  expected_result: Không khôi phục câu trả lời
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E2.3_029
+  title: 'Rời form trước khi gửi: chuyển UC2.1 không hộp thoại xác nhận, không lưu nháp'
+  type: positive
+  techniques:
+  - UC_FLOW
+  priority: medium
+  requirement_refs:
+  - E2.3-AF4
+  preconditions: *id001
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: lnk_public
+    input: null
+    description: Mở form khảo sát của đợt có 6 câu (3 nhóm)
+    expected:
+      description: Hiển thị form trả lời
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: rd_cau_1_hl
+    input: null
+    description: Chọn Hài lòng cho câu 1
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: rd_cau_2_hl
+    input: null
+    description: Chọn Hài lòng cho câu 2
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: click
+    target: rd_cau_3_hl
+    input: null
+    description: Chọn Hài lòng cho câu 3
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: click
+    target: btn_cac_khao_sat
+    input: null
+    description: Chọn Các khảo sát đang mở
+    expected:
+      description: Chuyển UC2.1 ngay, không có hộp thoại xác nhận
+      assertions: []
+      status: confirmed
+  - seq: 6
+    action: api_call
+    target: null
+    input: null
+    description: Kiểm tra số phiếu
+    expected:
+      description: Không tạo phiếu
+      assertions: []
+      status: confirmed
+  expected_result: Không lưu nháp
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E2.3_030
+  title: Sau khi gửi thành công chọn Xem khảo sát khác → UC2.1, danh sách mới, không gửi lại phiếu
+  type: positive
+  techniques:
+  - UC_FLOW
+  priority: medium
+  requirement_refs:
+  - E2.3-AF3
+  - E2.3-UI
+  preconditions: *id001
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: lnk_public
+    input: null
+    description: Mở form khảo sát của đợt có 6 câu (3 nhóm)
+    expected:
+      description: Hiển thị form trả lời
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: rd_cau_1_hl
+    input: null
+    description: Chọn Hài lòng cho câu 1
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: rd_cau_2_hl
+    input: null
+    description: Chọn Hài lòng cho câu 2
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: click
+    target: rd_cau_3_hl
+    input: null
+    description: Chọn Hài lòng cho câu 3
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: click
+    target: rd_cau_4_hl
+    input: null
+    description: Chọn Hài lòng cho câu 4
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 6
+    action: click
+    target: rd_cau_5_hl
+    input: null
+    description: Chọn Hài lòng cho câu 5
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 7
+    action: click
+    target: rd_cau_6_hl
+    input: null
+    description: Chọn Hài lòng cho câu 6
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 8
+    action: click
+    target: btn_gui
+    input: null
+    description: Chọn Gửi đánh giá
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 9
+    action: click
+    target: btn_xem_khac
+    input: null
+    description: Chọn Xem khảo sát khác
+    expected:
+      description: Chuyển UC2.1 tải danh sách hiện tại
+      assertions: []
+      status: confirmed
+  - seq: 10
+    action: api_call
+    target: null
+    input: null
+    description: Kiểm tra số phiếu
+    expected:
+      description: Không tăng thêm
+      assertions: []
+      status: confirmed
+  expected_result: Không gửi lại phiếu
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E2.3_031
+  title: 'Cùng trình duyệt/người gửi nhiều phiếu cho cùng đợt: không bị chặn (không xác thực, không nhận diện người duy nhất)'
+  type: positive
+  techniques:
+  - EP
+  priority: medium
+  requirement_refs:
+  - E2.3-BR-11
+  preconditions: *id001
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: lnk_public
+    input: null
+    description: Mở form khảo sát của đợt có 6 câu (3 nhóm)
+    expected:
+      description: Hiển thị form trả lời
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: rd_cau_1_hl
+    input: null
+    description: Chọn Hài lòng cho câu 1
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: rd_cau_2_hl
+    input: null
+    description: Chọn Hài lòng cho câu 2
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: click
+    target: rd_cau_3_hl
+    input: null
+    description: Chọn Hài lòng cho câu 3
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: click
+    target: rd_cau_4_hl
+    input: null
+    description: Chọn Hài lòng cho câu 4
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 6
+    action: click
+    target: rd_cau_5_hl
+    input: null
+    description: Chọn Hài lòng cho câu 5
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 7
+    action: click
+    target: rd_cau_6_hl
+    input: null
+    description: Chọn Hài lòng cho câu 6
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 8
+    action: click
+    target: btn_gui
+    input: null
+    description: Chọn Gửi đánh giá
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 9
+    action: navigate
+    target: lnk_public
+    input: null
+    description: Mở lại form cùng đợt và gửi lần nữa
+    expected:
+      description: Gửi được và tạo phiếu thứ hai (không chặn)
+      assertions: []
+      status: confirmed
+  expected_result: Hai phiếu độc lập, không yêu cầu đăng nhập/OTP
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E2.3_032
+  title: 'Màn thành công không dùng tên đợt mẫu cố định: gửi đợt khác hiển thị đúng tên đợt đó'
+  type: positive
+  techniques:
+  - EP
+  priority: low
+  requirement_refs:
+  - E2.3-UI
+  preconditions:
+  - Người dân truy cập trang công khai, không đăng nhập
+  - Có 2 đợt A, B
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: lnk_public
+    input: null
+    description: Mở form khảo sát của đợt có 6 câu (3 nhóm)
+    expected:
+      description: Hiển thị form trả lời
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: rd_cau_1_hl
+    input: null
+    description: Chọn Hài lòng cho câu 1
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: rd_cau_2_hl
+    input: null
+    description: Chọn Hài lòng cho câu 2
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: click
+    target: rd_cau_3_hl
+    input: null
+    description: Chọn Hài lòng cho câu 3
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: click
+    target: rd_cau_4_hl
+    input: null
+    description: Chọn Hài lòng cho câu 4
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 6
+    action: click
+    target: rd_cau_5_hl
+    input: null
+    description: Chọn Hài lòng cho câu 5
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 7
+    action: click
+    target: rd_cau_6_hl
+    input: null
+    description: Chọn Hài lòng cho câu 6
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 8
+    action: click
+    target: btn_gui
+    input: null
+    description: Chọn Gửi đánh giá
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 9
+    action: verify
+    target: lbl_ten_dot_tc
+    input: null
+    description: Kiểm tra tên đợt trên UI-2.3.1
+    expected:
+      description: Đúng tên đợt B vừa gửi
+      assertions: []
+      status: confirmed
+  expected_result: Đúng tên đợt
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E2.3_033
+  title: 'Bản mobile: thanh tiến độ lên trước các câu, nút Gửi cố định cuối màn không che ô góp ý, vùng chạm >= 44px'
+  type: ui
+  techniques:
+  - EP
+  priority: low
+  requirement_refs:
+  - E2.3-UI
+  preconditions:
+  - Người dân truy cập trang công khai, không đăng nhập
+  - Viewport 390px
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: lnk_public
+    input: null
+    description: Mở form khảo sát của đợt có 6 câu (3 nhóm)
+    expected:
+      description: Hiển thị form trả lời
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: verify
+    target: btn_gui
+    input: null
+    description: Xem ở viewport 390px
+    expected:
+      description: Tiến độ trước câu; nút Gửi cố định cuối; chừa khoảng trống cuối form; radio >= 44px
+      assertions: []
+      status: confirmed
+  expected_result: Responsive đúng
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null

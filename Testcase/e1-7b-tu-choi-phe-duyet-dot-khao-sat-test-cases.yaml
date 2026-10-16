@@ -1,0 +1,1393 @@
+schema_version: '1.0'
+meta:
+  uc_id: E1.7b
+  uc_title: UC1.7b Từ chối phê duyệt đợt khảo sát (Phân hệ E)
+  source_file: '[DTI] Tài liệu SRS.docx (mục 3.1.8)'
+  generated_at: '2026-10-16'
+  language: vi
+  total_test_cases: 18
+automation_config:
+  framework: playwright
+  base_url: ${env:BASE_URL}
+  route_hint: Trang nội bộ và trang công khai dùng ${env:BASE_URL} (.env); chưa có URL route cụ thể trong SRS
+  credentials:
+    can_bo:
+      username: ${env:CANBO_USERNAME}
+      password: ${env:CANBO_PASSWORD}
+    lanh_dao_don_vi:
+      username: ${env:LANHDAO_USERNAME}
+      password: ${env:LANHDAO_PASSWORD}
+    can_bo_dia_phuong:
+      username: ${env:CANBO_DP_USERNAME}
+      password: ${env:CANBO_DP_PASSWORD}
+    lanh_dao_dia_phuong:
+      username: ${env:LANHDAO_DP_USERNAME}
+      password: ${env:LANHDAO_DP_PASSWORD}
+  locators:
+    btn_huy:
+      strategy: null
+      value: null
+      status: missing
+    btn_tu_choi_xn:
+      strategy: null
+      value: null
+      status: missing
+    btn_xem_chi_tiet:
+      strategy: null
+      value: null
+      status: missing
+    lbl_trang_thai:
+      strategy: null
+      value: null
+      status: missing
+    menu_khao_sat_hai_long:
+      strategy: null
+      value: null
+      status: missing
+    mnu_tu_choi:
+      strategy: null
+      value: null
+      status: missing
+    tbl_lich_su:
+      strategy: null
+      value: null
+      status: missing
+    toast_message:
+      strategy: null
+      value: null
+      status: missing
+    txt_ly_do:
+      strategy: null
+      value: null
+      status: missing
+  api_endpoints: {}
+  action_mapping:
+    click: null
+requirements:
+- id: E1.7b-BR-1
+  type: business_rule
+  text: Chỉ xử lý Chờ phê duyệt, người xử lý khác người trình, có quyền trong phạm vi
+  status: clear
+- id: E1.7b-BR-2
+  type: business_rule
+  text: Lý do bắt buộc, tối đa 1.000 ký tự (MSG-010 / MSG-013), lưu cùng sự kiện, hiện ở lịch sử
+  status: clear
+- id: E1.7b-BR-3
+  type: business_rule
+  text: Hủy/đóng không đổi trạng thái, không tạo lịch sử từ chối
+  status: clear
+- id: E1.7b-BR-4
+  type: business_rule
+  text: Lần trình lại giữ lịch sử từ chối trước
+  status: clear
+- id: E1.7b-BR-5
+  type: business_rule
+  text: Tự từ chối hết ngày kết thúc là xử lý tự động, người thực hiện Hệ thống
+  status: clear
+- id: E1.7b-MF
+  type: main_flow
+  text: 'Từ chối kèm lý do: Bị từ chối, MSG-102, TB-016'
+  status: clear
+- id: E1.7b-AF1
+  type: alt_flow
+  text: Hủy từ chối
+  status: clear
+- id: E1.7b-EF1
+  type: exception_flow
+  text: Chưa nhập lý do MSG-010
+  status: clear
+- id: E1.7b-EF2
+  type: exception_flow
+  text: Không còn đủ điều kiện MSG-043/045/020/099
+  status: clear
+- id: E1.7b-EF3
+  type: exception_flow
+  text: Từ chối thất bại MSG-025/026 giữ lý do
+  status: clear
+- id: E1.7b-TB
+  type: message
+  text: TB-016 chỉ tới đúng người trình
+  status: clear
+open_questions:
+- id: OQ-1
+  text: 'UC1.7b: lý do chỉ gồm khoảng trắng có coi là trống (MSG-010) không? UC không nêu.'
+  requirement_refs:
+  - E1.7b-BR-2
+test_cases:
+- id: TC_E1.7b_001
+  title: 'Từ chối kèm lý do: Bị từ chối, MSG-102, lưu lý do và lịch sử'
+  type: positive
+  techniques:
+  - UC_FLOW
+  - ST
+  priority: high
+  requirement_refs:
+  - E1.7b-MF
+  - E1.7b-BR-2
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Lãnh đạo đơn vị (khác người trình), có quyền duyệt, đúng phạm vi
+  - Đợt Chờ phê duyệt
+  test_data:
+    ly_do: Cần bổ sung câu hỏi nhóm 2
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở menu thao tác của đợt Chờ phê duyệt
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: mnu_tu_choi
+    input: null
+    description: Chọn Từ chối
+    expected:
+      description: Hiển thị hộp thoại nhập lý do từ chối (mã/tên đợt)
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: fill
+    target: txt_ly_do
+    input: ${ly_do}
+    description: Nhập lý do từ chối
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: click
+    target: btn_tu_choi_xn
+    input: null
+    description: Chọn Từ chối
+    expected:
+      description: Báo MSG-102
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Từ chối phê duyệt đợt khảo sát thành công
+      status: confirmed
+  - seq: 6
+    action: verify
+    target: lbl_trang_thai
+    input: null
+    description: Kiểm tra trạng thái
+    expected:
+      description: Bị từ chối
+      assertions: []
+      status: confirmed
+  - seq: 7
+    action: verify
+    target: tbl_lich_su
+    input: null
+    description: Kiểm tra lịch sử
+    expected:
+      description: Ghi lý do, người xử lý, thời điểm
+      assertions: []
+      status: confirmed
+  expected_result: Đợt Bị từ chối, lý do và lịch sử được lưu
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E1.7b_002
+  title: TB-016 gửi đúng người trình, nội dung kèm lý do
+  type: positive
+  techniques:
+  - UC_FLOW
+  priority: high
+  requirement_refs:
+  - E1.7b-TB
+  - E1.7b-MF
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Lãnh đạo đơn vị (khác người trình), có quyền duyệt, đúng phạm vi
+  test_data:
+    ly_do: Sai thời gian
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở menu thao tác của đợt Chờ phê duyệt
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: mnu_tu_choi
+    input: null
+    description: Chọn Từ chối
+    expected:
+      description: Hiển thị hộp thoại nhập lý do từ chối (mã/tên đợt)
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: fill
+    target: txt_ly_do
+    input: ${ly_do}
+    description: Nhập lý do
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: click
+    target: btn_tu_choi_xn
+    input: null
+    description: Chọn Từ chối
+    expected:
+      description: Thành công
+      assertions: []
+      status: confirmed
+  - seq: 6
+    action: api_call
+    target: null
+    input: null
+    description: Đăng nhập người trình, mở chuông
+    expected:
+      description: 'TB-016 ''Đợt khảo sát bị từ chối'': Đợt khảo sát [Mã] - [Tên] bị từ chối phê duyệt. Lý do: [Lý do]'
+      assertions: []
+      status: confirmed
+  expected_result: TB-016 đúng người
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần 2 tài khoản
+  notes: null
+- id: TC_E1.7b_003
+  title: Lý do từ chối trống
+  type: negative
+  techniques:
+  - EP
+  priority: high
+  requirement_refs:
+  - E1.7b-BR-2
+  - E1.7b-EF1
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Lãnh đạo đơn vị (khác người trình), có quyền duyệt, đúng phạm vi
+  - Đợt Chờ phê duyệt
+  test_data:
+    ly_do: ''
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở menu thao tác của đợt Chờ phê duyệt
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: mnu_tu_choi
+    input: null
+    description: Chọn Từ chối
+    expected:
+      description: Hiển thị hộp thoại nhập lý do từ chối (mã/tên đợt)
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: fill
+    target: txt_ly_do
+    input: ${ly_do}
+    description: Nhập lý do trống
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: click
+    target: btn_tu_choi_xn
+    input: null
+    description: Chọn Từ chối
+    expected:
+      description: Không từ chối, báo lỗi tại ô Lý do, giữ nội dung
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Vui lòng nhập Lý do từ chối
+      status: confirmed
+  expected_result: Không từ chối, MSG-010 tại Lý do từ chối
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E1.7b_004
+  title: Lý do từ chối 1 ký tự
+  type: boundary
+  techniques:
+  - BVA
+  priority: high
+  requirement_refs:
+  - E1.7b-BR-2
+  - E1.7b-EF1
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Lãnh đạo đơn vị (khác người trình), có quyền duyệt, đúng phạm vi
+  - Đợt Chờ phê duyệt
+  test_data:
+    ly_do: a
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở menu thao tác của đợt Chờ phê duyệt
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: mnu_tu_choi
+    input: null
+    description: Chọn Từ chối
+    expected:
+      description: Hiển thị hộp thoại nhập lý do từ chối (mã/tên đợt)
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: fill
+    target: txt_ly_do
+    input: ${ly_do}
+    description: Nhập lý do 1 ký tự
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: click
+    target: btn_tu_choi_xn
+    input: null
+    description: Chọn Từ chối
+    expected:
+      description: Từ chối thành công
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Từ chối phê duyệt đợt khảo sát thành công
+      status: confirmed
+  expected_result: Từ chối thành công
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E1.7b_005
+  title: Lý do từ chối 1.000 ký tự (biên)
+  type: boundary
+  techniques:
+  - BVA
+  priority: high
+  requirement_refs:
+  - E1.7b-BR-2
+  - E1.7b-EF1
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Lãnh đạo đơn vị (khác người trình), có quyền duyệt, đúng phạm vi
+  - Đợt Chờ phê duyệt
+  test_data:
+    ly_do: chuỗi 1000 ký tự
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở menu thao tác của đợt Chờ phê duyệt
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: mnu_tu_choi
+    input: null
+    description: Chọn Từ chối
+    expected:
+      description: Hiển thị hộp thoại nhập lý do từ chối (mã/tên đợt)
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: fill
+    target: txt_ly_do
+    input: ${ly_do}
+    description: Nhập lý do 1.000 ký tự (biên)
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: click
+    target: btn_tu_choi_xn
+    input: null
+    description: Chọn Từ chối
+    expected:
+      description: Từ chối thành công
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Từ chối phê duyệt đợt khảo sát thành công
+      status: confirmed
+  expected_result: Từ chối thành công
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E1.7b_006
+  title: Lý do từ chối 1.001 ký tự
+  type: boundary
+  techniques:
+  - BVA
+  priority: high
+  requirement_refs:
+  - E1.7b-BR-2
+  - E1.7b-EF1
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Lãnh đạo đơn vị (khác người trình), có quyền duyệt, đúng phạm vi
+  - Đợt Chờ phê duyệt
+  test_data:
+    ly_do: chuỗi 1001 ký tự
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở menu thao tác của đợt Chờ phê duyệt
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: mnu_tu_choi
+    input: null
+    description: Chọn Từ chối
+    expected:
+      description: Hiển thị hộp thoại nhập lý do từ chối (mã/tên đợt)
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: fill
+    target: txt_ly_do
+    input: ${ly_do}
+    description: Nhập lý do 1.001 ký tự
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: click
+    target: btn_tu_choi_xn
+    input: null
+    description: Chọn Từ chối
+    expected:
+      description: Không từ chối, báo lỗi tại ô Lý do, giữ nội dung
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Lý do từ chối tối đa 1000 ký tự
+      status: confirmed
+  expected_result: Không từ chối, MSG-013 tại Lý do từ chối
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E1.7b_007
+  title: Lý do chỉ gồm khoảng trắng
+  type: negative
+  techniques:
+  - EP
+  priority: medium
+  requirement_refs:
+  - E1.7b-BR-2
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Lãnh đạo đơn vị (khác người trình), có quyền duyệt, đúng phạm vi
+  - Đợt Chờ phê duyệt
+  test_data:
+    ly_do: '   '
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở menu thao tác của đợt Chờ phê duyệt
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: mnu_tu_choi
+    input: null
+    description: Chọn Từ chối
+    expected:
+      description: Hiển thị hộp thoại nhập lý do từ chối (mã/tên đợt)
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: fill
+    target: txt_ly_do
+    input: ${ly_do}
+    description: Nhập toàn khoảng trắng
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: click
+    target: btn_tu_choi_xn
+    input: null
+    description: Chọn Từ chối
+    expected:
+      description: Không từ chối (coi là trống)
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Vui lòng nhập Lý do từ chối
+      status: needs_confirmation
+  expected_result: Không từ chối
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E1.7b_008
+  title: Hủy/đóng hộp thoại không đổi trạng thái và không tạo lịch sử từ chối
+  type: negative
+  techniques:
+  - UC_FLOW
+  priority: medium
+  requirement_refs:
+  - E1.7b-AF1
+  - E1.7b-BR-3
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Lãnh đạo đơn vị (khác người trình), có quyền duyệt, đúng phạm vi
+  - Đợt Chờ phê duyệt
+  test_data:
+    ly_do: Tạm
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở menu thao tác của đợt Chờ phê duyệt
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: mnu_tu_choi
+    input: null
+    description: Chọn Từ chối
+    expected:
+      description: Hiển thị hộp thoại nhập lý do từ chối (mã/tên đợt)
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: fill
+    target: txt_ly_do
+    input: ${ly_do}
+    description: Nhập lý do
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: click
+    target: btn_huy
+    input: null
+    description: Chọn Hủy
+    expected:
+      description: Đóng hộp thoại
+      assertions: []
+      status: confirmed
+  - seq: 6
+    action: verify
+    target: lbl_trang_thai
+    input: null
+    description: Kiểm tra trạng thái
+    expected:
+      description: Vẫn Chờ phê duyệt
+      assertions: []
+      status: confirmed
+  - seq: 7
+    action: verify
+    target: tbl_lich_su
+    input: null
+    description: Kiểm tra lịch sử
+    expected:
+      description: Không có sự kiện từ chối
+      assertions: []
+      status: confirmed
+  expected_result: Không đổi trạng thái
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E1.7b_009
+  title: Trình lại sau từ chối giữ lịch sử từ chối trước
+  type: state_transition
+  techniques:
+  - ST
+  priority: high
+  requirement_refs:
+  - E1.7b-BR-4
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ, phạm vi dữ liệu Đơn vị
+  - Đợt Bị từ chối
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở đợt Bị từ chối, sửa (UC1.4) và trình lại (UC1.6)
+    expected:
+      description: Đợt Chờ phê duyệt
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: verify
+    target: tbl_lich_su
+    input: null
+    description: Kiểm tra lịch sử
+    expected:
+      description: Giữ lần từ chối trước cùng lý do và có sự kiện trình lại
+      assertions: []
+      status: confirmed
+  expected_result: Lịch sử đầy đủ các lần
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E1.7b_010
+  title: 'Người trình tự từ chối đề xuất của mình: MSG-099'
+  type: permission
+  techniques:
+  - PERM
+  priority: high
+  requirement_refs:
+  - E1.7b-BR-1
+  - E1.7b-EF2
+  preconditions:
+  - Đã đăng nhập bằng tài khoản vừa có quyền trình vừa có quyền từ chối, là người đã trình đợt
+  test_data:
+    ly_do: Tự từ chối
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở menu thao tác của đợt Chờ phê duyệt
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: mnu_tu_choi
+    input: null
+    description: Chọn Từ chối
+    expected:
+      description: Hiển thị hộp thoại nhập lý do từ chối (mã/tên đợt)
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: fill
+    target: txt_ly_do
+    input: ${ly_do}
+    description: Nhập lý do
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: click
+    target: btn_tu_choi_xn
+    input: null
+    description: Chọn Từ chối
+    expected:
+      description: Báo MSG-099, không từ chối
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Bạn không được xử lý phê duyệt đề xuất do chính mình trình
+      status: needs_confirmation
+  expected_result: Không từ chối
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E1.7b_011
+  title: 'Không còn đủ điều kiện khi từ chối: MSG-043'
+  type: error_handling
+  techniques:
+  - ERR
+  - PERM
+  priority: high
+  requirement_refs:
+  - E1.7b-EF2
+  - E1.7b-BR-1
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Lãnh đạo đơn vị (khác người trình), có quyền duyệt, đúng phạm vi
+  test_data:
+    ly_do: Lý do
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở menu thao tác của đợt Chờ phê duyệt
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: mnu_tu_choi
+    input: null
+    description: Chọn Từ chối
+    expected:
+      description: Hiển thị hộp thoại nhập lý do từ chối (mã/tên đợt)
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: fill
+    target: txt_ly_do
+    input: ${ly_do}
+    description: Nhập lý do
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: api_call
+    target: null
+    input: null
+    description: Thay đổi quyền/phạm vi/trạng thái
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 6
+    action: click
+    target: btn_tu_choi_xn
+    input: null
+    description: Chọn Từ chối
+    expected:
+      description: Báo MSG-043, không từ chối
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Bạn không có quyền thực hiện thao tác này
+      status: confirmed
+  expected_result: Không từ chối, MSG-043
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần thay đổi giữa chừng
+  notes: null
+- id: TC_E1.7b_012
+  title: 'Không còn đủ điều kiện khi từ chối: MSG-045'
+  type: error_handling
+  techniques:
+  - ERR
+  - PERM
+  priority: high
+  requirement_refs:
+  - E1.7b-EF2
+  - E1.7b-BR-1
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Lãnh đạo đơn vị (khác người trình), có quyền duyệt, đúng phạm vi
+  test_data:
+    ly_do: Lý do
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở menu thao tác của đợt Chờ phê duyệt
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: mnu_tu_choi
+    input: null
+    description: Chọn Từ chối
+    expected:
+      description: Hiển thị hộp thoại nhập lý do từ chối (mã/tên đợt)
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: fill
+    target: txt_ly_do
+    input: ${ly_do}
+    description: Nhập lý do
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: api_call
+    target: null
+    input: null
+    description: Thay đổi quyền/phạm vi/trạng thái
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 6
+    action: click
+    target: btn_tu_choi_xn
+    input: null
+    description: Chọn Từ chối
+    expected:
+      description: Báo MSG-045, không từ chối
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Bạn không có quyền truy cập dữ liệu của đơn vị này
+      status: confirmed
+  expected_result: Không từ chối, MSG-045
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần thay đổi giữa chừng
+  notes: null
+- id: TC_E1.7b_013
+  title: 'Không còn đủ điều kiện khi từ chối: MSG-020'
+  type: error_handling
+  techniques:
+  - ERR
+  - PERM
+  priority: high
+  requirement_refs:
+  - E1.7b-EF2
+  - E1.7b-BR-1
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Lãnh đạo đơn vị (khác người trình), có quyền duyệt, đúng phạm vi
+  test_data:
+    ly_do: Lý do
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở menu thao tác của đợt Chờ phê duyệt
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: mnu_tu_choi
+    input: null
+    description: Chọn Từ chối
+    expected:
+      description: Hiển thị hộp thoại nhập lý do từ chối (mã/tên đợt)
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: fill
+    target: txt_ly_do
+    input: ${ly_do}
+    description: Nhập lý do
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: api_call
+    target: null
+    input: null
+    description: Thay đổi quyền/phạm vi/trạng thái
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 6
+    action: click
+    target: btn_tu_choi_xn
+    input: null
+    description: Chọn Từ chối
+    expected:
+      description: Báo MSG-020, không từ chối
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Dữ liệu đã được người khác thay đổi. Vui lòng tải lại trang
+      status: confirmed
+  expected_result: Không từ chối, MSG-020
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần thay đổi giữa chừng
+  notes: null
+- id: TC_E1.7b_014
+  title: 'Hết ngày kết thúc khi xác nhận từ chối: không xử lý, báo MSG-103'
+  type: boundary
+  techniques:
+  - BVA
+  priority: medium
+  requirement_refs:
+  - E1.7b-BR-1
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Lãnh đạo đơn vị (khác người trình), có quyền duyệt, đúng phạm vi
+  - Đợt quá hạn, tác vụ tự từ chối chưa chạy
+  test_data:
+    ly_do: Quá hạn
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở menu thao tác của đợt Chờ phê duyệt
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: mnu_tu_choi
+    input: null
+    description: Chọn Từ chối
+    expected:
+      description: Hiển thị hộp thoại nhập lý do từ chối (mã/tên đợt)
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: fill
+    target: txt_ly_do
+    input: ${ly_do}
+    description: Nhập lý do
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: click
+    target: btn_tu_choi_xn
+    input: null
+    description: Chọn Từ chối khi đã qua ngày kết thúc
+    expected:
+      description: Không từ chối thủ công, báo MSG-103
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Đã hết thời gian khảo sát. Không thể xử lý phê duyệt đợt khảo sát
+      status: needs_confirmation
+  expected_result: Không từ chối
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần dữ liệu quá hạn
+  notes: null
+- id: TC_E1.7b_015
+  title: 'Từ chối thất bại: MSG-025, giữ lý do đã nhập'
+  type: error_handling
+  techniques:
+  - ERR
+  priority: high
+  requirement_refs:
+  - E1.7b-EF3
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Lãnh đạo đơn vị (khác người trình), có quyền duyệt, đúng phạm vi
+  - Giả lập lỗi
+  test_data:
+    ly_do: Lý do giữ
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở menu thao tác của đợt Chờ phê duyệt
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: mnu_tu_choi
+    input: null
+    description: Chọn Từ chối
+    expected:
+      description: Hiển thị hộp thoại nhập lý do từ chối (mã/tên đợt)
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: fill
+    target: txt_ly_do
+    input: ${ly_do}
+    description: Nhập lý do
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: click
+    target: btn_tu_choi_xn
+    input: null
+    description: Chọn Từ chối khi lỗi
+    expected:
+      description: Báo MSG-025
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Đã xảy ra lỗi hệ thống. Vui lòng thử lại sau
+      status: confirmed
+  - seq: 6
+    action: verify
+    target: txt_ly_do
+    input: null
+    description: Kiểm tra lý do
+    expected:
+      description: Nội dung lý do được giữ
+      assertions: []
+      status: confirmed
+  expected_result: Báo MSG-025, giữ lý do
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần giả lập lỗi
+  notes: null
+- id: TC_E1.7b_016
+  title: 'Từ chối thất bại: MSG-026, giữ lý do đã nhập'
+  type: error_handling
+  techniques:
+  - ERR
+  priority: high
+  requirement_refs:
+  - E1.7b-EF3
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Lãnh đạo đơn vị (khác người trình), có quyền duyệt, đúng phạm vi
+  - Giả lập lỗi
+  test_data:
+    ly_do: Lý do giữ
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở menu thao tác của đợt Chờ phê duyệt
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: mnu_tu_choi
+    input: null
+    description: Chọn Từ chối
+    expected:
+      description: Hiển thị hộp thoại nhập lý do từ chối (mã/tên đợt)
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: fill
+    target: txt_ly_do
+    input: ${ly_do}
+    description: Nhập lý do
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: click
+    target: btn_tu_choi_xn
+    input: null
+    description: Chọn Từ chối khi lỗi
+    expected:
+      description: Báo MSG-026
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Không thể kết nối đến máy chủ. Vui lòng kiểm tra đường truyền
+      status: confirmed
+  - seq: 6
+    action: verify
+    target: txt_ly_do
+    input: null
+    description: Kiểm tra lý do
+    expected:
+      description: Nội dung lý do được giữ
+      assertions: []
+      status: confirmed
+  expected_result: Báo MSG-026, giữ lý do
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần giả lập lỗi
+  notes: null
+- id: TC_E1.7b_017
+  title: Chặn bấm lặp khi từ chối
+  type: negative
+  techniques:
+  - ERR
+  priority: low
+  requirement_refs:
+  - E1.7b-BR-1
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Lãnh đạo đơn vị (khác người trình), có quyền duyệt, đúng phạm vi
+  test_data:
+    ly_do: Lý do
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở menu thao tác của đợt Chờ phê duyệt
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: mnu_tu_choi
+    input: null
+    description: Chọn Từ chối
+    expected:
+      description: Hiển thị hộp thoại nhập lý do từ chối (mã/tên đợt)
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: fill
+    target: txt_ly_do
+    input: ${ly_do}
+    description: Nhập lý do
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: click
+    target: btn_tu_choi_xn
+    input: null
+    description: Nhấp đúp Từ chối
+    expected:
+      description: Chỉ xử lý một lần
+      assertions: []
+      status: needs_confirmation
+  expected_result: Một lịch sử, một TB-016
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E1.7b_018
+  title: 'Tự từ chối do hết hạn không phải thao tác của người dùng UC1.7b: lịch sử ghi người thực hiện ''Hệ thống'' và lý do tự động'
+  type: state_transition
+  techniques:
+  - ST
+  priority: medium
+  requirement_refs:
+  - E1.7b-BR-5
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ, phạm vi dữ liệu Đơn vị
+  - Đợt bị tự từ chối do hết hạn
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở thông tin đợt bị tự từ chối do hết hạn
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: verify
+    target: tbl_lich_su
+    input: null
+    description: Kiểm tra lịch sử
+    expected:
+      description: Người thực hiện = Hệ thống; lý do = hệ thống tự động hủy đề xuất do hết thời gian khảo sát mà chưa được phê duyệt
+      assertions: []
+      status: confirmed
+  expected_result: Ghi đúng người thực hiện là Hệ thống
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null

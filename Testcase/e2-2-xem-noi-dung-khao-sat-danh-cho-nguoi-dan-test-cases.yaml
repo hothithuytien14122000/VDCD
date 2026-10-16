@@ -1,0 +1,881 @@
+schema_version: '1.0'
+meta:
+  uc_id: E2.2
+  uc_title: UC2.2 Xem nội dung khảo sát dành cho người dân (Phân hệ E)
+  source_file: '[DTI] Tài liệu SRS.docx (mục 3.2.2)'
+  generated_at: '2026-10-16'
+  language: vi
+  total_test_cases: 16
+automation_config:
+  framework: playwright
+  base_url: ${env:BASE_URL}
+  route_hint: Trang nội bộ và trang công khai dùng ${env:BASE_URL} (.env); chưa có URL route cụ thể trong SRS
+  credentials:
+    can_bo:
+      username: ${env:CANBO_USERNAME}
+      password: ${env:CANBO_PASSWORD}
+    lanh_dao_don_vi:
+      username: ${env:LANHDAO_USERNAME}
+      password: ${env:LANHDAO_PASSWORD}
+    can_bo_dia_phuong:
+      username: ${env:CANBO_DP_USERNAME}
+      password: ${env:CANBO_DP_PASSWORD}
+    lanh_dao_dia_phuong:
+      username: ${env:LANHDAO_DP_USERNAME}
+      password: ${env:LANHDAO_DP_PASSWORD}
+  locators:
+    btn_cac_khao_sat:
+      strategy: null
+      value: null
+      status: missing
+    btn_tham_gia:
+      strategy: null
+      value: null
+      status: missing
+    frm_tra_loi:
+      strategy: null
+      value: null
+      status: missing
+    lbl_ten_dot:
+      strategy: null
+      value: null
+      status: missing
+    lbl_tong:
+      strategy: null
+      value: null
+      status: missing
+    lnk_public:
+      strategy: null
+      value: null
+      status: missing
+    lst_nhom_cau:
+      strategy: null
+      value: null
+      status: missing
+    pg_ds_cong_khai:
+      strategy: null
+      value: null
+      status: missing
+    pg_noi_dung:
+      strategy: null
+      value: null
+      status: missing
+    rd_lua_chon:
+      strategy: null
+      value: null
+      status: missing
+    toast_message:
+      strategy: null
+      value: null
+      status: missing
+    txt_gop_y:
+      strategy: null
+      value: null
+      status: missing
+  api_endpoints: {}
+  action_mapping:
+    click: null
+requirements:
+- id: E2.2-BR-1
+  type: business_rule
+  text: Link và QR xác định đúng đợt, mở thẳng nội dung không cần qua danh sách
+  status: clear
+- id: E2.2-BR-2
+  type: business_rule
+  text: Chỉ cho trả lời khi đợt đã phê duyệt, có Trực tuyến và trong thời gian khảo sát
+  status: clear
+- id: E2.2-BR-3
+  type: business_rule
+  text: 'Đường dẫn sai/không tìm thấy/không Trực tuyến/chưa phê duyệt: MSG-076, không lộ thông tin nội bộ'
+  status: clear
+- id: E2.2-BR-4
+  type: business_rule
+  text: 'Đã duyệt có Trực tuyến: trước ngày bắt đầu MSG-078; sau hết ngày kết thúc MSG-077 kể cả trạng thái chưa cập nhật'
+  status: clear
+- id: E2.2-BR-5
+  type: business_rule
+  text: Nội dung gồm tên đợt, đơn vị, hạn, số câu hỏi, các nhóm/câu theo thứ tự đã duyệt và ô góp ý
+  status: clear
+- id: E2.2-BR-6
+  type: business_rule
+  text: Không hiển thị lịch sử nội bộ, phiếu người khác, kết quả tổng hợp, thao tác sửa cấu trúc
+  status: clear
+- id: E2.2-BR-7
+  type: business_rule
+  text: Mỗi câu hai lựa chọn Hài lòng/Chưa hài lòng, không có câu đánh giá chung hoặc Không áp dụng
+  status: clear
+- id: E2.2-MF
+  type: main_flow
+  text: Mở nội dung đợt qua danh sách
+  status: clear
+- id: E2.2-AF1
+  type: alt_flow
+  text: Truy cập trực tiếp link/QR
+  status: clear
+- id: E2.2-AF2
+  type: alt_flow
+  text: Quay về danh sách
+  status: clear
+- id: E2.2-EF1
+  type: exception_flow
+  text: Đường dẫn/đợt không hợp lệ MSG-076
+  status: clear
+- id: E2.2-EF2
+  type: exception_flow
+  text: Đợt chưa bắt đầu MSG-078
+  status: clear
+- id: E2.2-EF3
+  type: exception_flow
+  text: Đợt đã kết thúc MSG-077
+  status: clear
+- id: E2.2-EF4
+  type: exception_flow
+  text: Không tải được nội dung MSG-025/026
+  status: clear
+- id: E2.2-UI
+  type: field
+  text: UI-2.2.1/UI-2.2.2 web/mobile
+  status: clear
+open_questions:
+- id: OQ-1
+  text: 'UC2.1/UC2.2: hạn ''Hạn đến'' và cách tính ngày hết hạn dùng múi giờ nào cho trang công khai? Nhóm 3 nêu Asia/Ho_Chi_Minh, UC2 không nêu.'
+  requirement_refs:
+  - E2.2-BR-4
+test_cases:
+- id: TC_E2.2_001
+  title: 'Mở nội dung đợt hợp lệ từ danh sách: hiển thị tên đợt, đơn vị, hạn, số câu, nhóm/câu theo thứ tự đã duyệt, ô góp ý'
+  type: positive
+  techniques:
+  - UC_FLOW
+  priority: high
+  requirement_refs:
+  - E2.2-MF
+  - E2.2-BR-5
+  - E2.2-BR-6
+  - E2.2-BR-7
+  preconditions:
+  - Người dân truy cập trang công khai, không đăng nhập
+  - Có đợt Đang diễn ra có Trực tuyến
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: pg_ds_cong_khai
+    input: null
+    description: Mở trang danh sách khảo sát công khai (không đăng nhập)
+    expected:
+      description: Hiển thị trang danh sách, không yêu cầu đăng nhập
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_tham_gia
+    input: null
+    description: Chọn Tham gia khảo sát
+    expected:
+      description: Mở UI-2.2.1
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: verify
+    target: lbl_ten_dot
+    input: null
+    description: Kiểm tra thông tin chung
+    expected:
+      description: Tên đợt, đơn vị, Hạn đến dd/mm/yyyy, số câu (không gồm góp ý)
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: verify
+    target: lst_nhom_cau
+    input: null
+    description: Kiểm tra nhóm/câu
+    expected:
+      description: Đúng thứ tự đã duyệt, số câu đánh lại từ 1 trong từng nhóm, không câu đánh giá chung
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: verify
+    target: rd_lua_chon
+    input: null
+    description: Kiểm tra lựa chọn
+    expected:
+      description: Mỗi câu có hai lựa chọn Hài lòng/Chưa hài lòng, không có Không áp dụng
+      assertions: []
+      status: confirmed
+  - seq: 6
+    action: verify
+    target: txt_gop_y
+    input: null
+    description: Kiểm tra ô Góp ý thêm
+    expected:
+      description: Có ô góp ý
+      assertions: []
+      status: confirmed
+  - seq: 7
+    action: verify
+    target: pg_noi_dung
+    input: null
+    description: Kiểm tra bảo mật
+    expected:
+      description: Không có lịch sử xử lý, phiếu người khác, kết quả tổng hợp, thao tác sửa nhóm/câu
+      assertions: []
+      status: confirmed
+  expected_result: Hiển thị đúng nội dung đã duyệt, chưa lưu phiếu
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E2.2_002
+  title: 'Truy cập trực tiếp bằng đường link: mở thẳng nội dung, không bắt buộc qua danh sách'
+  type: positive
+  techniques:
+  - UC_FLOW
+  priority: high
+  requirement_refs:
+  - E2.2-AF1
+  - E2.2-BR-1
+  preconditions: &id001
+  - Người dân truy cập trang công khai, không đăng nhập
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: lnk_public
+    input: null
+    description: Mở đường dẫn công khai của đợt
+    expected:
+      description: Mở nội dung đợt
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: verify
+    target: lbl_ten_dot
+    input: null
+    description: Kiểm tra đợt
+    expected:
+      description: Đúng đợt của link/QR, không bắt đăng nhập, không yêu cầu mã xác thực
+      assertions: []
+      status: confirmed
+  expected_result: Mở đúng đợt qua đường link
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Thiếu locator
+  notes: null
+- id: TC_E2.2_003
+  title: 'Truy cập trực tiếp bằng mã QR: mở thẳng nội dung, không bắt buộc qua danh sách'
+  type: positive
+  techniques:
+  - UC_FLOW
+  priority: high
+  requirement_refs:
+  - E2.2-AF1
+  - E2.2-BR-1
+  preconditions: *id001
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: lnk_public
+    input: null
+    description: Mở đường dẫn công khai của đợt
+    expected:
+      description: Mở nội dung đợt
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: verify
+    target: lbl_ten_dot
+    input: null
+    description: Kiểm tra đợt
+    expected:
+      description: Đúng đợt của link/QR, không bắt đăng nhập, không yêu cầu mã xác thực
+      assertions: []
+      status: confirmed
+  expected_result: Mở đúng đợt qua mã QR
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - QR cần công cụ quét/giải mã
+  notes: null
+- id: TC_E2.2_004
+  title: 'Không truy cập được: đường dẫn sai → MSG-076'
+  type: negative
+  techniques:
+  - DT
+  - ERR
+  priority: high
+  requirement_refs:
+  - E2.2-EF1
+  - E2.2-BR-3
+  - E2.2-BR-4
+  preconditions: *id001
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: lnk_public
+    input: null
+    description: Mở link có mã đợt không tồn tại
+    expected:
+      description: Hiển thị trang không truy cập được (UI-2.2.2) với MSG-076
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Đường dẫn khảo sát không hợp lệ hoặc đã hết hạn
+      status: confirmed
+  - seq: 2
+    action: verify
+    target: frm_tra_loi
+    input: null
+    description: Kiểm tra form
+    expected:
+      description: Không hiển thị form trả lời/nội dung/lý do phê duyệt hay thông tin nội bộ
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: verify
+    target: btn_cac_khao_sat
+    input: null
+    description: Kiểm tra nút
+    expected:
+      description: Có nút Các khảo sát đang mở, không yêu cầu đăng nhập
+      assertions: []
+      status: confirmed
+  expected_result: Báo MSG-076, không lộ thông tin nội bộ
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần dữ liệu đợt theo từng điều kiện
+  notes: null
+- id: TC_E2.2_005
+  title: 'Không truy cập được: đợt chưa được phê duyệt (Nháp/Chờ phê duyệt/Bị từ chối) → MSG-076'
+  type: negative
+  techniques:
+  - DT
+  - ERR
+  priority: high
+  requirement_refs:
+  - E2.2-EF1
+  - E2.2-BR-3
+  - E2.2-BR-4
+  preconditions: *id001
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: lnk_public
+    input: null
+    description: Mở link của đợt chưa phê duyệt
+    expected:
+      description: Hiển thị trang không truy cập được (UI-2.2.2) với MSG-076
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Đường dẫn khảo sát không hợp lệ hoặc đã hết hạn
+      status: confirmed
+  - seq: 2
+    action: verify
+    target: frm_tra_loi
+    input: null
+    description: Kiểm tra form
+    expected:
+      description: Không hiển thị form trả lời/nội dung/lý do phê duyệt hay thông tin nội bộ
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: verify
+    target: btn_cac_khao_sat
+    input: null
+    description: Kiểm tra nút
+    expected:
+      description: Có nút Các khảo sát đang mở, không yêu cầu đăng nhập
+      assertions: []
+      status: confirmed
+  expected_result: Báo MSG-076, không lộ thông tin nội bộ
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần dữ liệu đợt theo từng điều kiện
+  notes: null
+- id: TC_E2.2_006
+  title: 'Không truy cập được: đợt không có hình thức Trực tuyến → MSG-076'
+  type: negative
+  techniques:
+  - DT
+  - ERR
+  priority: high
+  requirement_refs:
+  - E2.2-EF1
+  - E2.2-BR-3
+  - E2.2-BR-4
+  preconditions: *id001
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: lnk_public
+    input: null
+    description: Mở link của đợt chỉ Trực tiếp/Gián tiếp
+    expected:
+      description: Hiển thị trang không truy cập được (UI-2.2.2) với MSG-076
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Đường dẫn khảo sát không hợp lệ hoặc đã hết hạn
+      status: confirmed
+  - seq: 2
+    action: verify
+    target: frm_tra_loi
+    input: null
+    description: Kiểm tra form
+    expected:
+      description: Không hiển thị form trả lời/nội dung/lý do phê duyệt hay thông tin nội bộ
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: verify
+    target: btn_cac_khao_sat
+    input: null
+    description: Kiểm tra nút
+    expected:
+      description: Có nút Các khảo sát đang mở, không yêu cầu đăng nhập
+      assertions: []
+      status: confirmed
+  expected_result: Báo MSG-076, không lộ thông tin nội bộ
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần dữ liệu đợt theo từng điều kiện
+  notes: null
+- id: TC_E2.2_007
+  title: 'Không truy cập được: đợt đã duyệt nhưng chưa bắt đầu → MSG-078'
+  type: negative
+  techniques:
+  - DT
+  - ERR
+  priority: high
+  requirement_refs:
+  - E2.2-EF2
+  - E2.2-BR-3
+  - E2.2-BR-4
+  preconditions: *id001
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: lnk_public
+    input: null
+    description: Mở link của đợt Đã phê duyệt, ngày bắt đầu = ngày mai
+    expected:
+      description: Hiển thị trang không truy cập được (UI-2.2.2) với MSG-078
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Đợt khảo sát chưa bắt đầu
+      status: confirmed
+  - seq: 2
+    action: verify
+    target: frm_tra_loi
+    input: null
+    description: Kiểm tra form
+    expected:
+      description: Không hiển thị form trả lời/nội dung/lý do phê duyệt hay thông tin nội bộ
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: verify
+    target: btn_cac_khao_sat
+    input: null
+    description: Kiểm tra nút
+    expected:
+      description: Có nút Các khảo sát đang mở, không yêu cầu đăng nhập
+      assertions: []
+      status: confirmed
+  expected_result: Báo MSG-078, không lộ thông tin nội bộ
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần dữ liệu đợt theo từng điều kiện
+  notes: null
+- id: TC_E2.2_008
+  title: 'Không truy cập được: đợt đã hết ngày kết thúc → MSG-077'
+  type: negative
+  techniques:
+  - DT
+  - ERR
+  priority: high
+  requirement_refs:
+  - E2.2-EF3
+  - E2.2-BR-3
+  - E2.2-BR-4
+  preconditions: *id001
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: lnk_public
+    input: null
+    description: Mở link của đợt đã qua ngày kết thúc
+    expected:
+      description: Hiển thị trang không truy cập được (UI-2.2.2) với MSG-077
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Đợt khảo sát đã kết thúc
+      status: confirmed
+  - seq: 2
+    action: verify
+    target: frm_tra_loi
+    input: null
+    description: Kiểm tra form
+    expected:
+      description: Không hiển thị form trả lời/nội dung/lý do phê duyệt hay thông tin nội bộ
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: verify
+    target: btn_cac_khao_sat
+    input: null
+    description: Kiểm tra nút
+    expected:
+      description: Có nút Các khảo sát đang mở, không yêu cầu đăng nhập
+      assertions: []
+      status: confirmed
+  expected_result: Báo MSG-077, không lộ thông tin nội bộ
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần dữ liệu đợt theo từng điều kiện
+  notes: null
+- id: TC_E2.2_009
+  title: 'Không truy cập được: đợt qua ngày kết thúc nhưng trạng thái chưa cập nhật → MSG-077'
+  type: negative
+  techniques:
+  - DT
+  - ERR
+  priority: high
+  requirement_refs:
+  - E2.2-EF3
+  - E2.2-BR-3
+  - E2.2-BR-4
+  preconditions: *id001
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: lnk_public
+    input: null
+    description: Mở link của đợt Đang diễn ra nhưng đã qua hạn (tác vụ đóng chưa chạy)
+    expected:
+      description: Hiển thị trang không truy cập được (UI-2.2.2) với MSG-077
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Đợt khảo sát đã kết thúc
+      status: confirmed
+  - seq: 2
+    action: verify
+    target: frm_tra_loi
+    input: null
+    description: Kiểm tra form
+    expected:
+      description: Không hiển thị form trả lời/nội dung/lý do phê duyệt hay thông tin nội bộ
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: verify
+    target: btn_cac_khao_sat
+    input: null
+    description: Kiểm tra nút
+    expected:
+      description: Có nút Các khảo sát đang mở, không yêu cầu đăng nhập
+      assertions: []
+      status: confirmed
+  expected_result: Báo MSG-077, không lộ thông tin nội bộ
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần dữ liệu đợt theo từng điều kiện
+  notes: null
+- id: TC_E2.2_010
+  title: 'Biên thời gian: đợt có ngày bắt đầu là hôm nay → mở được; ngày kết thúc là hôm nay → mở được'
+  type: boundary
+  techniques:
+  - BVA
+  priority: high
+  requirement_refs:
+  - E2.2-BR-2
+  - E2.2-BR-4
+  preconditions: *id001
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: lnk_public
+    input: null
+    description: Mở link đợt có ngày bắt đầu = hôm nay
+    expected:
+      description: Mở được form
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: navigate
+    target: lnk_public
+    input: null
+    description: Mở link đợt có ngày kết thúc = hôm nay
+    expected:
+      description: Mở được form
+      assertions: []
+      status: confirmed
+  expected_result: Nhận phiếu trong cả ngày bắt đầu/kết thúc
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần dữ liệu theo ngày
+  notes: null
+- id: TC_E2.2_011
+  title: Từ trang không truy cập được, chọn Các khảo sát đang mở → UC2.1
+  type: positive
+  techniques:
+  - UC_FLOW
+  priority: medium
+  requirement_refs:
+  - E2.2-EF1
+  - E2.2-AF2
+  preconditions: *id001
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: lnk_public
+    input: null
+    description: Mở link không hợp lệ
+    expected:
+      description: UI-2.2.2
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_cac_khao_sat
+    input: null
+    description: Chọn Các khảo sát đang mở
+    expected:
+      description: Chuyển UC2.1, không đăng nhập
+      assertions: []
+      status: confirmed
+  expected_result: Về danh sách
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E2.2_012
+  title: Quay về danh sách từ nội dung đợt (header và nút quay lại), không tạo phiếu
+  type: positive
+  techniques:
+  - UC_FLOW
+  priority: medium
+  requirement_refs:
+  - E2.2-AF2
+  preconditions: *id001
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: lnk_public
+    input: null
+    description: Mở đường dẫn công khai của đợt
+    expected:
+      description: Mở nội dung đợt
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_cac_khao_sat
+    input: null
+    description: Chọn Các khảo sát đang mở ở header
+    expected:
+      description: Chuyển UC2.1
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: verify
+    target: lbl_tong
+    input: null
+    description: Kiểm tra
+    expected:
+      description: Không có phiếu mới được tạo
+      assertions: []
+      status: confirmed
+  expected_result: Về UC2.1, không tạo phiếu
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E2.2_013
+  title: 'Không tải được nội dung đợt: MSG-025, không dùng câu hỏi của đợt khác/dữ liệu mẫu'
+  type: error_handling
+  techniques:
+  - ERR
+  priority: medium
+  requirement_refs:
+  - E2.2-EF4
+  preconditions:
+  - Người dân truy cập trang công khai, không đăng nhập
+  - Giả lập lỗi
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: lnk_public
+    input: null
+    description: Mở đường dẫn công khai của đợt
+    expected:
+      description: Mở nội dung đợt
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: verify
+    target: pg_noi_dung
+    input: null
+    description: Kiểm tra khi lỗi
+    expected:
+      description: Hiển thị MSG-025; không hiển thị câu hỏi đợt khác hoặc dữ liệu mẫu
+      assertions:
+      - type: text_contains
+        target: pg_noi_dung
+        value: Đã xảy ra lỗi hệ thống. Vui lòng thử lại sau
+      status: confirmed
+  expected_result: Báo MSG-025, tải lại đường dẫn để thử lại
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần giả lập lỗi
+  notes: null
+- id: TC_E2.2_014
+  title: 'Không tải được nội dung đợt: MSG-026, không dùng câu hỏi của đợt khác/dữ liệu mẫu'
+  type: error_handling
+  techniques:
+  - ERR
+  priority: medium
+  requirement_refs:
+  - E2.2-EF4
+  preconditions:
+  - Người dân truy cập trang công khai, không đăng nhập
+  - Giả lập lỗi
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: lnk_public
+    input: null
+    description: Mở đường dẫn công khai của đợt
+    expected:
+      description: Mở nội dung đợt
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: verify
+    target: pg_noi_dung
+    input: null
+    description: Kiểm tra khi lỗi
+    expected:
+      description: Hiển thị MSG-026; không hiển thị câu hỏi đợt khác hoặc dữ liệu mẫu
+      assertions:
+      - type: text_contains
+        target: pg_noi_dung
+        value: Không thể kết nối đến máy chủ. Vui lòng kiểm tra đường truyền
+      status: confirmed
+  expected_result: Báo MSG-026, tải lại đường dẫn để thử lại
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần giả lập lỗi
+  notes: null
+- id: TC_E2.2_015
+  title: 'Truy cập link không cần đăng nhập và link/QR không phải mã dùng một lần: mở nhiều lần được'
+  type: positive
+  techniques:
+  - EP
+  priority: medium
+  requirement_refs:
+  - E2.2-AF1
+  preconditions: *id001
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: lnk_public
+    input: null
+    description: Mở đường dẫn công khai của đợt
+    expected:
+      description: Mở nội dung đợt
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: navigate
+    target: lnk_public
+    input: null
+    description: Mở lại cùng link trong trình duyệt khác
+    expected:
+      description: Vẫn mở được, không báo đã dùng
+      assertions: []
+      status: confirmed
+  expected_result: Link không phải mã xác thực/mã dùng một lần
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E2.2_016
+  title: 'Bản mobile: hiển thị cùng nội dung/quy tắc, nút quay lại giữ, bỏ nút trùng góc phải'
+  type: ui
+  techniques:
+  - EP
+  priority: low
+  requirement_refs:
+  - E2.2-UI
+  preconditions:
+  - Người dân truy cập trang công khai, không đăng nhập
+  - Viewport 390px
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: lnk_public
+    input: null
+    description: Mở đường dẫn công khai của đợt
+    expected:
+      description: Mở nội dung đợt
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: verify
+    target: pg_noi_dung
+    input: null
+    description: Xem ở viewport 390px
+    expected:
+      description: Cùng nội dung; tiến độ lên trước các câu hỏi; không cột phải
+      assertions: []
+      status: confirmed
+  expected_result: Responsive đúng
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null

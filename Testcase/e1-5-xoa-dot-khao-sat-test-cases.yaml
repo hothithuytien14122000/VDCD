@@ -1,0 +1,1026 @@
+schema_version: '1.0'
+meta:
+  uc_id: E1.5
+  uc_title: UC1.5 Xóa đợt khảo sát (Phân hệ E)
+  source_file: '[DTI] Tài liệu SRS.docx (mục 3.1.5)'
+  generated_at: '2026-10-16'
+  language: vi
+  total_test_cases: 15
+automation_config:
+  framework: playwright
+  base_url: ${env:BASE_URL}
+  route_hint: Trang nội bộ và trang công khai dùng ${env:BASE_URL} (.env); chưa có URL route cụ thể trong SRS
+  credentials:
+    can_bo:
+      username: ${env:CANBO_USERNAME}
+      password: ${env:CANBO_PASSWORD}
+    lanh_dao_don_vi:
+      username: ${env:LANHDAO_USERNAME}
+      password: ${env:LANHDAO_PASSWORD}
+    can_bo_dia_phuong:
+      username: ${env:CANBO_DP_USERNAME}
+      password: ${env:CANBO_DP_PASSWORD}
+    lanh_dao_dia_phuong:
+      username: ${env:LANHDAO_DP_USERNAME}
+      password: ${env:LANHDAO_DP_PASSWORD}
+  locators:
+    btn_dong:
+      strategy: null
+      value: null
+      status: missing
+    btn_huy:
+      strategy: null
+      value: null
+      status: missing
+    btn_xem_chi_tiet:
+      strategy: null
+      value: null
+      status: missing
+    btn_xoa_xn:
+      strategy: null
+      value: null
+      status: missing
+    lbl_dlg_xoa:
+      strategy: null
+      value: null
+      status: missing
+    menu_khao_sat_hai_long:
+      strategy: null
+      value: null
+      status: missing
+    mnu_xoa:
+      strategy: null
+      value: null
+      status: missing
+    tbl_dot:
+      strategy: null
+      value: null
+      status: missing
+    toast_message:
+      strategy: null
+      value: null
+      status: missing
+  api_endpoints: {}
+  action_mapping:
+    click: null
+requirements:
+- id: E1.5-BR-1
+  type: business_rule
+  text: Chỉ xóa đợt Nháp hoặc Bị từ chối, kiểm tra lại khi xác nhận
+  status: clear
+- id: E1.5-BR-2
+  type: business_rule
+  text: Xác nhận nêu mã/tên đúng đợt, không dùng cho xóa phiếu
+  status: clear
+- id: E1.5-BR-3
+  type: business_rule
+  text: Hủy/đóng không xóa; lỗi không báo thành công
+  status: clear
+- id: E1.5-MF
+  type: main_flow
+  text: Xóa đợt sau xác nhận MSG-006, thông báo MSG-002
+  status: clear
+- id: E1.5-AF1
+  type: alt_flow
+  text: Hủy xóa
+  status: clear
+- id: E1.5-AF2
+  type: alt_flow
+  text: Đợt đã bị xóa MSG-019
+  status: clear
+- id: E1.5-EF1
+  type: exception_flow
+  text: Không còn đủ điều kiện MSG-043/045/020
+  status: clear
+- id: E1.5-EF2
+  type: exception_flow
+  text: Xóa thất bại MSG-025/026 giữ hộp thoại
+  status: clear
+open_questions: []
+test_cases:
+- id: TC_E1.5_001
+  title: Xóa đợt Nháp sau khi xác nhận
+  type: positive
+  techniques:
+  - UC_FLOW
+  priority: high
+  requirement_refs:
+  - E1.5-MF
+  - E1.5-BR-1
+  - E1.5-BR-2
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ, phạm vi dữ liệu Đơn vị
+  - Có đợt Nháp
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở menu thao tác của đợt
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: mnu_xoa
+    input: null
+    description: Chọn Xóa
+    expected:
+      description: Hiển thị hộp thoại xác nhận
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: verify
+    target: lbl_dlg_xoa
+    input: null
+    description: Kiểm tra nội dung xác nhận
+    expected:
+      description: Hiển thị MSG-006 'Bạn có chắc chắn muốn xóa' kèm mã/tên đúng đợt
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: click
+    target: btn_xoa_xn
+    input: null
+    description: Chọn Xóa
+    expected:
+      description: Báo MSG-002, đóng hộp thoại
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Xóa thành công
+      status: confirmed
+  - seq: 6
+    action: verify
+    target: tbl_dot
+    input: null
+    description: Kiểm tra danh sách
+    expected:
+      description: Đợt không còn trong danh sách; đợt khác giữ nguyên
+      assertions: []
+      status: confirmed
+  expected_result: Đợt Nháp bị xóa, danh sách cập nhật, MSG-002
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E1.5_002
+  title: Xóa đợt Bị từ chối sau khi xác nhận
+  type: positive
+  techniques:
+  - UC_FLOW
+  priority: high
+  requirement_refs:
+  - E1.5-MF
+  - E1.5-BR-1
+  - E1.5-BR-2
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ, phạm vi dữ liệu Đơn vị
+  - Có đợt Bị từ chối
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở menu thao tác của đợt
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: mnu_xoa
+    input: null
+    description: Chọn Xóa
+    expected:
+      description: Hiển thị hộp thoại xác nhận
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: verify
+    target: lbl_dlg_xoa
+    input: null
+    description: Kiểm tra nội dung xác nhận
+    expected:
+      description: Hiển thị MSG-006 'Bạn có chắc chắn muốn xóa' kèm mã/tên đúng đợt
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: click
+    target: btn_xoa_xn
+    input: null
+    description: Chọn Xóa
+    expected:
+      description: Báo MSG-002, đóng hộp thoại
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Xóa thành công
+      status: confirmed
+  - seq: 6
+    action: verify
+    target: tbl_dot
+    input: null
+    description: Kiểm tra danh sách
+    expected:
+      description: Đợt không còn trong danh sách; đợt khác giữ nguyên
+      assertions: []
+      status: confirmed
+  expected_result: Đợt Bị từ chối bị xóa, danh sách cập nhật, MSG-002
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E1.5_003
+  title: 'Hủy xóa bằng nút Hủy: đợt được giữ'
+  type: negative
+  techniques:
+  - UC_FLOW
+  priority: medium
+  requirement_refs:
+  - E1.5-AF1
+  - E1.5-BR-3
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ, phạm vi dữ liệu Đơn vị
+  - Có đợt Nháp
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở menu thao tác của đợt
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: mnu_xoa
+    input: null
+    description: Chọn Xóa
+    expected:
+      description: Hiển thị hộp thoại xác nhận
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: click
+    target: btn_huy
+    input: null
+    description: Chọn Hủy
+    expected:
+      description: Đóng hộp thoại
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: verify
+    target: tbl_dot
+    input: null
+    description: Kiểm tra danh sách
+    expected:
+      description: Đợt vẫn còn
+      assertions: []
+      status: confirmed
+  expected_result: Không xóa
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E1.5_004
+  title: 'Hủy xóa bằng nút Đóng (x): đợt được giữ'
+  type: negative
+  techniques:
+  - UC_FLOW
+  priority: medium
+  requirement_refs:
+  - E1.5-AF1
+  - E1.5-BR-3
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ, phạm vi dữ liệu Đơn vị
+  - Có đợt Nháp
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở menu thao tác của đợt
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: mnu_xoa
+    input: null
+    description: Chọn Xóa
+    expected:
+      description: Hiển thị hộp thoại xác nhận
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: click
+    target: btn_dong
+    input: null
+    description: Chọn Đóng (x)
+    expected:
+      description: Đóng hộp thoại
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: verify
+    target: tbl_dot
+    input: null
+    description: Kiểm tra danh sách
+    expected:
+      description: Đợt vẫn còn
+      assertions: []
+      status: confirmed
+  expected_result: Không xóa
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E1.5_005
+  title: 'Đợt đã bị người khác xóa trước khi xác nhận: MSG-019, danh sách cập nhật, không xóa đợt khác'
+  type: error_handling
+  techniques:
+  - ERR
+  priority: high
+  requirement_refs:
+  - E1.5-AF2
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ, phạm vi dữ liệu Đơn vị
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở menu thao tác của đợt
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: mnu_xoa
+    input: null
+    description: Chọn Xóa
+    expected:
+      description: Hiển thị hộp thoại xác nhận
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: api_call
+    target: null
+    input: null
+    description: Người khác xóa cùng đợt
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: click
+    target: btn_xoa_xn
+    input: null
+    description: Chọn Xóa
+    expected:
+      description: Báo MSG-019, cập nhật danh sách
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Bản ghi không tồn tại hoặc đã bị xóa
+      status: confirmed
+  - seq: 6
+    action: verify
+    target: tbl_dot
+    input: null
+    description: Kiểm tra các đợt khác
+    expected:
+      description: Không bị xóa nhầm
+      assertions: []
+      status: confirmed
+  expected_result: Báo MSG-019, không xóa đối tượng khác
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần 2 phiên
+  notes: null
+- id: TC_E1.5_006
+  title: Không cho xóa đợt Chờ phê duyệt
+  type: state_transition
+  techniques:
+  - ST
+  - DT
+  priority: high
+  requirement_refs:
+  - E1.5-BR-1
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ, phạm vi dữ liệu Đơn vị
+  - Có đợt Chờ phê duyệt
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở menu thao tác của đợt Chờ phê duyệt
+    expected:
+      description: Không có/vô hiệu mục Xóa
+      assertions: []
+      status: needs_confirmation
+  expected_result: Không xóa được đợt Chờ phê duyệt
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E1.5_007
+  title: Không cho xóa đợt Đã phê duyệt
+  type: state_transition
+  techniques:
+  - ST
+  - DT
+  priority: high
+  requirement_refs:
+  - E1.5-BR-1
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ, phạm vi dữ liệu Đơn vị
+  - Có đợt Đã phê duyệt
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở menu thao tác của đợt Đã phê duyệt
+    expected:
+      description: Không có/vô hiệu mục Xóa
+      assertions: []
+      status: needs_confirmation
+  expected_result: Không xóa được đợt Đã phê duyệt
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E1.5_008
+  title: Không cho xóa đợt Đang diễn ra
+  type: state_transition
+  techniques:
+  - ST
+  - DT
+  priority: high
+  requirement_refs:
+  - E1.5-BR-1
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ, phạm vi dữ liệu Đơn vị
+  - Có đợt Đang diễn ra
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở menu thao tác của đợt Đang diễn ra
+    expected:
+      description: Không có/vô hiệu mục Xóa
+      assertions: []
+      status: needs_confirmation
+  expected_result: Không xóa được đợt Đang diễn ra
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E1.5_009
+  title: Không cho xóa đợt Đã kết thúc
+  type: state_transition
+  techniques:
+  - ST
+  - DT
+  priority: high
+  requirement_refs:
+  - E1.5-BR-1
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ, phạm vi dữ liệu Đơn vị
+  - Có đợt Đã kết thúc
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở menu thao tác của đợt Đã kết thúc
+    expected:
+      description: Không có/vô hiệu mục Xóa
+      assertions: []
+      status: needs_confirmation
+  expected_result: Không xóa được đợt Đã kết thúc
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E1.5_010
+  title: 'Trạng thái đổi sau khi mở hộp thoại (đợt đã được trình): MSG-020, không xóa'
+  type: error_handling
+  techniques:
+  - ERR
+  priority: high
+  requirement_refs:
+  - E1.5-EF1
+  - E1.5-BR-1
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ, phạm vi dữ liệu Đơn vị
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở menu thao tác của đợt
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: mnu_xoa
+    input: null
+    description: Chọn Xóa
+    expected:
+      description: Hiển thị hộp thoại xác nhận
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: api_call
+    target: null
+    input: null
+    description: Người khác trình đợt
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: click
+    target: btn_xoa_xn
+    input: null
+    description: Chọn Xóa
+    expected:
+      description: Báo MSG-020, không xóa, yêu cầu tải lại
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Dữ liệu đã được người khác thay đổi. Vui lòng tải lại trang
+      status: confirmed
+  expected_result: Không xóa, MSG-020
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần 2 phiên
+  notes: null
+- id: TC_E1.5_011
+  title: 'Không còn quyền/phạm vi khi xác nhận xóa: MSG-043'
+  type: permission
+  techniques:
+  - PERM
+  priority: high
+  requirement_refs:
+  - E1.5-EF1
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ, phạm vi dữ liệu Đơn vị
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở menu thao tác của đợt
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: mnu_xoa
+    input: null
+    description: Chọn Xóa
+    expected:
+      description: Hiển thị hộp thoại xác nhận
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: api_call
+    target: null
+    input: null
+    description: Thu hồi quyền xóa/phạm vi
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: click
+    target: btn_xoa_xn
+    input: null
+    description: Chọn Xóa
+    expected:
+      description: Báo MSG-043, không xóa
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Bạn không có quyền thực hiện thao tác này
+      status: confirmed
+  expected_result: Không xóa, MSG-043
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần đổi quyền giữa chừng
+  notes: null
+- id: TC_E1.5_012
+  title: 'Không còn quyền/phạm vi khi xác nhận xóa: MSG-045'
+  type: permission
+  techniques:
+  - PERM
+  priority: high
+  requirement_refs:
+  - E1.5-EF1
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ, phạm vi dữ liệu Đơn vị
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở menu thao tác của đợt
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: mnu_xoa
+    input: null
+    description: Chọn Xóa
+    expected:
+      description: Hiển thị hộp thoại xác nhận
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: api_call
+    target: null
+    input: null
+    description: Thu hồi quyền xóa/phạm vi
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: click
+    target: btn_xoa_xn
+    input: null
+    description: Chọn Xóa
+    expected:
+      description: Báo MSG-045, không xóa
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Bạn không có quyền truy cập dữ liệu của đơn vị này
+      status: confirmed
+  expected_result: Không xóa, MSG-045
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần đổi quyền giữa chừng
+  notes: null
+- id: TC_E1.5_013
+  title: 'Xóa thất bại: MSG-025, giữ hộp thoại và dòng trong danh sách'
+  type: error_handling
+  techniques:
+  - ERR
+  priority: high
+  requirement_refs:
+  - E1.5-EF2
+  - E1.5-BR-3
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ, phạm vi dữ liệu Đơn vị
+  - Giả lập lỗi
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở menu thao tác của đợt
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: mnu_xoa
+    input: null
+    description: Chọn Xóa
+    expected:
+      description: Hiển thị hộp thoại xác nhận
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: click
+    target: btn_xoa_xn
+    input: null
+    description: Chọn Xóa khi lỗi
+    expected:
+      description: Báo MSG-025, không báo xóa thành công
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Đã xảy ra lỗi hệ thống. Vui lòng thử lại sau
+      status: confirmed
+  - seq: 5
+    action: verify
+    target: lbl_dlg_xoa
+    input: null
+    description: Kiểm tra hộp thoại
+    expected:
+      description: Vẫn mở
+      assertions: []
+      status: confirmed
+  - seq: 6
+    action: verify
+    target: tbl_dot
+    input: null
+    description: Kiểm tra danh sách
+    expected:
+      description: Dòng vẫn còn
+      assertions: []
+      status: confirmed
+  expected_result: Báo MSG-025, không xóa
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần giả lập lỗi
+  notes: null
+- id: TC_E1.5_014
+  title: 'Xóa thất bại: MSG-026, giữ hộp thoại và dòng trong danh sách'
+  type: error_handling
+  techniques:
+  - ERR
+  priority: high
+  requirement_refs:
+  - E1.5-EF2
+  - E1.5-BR-3
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ, phạm vi dữ liệu Đơn vị
+  - Giả lập lỗi
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở menu thao tác của đợt
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: mnu_xoa
+    input: null
+    description: Chọn Xóa
+    expected:
+      description: Hiển thị hộp thoại xác nhận
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: click
+    target: btn_xoa_xn
+    input: null
+    description: Chọn Xóa khi lỗi
+    expected:
+      description: Báo MSG-026, không báo xóa thành công
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Không thể kết nối đến máy chủ. Vui lòng kiểm tra đường truyền
+      status: confirmed
+  - seq: 5
+    action: verify
+    target: lbl_dlg_xoa
+    input: null
+    description: Kiểm tra hộp thoại
+    expected:
+      description: Vẫn mở
+      assertions: []
+      status: confirmed
+  - seq: 6
+    action: verify
+    target: tbl_dot
+    input: null
+    description: Kiểm tra danh sách
+    expected:
+      description: Dòng vẫn còn
+      assertions: []
+      status: confirmed
+  expected_result: Báo MSG-026, không xóa
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần giả lập lỗi
+  notes: null
+- id: TC_E1.5_015
+  title: Chặn bấm lặp nút Xóa trong khi xử lý
+  type: negative
+  techniques:
+  - ERR
+  priority: low
+  requirement_refs:
+  - E1.5-BR-3
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ, phạm vi dữ liệu Đơn vị
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở menu thao tác của đợt
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: mnu_xoa
+    input: null
+    description: Chọn Xóa
+    expected:
+      description: Hiển thị hộp thoại xác nhận
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: click
+    target: btn_xoa_xn
+    input: null
+    description: Nhấp đúp Xóa
+    expected:
+      description: Chỉ xử lý một lần
+      assertions: []
+      status: needs_confirmation
+  expected_result: Chỉ xóa một lần, không xóa nhầm đợt khác
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null

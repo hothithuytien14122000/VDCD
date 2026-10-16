@@ -1,0 +1,532 @@
+schema_version: '1.0'
+meta:
+  uc_id: E3.3
+  uc_title: UC3.3 Tải mẫu phiếu khảo sát của đợt (Phân hệ E)
+  source_file: '[DTI] Tài liệu SRS.docx (mục 3.3.3)'
+  generated_at: '2026-10-16'
+  language: vi
+  total_test_cases: 9
+automation_config:
+  framework: playwright
+  base_url: ${env:BASE_URL}
+  route_hint: Trang nội bộ và trang công khai dùng ${env:BASE_URL} (.env); chưa có URL route cụ thể trong SRS
+  credentials:
+    can_bo:
+      username: ${env:CANBO_USERNAME}
+      password: ${env:CANBO_PASSWORD}
+    lanh_dao_don_vi:
+      username: ${env:LANHDAO_USERNAME}
+      password: ${env:LANHDAO_PASSWORD}
+    can_bo_dia_phuong:
+      username: ${env:CANBO_DP_USERNAME}
+      password: ${env:CANBO_DP_PASSWORD}
+    lanh_dao_dia_phuong:
+      username: ${env:LANHDAO_DP_USERNAME}
+      password: ${env:LANHDAO_DP_PASSWORD}
+  locators:
+    blk_tong_phieu:
+      strategy: null
+      value: null
+      status: missing
+    btn_tai_mau:
+      strategy: null
+      value: null
+      status: missing
+    btn_xem_chi_tiet:
+      strategy: null
+      value: null
+      status: missing
+    file_mau:
+      strategy: null
+      value: null
+      status: missing
+    lbl_dot_header:
+      strategy: null
+      value: null
+      status: missing
+    lnk_tai_mau:
+      strategy: null
+      value: null
+      status: missing
+    menu_khao_sat_hai_long:
+      strategy: null
+      value: null
+      status: missing
+    toast_message:
+      strategy: null
+      value: null
+      status: missing
+  api_endpoints: {}
+  action_mapping:
+    click: null
+requirements:
+- id: E3.3-BR-1
+  type: business_rule
+  text: Mẫu .doc gồm tên đợt, nhóm, câu theo thứ tự, lựa chọn Hài lòng/Chưa hài lòng, phần góp ý trống
+  status: clear
+- id: E3.3-BR-2
+  type: business_rule
+  text: Không có câu đánh giá chung hoặc dữ liệu người đã trả lời; không thay bằng kết quả/PDF/in
+  status: clear
+- id: E3.3-BR-3
+  type: business_rule
+  text: Tải mẫu không cấp quyền nhập ngoài hạn; cho tải khi có quyền và nội dung đầy đủ, kể cả sau khi kết thúc
+  status: clear
+- id: E3.3-MF
+  type: main_flow
+  text: Tải mẫu .doc đúng đợt
+  status: clear
+- id: E3.3-AF1
+  type: alt_flow
+  text: Tải lại mẫu
+  status: clear
+- id: E3.3-EF1
+  type: exception_flow
+  text: Không đủ quyền MSG-043/045/044
+  status: clear
+- id: E3.3-EF2
+  type: exception_flow
+  text: Lỗi tạo/tải tệp MSG-025/026
+  status: clear
+open_questions:
+- id: OQ-1
+  text: 'UC3.3: định dạng ''.doc'' (Word 97-2003) — kiểm tra mở được bằng Word; UC không nêu tên tệp cụ thể.'
+  requirement_refs:
+  - E3.3-BR-1
+test_cases:
+- id: TC_E3.3_001
+  title: 'Tải mẫu phiếu .doc: nội dung đúng đợt (tên đợt, nhóm, câu theo thứ tự, hai lựa chọn, góp ý trống)'
+  type: positive
+  techniques:
+  - UC_FLOW
+  priority: high
+  requirement_refs:
+  - E3.3-MF
+  - E3.3-BR-1
+  - E3.3-BR-2
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ có quyền xem phiếu trong phạm vi
+  - Đợt có hình thức không trực tuyến
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở Xem thông tin đợt (UC1.2)
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: btn_tai_mau
+    input: null
+    description: Chọn Tải mẫu phiếu tại thẻ hình thức
+    expected:
+      description: Tải được tệp .doc
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: verify
+    target: file_mau
+    input: null
+    description: Mở tệp
+    expected:
+      description: Có tên đợt, các nhóm/câu theo thứ tự; mỗi câu có Hài lòng/Chưa hài lòng; ô góp ý trống; không có câu đánh giá chung, không có dữ liệu người đã trả lời; không phải PDF/kết quả
+      assertions: []
+      status: confirmed
+  expected_result: Tệp mẫu .doc đúng nội dung đợt
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần kiểm tra nội dung tệp .doc
+  notes: null
+- id: TC_E3.3_002
+  title: Tải mẫu không tạo phiếu và không đổi thống kê; tải lại nhiều lần được
+  type: positive
+  techniques:
+  - UC_FLOW
+  priority: medium
+  requirement_refs:
+  - E3.3-AF1
+  - E3.3-MF
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ có quyền xem phiếu trong phạm vi
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở Xem thông tin đợt (UC1.2)
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: btn_tai_mau
+    input: null
+    description: Tải mẫu lần 1
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: click
+    target: btn_tai_mau
+    input: null
+    description: Tải mẫu lần 2
+    expected:
+      description: Tải được
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: verify
+    target: blk_tong_phieu
+    input: null
+    description: Kiểm tra tổng phiếu/thống kê
+    expected:
+      description: Không đổi
+      assertions: []
+      status: confirmed
+  expected_result: Không tạo phiếu
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E3.3_003
+  title: Tải mẫu sau khi đợt kết thúc vẫn được (không áp dụng hạn thêm/sửa/xóa phiếu)
+  type: boundary
+  techniques:
+  - BVA
+  - ST
+  priority: high
+  requirement_refs:
+  - E3.3-BR-3
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ có quyền xem phiếu trong phạm vi
+  - Đợt Đã kết thúc có hình thức không trực tuyến
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở Xem thông tin đợt (UC1.2)
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: btn_tai_mau
+    input: null
+    description: Tải mẫu của đợt Đã kết thúc
+    expected:
+      description: Tải được
+      assertions: []
+      status: confirmed
+  expected_result: Cho tải khi có quyền và nội dung đầy đủ
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E3.3_004
+  title: Mẫu khớp nội dung hiện tại của đợt (đợt khác nhau cho mẫu khác nhau)
+  type: positive
+  techniques:
+  - EP
+  priority: medium
+  requirement_refs:
+  - E3.3-BR-1
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ có quyền xem phiếu trong phạm vi
+  - 2 đợt khác nội dung
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở Xem thông tin đợt (UC1.2)
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: btn_tai_mau
+    input: null
+    description: Tải mẫu đợt A
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: verify
+    target: file_mau
+    input: null
+    description: So sánh với đợt B
+    expected:
+      description: Mẫu A khác mẫu B theo đúng nội dung từng đợt
+      assertions: []
+      status: confirmed
+  expected_result: Mẫu đúng đợt
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần kiểm tra nội dung tệp
+  notes: null
+- id: TC_E3.3_005
+  title: 'Không đủ quyền/ngoài phạm vi khi tải mẫu: MSG-043'
+  type: permission
+  techniques:
+  - PERM
+  priority: high
+  requirement_refs:
+  - E3.3-EF1
+  preconditions:
+  - Đã đăng nhập tài khoản không đủ điều kiện
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: lnk_tai_mau
+    input: null
+    description: Tải mẫu khi không có quyền/ngoài phạm vi/link không xem được
+    expected:
+      description: Báo MSG-043, không tải
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Bạn không có quyền thực hiện thao tác này
+      status: confirmed
+  expected_result: Báo MSG-043
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần tài khoản phù hợp
+  notes: null
+- id: TC_E3.3_006
+  title: 'Không đủ quyền/ngoài phạm vi khi tải mẫu: MSG-045'
+  type: permission
+  techniques:
+  - PERM
+  priority: high
+  requirement_refs:
+  - E3.3-EF1
+  preconditions:
+  - Đã đăng nhập tài khoản không đủ điều kiện
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: lnk_tai_mau
+    input: null
+    description: Tải mẫu khi không có quyền/ngoài phạm vi/link không xem được
+    expected:
+      description: Báo MSG-045, không tải
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Bạn không có quyền truy cập dữ liệu của đơn vị này
+      status: confirmed
+  expected_result: Báo MSG-045
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần tài khoản phù hợp
+  notes: null
+- id: TC_E3.3_007
+  title: 'Không đủ quyền/ngoài phạm vi khi tải mẫu: MSG-044'
+  type: permission
+  techniques:
+  - PERM
+  priority: high
+  requirement_refs:
+  - E3.3-EF1
+  preconditions:
+  - Đã đăng nhập tài khoản không đủ điều kiện
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: lnk_tai_mau
+    input: null
+    description: Tải mẫu khi không có quyền/ngoài phạm vi/link không xem được
+    expected:
+      description: Báo MSG-044, không tải
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Nội dung không còn tồn tại hoặc bạn không có quyền xem
+      status: confirmed
+  expected_result: Báo MSG-044
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần tài khoản phù hợp
+  notes: null
+- id: TC_E3.3_008
+  title: 'Lỗi tạo/tải tệp: MSG-025, không báo tải thành công, giữ màn thông tin đợt, thử lại'
+  type: error_handling
+  techniques:
+  - ERR
+  priority: high
+  requirement_refs:
+  - E3.3-EF2
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ có quyền xem phiếu trong phạm vi
+  - Giả lập lỗi
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở Xem thông tin đợt (UC1.2)
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: btn_tai_mau
+    input: null
+    description: Tải mẫu khi lỗi
+    expected:
+      description: Báo MSG-025
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Đã xảy ra lỗi hệ thống. Vui lòng thử lại sau
+      status: confirmed
+  - seq: 4
+    action: verify
+    target: lbl_dot_header
+    input: null
+    description: Kiểm tra
+    expected:
+      description: Giữ màn thông tin đợt, có thể thử lại
+      assertions: []
+      status: confirmed
+  expected_result: Báo MSG-025
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần giả lập lỗi
+  notes: null
+- id: TC_E3.3_009
+  title: 'Lỗi tạo/tải tệp: MSG-026, không báo tải thành công, giữ màn thông tin đợt, thử lại'
+  type: error_handling
+  techniques:
+  - ERR
+  priority: high
+  requirement_refs:
+  - E3.3-EF2
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ có quyền xem phiếu trong phạm vi
+  - Giả lập lỗi
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở Xem thông tin đợt (UC1.2)
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: btn_tai_mau
+    input: null
+    description: Tải mẫu khi lỗi
+    expected:
+      description: Báo MSG-026
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Không thể kết nối đến máy chủ. Vui lòng kiểm tra đường truyền
+      status: confirmed
+  - seq: 4
+    action: verify
+    target: lbl_dot_header
+    input: null
+    description: Kiểm tra
+    expected:
+      description: Giữ màn thông tin đợt, có thể thử lại
+      assertions: []
+      status: confirmed
+  expected_result: Báo MSG-026
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần giả lập lỗi
+  notes: null

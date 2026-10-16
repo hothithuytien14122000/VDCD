@@ -1,0 +1,3700 @@
+schema_version: '1.0'
+meta:
+  uc_id: E3.4
+  uc_title: UC3.4 Nhập phiếu trả lời không trực tuyến (Phân hệ E)
+  source_file: '[DTI] Tài liệu SRS.docx (mục 3.3.4)'
+  generated_at: '2026-10-16'
+  language: vi
+  total_test_cases: 34
+automation_config:
+  framework: playwright
+  base_url: ${env:BASE_URL}
+  route_hint: Trang nội bộ và trang công khai dùng ${env:BASE_URL} (.env); chưa có URL route cụ thể trong SRS
+  credentials:
+    can_bo:
+      username: ${env:CANBO_USERNAME}
+      password: ${env:CANBO_PASSWORD}
+    lanh_dao_don_vi:
+      username: ${env:LANHDAO_USERNAME}
+      password: ${env:LANHDAO_PASSWORD}
+    can_bo_dia_phuong:
+      username: ${env:CANBO_DP_USERNAME}
+      password: ${env:CANBO_DP_PASSWORD}
+    lanh_dao_dia_phuong:
+      username: ${env:LANHDAO_DP_USERNAME}
+      password: ${env:LANHDAO_DP_PASSWORD}
+  locators:
+    blk_tong_phieu:
+      strategy: null
+      value: null
+      status: missing
+    btn_chon_tat_ca_hl:
+      strategy: null
+      value: null
+      status: missing
+    btn_dong_y:
+      strategy: null
+      value: null
+      status: missing
+    btn_huy:
+      strategy: null
+      value: null
+      status: missing
+    btn_khong_dong_y:
+      strategy: null
+      value: null
+      status: missing
+    btn_luu_nhap_tiep:
+      strategy: null
+      value: null
+      status: missing
+    btn_luu_phieu:
+      strategy: null
+      value: null
+      status: missing
+    btn_nhap_phieu:
+      strategy: null
+      value: null
+      status: missing
+    btn_quay_lai_sua:
+      strategy: null
+      value: null
+      status: missing
+    btn_xac_nhan_luu:
+      strategy: null
+      value: null
+      status: missing
+    btn_xem_chi_tiet:
+      strategy: null
+      value: null
+      status: missing
+    btn_xem_chi_tiet_phieu:
+      strategy: null
+      value: null
+      status: missing
+    dp_ngay_thu:
+      strategy: null
+      value: null
+      status: missing
+    err_cau_3:
+      strategy: null
+      value: null
+      status: missing
+    err_gop_y:
+      strategy: null
+      value: null
+      status: missing
+    frm_xem_lai:
+      strategy: null
+      value: null
+      status: missing
+    lbl_err_ngay_thu:
+      strategy: null
+      value: null
+      status: missing
+    lbl_tien_do:
+      strategy: null
+      value: null
+      status: missing
+    lnk_nhap_phieu:
+      strategy: null
+      value: null
+      status: missing
+    menu_khao_sat_hai_long:
+      strategy: null
+      value: null
+      status: missing
+    rd_cau_1:
+      strategy: null
+      value: null
+      status: missing
+    rd_cau_1_chl:
+      strategy: null
+      value: null
+      status: missing
+    rd_cau_1_hl:
+      strategy: null
+      value: null
+      status: missing
+    rd_cau_2_hl:
+      strategy: null
+      value: null
+      status: missing
+    rd_cau_3_hl:
+      strategy: null
+      value: null
+      status: missing
+    rd_hinh_thuc:
+      strategy: null
+      value: null
+      status: missing
+    tab_ket_qua:
+      strategy: null
+      value: null
+      status: missing
+    tab_phieu:
+      strategy: null
+      value: null
+      status: missing
+    tbl_phieu:
+      strategy: null
+      value: null
+      status: missing
+    toast_message:
+      strategy: null
+      value: null
+      status: missing
+    txt_gop_y:
+      strategy: null
+      value: null
+      status: missing
+  api_endpoints: {}
+  action_mapping:
+    click: null
+requirements:
+- id: E3.4-BR-1
+  type: business_rule
+  text: Mỗi câu chọn đúng một mức; ban đầu không chọn sẵn; hình thức mặc định là hình thức không trực tuyến đầu tiên, ngày thu mặc định hôm nay
+  status: clear
+- id: E3.4-BR-2
+  type: business_rule
+  text: 'Hình thức thuộc cấu hình không trực tuyến (sai: MSG-092); ngày thu bắt buộc, thuộc kỳ, không sau hôm nay; người nhập/thời điểm tự ghi'
+  status: clear
+- id: E3.4-BR-3
+  type: business_rule
+  text: Góp ý không bắt buộc tối đa 1.000 ký tự; Chọn tất cả Hài lòng chỉ điền đáp án, không tự lưu
+  status: clear
+- id: E3.4-BR-4
+  type: business_rule
+  text: Lưu phiếu/Lưu và nhập tiếp chỉ kiểm tra và mở xem lại; Xác nhận lưu mới tạo phiếu
+  status: clear
+- id: E3.4-BR-5
+  type: business_rule
+  text: Lưu và nhập tiếp giữ hình thức/ngày thu, xóa đáp án/góp ý; Lưu phiếu về danh sách
+  status: clear
+- id: E3.4-BR-6
+  type: business_rule
+  text: Chặn bấm lặp; thử lại cùng lần xác nhận chỉ một phiếu; đã lưu trước hạn thì trả kết quả cũ; chưa lưu và hết hạn thì chặn
+  status: clear
+- id: E3.4-BR-7
+  type: business_rule
+  text: Phiếu và đáp án lưu đầy đủ trước khi tính thống kê
+  status: clear
+- id: E3.4-MF
+  type: main_flow
+  text: Nhập phiếu, xem lại, xác nhận lưu
+  status: clear
+- id: E3.4-AF1
+  type: alt_flow
+  text: Lưu và nhập tiếp
+  status: clear
+- id: E3.4-AF2
+  type: alt_flow
+  text: Quay lại sửa
+  status: clear
+- id: E3.4-AF3
+  type: alt_flow
+  text: Hủy nhập MSG-009
+  status: clear
+- id: E3.4-EF1
+  type: exception_flow
+  text: Thiếu/sai dữ liệu MSG-010/011/012/013/079/085/086/092
+  status: clear
+- id: E3.4-EF2
+  type: exception_flow
+  text: Đợt hết hạn/chưa đủ điều kiện MSG-089/090/092
+  status: clear
+- id: E3.4-EF3
+  type: exception_flow
+  text: Không đủ quyền MSG-043/045/044
+  status: clear
+- id: E3.4-EF4
+  type: exception_flow
+  text: Lỗi lưu/kết nối MSG-025/026
+  status: clear
+- id: E3.4-UI
+  type: field
+  text: UI-3.4.1, UI-3.4.2
+  status: clear
+open_questions:
+- id: OQ-1
+  text: 'UC3.4 EF1: ''thiếu hình thức MSG-011'' chỉ xảy ra khi nào, vì hình thức mặc định là hình thức đầu tiên (BR-1) và là radio? Cần xác nhận cách để trống hình thức.'
+  requirement_refs:
+  - E3.4-BR-1
+- id: OQ-2
+  text: 'UC3.4/UC3.5: ngày thu phiếu ngoài kỳ nhưng đồng thời sau hôm nay xử lý MSG-085 hay MSG-086 trước? (UC nêu hai mã riêng, không nêu ưu tiên).'
+  requirement_refs:
+  - E3.4-BR-2
+test_cases:
+- id: TC_E3.4_001
+  title: 'Form mới: không chọn sẵn đáp án, hình thức = hình thức không trực tuyến đầu tiên, ngày thu = hôm nay, tiến độ 0/y, không có Trực tuyến'
+  type: positive
+  techniques:
+  - UC_FLOW
+  priority: high
+  requirement_refs:
+  - E3.4-BR-1
+  - E3.4-UI
+  - E3.4-MF
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ có quyền nhập/sửa/xóa phiếu trong phạm vi
+  - Đợt Đang diễn ra có hình thức Trực tiếp và/hoặc Gián tiếp
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Danh sách đợt
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở đợt Đang diễn ra
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: tab_phieu
+    input: null
+    description: Chọn tab Phiếu
+    expected:
+      description: Hiển thị danh sách phiếu của đợt
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: click
+    target: btn_nhap_phieu
+    input: null
+    description: Chọn + Nhập phiếu
+    expected:
+      description: Mở form Nhập phiếu khảo sát (UI-3.4.1)
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: verify
+    target: rd_cau_1
+    input: null
+    description: Kiểm tra đáp án
+    expected:
+      description: Không câu nào được chọn sẵn
+      assertions: []
+      status: confirmed
+  - seq: 6
+    action: verify
+    target: rd_hinh_thuc
+    input: null
+    description: Kiểm tra hình thức
+    expected:
+      description: Chọn sẵn hình thức không trực tuyến đầu tiên theo cấu hình; không có lựa chọn Trực tuyến
+      assertions: []
+      status: confirmed
+  - seq: 7
+    action: verify
+    target: dp_ngay_thu
+    input: null
+    description: Kiểm tra ngày thu
+    expected:
+      description: Ngày hiện tại, có gợi ý kỳ khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 8
+    action: verify
+    target: lbl_tien_do
+    input: null
+    description: Kiểm tra tiến độ
+    expected:
+      description: Đã chọn 0/y, 0%
+      assertions: []
+      status: confirmed
+  expected_result: Giá trị mặc định đúng
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E3.4_002
+  title: 'Nhập phiếu hợp lệ: Lưu phiếu mở xem lại (chưa tạo phiếu) → Xác nhận lưu → MSG-001, về danh sách, tổng +1'
+  type: positive
+  techniques:
+  - UC_FLOW
+  priority: high
+  requirement_refs:
+  - E3.4-MF
+  - E3.4-BR-4
+  - E3.4-BR-7
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ có quyền nhập/sửa/xóa phiếu trong phạm vi
+  test_data:
+    hf: Trực tiếp
+    ngay_thu: hôm nay
+    gop_y: Góp ý thử
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Danh sách đợt
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở đợt Đang diễn ra
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: tab_phieu
+    input: null
+    description: Chọn tab Phiếu
+    expected:
+      description: Hiển thị danh sách phiếu của đợt
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: click
+    target: btn_nhap_phieu
+    input: null
+    description: Chọn + Nhập phiếu
+    expected:
+      description: Mở form Nhập phiếu khảo sát (UI-3.4.1)
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: select
+    target: rd_hinh_thuc
+    input: ${hf}
+    description: Chọn hình thức
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 6
+    action: fill
+    target: dp_ngay_thu
+    input: ${ngay_thu}
+    description: Nhập ngày thu
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 7
+    action: click
+    target: rd_cau_1_hl
+    input: null
+    description: Chọn Hài lòng câu 1
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 8
+    action: click
+    target: rd_cau_2_hl
+    input: null
+    description: Chọn Hài lòng câu 2
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 9
+    action: click
+    target: rd_cau_3_hl
+    input: null
+    description: Chọn Hài lòng câu 3
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 10
+    action: fill
+    target: txt_gop_y
+    input: ${gop_y}
+    description: Nhập góp ý
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 11
+    action: click
+    target: btn_luu_phieu
+    input: null
+    description: Chọn Lưu phiếu
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 12
+    action: verify
+    target: frm_xem_lai
+    input: null
+    description: Kiểm tra xem lại UI-3.4.2
+    expected:
+      description: Hiển thị hình thức, ngày thu, đầy đủ câu/đáp án, góp ý; 'Sau khi lưu' = Quay về danh sách phiếu; chưa tạo phiếu
+      assertions: []
+      status: confirmed
+  - seq: 13
+    action: click
+    target: btn_xac_nhan_luu
+    input: null
+    description: Chọn Xác nhận lưu
+    expected:
+      description: Báo MSG-001, về danh sách phiếu đúng đợt
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Lưu thành công
+      status: confirmed
+  - seq: 14
+    action: verify
+    target: blk_tong_phieu
+    input: null
+    description: Kiểm tra
+    expected:
+      description: Tổng phiếu và số theo hình thức +1; phiếu mới ghi người nhập, thời điểm tạo
+      assertions: []
+      status: confirmed
+  expected_result: Một phiếu đầy đủ được lưu, thống kê cập nhật
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E3.4_003
+  title: Xem lại hiển thị đúng toàn bộ câu/đáp án đã nhập (không chỉ số lượng Hài lòng); góp ý trống hiện '-'
+  type: positive
+  techniques:
+  - EP
+  priority: medium
+  requirement_refs:
+  - E3.4-UI
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ có quyền nhập/sửa/xóa phiếu trong phạm vi
+  test_data: &id001
+    hf: Trực tiếp
+    ngay_thu: hôm nay
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Danh sách đợt
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở đợt Đang diễn ra
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: tab_phieu
+    input: null
+    description: Chọn tab Phiếu
+    expected:
+      description: Hiển thị danh sách phiếu của đợt
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: click
+    target: btn_nhap_phieu
+    input: null
+    description: Chọn + Nhập phiếu
+    expected:
+      description: Mở form Nhập phiếu khảo sát (UI-3.4.1)
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: select
+    target: rd_hinh_thuc
+    input: ${hf}
+    description: Chọn hình thức
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 6
+    action: fill
+    target: dp_ngay_thu
+    input: ${ngay_thu}
+    description: Nhập ngày thu
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 7
+    action: click
+    target: rd_cau_1_hl
+    input: null
+    description: Chọn Hài lòng câu 1
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 8
+    action: click
+    target: rd_cau_2_hl
+    input: null
+    description: Chọn Hài lòng câu 2
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 9
+    action: click
+    target: rd_cau_3_hl
+    input: null
+    description: Chọn Hài lòng câu 3
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 10
+    action: click
+    target: btn_luu_phieu
+    input: null
+    description: Chọn Lưu phiếu
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 11
+    action: verify
+    target: frm_xem_lai
+    input: null
+    description: Kiểm tra
+    expected:
+      description: Khớp form; góp ý trống hiện -; không có ô sửa trực tiếp
+      assertions: []
+      status: confirmed
+  expected_result: Xem lại đúng
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E3.4_004
+  title: 'Lưu và nhập tiếp: xem lại ghi ''Nhập phiếu tiếp theo'', sau xác nhận MSG-001, mở form mới giữ hình thức/ngày thu, xóa đáp án/góp ý'
+  type: positive
+  techniques:
+  - UC_FLOW
+  priority: high
+  requirement_refs:
+  - E3.4-AF1
+  - E3.4-BR-5
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ có quyền nhập/sửa/xóa phiếu trong phạm vi
+  test_data:
+    hf: Trực tiếp
+    ngay_thu: hôm nay
+    gop_y: A
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Danh sách đợt
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở đợt Đang diễn ra
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: tab_phieu
+    input: null
+    description: Chọn tab Phiếu
+    expected:
+      description: Hiển thị danh sách phiếu của đợt
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: click
+    target: btn_nhap_phieu
+    input: null
+    description: Chọn + Nhập phiếu
+    expected:
+      description: Mở form Nhập phiếu khảo sát (UI-3.4.1)
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: select
+    target: rd_hinh_thuc
+    input: ${hf}
+    description: Chọn hình thức
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 6
+    action: fill
+    target: dp_ngay_thu
+    input: ${ngay_thu}
+    description: Nhập ngày thu
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 7
+    action: click
+    target: rd_cau_1_hl
+    input: null
+    description: Chọn Hài lòng câu 1
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 8
+    action: click
+    target: rd_cau_2_hl
+    input: null
+    description: Chọn Hài lòng câu 2
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 9
+    action: click
+    target: rd_cau_3_hl
+    input: null
+    description: Chọn Hài lòng câu 3
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 10
+    action: fill
+    target: txt_gop_y
+    input: ${gop_y}
+    description: Nhập góp ý
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 11
+    action: click
+    target: btn_luu_nhap_tiep
+    input: null
+    description: Chọn Lưu và nhập tiếp
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 12
+    action: verify
+    target: frm_xem_lai
+    input: null
+    description: Kiểm tra
+    expected:
+      description: '''Sau khi lưu'' = Nhập phiếu tiếp theo'
+      assertions: []
+      status: confirmed
+  - seq: 13
+    action: click
+    target: btn_xac_nhan_luu
+    input: null
+    description: Xác nhận lưu
+    expected:
+      description: MSG-001
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Lưu thành công
+      status: confirmed
+  - seq: 14
+    action: verify
+    target: rd_hinh_thuc
+    input: null
+    description: Kiểm tra form mới
+    expected:
+      description: Giữ hình thức và ngày thu; đáp án và góp ý trống
+      assertions: []
+      status: confirmed
+  expected_result: Phiếu lưu, form mới sạch đáp án
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E3.4_005
+  title: Chọn tất cả Hài lòng chỉ điền đáp án, không tự lưu, vẫn qua bước xem lại; có thể đổi lại từng câu
+  type: positive
+  techniques:
+  - UC_FLOW
+  priority: medium
+  requirement_refs:
+  - E3.4-BR-3
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ có quyền nhập/sửa/xóa phiếu trong phạm vi
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Danh sách đợt
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở đợt Đang diễn ra
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: tab_phieu
+    input: null
+    description: Chọn tab Phiếu
+    expected:
+      description: Hiển thị danh sách phiếu của đợt
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: click
+    target: btn_nhap_phieu
+    input: null
+    description: Chọn + Nhập phiếu
+    expected:
+      description: Mở form Nhập phiếu khảo sát (UI-3.4.1)
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: click
+    target: btn_chon_tat_ca_hl
+    input: null
+    description: Chọn Chọn tất cả Hài lòng
+    expected:
+      description: Mọi câu Hài lòng, tiến độ y/y
+      assertions: []
+      status: confirmed
+  - seq: 6
+    action: click
+    target: rd_cau_1_chl
+    input: null
+    description: Đổi câu 1 sang Chưa hài lòng
+    expected:
+      description: Chỉ câu 1 đổi
+      assertions: []
+      status: confirmed
+  - seq: 7
+    action: verify
+    target: tbl_phieu
+    input: null
+    description: Kiểm tra
+    expected:
+      description: Chưa có phiếu mới được lưu
+      assertions: []
+      status: confirmed
+  expected_result: Không tự lưu
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E3.4_006
+  title: 'Tiến độ phiếu: ''Đã chọn x/y'' và x/y×100%, góp ý không tính; không phải tỷ lệ hài lòng'
+  type: positive
+  techniques:
+  - EP
+  priority: low
+  requirement_refs:
+  - E3.4-UI
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ có quyền nhập/sửa/xóa phiếu trong phạm vi
+  - Đợt 3 câu
+  test_data:
+    gop_y: x
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Danh sách đợt
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở đợt Đang diễn ra
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: tab_phieu
+    input: null
+    description: Chọn tab Phiếu
+    expected:
+      description: Hiển thị danh sách phiếu của đợt
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: click
+    target: btn_nhap_phieu
+    input: null
+    description: Chọn + Nhập phiếu
+    expected:
+      description: Mở form Nhập phiếu khảo sát (UI-3.4.1)
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: click
+    target: rd_cau_1_hl
+    input: null
+    description: Chọn Hài lòng câu 1
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 6
+    action: click
+    target: rd_cau_2_hl
+    input: null
+    description: Chọn Hài lòng câu 2
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 7
+    action: fill
+    target: txt_gop_y
+    input: ${gop_y}
+    description: Nhập góp ý
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 8
+    action: verify
+    target: lbl_tien_do
+    input: null
+    description: Kiểm tra
+    expected:
+      description: Đã chọn 2/3 ≈ 66,67% (với đợt 3 câu); góp ý không đổi
+      assertions: []
+      status: confirmed
+  expected_result: Tiến độ đúng
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E3.4_007
+  title: 'Ngày thu phiếu trống: MSG-010'
+  type: negative
+  techniques:
+  - EP
+  priority: high
+  requirement_refs:
+  - E3.4-EF1
+  - E3.4-BR-2
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ có quyền nhập/sửa/xóa phiếu trong phạm vi
+  test_data:
+    ngay_thu: ''
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Danh sách đợt
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở đợt Đang diễn ra
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: tab_phieu
+    input: null
+    description: Chọn tab Phiếu
+    expected:
+      description: Hiển thị danh sách phiếu của đợt
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: click
+    target: btn_nhap_phieu
+    input: null
+    description: Chọn + Nhập phiếu
+    expected:
+      description: Mở form Nhập phiếu khảo sát (UI-3.4.1)
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: select
+    target: rd_hinh_thuc
+    input: Trực tiếp
+    description: Chọn hình thức
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 6
+    action: fill
+    target: dp_ngay_thu
+    input: ${ngay_thu}
+    description: Nhập ngày thu trống
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 7
+    action: click
+    target: rd_cau_1_hl
+    input: null
+    description: Chọn Hài lòng câu 1
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 8
+    action: click
+    target: rd_cau_2_hl
+    input: null
+    description: Chọn Hài lòng câu 2
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 9
+    action: click
+    target: rd_cau_3_hl
+    input: null
+    description: Chọn Hài lòng câu 3
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 10
+    action: click
+    target: btn_luu_phieu
+    input: null
+    description: Chọn Lưu phiếu
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 11
+    action: verify
+    target: lbl_err_ngay_thu
+    input: null
+    description: Kiểm tra
+    expected:
+      description: Báo MSG-010 dưới Ngày thu phiếu, không mở xem lại
+      assertions:
+      - type: text_contains
+        target: lbl_err_ngay_thu
+        value: Vui lòng nhập Ngày thu phiếu
+      status: confirmed
+  expected_result: Không lưu, MSG-010
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E3.4_008
+  title: 'Ngày thu phiếu sai định dạng ''abc'': MSG-012'
+  type: negative
+  techniques:
+  - EP
+  priority: high
+  requirement_refs:
+  - E3.4-EF1
+  - E3.4-BR-2
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ có quyền nhập/sửa/xóa phiếu trong phạm vi
+  test_data:
+    ngay_thu: abc
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Danh sách đợt
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở đợt Đang diễn ra
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: tab_phieu
+    input: null
+    description: Chọn tab Phiếu
+    expected:
+      description: Hiển thị danh sách phiếu của đợt
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: click
+    target: btn_nhap_phieu
+    input: null
+    description: Chọn + Nhập phiếu
+    expected:
+      description: Mở form Nhập phiếu khảo sát (UI-3.4.1)
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: select
+    target: rd_hinh_thuc
+    input: Trực tiếp
+    description: Chọn hình thức
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 6
+    action: fill
+    target: dp_ngay_thu
+    input: ${ngay_thu}
+    description: Nhập ngày thu sai định dạng 'abc'
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 7
+    action: click
+    target: rd_cau_1_hl
+    input: null
+    description: Chọn Hài lòng câu 1
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 8
+    action: click
+    target: rd_cau_2_hl
+    input: null
+    description: Chọn Hài lòng câu 2
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 9
+    action: click
+    target: rd_cau_3_hl
+    input: null
+    description: Chọn Hài lòng câu 3
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 10
+    action: click
+    target: btn_luu_phieu
+    input: null
+    description: Chọn Lưu phiếu
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 11
+    action: verify
+    target: lbl_err_ngay_thu
+    input: null
+    description: Kiểm tra
+    expected:
+      description: Báo MSG-012 dưới Ngày thu phiếu, không mở xem lại
+      assertions:
+      - type: text_contains
+        target: lbl_err_ngay_thu
+        value: Ngày thu phiếu không đúng định dạng
+      status: confirmed
+  expected_result: Không lưu, MSG-012
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E3.4_009
+  title: 'Ngày thu phiếu ngày không tồn tại 31/02/2026: MSG-012'
+  type: negative
+  techniques:
+  - EP
+  priority: high
+  requirement_refs:
+  - E3.4-EF1
+  - E3.4-BR-2
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ có quyền nhập/sửa/xóa phiếu trong phạm vi
+  test_data:
+    ngay_thu: 31/02/2026
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Danh sách đợt
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở đợt Đang diễn ra
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: tab_phieu
+    input: null
+    description: Chọn tab Phiếu
+    expected:
+      description: Hiển thị danh sách phiếu của đợt
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: click
+    target: btn_nhap_phieu
+    input: null
+    description: Chọn + Nhập phiếu
+    expected:
+      description: Mở form Nhập phiếu khảo sát (UI-3.4.1)
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: select
+    target: rd_hinh_thuc
+    input: Trực tiếp
+    description: Chọn hình thức
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 6
+    action: fill
+    target: dp_ngay_thu
+    input: ${ngay_thu}
+    description: Nhập ngày thu ngày không tồn tại 31/02/2026
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 7
+    action: click
+    target: rd_cau_1_hl
+    input: null
+    description: Chọn Hài lòng câu 1
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 8
+    action: click
+    target: rd_cau_2_hl
+    input: null
+    description: Chọn Hài lòng câu 2
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 9
+    action: click
+    target: rd_cau_3_hl
+    input: null
+    description: Chọn Hài lòng câu 3
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 10
+    action: click
+    target: btn_luu_phieu
+    input: null
+    description: Chọn Lưu phiếu
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 11
+    action: verify
+    target: lbl_err_ngay_thu
+    input: null
+    description: Kiểm tra
+    expected:
+      description: Báo MSG-012 dưới Ngày thu phiếu, không mở xem lại
+      assertions:
+      - type: text_contains
+        target: lbl_err_ngay_thu
+        value: Ngày thu phiếu không đúng định dạng
+      status: confirmed
+  expected_result: Không lưu, MSG-012
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E3.4_010
+  title: Ngày thu phiếu bằng ngày bắt đầu đợt (biên)
+  type: boundary
+  techniques:
+  - BVA
+  priority: high
+  requirement_refs:
+  - E3.4-BR-2
+  - E3.4-EF1
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ có quyền nhập/sửa/xóa phiếu trong phạm vi
+  - Đợt đã bắt đầu từ trước hôm nay
+  test_data:
+    ngay_thu: ngày bắt đầu đợt
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Danh sách đợt
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở đợt Đang diễn ra
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: tab_phieu
+    input: null
+    description: Chọn tab Phiếu
+    expected:
+      description: Hiển thị danh sách phiếu của đợt
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: click
+    target: btn_nhap_phieu
+    input: null
+    description: Chọn + Nhập phiếu
+    expected:
+      description: Mở form Nhập phiếu khảo sát (UI-3.4.1)
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: select
+    target: rd_hinh_thuc
+    input: Trực tiếp
+    description: Chọn hình thức
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 6
+    action: fill
+    target: dp_ngay_thu
+    input: ${ngay_thu}
+    description: Nhập ngày thu bằng ngày bắt đầu đợt (biên)
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 7
+    action: click
+    target: rd_cau_1_hl
+    input: null
+    description: Chọn Hài lòng câu 1
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 8
+    action: click
+    target: rd_cau_2_hl
+    input: null
+    description: Chọn Hài lòng câu 2
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 9
+    action: click
+    target: rd_cau_3_hl
+    input: null
+    description: Chọn Hài lòng câu 3
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 10
+    action: click
+    target: btn_luu_phieu
+    input: null
+    description: Chọn Lưu phiếu
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 11
+    action: verify
+    target: frm_xem_lai
+    input: null
+    description: Kiểm tra
+    expected:
+      description: Mở màn xem lại
+      assertions: []
+      status: confirmed
+  expected_result: Hợp lệ, mở xem lại
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E3.4_011
+  title: Ngày thu phiếu trước ngày bắt đầu đợt 1 ngày
+  type: boundary
+  techniques:
+  - BVA
+  priority: high
+  requirement_refs:
+  - E3.4-BR-2
+  - E3.4-EF1
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ có quyền nhập/sửa/xóa phiếu trong phạm vi
+  - Đợt đã bắt đầu từ trước hôm nay
+  test_data:
+    ngay_thu: ngày bắt đầu - 1
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Danh sách đợt
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở đợt Đang diễn ra
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: tab_phieu
+    input: null
+    description: Chọn tab Phiếu
+    expected:
+      description: Hiển thị danh sách phiếu của đợt
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: click
+    target: btn_nhap_phieu
+    input: null
+    description: Chọn + Nhập phiếu
+    expected:
+      description: Mở form Nhập phiếu khảo sát (UI-3.4.1)
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: select
+    target: rd_hinh_thuc
+    input: Trực tiếp
+    description: Chọn hình thức
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 6
+    action: fill
+    target: dp_ngay_thu
+    input: ${ngay_thu}
+    description: Nhập ngày thu trước ngày bắt đầu đợt 1 ngày
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 7
+    action: click
+    target: rd_cau_1_hl
+    input: null
+    description: Chọn Hài lòng câu 1
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 8
+    action: click
+    target: rd_cau_2_hl
+    input: null
+    description: Chọn Hài lòng câu 2
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 9
+    action: click
+    target: rd_cau_3_hl
+    input: null
+    description: Chọn Hài lòng câu 3
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 10
+    action: click
+    target: btn_luu_phieu
+    input: null
+    description: Chọn Lưu phiếu
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 11
+    action: verify
+    target: lbl_err_ngay_thu
+    input: null
+    description: Kiểm tra
+    expected:
+      description: Báo MSG-085 dưới Ngày thu phiếu
+      assertions:
+      - type: text_contains
+        target: lbl_err_ngay_thu
+        value: Ngày thu phiếu phải trong khoảng
+      status: confirmed
+  expected_result: Không lưu, MSG-085
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E3.4_012
+  title: Ngày thu phiếu bằng hôm nay (biên)
+  type: boundary
+  techniques:
+  - BVA
+  priority: high
+  requirement_refs:
+  - E3.4-BR-2
+  - E3.4-EF1
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ có quyền nhập/sửa/xóa phiếu trong phạm vi
+  - Đợt đã bắt đầu từ trước hôm nay
+  test_data:
+    ngay_thu: hôm nay
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Danh sách đợt
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở đợt Đang diễn ra
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: tab_phieu
+    input: null
+    description: Chọn tab Phiếu
+    expected:
+      description: Hiển thị danh sách phiếu của đợt
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: click
+    target: btn_nhap_phieu
+    input: null
+    description: Chọn + Nhập phiếu
+    expected:
+      description: Mở form Nhập phiếu khảo sát (UI-3.4.1)
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: select
+    target: rd_hinh_thuc
+    input: Trực tiếp
+    description: Chọn hình thức
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 6
+    action: fill
+    target: dp_ngay_thu
+    input: ${ngay_thu}
+    description: Nhập ngày thu bằng hôm nay (biên)
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 7
+    action: click
+    target: rd_cau_1_hl
+    input: null
+    description: Chọn Hài lòng câu 1
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 8
+    action: click
+    target: rd_cau_2_hl
+    input: null
+    description: Chọn Hài lòng câu 2
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 9
+    action: click
+    target: rd_cau_3_hl
+    input: null
+    description: Chọn Hài lòng câu 3
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 10
+    action: click
+    target: btn_luu_phieu
+    input: null
+    description: Chọn Lưu phiếu
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 11
+    action: verify
+    target: frm_xem_lai
+    input: null
+    description: Kiểm tra
+    expected:
+      description: Mở màn xem lại
+      assertions: []
+      status: confirmed
+  expected_result: Hợp lệ, mở xem lại
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E3.4_013
+  title: Ngày thu phiếu sau hôm nay 1 ngày
+  type: boundary
+  techniques:
+  - BVA
+  priority: high
+  requirement_refs:
+  - E3.4-BR-2
+  - E3.4-EF1
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ có quyền nhập/sửa/xóa phiếu trong phạm vi
+  - Đợt đã bắt đầu từ trước hôm nay
+  test_data:
+    ngay_thu: hôm nay + 1
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Danh sách đợt
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở đợt Đang diễn ra
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: tab_phieu
+    input: null
+    description: Chọn tab Phiếu
+    expected:
+      description: Hiển thị danh sách phiếu của đợt
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: click
+    target: btn_nhap_phieu
+    input: null
+    description: Chọn + Nhập phiếu
+    expected:
+      description: Mở form Nhập phiếu khảo sát (UI-3.4.1)
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: select
+    target: rd_hinh_thuc
+    input: Trực tiếp
+    description: Chọn hình thức
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 6
+    action: fill
+    target: dp_ngay_thu
+    input: ${ngay_thu}
+    description: Nhập ngày thu sau hôm nay 1 ngày
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 7
+    action: click
+    target: rd_cau_1_hl
+    input: null
+    description: Chọn Hài lòng câu 1
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 8
+    action: click
+    target: rd_cau_2_hl
+    input: null
+    description: Chọn Hài lòng câu 2
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 9
+    action: click
+    target: rd_cau_3_hl
+    input: null
+    description: Chọn Hài lòng câu 3
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 10
+    action: click
+    target: btn_luu_phieu
+    input: null
+    description: Chọn Lưu phiếu
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 11
+    action: verify
+    target: lbl_err_ngay_thu
+    input: null
+    description: Kiểm tra
+    expected:
+      description: Báo MSG-086 dưới Ngày thu phiếu
+      assertions:
+      - type: text_contains
+        target: lbl_err_ngay_thu
+        value: Ngày thu phiếu không được sau ngày hiện tại
+      status: confirmed
+  expected_result: Không lưu, MSG-086
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E3.4_014
+  title: Ngày thu hợp lệ nằm giữa ngày bắt đầu và hôm nay
+  type: positive
+  techniques:
+  - EP
+  priority: medium
+  requirement_refs:
+  - E3.4-BR-2
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ có quyền nhập/sửa/xóa phiếu trong phạm vi
+  test_data:
+    ngay_thu: ngày giữa kỳ
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Danh sách đợt
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở đợt Đang diễn ra
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: tab_phieu
+    input: null
+    description: Chọn tab Phiếu
+    expected:
+      description: Hiển thị danh sách phiếu của đợt
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: click
+    target: btn_nhap_phieu
+    input: null
+    description: Chọn + Nhập phiếu
+    expected:
+      description: Mở form Nhập phiếu khảo sát (UI-3.4.1)
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: fill
+    target: dp_ngay_thu
+    input: ${ngay_thu}
+    description: Nhập ngày thu trong kỳ
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 6
+    action: select
+    target: rd_hinh_thuc
+    input: Gián tiếp qua phiếu
+    description: Chọn hình thức
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 7
+    action: click
+    target: rd_cau_1_hl
+    input: null
+    description: Chọn Hài lòng câu 1
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 8
+    action: click
+    target: rd_cau_2_hl
+    input: null
+    description: Chọn Hài lòng câu 2
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 9
+    action: click
+    target: rd_cau_3_hl
+    input: null
+    description: Chọn Hài lòng câu 3
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 10
+    action: click
+    target: btn_luu_phieu
+    input: null
+    description: Chọn Lưu phiếu
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 11
+    action: verify
+    target: frm_xem_lai
+    input: null
+    description: Kiểm tra
+    expected:
+      description: Mở xem lại
+      assertions: []
+      status: confirmed
+  expected_result: Hợp lệ
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E3.4_015
+  title: 'Thiếu đáp án: MSG-079 với nội dung câu, không mở xem lại, giữ dữ liệu, đưa tới lỗi đầu tiên'
+  type: negative
+  techniques:
+  - EP
+  priority: high
+  requirement_refs:
+  - E3.4-EF1
+  - E3.4-BR-1
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ có quyền nhập/sửa/xóa phiếu trong phạm vi
+  - Đợt 3 câu
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Danh sách đợt
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở đợt Đang diễn ra
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: tab_phieu
+    input: null
+    description: Chọn tab Phiếu
+    expected:
+      description: Hiển thị danh sách phiếu của đợt
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: click
+    target: btn_nhap_phieu
+    input: null
+    description: Chọn + Nhập phiếu
+    expected:
+      description: Mở form Nhập phiếu khảo sát (UI-3.4.1)
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: select
+    target: rd_hinh_thuc
+    input: Trực tiếp
+    description: Chọn hình thức
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 6
+    action: click
+    target: rd_cau_1_hl
+    input: null
+    description: Chọn Hài lòng câu 1
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 7
+    action: click
+    target: rd_cau_2_hl
+    input: null
+    description: Chọn Hài lòng câu 2
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 8
+    action: click
+    target: btn_luu_phieu
+    input: null
+    description: Chọn Lưu phiếu
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 9
+    action: verify
+    target: err_cau_3
+    input: null
+    description: Kiểm tra
+    expected:
+      description: Báo 'Vui lòng chọn mức độ hài lòng cho <nội dung câu 3>' dưới câu 3; tới lỗi đầu tiên; giữ dữ liệu
+      assertions:
+      - type: text_contains
+        target: err_cau_3
+        value: Vui lòng chọn mức độ hài lòng cho
+      status: confirmed
+  expected_result: Không lưu, MSG-079
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E3.4_016
+  title: Góp ý 1.000 ký tự (biên)
+  type: boundary
+  techniques:
+  - BVA
+  priority: high
+  requirement_refs:
+  - E3.4-BR-3
+  - E3.4-EF1
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ có quyền nhập/sửa/xóa phiếu trong phạm vi
+  test_data:
+    hf: Trực tiếp
+    ngay_thu: hôm nay
+    gop_y: chuỗi 1000 ký tự
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Danh sách đợt
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở đợt Đang diễn ra
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: tab_phieu
+    input: null
+    description: Chọn tab Phiếu
+    expected:
+      description: Hiển thị danh sách phiếu của đợt
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: click
+    target: btn_nhap_phieu
+    input: null
+    description: Chọn + Nhập phiếu
+    expected:
+      description: Mở form Nhập phiếu khảo sát (UI-3.4.1)
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: select
+    target: rd_hinh_thuc
+    input: ${hf}
+    description: Chọn hình thức
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 6
+    action: fill
+    target: dp_ngay_thu
+    input: ${ngay_thu}
+    description: Nhập ngày thu
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 7
+    action: click
+    target: rd_cau_1_hl
+    input: null
+    description: Chọn Hài lòng câu 1
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 8
+    action: click
+    target: rd_cau_2_hl
+    input: null
+    description: Chọn Hài lòng câu 2
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 9
+    action: click
+    target: rd_cau_3_hl
+    input: null
+    description: Chọn Hài lòng câu 3
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 10
+    action: fill
+    target: txt_gop_y
+    input: ${gop_y}
+    description: Nhập góp ý 1.000 ký tự (biên)
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 11
+    action: click
+    target: btn_luu_phieu
+    input: null
+    description: Chọn Lưu phiếu
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 12
+    action: verify
+    target: frm_xem_lai
+    input: null
+    description: Kiểm tra
+    expected:
+      description: Mở xem lại
+      assertions: []
+      status: confirmed
+  expected_result: Hợp lệ
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E3.4_017
+  title: Góp ý 1.001 ký tự
+  type: boundary
+  techniques:
+  - BVA
+  priority: high
+  requirement_refs:
+  - E3.4-BR-3
+  - E3.4-EF1
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ có quyền nhập/sửa/xóa phiếu trong phạm vi
+  test_data:
+    hf: Trực tiếp
+    ngay_thu: hôm nay
+    gop_y: chuỗi 1001 ký tự
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Danh sách đợt
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở đợt Đang diễn ra
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: tab_phieu
+    input: null
+    description: Chọn tab Phiếu
+    expected:
+      description: Hiển thị danh sách phiếu của đợt
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: click
+    target: btn_nhap_phieu
+    input: null
+    description: Chọn + Nhập phiếu
+    expected:
+      description: Mở form Nhập phiếu khảo sát (UI-3.4.1)
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: select
+    target: rd_hinh_thuc
+    input: ${hf}
+    description: Chọn hình thức
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 6
+    action: fill
+    target: dp_ngay_thu
+    input: ${ngay_thu}
+    description: Nhập ngày thu
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 7
+    action: click
+    target: rd_cau_1_hl
+    input: null
+    description: Chọn Hài lòng câu 1
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 8
+    action: click
+    target: rd_cau_2_hl
+    input: null
+    description: Chọn Hài lòng câu 2
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 9
+    action: click
+    target: rd_cau_3_hl
+    input: null
+    description: Chọn Hài lòng câu 3
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 10
+    action: fill
+    target: txt_gop_y
+    input: ${gop_y}
+    description: Nhập góp ý 1.001 ký tự
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 11
+    action: click
+    target: btn_luu_phieu
+    input: null
+    description: Chọn Lưu phiếu
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 12
+    action: verify
+    target: err_gop_y
+    input: null
+    description: Kiểm tra
+    expected:
+      description: MSG-013 'Góp ý của người dân tối đa 1000 ký tự', không cắt ngầm
+      assertions:
+      - type: text_contains
+        target: err_gop_y
+        value: tối đa 1000 ký tự
+      status: confirmed
+  expected_result: Không lưu, MSG-013
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E3.4_018
+  title: 'Hình thức không thuộc cấu hình của đợt (gửi trực tiếp request): MSG-092'
+  type: negative
+  techniques:
+  - EP
+  - ERR
+  priority: high
+  requirement_refs:
+  - E3.4-EF1
+  - E3.4-BR-2
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ có quyền nhập/sửa/xóa phiếu trong phạm vi
+  test_data: {}
+  steps:
+  - seq: 1
+    action: api_call
+    target: null
+    input: null
+    description: Gửi request lưu phiếu với hình thức Trực tuyến/không thuộc cấu hình
+    expected:
+      description: Máy chủ từ chối, báo MSG-092 dưới Hình thức
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Vui lòng chọn hình thức không trực tuyến đã cấu hình cho đợt khảo sát
+      status: confirmed
+  expected_result: Không lưu, MSG-092
+  automation:
+    automatable: 'no'
+    blockers:
+    - Chưa có endpoint API
+  notes: null
+- id: TC_E3.4_019
+  title: 'Không chọn hình thức: MSG-011'
+  type: negative
+  techniques:
+  - EP
+  priority: medium
+  requirement_refs:
+  - E3.4-EF1
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ có quyền nhập/sửa/xóa phiếu trong phạm vi
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Danh sách đợt
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở đợt Đang diễn ra
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: tab_phieu
+    input: null
+    description: Chọn tab Phiếu
+    expected:
+      description: Hiển thị danh sách phiếu của đợt
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: click
+    target: btn_nhap_phieu
+    input: null
+    description: Chọn + Nhập phiếu
+    expected:
+      description: Mở form Nhập phiếu khảo sát (UI-3.4.1)
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: verify
+    target: rd_hinh_thuc
+    input: null
+    description: Bỏ chọn hình thức (nếu cho phép)
+    expected:
+      description: Báo MSG-011 'Vui lòng chọn Hình thức'
+      assertions:
+      - type: text_contains
+        target: rd_hinh_thuc
+        value: Vui lòng chọn Hình thức
+      status: confirmed
+  - seq: 6
+    action: click
+    target: rd_cau_1_hl
+    input: null
+    description: Chọn Hài lòng câu 1
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 7
+    action: click
+    target: rd_cau_2_hl
+    input: null
+    description: Chọn Hài lòng câu 2
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 8
+    action: click
+    target: rd_cau_3_hl
+    input: null
+    description: Chọn Hài lòng câu 3
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 9
+    action: click
+    target: btn_luu_phieu
+    input: null
+    description: Chọn Lưu phiếu
+    expected:
+      description: —
+      assertions: []
+      status: needs_confirmation
+  expected_result: Không lưu, MSG-011
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: Radio có giá trị mặc định nên chưa rõ cách để trống (OQ-2)
+- id: TC_E3.4_020
+  title: 'Quay lại sửa từ màn xem lại: về form giữ đủ dữ liệu, không tạo phiếu'
+  type: positive
+  techniques:
+  - UC_FLOW
+  priority: medium
+  requirement_refs:
+  - E3.4-AF2
+  - E3.4-BR-4
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ có quyền nhập/sửa/xóa phiếu trong phạm vi
+  test_data: *id001
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Danh sách đợt
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở đợt Đang diễn ra
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: tab_phieu
+    input: null
+    description: Chọn tab Phiếu
+    expected:
+      description: Hiển thị danh sách phiếu của đợt
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: click
+    target: btn_nhap_phieu
+    input: null
+    description: Chọn + Nhập phiếu
+    expected:
+      description: Mở form Nhập phiếu khảo sát (UI-3.4.1)
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: select
+    target: rd_hinh_thuc
+    input: ${hf}
+    description: Chọn hình thức
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 6
+    action: fill
+    target: dp_ngay_thu
+    input: ${ngay_thu}
+    description: Nhập ngày thu
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 7
+    action: click
+    target: rd_cau_1_hl
+    input: null
+    description: Chọn Hài lòng câu 1
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 8
+    action: click
+    target: rd_cau_2_hl
+    input: null
+    description: Chọn Hài lòng câu 2
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 9
+    action: click
+    target: rd_cau_3_hl
+    input: null
+    description: Chọn Hài lòng câu 3
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 10
+    action: click
+    target: btn_luu_phieu
+    input: null
+    description: Chọn Lưu phiếu
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 11
+    action: click
+    target: btn_quay_lai_sua
+    input: null
+    description: Chọn Quay lại sửa
+    expected:
+      description: Về form giữ đủ dữ liệu
+      assertions: []
+      status: confirmed
+  - seq: 12
+    action: verify
+    target: tbl_phieu
+    input: null
+    description: Kiểm tra
+    expected:
+      description: Chưa có phiếu mới
+      assertions: []
+      status: confirmed
+  expected_result: Không tạo phiếu
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E3.4_021
+  title: 'Hủy khi có thay đổi: MSG-009, đồng ý thoát'
+  type: negative
+  techniques:
+  - ERR
+  priority: medium
+  requirement_refs:
+  - E3.4-AF3
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ có quyền nhập/sửa/xóa phiếu trong phạm vi
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Danh sách đợt
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở đợt Đang diễn ra
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: tab_phieu
+    input: null
+    description: Chọn tab Phiếu
+    expected:
+      description: Hiển thị danh sách phiếu của đợt
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: click
+    target: btn_nhap_phieu
+    input: null
+    description: Chọn + Nhập phiếu
+    expected:
+      description: Mở form Nhập phiếu khảo sát (UI-3.4.1)
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: click
+    target: rd_cau_1_hl
+    input: null
+    description: Chọn Hài lòng câu 1
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 6
+    action: click
+    target: btn_huy
+    input: null
+    description: Chọn Hủy/Quay lại
+    expected:
+      description: Hiển thị MSG-009
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Các thay đổi chưa lưu sẽ bị mất
+      status: confirmed
+  - seq: 7
+    action: click
+    target: btn_dong_y
+    input: null
+    description: Chọn đồng ý thoát
+    expected:
+      description: Về danh sách, không lưu
+      assertions: []
+      status: confirmed
+  expected_result: Về danh sách, không lưu
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E3.4_022
+  title: 'Hủy khi có thay đổi: MSG-009, ở lại'
+  type: negative
+  techniques:
+  - ERR
+  priority: medium
+  requirement_refs:
+  - E3.4-AF3
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ có quyền nhập/sửa/xóa phiếu trong phạm vi
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Danh sách đợt
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở đợt Đang diễn ra
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: tab_phieu
+    input: null
+    description: Chọn tab Phiếu
+    expected:
+      description: Hiển thị danh sách phiếu của đợt
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: click
+    target: btn_nhap_phieu
+    input: null
+    description: Chọn + Nhập phiếu
+    expected:
+      description: Mở form Nhập phiếu khảo sát (UI-3.4.1)
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: click
+    target: rd_cau_1_hl
+    input: null
+    description: Chọn Hài lòng câu 1
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 6
+    action: click
+    target: btn_huy
+    input: null
+    description: Chọn Hủy/Quay lại
+    expected:
+      description: Hiển thị MSG-009
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Các thay đổi chưa lưu sẽ bị mất
+      status: confirmed
+  - seq: 7
+    action: click
+    target: btn_khong_dong_y
+    input: null
+    description: Chọn ở lại
+    expected:
+      description: Ở lại form, giữ dữ liệu
+      assertions: []
+      status: confirmed
+  expected_result: Ở lại form, giữ dữ liệu
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E3.4_023
+  title: 'Hủy khi chưa thay đổi: thoát về danh sách'
+  type: positive
+  techniques:
+  - ERR
+  priority: low
+  requirement_refs:
+  - E3.4-AF3
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ có quyền nhập/sửa/xóa phiếu trong phạm vi
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Danh sách đợt
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở đợt Đang diễn ra
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: tab_phieu
+    input: null
+    description: Chọn tab Phiếu
+    expected:
+      description: Hiển thị danh sách phiếu của đợt
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: click
+    target: btn_nhap_phieu
+    input: null
+    description: Chọn + Nhập phiếu
+    expected:
+      description: Mở form Nhập phiếu khảo sát (UI-3.4.1)
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: click
+    target: btn_huy
+    input: null
+    description: Chọn Hủy/Quay lại
+    expected:
+      description: Về danh sách
+      assertions: []
+      status: needs_confirmation
+  expected_result: Về danh sách
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E3.4_024
+  title: 'Đợt hết hạn khi mở form/xác nhận lưu: MSG-089, chặn lưu, cho về danh sách, không gửi bù'
+  type: boundary
+  techniques:
+  - BVA
+  - ST
+  priority: high
+  requirement_refs:
+  - E3.4-EF2
+  - E3.4-BR-6
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ có quyền nhập/sửa/xóa phiếu trong phạm vi
+  test_data: *id001
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Danh sách đợt
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở đợt Đang diễn ra
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: tab_phieu
+    input: null
+    description: Chọn tab Phiếu
+    expected:
+      description: Hiển thị danh sách phiếu của đợt
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: click
+    target: btn_nhap_phieu
+    input: null
+    description: Chọn + Nhập phiếu
+    expected:
+      description: Mở form Nhập phiếu khảo sát (UI-3.4.1)
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: select
+    target: rd_hinh_thuc
+    input: ${hf}
+    description: Chọn hình thức
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 6
+    action: fill
+    target: dp_ngay_thu
+    input: ${ngay_thu}
+    description: Nhập ngày thu
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 7
+    action: click
+    target: rd_cau_1_hl
+    input: null
+    description: Chọn Hài lòng câu 1
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 8
+    action: click
+    target: rd_cau_2_hl
+    input: null
+    description: Chọn Hài lòng câu 2
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 9
+    action: click
+    target: rd_cau_3_hl
+    input: null
+    description: Chọn Hài lòng câu 3
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 10
+    action: click
+    target: btn_luu_phieu
+    input: null
+    description: Chọn Lưu phiếu
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 11
+    action: api_call
+    target: null
+    input: null
+    description: Đợt qua ngày kết thúc khi đang ở màn xem lại
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 12
+    action: click
+    target: btn_xac_nhan_luu
+    input: null
+    description: Xác nhận lưu
+    expected:
+      description: Chặn lưu, báo MSG-089
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Đợt khảo sát đã kết thúc. Không thể thêm, sửa hoặc xóa phiếu
+      status: confirmed
+  expected_result: Không tạo phiếu sau hạn
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần điều khiển thời gian
+  notes: null
+- id: TC_E3.4_025
+  title: 'Đợt chưa được duyệt hoặc chưa đến kỳ: MSG-090'
+  type: negative
+  techniques:
+  - ST
+  priority: high
+  requirement_refs:
+  - E3.4-EF2
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ có quyền nhập/sửa/xóa phiếu trong phạm vi
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: lnk_nhap_phieu
+    input: null
+    description: Mở màn nhập phiếu của đợt chưa duyệt/chưa đến ngày bắt đầu
+    expected:
+      description: Chặn, báo MSG-090
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Đợt khảo sát chưa đủ điều kiện nhận phiếu
+      status: confirmed
+  expected_result: Báo MSG-090
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần dữ liệu
+  notes: null
+- id: TC_E3.4_026
+  title: Nút + Nhập phiếu ẩn khi đợt chỉ có hình thức Trực tuyến hoặc chưa/không còn nhận phiếu
+  type: decision_table
+  techniques:
+  - DT
+  priority: medium
+  requirement_refs:
+  - E3.4-MF
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ có quyền nhập/sửa/xóa phiếu trong phạm vi
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Danh sách đợt
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở đợt Đang diễn ra
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: tab_phieu
+    input: null
+    description: Chọn tab Phiếu
+    expected:
+      description: Hiển thị danh sách phiếu của đợt
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: verify
+    target: btn_nhap_phieu
+    input: null
+    description: Kiểm tra đợt chỉ Trực tuyến / Đã kết thúc
+    expected:
+      description: Không hiển thị
+      assertions: []
+      status: needs_confirmation
+  expected_result: Không cho nhập
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E3.4_027
+  title: 'Không đủ quyền/ngoài phạm vi khi nhập phiếu: MSG-043'
+  type: permission
+  techniques:
+  - PERM
+  priority: high
+  requirement_refs:
+  - E3.4-EF3
+  preconditions:
+  - Đã đăng nhập tài khoản không đủ điều kiện
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: lnk_nhap_phieu
+    input: null
+    description: Mở màn nhập phiếu khi không đủ quyền/ngoài phạm vi
+    expected:
+      description: Báo MSG-043, không đọc/ghi
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Bạn không có quyền thực hiện thao tác này
+      status: confirmed
+  expected_result: Báo MSG-043
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần tài khoản phù hợp
+  notes: null
+- id: TC_E3.4_028
+  title: 'Không đủ quyền/ngoài phạm vi khi nhập phiếu: MSG-045'
+  type: permission
+  techniques:
+  - PERM
+  priority: high
+  requirement_refs:
+  - E3.4-EF3
+  preconditions:
+  - Đã đăng nhập tài khoản không đủ điều kiện
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: lnk_nhap_phieu
+    input: null
+    description: Mở màn nhập phiếu khi không đủ quyền/ngoài phạm vi
+    expected:
+      description: Báo MSG-045, không đọc/ghi
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Bạn không có quyền truy cập dữ liệu của đơn vị này
+      status: confirmed
+  expected_result: Báo MSG-045
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần tài khoản phù hợp
+  notes: null
+- id: TC_E3.4_029
+  title: 'Không đủ quyền/ngoài phạm vi khi nhập phiếu: MSG-044'
+  type: permission
+  techniques:
+  - PERM
+  priority: high
+  requirement_refs:
+  - E3.4-EF3
+  preconditions:
+  - Đã đăng nhập tài khoản không đủ điều kiện
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: lnk_nhap_phieu
+    input: null
+    description: Mở màn nhập phiếu khi không đủ quyền/ngoài phạm vi
+    expected:
+      description: Báo MSG-044, không đọc/ghi
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Nội dung không còn tồn tại hoặc bạn không có quyền xem
+      status: confirmed
+  expected_result: Báo MSG-044
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần tài khoản phù hợp
+  notes: null
+- id: TC_E3.4_030
+  title: 'Lỗi lưu/kết nối: MSG-025, giữ dữ liệu màn xem lại, không báo thành công, thử lại khi còn hạn'
+  type: error_handling
+  techniques:
+  - ERR
+  priority: high
+  requirement_refs:
+  - E3.4-EF4
+  - E3.4-BR-7
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ có quyền nhập/sửa/xóa phiếu trong phạm vi
+  - Giả lập lỗi
+  test_data: *id001
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Danh sách đợt
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở đợt Đang diễn ra
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: tab_phieu
+    input: null
+    description: Chọn tab Phiếu
+    expected:
+      description: Hiển thị danh sách phiếu của đợt
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: click
+    target: btn_nhap_phieu
+    input: null
+    description: Chọn + Nhập phiếu
+    expected:
+      description: Mở form Nhập phiếu khảo sát (UI-3.4.1)
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: select
+    target: rd_hinh_thuc
+    input: ${hf}
+    description: Chọn hình thức
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 6
+    action: fill
+    target: dp_ngay_thu
+    input: ${ngay_thu}
+    description: Nhập ngày thu
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 7
+    action: click
+    target: rd_cau_1_hl
+    input: null
+    description: Chọn Hài lòng câu 1
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 8
+    action: click
+    target: rd_cau_2_hl
+    input: null
+    description: Chọn Hài lòng câu 2
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 9
+    action: click
+    target: rd_cau_3_hl
+    input: null
+    description: Chọn Hài lòng câu 3
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 10
+    action: click
+    target: btn_luu_phieu
+    input: null
+    description: Chọn Lưu phiếu
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 11
+    action: click
+    target: btn_xac_nhan_luu
+    input: null
+    description: Xác nhận lưu khi lỗi
+    expected:
+      description: Báo MSG-025
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Đã xảy ra lỗi hệ thống. Vui lòng thử lại sau
+      status: confirmed
+  - seq: 12
+    action: verify
+    target: frm_xem_lai
+    input: null
+    description: Kiểm tra
+    expected:
+      description: Giữ màn xem lại và dữ liệu; không tạo phiếu thiếu đáp án; số lượng không tăng
+      assertions: []
+      status: confirmed
+  expected_result: Báo MSG-025, không tạo phiếu
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần giả lập lỗi
+  notes: null
+- id: TC_E3.4_031
+  title: 'Lỗi lưu/kết nối: MSG-026, giữ dữ liệu màn xem lại, không báo thành công, thử lại khi còn hạn'
+  type: error_handling
+  techniques:
+  - ERR
+  priority: high
+  requirement_refs:
+  - E3.4-EF4
+  - E3.4-BR-7
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ có quyền nhập/sửa/xóa phiếu trong phạm vi
+  - Giả lập lỗi
+  test_data: *id001
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Danh sách đợt
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở đợt Đang diễn ra
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: tab_phieu
+    input: null
+    description: Chọn tab Phiếu
+    expected:
+      description: Hiển thị danh sách phiếu của đợt
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: click
+    target: btn_nhap_phieu
+    input: null
+    description: Chọn + Nhập phiếu
+    expected:
+      description: Mở form Nhập phiếu khảo sát (UI-3.4.1)
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: select
+    target: rd_hinh_thuc
+    input: ${hf}
+    description: Chọn hình thức
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 6
+    action: fill
+    target: dp_ngay_thu
+    input: ${ngay_thu}
+    description: Nhập ngày thu
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 7
+    action: click
+    target: rd_cau_1_hl
+    input: null
+    description: Chọn Hài lòng câu 1
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 8
+    action: click
+    target: rd_cau_2_hl
+    input: null
+    description: Chọn Hài lòng câu 2
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 9
+    action: click
+    target: rd_cau_3_hl
+    input: null
+    description: Chọn Hài lòng câu 3
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 10
+    action: click
+    target: btn_luu_phieu
+    input: null
+    description: Chọn Lưu phiếu
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 11
+    action: click
+    target: btn_xac_nhan_luu
+    input: null
+    description: Xác nhận lưu khi lỗi
+    expected:
+      description: Báo MSG-026
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Không thể kết nối đến máy chủ. Vui lòng kiểm tra đường truyền
+      status: confirmed
+  - seq: 12
+    action: verify
+    target: frm_xem_lai
+    input: null
+    description: Kiểm tra
+    expected:
+      description: Giữ màn xem lại và dữ liệu; không tạo phiếu thiếu đáp án; số lượng không tăng
+      assertions: []
+      status: confirmed
+  expected_result: Báo MSG-026, không tạo phiếu
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần giả lập lỗi
+  notes: null
+- id: TC_E3.4_032
+  title: 'Chặn bấm lặp Xác nhận lưu: chỉ một phiếu'
+  type: negative
+  techniques:
+  - ERR
+  priority: high
+  requirement_refs:
+  - E3.4-BR-6
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ có quyền nhập/sửa/xóa phiếu trong phạm vi
+  test_data: *id001
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Danh sách đợt
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở đợt Đang diễn ra
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: tab_phieu
+    input: null
+    description: Chọn tab Phiếu
+    expected:
+      description: Hiển thị danh sách phiếu của đợt
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: click
+    target: btn_nhap_phieu
+    input: null
+    description: Chọn + Nhập phiếu
+    expected:
+      description: Mở form Nhập phiếu khảo sát (UI-3.4.1)
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: select
+    target: rd_hinh_thuc
+    input: ${hf}
+    description: Chọn hình thức
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 6
+    action: fill
+    target: dp_ngay_thu
+    input: ${ngay_thu}
+    description: Nhập ngày thu
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 7
+    action: click
+    target: rd_cau_1_hl
+    input: null
+    description: Chọn Hài lòng câu 1
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 8
+    action: click
+    target: rd_cau_2_hl
+    input: null
+    description: Chọn Hài lòng câu 2
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 9
+    action: click
+    target: rd_cau_3_hl
+    input: null
+    description: Chọn Hài lòng câu 3
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 10
+    action: click
+    target: btn_luu_phieu
+    input: null
+    description: Chọn Lưu phiếu
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 11
+    action: click
+    target: btn_xac_nhan_luu
+    input: null
+    description: Bấm Xác nhận lưu nhiều lần liên tiếp
+    expected:
+      description: Nút vô hiệu khi xử lý; chỉ một phiếu
+      assertions: []
+      status: confirmed
+  - seq: 12
+    action: verify
+    target: blk_tong_phieu
+    input: null
+    description: Kiểm tra
+    expected:
+      description: Tổng +1
+      assertions: []
+      status: confirmed
+  expected_result: Chỉ một phiếu
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E3.4_033
+  title: 'Đã lưu nhưng mất phản hồi: thử lại cùng lần xác nhận trả kết quả cũ, không thêm phiếu; hết hạn thì vẫn trả kết quả cũ'
+  type: error_handling
+  techniques:
+  - ERR
+  priority: medium
+  requirement_refs:
+  - E3.4-BR-6
+  - E3.4-EF4
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ có quyền nhập/sửa/xóa phiếu trong phạm vi
+  test_data: *id001
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Danh sách đợt
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở đợt Đang diễn ra
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: tab_phieu
+    input: null
+    description: Chọn tab Phiếu
+    expected:
+      description: Hiển thị danh sách phiếu của đợt
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: click
+    target: btn_nhap_phieu
+    input: null
+    description: Chọn + Nhập phiếu
+    expected:
+      description: Mở form Nhập phiếu khảo sát (UI-3.4.1)
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: select
+    target: rd_hinh_thuc
+    input: ${hf}
+    description: Chọn hình thức
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 6
+    action: fill
+    target: dp_ngay_thu
+    input: ${ngay_thu}
+    description: Nhập ngày thu
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 7
+    action: click
+    target: rd_cau_1_hl
+    input: null
+    description: Chọn Hài lòng câu 1
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 8
+    action: click
+    target: rd_cau_2_hl
+    input: null
+    description: Chọn Hài lòng câu 2
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 9
+    action: click
+    target: rd_cau_3_hl
+    input: null
+    description: Chọn Hài lòng câu 3
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 10
+    action: click
+    target: btn_luu_phieu
+    input: null
+    description: Chọn Lưu phiếu
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 11
+    action: click
+    target: btn_xac_nhan_luu
+    input: null
+    description: Xác nhận lưu rồi mất phản hồi, thử lại
+    expected:
+      description: Trả kết quả đã lưu; không tạo thêm phiếu
+      assertions: []
+      status: needs_confirmation
+  expected_result: Idempotent
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần giả lập mất phản hồi
+  notes: null
+- id: TC_E3.4_034
+  title: Phiếu mới ghi người nhập và thời điểm tạo tự động; lịch sử được ghi; thống kê từng câu cập nhật
+  type: positive
+  techniques:
+  - UC_FLOW
+  priority: high
+  requirement_refs:
+  - E3.4-BR-2
+  - E3.4-BR-7
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ có quyền nhập/sửa/xóa phiếu trong phạm vi
+  test_data: *id001
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Danh sách đợt
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở đợt Đang diễn ra
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: tab_phieu
+    input: null
+    description: Chọn tab Phiếu
+    expected:
+      description: Hiển thị danh sách phiếu của đợt
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: click
+    target: btn_nhap_phieu
+    input: null
+    description: Chọn + Nhập phiếu
+    expected:
+      description: Mở form Nhập phiếu khảo sát (UI-3.4.1)
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: select
+    target: rd_hinh_thuc
+    input: ${hf}
+    description: Chọn hình thức
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 6
+    action: fill
+    target: dp_ngay_thu
+    input: ${ngay_thu}
+    description: Nhập ngày thu
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 7
+    action: click
+    target: rd_cau_1_hl
+    input: null
+    description: Chọn Hài lòng câu 1
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 8
+    action: click
+    target: rd_cau_2_hl
+    input: null
+    description: Chọn Hài lòng câu 2
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 9
+    action: click
+    target: rd_cau_3_hl
+    input: null
+    description: Chọn Hài lòng câu 3
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 10
+    action: click
+    target: btn_luu_phieu
+    input: null
+    description: Chọn Lưu phiếu
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 11
+    action: click
+    target: btn_xac_nhan_luu
+    input: null
+    description: Xác nhận lưu
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 12
+    action: click
+    target: btn_xem_chi_tiet_phieu
+    input: null
+    description: Mở chi tiết phiếu mới
+    expected:
+      description: Người nhập = tài khoản đăng nhập; Ghi nhận lúc = thời điểm xác nhận
+      assertions: []
+      status: confirmed
+  - seq: 13
+    action: click
+    target: tab_ket_qua
+    input: null
+    description: Mở tab Kết quả
+    expected:
+      description: Thống kê từng câu cập nhật theo phiếu mới
+      assertions: []
+      status: confirmed
+  expected_result: Dữ liệu tự ghi đúng
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null

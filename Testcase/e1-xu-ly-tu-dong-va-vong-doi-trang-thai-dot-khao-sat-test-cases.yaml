@@ -1,0 +1,532 @@
+schema_version: '1.0'
+meta:
+  uc_id: E1.AUTO
+  uc_title: Xử lý tự động và vòng đời trạng thái đợt khảo sát (Phân hệ E, nhóm 1)
+  source_file: '[DTI] Tài liệu SRS.docx (bảng vòng đời và xử lý tự động nhóm 1)'
+  generated_at: '2026-10-16'
+  language: vi
+  total_test_cases: 14
+automation_config:
+  framework: playwright
+  base_url: ${env:BASE_URL}
+  route_hint: Trang nội bộ và trang công khai dùng ${env:BASE_URL} (.env); chưa có URL route cụ thể trong SRS
+  credentials:
+    can_bo:
+      username: ${env:CANBO_USERNAME}
+      password: ${env:CANBO_PASSWORD}
+    lanh_dao_don_vi:
+      username: ${env:LANHDAO_USERNAME}
+      password: ${env:LANHDAO_PASSWORD}
+    can_bo_dia_phuong:
+      username: ${env:CANBO_DP_USERNAME}
+      password: ${env:CANBO_DP_PASSWORD}
+    lanh_dao_dia_phuong:
+      username: ${env:LANHDAO_DP_USERNAME}
+      password: ${env:LANHDAO_DP_PASSWORD}
+  locators:
+    bell_list:
+      strategy: null
+      value: null
+      status: missing
+    lbl_trang_thai:
+      strategy: null
+      value: null
+      status: missing
+    lnk_public:
+      strategy: null
+      value: null
+      status: missing
+    tbl_lich_su:
+      strategy: null
+      value: null
+      status: missing
+    toast_message:
+      strategy: null
+      value: null
+      status: missing
+  api_endpoints: {}
+  action_mapping:
+    click: null
+requirements:
+- id: E1.1-BR-10
+  type: business_rule
+  text: 'Hết ngày kết thúc: Đã kết thúc, Chính thức, khóa phiếu; không có nhãn phụ chờ chốt'
+  status: clear
+- id: E1.7b-BR-5
+  type: business_rule
+  text: Tự từ chối hết ngày kết thúc là xử lý tự động, người thực hiện Hệ thống
+  status: clear
+- id: E1.AUTO-AUTO-1
+  type: state
+  text: Tự mở đợt khi Đã phê duyệt và tới ngày bắt đầu
+  status: clear
+- id: E1.AUTO-AUTO-2
+  type: state
+  text: 'Tự từ chối do hết hạn: Bị từ chối, lý do hệ thống, TB-017, không TB-016; tới ngày bắt đầu vẫn chờ duyệt thì chưa hủy'
+  status: clear
+- id: E1.AUTO-AUTO-3
+  type: state
+  text: 'Đóng thu thập sau hết ngày kết thúc: Đã kết thúc, chặn nhận phiếu mọi hình thức'
+  status: clear
+- id: E1.AUTO-AUTO-4
+  type: state
+  text: 'Chốt số liệu sau hết ngày kết thúc: Chính thức, khóa thêm/sửa/xóa phiếu'
+  status: clear
+- id: E1.AUTO-STATE
+  type: state
+  text: Vòng đời trạng thái đợt khảo sát (chuyển hợp lệ và bị cấm)
+  status: clear
+open_questions: []
+test_cases:
+- id: TC_E1.AUTO_001
+  title: 'Tự mở đợt: Đã phê duyệt tới ngày bắt đầu → Đang diễn ra, mở thu thập đúng hình thức'
+  type: state_transition
+  techniques:
+  - ST
+  priority: high
+  requirement_refs:
+  - E1.AUTO-AUTO-1
+  preconditions:
+  - Đợt Đã phê duyệt, hình thức Trực tuyến, ngày bắt đầu = hôm nay
+  test_data: {}
+  steps:
+  - seq: 1
+    action: api_call
+    target: null
+    input: null
+    description: Chạy/đợi tác vụ tự mở đợt khi tới ngày bắt đầu
+    expected:
+      description: Đợt chuyển Đang diễn ra
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: verify
+    target: lbl_trang_thai
+    input: null
+    description: Kiểm tra đợt
+    expected:
+      description: Đang diễn ra; nội dung, ngày kết thúc, mục tiêu không đổi
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: navigate
+    target: lnk_public
+    input: null
+    description: Mở link công khai (trực tuyến)
+    expected:
+      description: Truy cập được form trả lời
+      assertions: []
+      status: confirmed
+  expected_result: Đợt tự mở đúng ngày bắt đầu
+  automation:
+    automatable: 'no'
+    blockers:
+    - Cần điều khiển thời gian hệ thống/tác vụ nền
+  notes: null
+- id: TC_E1.AUTO_002
+  title: 'Tự từ chối do hết hạn: Bị từ chối, người xử lý Hệ thống, TB-017 (không TB-016)'
+  type: state_transition
+  techniques:
+  - ST
+  priority: high
+  requirement_refs:
+  - E1.AUTO-AUTO-2
+  - E1.7b-BR-5
+  preconditions:
+  - Đợt Chờ phê duyệt, ngày kết thúc đã qua
+  test_data: {}
+  steps:
+  - seq: 1
+    action: api_call
+    target: null
+    input: null
+    description: Chạy tác vụ sau hết ngày kết thúc
+    expected:
+      description: Đợt Chờ phê duyệt chuyển Bị từ chối
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: verify
+    target: tbl_lich_su
+    input: null
+    description: Kiểm tra lịch sử
+    expected:
+      description: Người xử lý Hệ thống, lý do 'hệ thống tự động hủy đề xuất do hết thời gian khảo sát mà chưa được phê duyệt', có thời điểm
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: verify
+    target: bell_list
+    input: null
+    description: Kiểm tra chuông người trình
+    expected:
+      description: Có TB-017 'Đợt khảo sát bị từ chối do hết hạn'; không có TB-016
+      assertions: []
+      status: confirmed
+  expected_result: Tự từ chối đúng, chỉ TB-017
+  automation:
+    automatable: 'no'
+    blockers:
+    - Cần điều khiển thời gian hệ thống/tác vụ nền
+  notes: null
+- id: TC_E1.AUTO_003
+  title: 'Tới ngày bắt đầu mà vẫn Chờ phê duyệt: chưa tự hủy'
+  type: boundary
+  techniques:
+  - BVA
+  - ST
+  priority: medium
+  requirement_refs:
+  - E1.AUTO-AUTO-2
+  preconditions:
+  - Đợt Chờ phê duyệt, ngày bắt đầu = hôm nay
+  test_data: {}
+  steps:
+  - seq: 1
+    action: api_call
+    target: null
+    input: null
+    description: Chạy tác vụ ở ngày bắt đầu
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: verify
+    target: lbl_trang_thai
+    input: null
+    description: Kiểm tra đợt
+    expected:
+      description: Vẫn Chờ phê duyệt
+      assertions: []
+      status: confirmed
+  expected_result: Chưa tự từ chối
+  automation:
+    automatable: 'no'
+    blockers:
+    - Cần điều khiển thời gian
+  notes: null
+- id: TC_E1.AUTO_004
+  title: 'Đóng thu thập và chốt số liệu sau hết ngày kết thúc: Đã kết thúc, Chính thức, khóa phiếu mọi hình thức, không phụ thuộc mục tiêu'
+  type: state_transition
+  techniques:
+  - ST
+  priority: high
+  requirement_refs:
+  - E1.AUTO-AUTO-3
+  - E1.AUTO-AUTO-4
+  - E1.1-BR-10
+  preconditions:
+  - Đợt Đang diễn ra, ngày kết thúc đã qua; mục tiêu chưa đạt
+  test_data: {}
+  steps:
+  - seq: 1
+    action: api_call
+    target: null
+    input: null
+    description: Chạy tác vụ sau hết ngày kết thúc
+    expected:
+      description: Đợt Đang diễn ra chuyển Đã kết thúc
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: verify
+    target: lbl_trang_thai
+    input: null
+    description: Kiểm tra đợt
+    expected:
+      description: Đã kết thúc; kết quả Chính thức; không có nhãn phụ chờ chốt
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: navigate
+    target: lnk_public
+    input: null
+    description: Mở link trực tuyến
+    expected:
+      description: Báo MSG-077 'Đợt khảo sát đã kết thúc'
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Đợt khảo sát đã kết thúc
+      status: confirmed
+  expected_result: Đợt đóng thu thập và chốt
+  automation:
+    automatable: 'no'
+    blockers:
+    - Cần điều khiển thời gian
+  notes: null
+- id: TC_E1.AUTO_005
+  title: Kiểm tra hạn tại máy chủ kể cả khi trạng thái chưa cập nhật (tác vụ chạy chậm)
+  type: boundary
+  techniques:
+  - BVA
+  priority: high
+  requirement_refs:
+  - E1.AUTO-AUTO-3
+  - E1.AUTO-AUTO-4
+  preconditions:
+  - Đợt Đang diễn ra nhưng đã qua ngày kết thúc (trạng thái chưa cập nhật)
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: lnk_public
+    input: null
+    description: Truy cập link công khai khi tác vụ đóng chưa chạy nhưng đã qua ngày kết thúc
+    expected:
+      description: Không nhận phiếu (MSG-077)
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Đợt khảo sát đã kết thúc
+      status: confirmed
+  expected_result: Máy chủ chặn theo hạn
+  automation:
+    automatable: 'no'
+    blockers:
+    - Cần điều khiển thời gian
+  notes: null
+- id: TC_E1.AUTO_006
+  title: 'Vòng đời: Nháp → Chờ phê duyệt'
+  type: state_transition
+  techniques:
+  - ST
+  priority: medium
+  requirement_refs:
+  - E1.AUTO-STATE
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ, phạm vi dữ liệu Đơn vị
+  test_data: {}
+  steps:
+  - seq: 1
+    action: verify
+    target: lbl_trang_thai
+    input: null
+    description: Thực hiện/kiểm tra chuyển Nháp → Chờ phê duyệt
+    expected:
+      description: Chuyển hợp lệ theo bảng vòng đời
+      assertions: []
+      status: confirmed
+  expected_result: Chuyển trạng thái hợp lệ
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E1.AUTO_007
+  title: 'Vòng đời: Chờ phê duyệt → Đã phê duyệt / Đang diễn ra'
+  type: state_transition
+  techniques:
+  - ST
+  priority: medium
+  requirement_refs:
+  - E1.AUTO-STATE
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ, phạm vi dữ liệu Đơn vị
+  test_data: {}
+  steps:
+  - seq: 1
+    action: verify
+    target: lbl_trang_thai
+    input: null
+    description: Thực hiện/kiểm tra chuyển Chờ phê duyệt → Đã phê duyệt / Đang diễn ra
+    expected:
+      description: Chuyển hợp lệ theo bảng vòng đời
+      assertions: []
+      status: confirmed
+  expected_result: Chuyển trạng thái hợp lệ
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E1.AUTO_008
+  title: 'Vòng đời: Chờ phê duyệt → Bị từ chối'
+  type: state_transition
+  techniques:
+  - ST
+  priority: medium
+  requirement_refs:
+  - E1.AUTO-STATE
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ, phạm vi dữ liệu Đơn vị
+  test_data: {}
+  steps:
+  - seq: 1
+    action: verify
+    target: lbl_trang_thai
+    input: null
+    description: Thực hiện/kiểm tra chuyển Chờ phê duyệt → Bị từ chối
+    expected:
+      description: Chuyển hợp lệ theo bảng vòng đời
+      assertions: []
+      status: confirmed
+  expected_result: Chuyển trạng thái hợp lệ
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E1.AUTO_009
+  title: 'Vòng đời: Bị từ chối → Chờ phê duyệt'
+  type: state_transition
+  techniques:
+  - ST
+  priority: medium
+  requirement_refs:
+  - E1.AUTO-STATE
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ, phạm vi dữ liệu Đơn vị
+  test_data: {}
+  steps:
+  - seq: 1
+    action: verify
+    target: lbl_trang_thai
+    input: null
+    description: Thực hiện/kiểm tra chuyển Bị từ chối → Chờ phê duyệt
+    expected:
+      description: Chuyển hợp lệ theo bảng vòng đời
+      assertions: []
+      status: confirmed
+  expected_result: Chuyển trạng thái hợp lệ
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E1.AUTO_010
+  title: 'Vòng đời: Đã phê duyệt → Đang diễn ra'
+  type: state_transition
+  techniques:
+  - ST
+  priority: medium
+  requirement_refs:
+  - E1.AUTO-STATE
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ, phạm vi dữ liệu Đơn vị
+  test_data: {}
+  steps:
+  - seq: 1
+    action: verify
+    target: lbl_trang_thai
+    input: null
+    description: Thực hiện/kiểm tra chuyển Đã phê duyệt → Đang diễn ra
+    expected:
+      description: Chuyển hợp lệ theo bảng vòng đời
+      assertions: []
+      status: confirmed
+  expected_result: Chuyển trạng thái hợp lệ
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E1.AUTO_011
+  title: 'Vòng đời: Đang diễn ra → Đã kết thúc'
+  type: state_transition
+  techniques:
+  - ST
+  priority: medium
+  requirement_refs:
+  - E1.AUTO-STATE
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ, phạm vi dữ liệu Đơn vị
+  test_data: {}
+  steps:
+  - seq: 1
+    action: verify
+    target: lbl_trang_thai
+    input: null
+    description: Thực hiện/kiểm tra chuyển Đang diễn ra → Đã kết thúc
+    expected:
+      description: Chuyển hợp lệ theo bảng vòng đời
+      assertions: []
+      status: confirmed
+  expected_result: Chuyển trạng thái hợp lệ
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E1.AUTO_012
+  title: 'Vòng đời: Chờ phê duyệt → Nháp (thu hồi) (không cho phép)'
+  type: state_transition
+  techniques:
+  - ST
+  priority: medium
+  requirement_refs:
+  - E1.AUTO-STATE
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ, phạm vi dữ liệu Đơn vị
+  test_data: {}
+  steps:
+  - seq: 1
+    action: verify
+    target: lbl_trang_thai
+    input: null
+    description: Thực hiện/kiểm tra chuyển Chờ phê duyệt → Nháp (thu hồi)
+    expected:
+      description: Không có thao tác/được từ chối; trạng thái giữ nguyên
+      assertions: []
+      status: needs_confirmation
+  expected_result: Chuyển bị cấm, không thực hiện được
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: Chuyển bị cấm suy ra từ bảng vòng đời (không có mũi tên)
+- id: TC_E1.AUTO_013
+  title: 'Vòng đời: Đã phê duyệt → Nháp/Bị từ chối (không cho phép)'
+  type: state_transition
+  techniques:
+  - ST
+  priority: medium
+  requirement_refs:
+  - E1.AUTO-STATE
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ, phạm vi dữ liệu Đơn vị
+  test_data: {}
+  steps:
+  - seq: 1
+    action: verify
+    target: lbl_trang_thai
+    input: null
+    description: Thực hiện/kiểm tra chuyển Đã phê duyệt → Nháp/Bị từ chối
+    expected:
+      description: Không có thao tác/được từ chối; trạng thái giữ nguyên
+      assertions: []
+      status: needs_confirmation
+  expected_result: Chuyển bị cấm, không thực hiện được
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: Chuyển bị cấm suy ra từ bảng vòng đời (không có mũi tên)
+- id: TC_E1.AUTO_014
+  title: 'Vòng đời: Đã kết thúc → Đang diễn ra (gia hạn) (không cho phép)'
+  type: state_transition
+  techniques:
+  - ST
+  priority: medium
+  requirement_refs:
+  - E1.AUTO-STATE
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ, phạm vi dữ liệu Đơn vị
+  test_data: {}
+  steps:
+  - seq: 1
+    action: verify
+    target: lbl_trang_thai
+    input: null
+    description: Thực hiện/kiểm tra chuyển Đã kết thúc → Đang diễn ra (gia hạn)
+    expected:
+      description: Không có thao tác/được từ chối; trạng thái giữ nguyên
+      assertions: []
+      status: needs_confirmation
+  expected_result: Chuyển bị cấm, không thực hiện được
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: Chuyển bị cấm suy ra từ bảng vòng đời (không có mũi tên)

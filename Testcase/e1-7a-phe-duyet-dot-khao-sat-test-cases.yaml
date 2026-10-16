@@ -1,0 +1,1049 @@
+schema_version: '1.0'
+meta:
+  uc_id: E1.7a
+  uc_title: UC1.7a Phê duyệt đợt khảo sát (Phân hệ E)
+  source_file: '[DTI] Tài liệu SRS.docx (mục 3.1.7)'
+  generated_at: '2026-10-16'
+  language: vi
+  total_test_cases: 15
+automation_config:
+  framework: playwright
+  base_url: ${env:BASE_URL}
+  route_hint: Trang nội bộ và trang công khai dùng ${env:BASE_URL} (.env); chưa có URL route cụ thể trong SRS
+  credentials:
+    can_bo:
+      username: ${env:CANBO_USERNAME}
+      password: ${env:CANBO_PASSWORD}
+    lanh_dao_don_vi:
+      username: ${env:LANHDAO_USERNAME}
+      password: ${env:LANHDAO_PASSWORD}
+    can_bo_dia_phuong:
+      username: ${env:CANBO_DP_USERNAME}
+      password: ${env:CANBO_DP_PASSWORD}
+    lanh_dao_dia_phuong:
+      username: ${env:LANHDAO_DP_USERNAME}
+      password: ${env:LANHDAO_DP_PASSWORD}
+  locators:
+    btn_huy:
+      strategy: null
+      value: null
+      status: missing
+    btn_pd_xn:
+      strategy: null
+      value: null
+      status: missing
+    btn_xem_chi_tiet:
+      strategy: null
+      value: null
+      status: missing
+    lbl_trang_thai:
+      strategy: null
+      value: null
+      status: missing
+    menu_khao_sat_hai_long:
+      strategy: null
+      value: null
+      status: missing
+    mnu_phe_duyet:
+      strategy: null
+      value: null
+      status: missing
+    tbl_lich_su:
+      strategy: null
+      value: null
+      status: missing
+    toast_message:
+      strategy: null
+      value: null
+      status: missing
+  api_endpoints: {}
+  action_mapping:
+    click: null
+requirements:
+- id: E1.7a-BR-1
+  type: business_rule
+  text: Người trình không được tự duyệt dù có quyền duyệt
+  status: clear
+- id: E1.7a-BR-2
+  type: business_rule
+  text: 'Duyệt trước ngày bắt đầu: Đã phê duyệt; từ ngày bắt đầu đến hết ngày kết thúc: Đang diễn ra ngay'
+  status: clear
+- id: E1.7a-BR-3
+  type: business_rule
+  text: Hết ngày kết thúc không cho duyệt kể cả khi tác vụ tự từ chối chưa chạy
+  status: clear
+- id: E1.7a-BR-4
+  type: business_rule
+  text: Sau duyệt khóa thông tin, nhóm/câu, hình thức, thời gian
+  status: clear
+- id: E1.7a-BR-5
+  type: business_rule
+  text: Kiểm tra lại quyền/phạm vi/người trình/trạng thái khi xác nhận; không xử lý thành công hai lần
+  status: clear
+- id: E1.7a-MF
+  type: main_flow
+  text: 'Phê duyệt trước kỳ: Đã phê duyệt, MSG-101, TB-015'
+  status: clear
+- id: E1.7a-AF1
+  type: alt_flow
+  text: 'Phê duyệt trong kỳ: Đang diễn ra'
+  status: clear
+- id: E1.7a-AF2
+  type: alt_flow
+  text: Hủy duyệt
+  status: clear
+- id: E1.7a-EF1
+  type: exception_flow
+  text: Tự duyệt MSG-099 / ngoài quyền MSG-043/045
+  status: clear
+- id: E1.7a-EF2
+  type: exception_flow
+  text: Hết thời gian / đã xử lý / đổi dữ liệu MSG-020
+  status: clear
+- id: E1.7a-EF3
+  type: exception_flow
+  text: Xử lý thất bại MSG-025/026
+  status: clear
+- id: E1.7a-TB
+  type: message
+  text: TB-015 chỉ tới đúng người trình
+  status: clear
+open_questions:
+- id: OQ-1
+  text: 'UC1.7a EF2/UC1.7b EF2: hết ngày kết thúc khi xác nhận duyệt/từ chối dùng MSG-103 (theo danh mục) hay MSG-020? EF của UC không nêu mã.'
+  requirement_refs:
+  - E1.7a-BR-3
+test_cases:
+- id: TC_E1.7a_001
+  title: 'Phê duyệt đợt trước ngày bắt đầu: chuyển Đã phê duyệt, MSG-101, ghi lịch sử'
+  type: positive
+  techniques:
+  - UC_FLOW
+  - ST
+  priority: high
+  requirement_refs:
+  - E1.7a-MF
+  - E1.7a-BR-2
+  - E1.7a-BR-4
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Lãnh đạo đơn vị (khác người trình), có quyền duyệt, đúng phạm vi
+  - Đợt Chờ phê duyệt có ngày bắt đầu sau hôm nay
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở menu thao tác của đợt Chờ phê duyệt
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: mnu_phe_duyet
+    input: null
+    description: Chọn Phê duyệt
+    expected:
+      description: Hiển thị hộp thoại xác nhận phê duyệt (mã/tên, đơn vị, thời gian)
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: click
+    target: btn_pd_xn
+    input: null
+    description: Chọn Phê duyệt
+    expected:
+      description: Báo MSG-101
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Phê duyệt đợt khảo sát thành công
+      status: confirmed
+  - seq: 5
+    action: verify
+    target: lbl_trang_thai
+    input: null
+    description: Kiểm tra trạng thái
+    expected:
+      description: Đã phê duyệt (chờ tự mở)
+      assertions: []
+      status: confirmed
+  - seq: 6
+    action: verify
+    target: tbl_lich_su
+    input: null
+    description: Kiểm tra lịch sử
+    expected:
+      description: Ghi người duyệt và thời điểm
+      assertions: []
+      status: confirmed
+  expected_result: Đợt Đã phê duyệt, thông tin/nhóm/hình thức/thời gian bị khóa
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E1.7a_002
+  title: 'Phê duyệt trong kỳ: chuyển Đang diễn ra ngay, giữ ngày kết thúc'
+  type: state_transition
+  techniques:
+  - ST
+  - BVA
+  priority: high
+  requirement_refs:
+  - E1.7a-AF1
+  - E1.7a-BR-2
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Lãnh đạo đơn vị (khác người trình), có quyền duyệt, đúng phạm vi
+  - Đợt Chờ phê duyệt có ngày bắt đầu <= hôm nay <= ngày kết thúc
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở menu thao tác của đợt Chờ phê duyệt
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: mnu_phe_duyet
+    input: null
+    description: Chọn Phê duyệt
+    expected:
+      description: Hiển thị hộp thoại xác nhận phê duyệt (mã/tên, đơn vị, thời gian)
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: click
+    target: btn_pd_xn
+    input: null
+    description: Chọn Phê duyệt
+    expected:
+      description: Báo MSG-101
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Phê duyệt đợt khảo sát thành công
+      status: confirmed
+  - seq: 5
+    action: verify
+    target: lbl_trang_thai
+    input: null
+    description: Kiểm tra trạng thái
+    expected:
+      description: Đang diễn ra; ngày kết thúc giữ nguyên
+      assertions: []
+      status: confirmed
+  expected_result: Đợt Đang diễn ra ngay
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E1.7a_003
+  title: 'Biên: duyệt đúng ngày bắt đầu (hôm nay) → Đang diễn ra; duyệt đúng ngày kết thúc (hôm nay) vẫn được duyệt'
+  type: boundary
+  techniques:
+  - BVA
+  - ST
+  priority: high
+  requirement_refs:
+  - E1.7a-BR-2
+  - E1.7a-BR-3
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Lãnh đạo đơn vị (khác người trình), có quyền duyệt, đúng phạm vi
+  - Đợt Chờ phê duyệt có ngày bắt đầu và kết thúc = hôm nay
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở menu thao tác của đợt Chờ phê duyệt
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: mnu_phe_duyet
+    input: null
+    description: Chọn Phê duyệt
+    expected:
+      description: Hiển thị hộp thoại xác nhận phê duyệt (mã/tên, đơn vị, thời gian)
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: click
+    target: btn_pd_xn
+    input: null
+    description: Chọn Phê duyệt khi ngày kết thúc = hôm nay
+    expected:
+      description: Duyệt thành công, Đang diễn ra
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Phê duyệt đợt khảo sát thành công
+      status: confirmed
+  expected_result: Duyệt được đến hết ngày kết thúc
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E1.7a_004
+  title: TB-015 gửi đúng tài khoản người trình, nội dung đúng, chỉ một lần
+  type: positive
+  techniques:
+  - UC_FLOW
+  priority: high
+  requirement_refs:
+  - E1.7a-TB
+  - E1.7a-MF
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Lãnh đạo đơn vị (khác người trình), có quyền duyệt, đúng phạm vi
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở menu thao tác của đợt Chờ phê duyệt
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: mnu_phe_duyet
+    input: null
+    description: Chọn Phê duyệt
+    expected:
+      description: Hiển thị hộp thoại xác nhận phê duyệt (mã/tên, đơn vị, thời gian)
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: click
+    target: btn_pd_xn
+    input: null
+    description: Chọn Phê duyệt
+    expected:
+      description: Thành công
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: api_call
+    target: null
+    input: null
+    description: Đăng nhập người trình mở chuông
+    expected:
+      description: 'Có TB-015 ''Đợt khảo sát đã được phê duyệt'': Đợt khảo sát [Mã] - [Tên] đã được phê duyệt. Thời gian khảo sát từ [bắt đầu] đến hết [kết thúc]; link UC1.2'
+      assertions: []
+      status: confirmed
+  expected_result: TB-015 đúng người, một thông báo
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần 2 tài khoản
+  notes: null
+- id: TC_E1.7a_005
+  title: 'Hủy xác nhận duyệt: giữ Chờ phê duyệt, không ghi lịch sử duyệt'
+  type: negative
+  techniques:
+  - UC_FLOW
+  priority: medium
+  requirement_refs:
+  - E1.7a-AF2
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Lãnh đạo đơn vị (khác người trình), có quyền duyệt, đúng phạm vi
+  - Đợt Chờ phê duyệt
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở menu thao tác của đợt Chờ phê duyệt
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: mnu_phe_duyet
+    input: null
+    description: Chọn Phê duyệt
+    expected:
+      description: Hiển thị hộp thoại xác nhận phê duyệt (mã/tên, đơn vị, thời gian)
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: click
+    target: btn_huy
+    input: null
+    description: Chọn Hủy
+    expected:
+      description: Đóng hộp thoại
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: verify
+    target: lbl_trang_thai
+    input: null
+    description: Kiểm tra trạng thái
+    expected:
+      description: Vẫn Chờ phê duyệt
+      assertions: []
+      status: confirmed
+  - seq: 6
+    action: verify
+    target: tbl_lich_su
+    input: null
+    description: Kiểm tra lịch sử
+    expected:
+      description: Không có sự kiện duyệt
+      assertions: []
+      status: confirmed
+  expected_result: Không duyệt
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E1.7a_006
+  title: 'Người trình không được tự duyệt đề xuất của mình: MSG-099'
+  type: permission
+  techniques:
+  - PERM
+  - DT
+  priority: high
+  requirement_refs:
+  - E1.7a-BR-1
+  - E1.7a-EF1
+  preconditions:
+  - Đã đăng nhập bằng tài khoản có đồng thời quyền trình và quyền duyệt, là người đã trình đợt Chờ phê duyệt
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở menu thao tác của đợt Chờ phê duyệt
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: mnu_phe_duyet
+    input: null
+    description: Chọn Phê duyệt
+    expected:
+      description: Hiển thị hộp thoại xác nhận phê duyệt (mã/tên, đơn vị, thời gian)
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: click
+    target: btn_pd_xn
+    input: null
+    description: Chọn Phê duyệt
+    expected:
+      description: Báo MSG-099, không duyệt
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Bạn không được xử lý phê duyệt đề xuất do chính mình trình
+      status: needs_confirmation
+  expected_result: Không duyệt, MSG-099
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: UC không nêu rõ nút Phê duyệt bị ẩn hay hiện rồi báo MSG-099
+- id: TC_E1.7a_007
+  title: 'Thiếu quyền/ngoài phạm vi khi duyệt: MSG-043'
+  type: permission
+  techniques:
+  - PERM
+  priority: high
+  requirement_refs:
+  - E1.7a-EF1
+  - E1.7a-BR-5
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Lãnh đạo đơn vị (khác người trình), có quyền duyệt, đúng phạm vi
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở menu thao tác của đợt Chờ phê duyệt
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: mnu_phe_duyet
+    input: null
+    description: Chọn Phê duyệt
+    expected:
+      description: Hiển thị hộp thoại xác nhận phê duyệt (mã/tên, đơn vị, thời gian)
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: api_call
+    target: null
+    input: null
+    description: Thu hồi quyền duyệt/phạm vi
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: click
+    target: btn_pd_xn
+    input: null
+    description: Chọn Phê duyệt
+    expected:
+      description: Báo MSG-043, không duyệt
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Bạn không có quyền thực hiện thao tác này
+      status: confirmed
+  expected_result: Không duyệt, MSG-043
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần đổi quyền giữa chừng
+  notes: null
+- id: TC_E1.7a_008
+  title: 'Thiếu quyền/ngoài phạm vi khi duyệt: MSG-045'
+  type: permission
+  techniques:
+  - PERM
+  priority: high
+  requirement_refs:
+  - E1.7a-EF1
+  - E1.7a-BR-5
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Lãnh đạo đơn vị (khác người trình), có quyền duyệt, đúng phạm vi
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở menu thao tác của đợt Chờ phê duyệt
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: mnu_phe_duyet
+    input: null
+    description: Chọn Phê duyệt
+    expected:
+      description: Hiển thị hộp thoại xác nhận phê duyệt (mã/tên, đơn vị, thời gian)
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: api_call
+    target: null
+    input: null
+    description: Thu hồi quyền duyệt/phạm vi
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: click
+    target: btn_pd_xn
+    input: null
+    description: Chọn Phê duyệt
+    expected:
+      description: Báo MSG-045, không duyệt
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Bạn không có quyền truy cập dữ liệu của đơn vị này
+      status: confirmed
+  expected_result: Không duyệt, MSG-045
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần đổi quyền giữa chừng
+  notes: null
+- id: TC_E1.7a_009
+  title: Cán bộ (không có quyền duyệt) không thấy mục Phê duyệt
+  type: permission
+  techniques:
+  - PERM
+  priority: medium
+  requirement_refs:
+  - E1.7a-EF1
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ, phạm vi dữ liệu Đơn vị
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở menu thao tác đợt Chờ phê duyệt
+    expected:
+      description: Không có mục Phê duyệt/Từ chối
+      assertions: []
+      status: needs_confirmation
+  expected_result: Không duyệt được
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E1.7a_010
+  title: 'Hết ngày kết thúc: không cho duyệt dù tác vụ tự từ chối chưa chạy'
+  type: boundary
+  techniques:
+  - BVA
+  - ST
+  priority: high
+  requirement_refs:
+  - E1.7a-BR-3
+  - E1.7a-EF2
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Lãnh đạo đơn vị (khác người trình), có quyền duyệt, đúng phạm vi
+  - Đợt Chờ phê duyệt, ngày kết thúc < hôm nay, tác vụ tự từ chối chưa chạy
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở menu thao tác của đợt Chờ phê duyệt
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: mnu_phe_duyet
+    input: null
+    description: Chọn Phê duyệt
+    expected:
+      description: Hiển thị hộp thoại xác nhận phê duyệt (mã/tên, đơn vị, thời gian)
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: click
+    target: btn_pd_xn
+    input: null
+    description: Chọn Phê duyệt khi đã qua ngày kết thúc
+    expected:
+      description: Không duyệt, báo MSG-103, yêu cầu tải lại
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Đã hết thời gian khảo sát. Không thể xử lý phê duyệt đợt khảo sát
+      status: needs_confirmation
+  expected_result: Không duyệt đợt quá hạn
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần dữ liệu quá hạn
+  notes: null
+- id: TC_E1.7a_011
+  title: 'Đợt đã được người khác xử lý/đổi dữ liệu: MSG-020, không xử lý hai lần'
+  type: error_handling
+  techniques:
+  - ERR
+  priority: high
+  requirement_refs:
+  - E1.7a-EF2
+  - E1.7a-BR-5
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Lãnh đạo đơn vị (khác người trình), có quyền duyệt, đúng phạm vi
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở menu thao tác của đợt Chờ phê duyệt
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: mnu_phe_duyet
+    input: null
+    description: Chọn Phê duyệt
+    expected:
+      description: Hiển thị hộp thoại xác nhận phê duyệt (mã/tên, đơn vị, thời gian)
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: api_call
+    target: null
+    input: null
+    description: Lãnh đạo khác duyệt/từ chối cùng đợt
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: click
+    target: btn_pd_xn
+    input: null
+    description: Chọn Phê duyệt
+    expected:
+      description: Báo MSG-020, không xử lý thêm
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Dữ liệu đã được người khác thay đổi. Vui lòng tải lại trang
+      status: confirmed
+  expected_result: Chỉ một xử lý thành công
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần 2 phiên
+  notes: null
+- id: TC_E1.7a_012
+  title: 'Duyệt thất bại: MSG-025, không thể hiện phê duyệt thành công'
+  type: error_handling
+  techniques:
+  - ERR
+  priority: high
+  requirement_refs:
+  - E1.7a-EF3
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Lãnh đạo đơn vị (khác người trình), có quyền duyệt, đúng phạm vi
+  - Giả lập lỗi
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở menu thao tác của đợt Chờ phê duyệt
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: mnu_phe_duyet
+    input: null
+    description: Chọn Phê duyệt
+    expected:
+      description: Hiển thị hộp thoại xác nhận phê duyệt (mã/tên, đơn vị, thời gian)
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: click
+    target: btn_pd_xn
+    input: null
+    description: Chọn Phê duyệt khi lỗi
+    expected:
+      description: Báo MSG-025
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Đã xảy ra lỗi hệ thống. Vui lòng thử lại sau
+      status: confirmed
+  - seq: 5
+    action: verify
+    target: lbl_trang_thai
+    input: null
+    description: Kiểm tra trạng thái
+    expected:
+      description: Vẫn Chờ phê duyệt
+      assertions: []
+      status: confirmed
+  expected_result: Báo MSG-025, giữ Chờ phê duyệt
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần giả lập lỗi
+  notes: null
+- id: TC_E1.7a_013
+  title: 'Duyệt thất bại: MSG-026, không thể hiện phê duyệt thành công'
+  type: error_handling
+  techniques:
+  - ERR
+  priority: high
+  requirement_refs:
+  - E1.7a-EF3
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Lãnh đạo đơn vị (khác người trình), có quyền duyệt, đúng phạm vi
+  - Giả lập lỗi
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở menu thao tác của đợt Chờ phê duyệt
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: mnu_phe_duyet
+    input: null
+    description: Chọn Phê duyệt
+    expected:
+      description: Hiển thị hộp thoại xác nhận phê duyệt (mã/tên, đơn vị, thời gian)
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: click
+    target: btn_pd_xn
+    input: null
+    description: Chọn Phê duyệt khi lỗi
+    expected:
+      description: Báo MSG-026
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Không thể kết nối đến máy chủ. Vui lòng kiểm tra đường truyền
+      status: confirmed
+  - seq: 5
+    action: verify
+    target: lbl_trang_thai
+    input: null
+    description: Kiểm tra trạng thái
+    expected:
+      description: Vẫn Chờ phê duyệt
+      assertions: []
+      status: confirmed
+  expected_result: Báo MSG-026, giữ Chờ phê duyệt
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần giả lập lỗi
+  notes: null
+- id: TC_E1.7a_014
+  title: 'Sau duyệt khóa nội dung/thời gian: Cán bộ không sửa được đợt Đã phê duyệt'
+  type: state_transition
+  techniques:
+  - ST
+  priority: high
+  requirement_refs:
+  - E1.7a-BR-4
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ, phạm vi dữ liệu Đơn vị
+  - Đợt đã được duyệt
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở menu thao tác đợt vừa được duyệt
+    expected:
+      description: Không có Chỉnh sửa/Xóa
+      assertions: []
+      status: needs_confirmation
+  expected_result: Đợt bị khóa
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E1.7a_015
+  title: Chặn bấm lặp khi duyệt
+  type: negative
+  techniques:
+  - ERR
+  priority: low
+  requirement_refs:
+  - E1.7a-BR-5
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Lãnh đạo đơn vị (khác người trình), có quyền duyệt, đúng phạm vi
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_chi_tiet
+    input: null
+    description: Mở menu thao tác của đợt Chờ phê duyệt
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: mnu_phe_duyet
+    input: null
+    description: Chọn Phê duyệt
+    expected:
+      description: Hiển thị hộp thoại xác nhận phê duyệt (mã/tên, đơn vị, thời gian)
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: click
+    target: btn_pd_xn
+    input: null
+    description: Nhấp đúp Phê duyệt
+    expected:
+      description: Chỉ xử lý một lần
+      assertions: []
+      status: needs_confirmation
+  expected_result: Một lịch sử duyệt, một TB-015
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null

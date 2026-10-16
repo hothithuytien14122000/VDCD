@@ -1,0 +1,1308 @@
+schema_version: '1.0'
+meta:
+  uc_id: E1.2
+  uc_title: UC1.2 Xem thông tin và lịch sử xử lý đợt khảo sát (Phân hệ E)
+  source_file: '[DTI] Tài liệu SRS.docx (mục 3.1.2)'
+  generated_at: '2026-10-16'
+  language: vi
+  total_test_cases: 22
+automation_config:
+  framework: playwright
+  base_url: ${env:BASE_URL}
+  route_hint: Trang nội bộ và trang công khai dùng ${env:BASE_URL} (.env); chưa có URL route cụ thể trong SRS
+  credentials:
+    can_bo:
+      username: ${env:CANBO_USERNAME}
+      password: ${env:CANBO_PASSWORD}
+    lanh_dao_don_vi:
+      username: ${env:LANHDAO_USERNAME}
+      password: ${env:LANHDAO_PASSWORD}
+    can_bo_dia_phuong:
+      username: ${env:CANBO_DP_USERNAME}
+      password: ${env:CANBO_DP_PASSWORD}
+    lanh_dao_dia_phuong:
+      username: ${env:LANHDAO_DP_USERNAME}
+      password: ${env:LANHDAO_DP_PASSWORD}
+  locators:
+    blk_tien_do:
+      strategy: null
+      value: null
+      status: missing
+    btn_nhap_phieu:
+      strategy: null
+      value: null
+      status: missing
+    btn_quay_lai:
+      strategy: null
+      value: null
+      status: missing
+    btn_retry:
+      strategy: null
+      value: null
+      status: missing
+    btn_sao_chep:
+      strategy: null
+      value: null
+      status: missing
+    btn_tai_mau:
+      strategy: null
+      value: null
+      status: missing
+    btn_tai_qr:
+      strategy: null
+      value: null
+      status: missing
+    btn_xem_thong_tin:
+      strategy: null
+      value: null
+      status: missing
+    col_trang_thai:
+      strategy: null
+      value: null
+      status: missing
+    lbl_chot:
+      strategy: null
+      value: null
+      status: missing
+    lbl_chua_mo:
+      strategy: null
+      value: null
+      status: missing
+    lbl_dot_header:
+      strategy: null
+      value: null
+      status: missing
+    lbl_hinh_thuc:
+      strategy: null
+      value: null
+      status: missing
+    lbl_info:
+      strategy: null
+      value: null
+      status: missing
+    lbl_link:
+      strategy: null
+      value: null
+      status: missing
+    lbl_thang:
+      strategy: null
+      value: null
+      status: missing
+    lnk_chi_tiet:
+      strategy: null
+      value: null
+      status: missing
+    lnk_public:
+      strategy: null
+      value: null
+      status: missing
+    lst_noi_dung:
+      strategy: null
+      value: null
+      status: missing
+    menu_khao_sat_hai_long:
+      strategy: null
+      value: null
+      status: missing
+    tab_group:
+      strategy: null
+      value: null
+      status: missing
+    tab_ket_qua:
+      strategy: null
+      value: null
+      status: missing
+    tab_phieu:
+      strategy: null
+      value: null
+      status: missing
+    tbl_lich_su:
+      strategy: null
+      value: null
+      status: missing
+    toast_message:
+      strategy: null
+      value: null
+      status: missing
+  api_endpoints: {}
+  action_mapping:
+    click: null
+requirements:
+- id: E1.2-BR-1
+  type: business_rule
+  text: Chỉ hiển thị dữ liệu đúng đợt trong phạm vi, không dùng dữ liệu đợt khác khi lỗi
+  status: clear
+- id: E1.2-BR-2
+  type: business_rule
+  text: Nội dung theo thứ tự nhóm/câu đã lưu, đánh số lại từ 1 trong từng nhóm; không có câu đánh giá chung
+  status: clear
+- id: E1.2-BR-3
+  type: business_rule
+  text: Sau hết ngày kết thúc mọi hình thức dừng nhận phiếu, chốt kết quả
+  status: clear
+- id: E1.2-BR-4
+  type: business_rule
+  text: 'Đợt Đã phê duyệt chưa tới kỳ: Chưa mở ở hình thức trực tuyến, không có tab Phiếu/Kết quả/tiến độ'
+  status: clear
+- id: E1.2-BR-5
+  type: business_rule
+  text: Đợt Đang diễn ra có tab Thông tin/Phiếu/Kết quả theo quyền; số đếm Phiếu toàn đợt; Kết quả ghi Tạm tính
+  status: clear
+- id: E1.2-BR-6
+  type: business_rule
+  text: Đường dẫn và QR cùng trỏ đúng đợt; sao chép/tải QR không mở thu thập trước kỳ
+  status: clear
+- id: E1.2-BR-7
+  type: business_rule
+  text: Lịch sử lưu sự kiện, người thực hiện, thời điểm, lý do từ chối; tự từ chối ghi người thực hiện Hệ thống
+  status: clear
+- id: E1.2-BR-8
+  type: business_rule
+  text: Phiếu mục tiêu/tiến độ theo quy tắc UC1.1
+  status: clear
+- id: E1.2-MF
+  type: main_flow
+  text: Xem thông tin và lịch sử của một đợt
+  status: clear
+- id: E1.2-AF1
+  type: alt_flow
+  text: Đợt trực tuyến đã duyệt chưa mở (UI-1.2.2)
+  status: clear
+- id: E1.2-AF2
+  type: alt_flow
+  text: Chuyển Phiếu/Kết quả/Tải mẫu/Nhập phiếu
+  status: clear
+- id: E1.2-AF3
+  type: alt_flow
+  text: Sao chép đường dẫn / tải QR
+  status: clear
+- id: E1.2-AF4
+  type: alt_flow
+  text: Quay lại danh sách
+  status: clear
+- id: E1.2-EF1
+  type: exception_flow
+  text: Không xem được đợt MSG-044
+  status: clear
+- id: E1.2-EF2
+  type: exception_flow
+  text: Lỗi tải MSG-025/026
+  status: clear
+- id: E1.2-PERM
+  type: permission
+  text: Quyền xem và phạm vi dữ liệu
+  status: clear
+open_questions: []
+test_cases:
+- id: TC_E1.2_001
+  title: 'Xem thông tin đợt Đang diễn ra: đầy đủ thông tin chung, nội dung và lịch sử'
+  type: positive
+  techniques:
+  - UC_FLOW
+  priority: high
+  requirement_refs:
+  - E1.2-MF
+  - E1.2-BR-1
+  - E1.2-BR-5
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ, phạm vi dữ liệu Đơn vị
+  - Có đợt Đang diễn ra có phiếu
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_thong_tin
+    input: null
+    description: Mở Xem thông tin của đợt
+    expected:
+      description: Hiển thị màn thông tin đợt
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: verify
+    target: lbl_dot_header
+    input: null
+    description: Kiểm tra đầu trang
+    expected:
+      description: Hiển thị tên, mã, đơn vị, thời gian, trạng thái của đúng đợt
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: verify
+    target: tab_group
+    input: null
+    description: Kiểm tra tab
+    expected:
+      description: Có tab Thông tin, Phiếu, Kết quả; số đếm Phiếu là toàn đợt; Kết quả ghi Tạm tính
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: verify
+    target: lbl_info
+    input: null
+    description: Kiểm tra thông tin chung
+    expected:
+      description: Hiển thị Mã đợt, Hình thức, Đơn vị thực hiện, Thời gian, Phiếu mục tiêu, Người tạo, Mô tả ở dạng chỉ xem
+      assertions: []
+      status: confirmed
+  - seq: 6
+    action: verify
+    target: tbl_lich_su
+    input: null
+    description: Kiểm tra Lịch sử xử lý
+    expected:
+      description: Hiển thị người xử lý, sự kiện, thời điểm, lý do
+      assertions: []
+      status: confirmed
+  expected_result: Hiển thị đúng dữ liệu của đợt, không thay đổi dữ liệu
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E1.2_002
+  title: 'Nội dung khảo sát: thứ tự nhóm/câu đã lưu, đánh số lại từ 1 trong từng nhóm, thang Hài lòng/Chưa hài lòng'
+  type: positive
+  techniques:
+  - UC_FLOW
+  priority: high
+  requirement_refs:
+  - E1.2-BR-2
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ, phạm vi dữ liệu Đơn vị
+  - Đợt có >= 2 nhóm
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_thong_tin
+    input: null
+    description: Mở Xem thông tin của đợt
+    expected:
+      description: Hiển thị màn thông tin đợt
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: verify
+    target: lst_noi_dung
+    input: null
+    description: Kiểm tra nhóm và câu
+    expected:
+      description: Nhóm/câu theo đúng thứ tự đã lưu; số câu bắt đầu lại từ 1 ở mỗi nhóm; không có câu đánh giá chung riêng; không có tay nắm kéo thả/ô sửa
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: verify
+    target: lbl_thang
+    input: null
+    description: Kiểm tra thang đánh giá
+    expected:
+      description: Hiển thị Hài lòng và Chưa hài lòng
+      assertions: []
+      status: confirmed
+  expected_result: Đánh số và thang đúng đặc tả
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E1.2_003
+  title: 'Đợt Đã phê duyệt chưa tới kỳ: hiển thị Chưa mở, ẩn tab Phiếu/Kết quả/tiến độ'
+  type: state_transition
+  techniques:
+  - ST
+  priority: high
+  requirement_refs:
+  - E1.2-AF1
+  - E1.2-BR-4
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ, phạm vi dữ liệu Đơn vị
+  - Có đợt Đã phê duyệt, hình thức Trực tuyến, chưa tới ngày bắt đầu
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_thong_tin
+    input: null
+    description: Mở Xem thông tin của đợt
+    expected:
+      description: Hiển thị màn thông tin đợt
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: verify
+    target: lbl_chua_mo
+    input: null
+    description: Kiểm tra nhãn hình thức trực tuyến
+    expected:
+      description: Hiển thị 'Chưa mở'
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: verify
+    target: tab_group
+    input: null
+    description: Kiểm tra tab
+    expected:
+      description: Không có tab Phiếu/Kết quả
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: verify
+    target: blk_tien_do
+    input: null
+    description: Kiểm tra khối tiến độ
+    expected:
+      description: Không hiển thị
+      assertions: []
+      status: confirmed
+  - seq: 6
+    action: verify
+    target: lbl_link
+    input: null
+    description: Kiểm tra link/QR
+    expected:
+      description: Hiển thị đường dẫn và mã QR của đợt
+      assertions: []
+      status: confirmed
+  expected_result: Hiển thị biến thể UI-1.2.2
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E1.2_004
+  title: 'Đợt Đã kết thúc: không ghi ''Đang nhận phiếu'', hiển thị thời điểm chốt và kết quả Chính thức'
+  type: state_transition
+  techniques:
+  - ST
+  priority: medium
+  requirement_refs:
+  - E1.2-BR-3
+  - E1.2-BR-5
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ, phạm vi dữ liệu Đơn vị
+  - Có đợt Đã kết thúc
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_thong_tin
+    input: null
+    description: Mở Xem thông tin của đợt
+    expected:
+      description: Hiển thị màn thông tin đợt
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: verify
+    target: lbl_hinh_thuc
+    input: null
+    description: Kiểm tra nhãn thời gian
+    expected:
+      description: Không ghi Đang nhận phiếu
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: verify
+    target: lbl_chot
+    input: null
+    description: Kiểm tra Thời điểm chốt số liệu
+    expected:
+      description: Hiển thị mốc chốt
+      assertions: []
+      status: needs_confirmation
+  expected_result: Hiển thị đúng sau kỳ
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E1.2_005
+  title: Xem thông tin đợt trạng thái Nháp
+  type: positive
+  techniques:
+  - EP
+  priority: medium
+  requirement_refs:
+  - E1.2-MF
+  - E1.2-BR-7
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ, phạm vi dữ liệu Đơn vị
+  - Có đợt Nháp
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_thong_tin
+    input: null
+    description: Mở Xem thông tin của đợt
+    expected:
+      description: Hiển thị màn thông tin đợt
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: verify
+    target: lbl_info
+    input: null
+    description: Kiểm tra đợt Nháp
+    expected:
+      description: Không có tab Phiếu/Kết quả
+      assertions: []
+      status: needs_confirmation
+  expected_result: Không có tab Phiếu/Kết quả
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E1.2_006
+  title: Xem thông tin đợt trạng thái Chờ phê duyệt
+  type: positive
+  techniques:
+  - EP
+  priority: medium
+  requirement_refs:
+  - E1.2-MF
+  - E1.2-BR-7
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ, phạm vi dữ liệu Đơn vị
+  - Có đợt Chờ phê duyệt
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_thong_tin
+    input: null
+    description: Mở Xem thông tin của đợt
+    expected:
+      description: Hiển thị màn thông tin đợt
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: verify
+    target: lbl_info
+    input: null
+    description: Kiểm tra đợt Chờ phê duyệt
+    expected:
+      description: Hiển thị lịch sử trình
+      assertions: []
+      status: needs_confirmation
+  expected_result: Hiển thị lịch sử trình
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E1.2_007
+  title: Xem thông tin đợt trạng thái Bị từ chối
+  type: positive
+  techniques:
+  - EP
+  priority: medium
+  requirement_refs:
+  - E1.2-MF
+  - E1.2-BR-7
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ, phạm vi dữ liệu Đơn vị
+  - Có đợt Bị từ chối
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_thong_tin
+    input: null
+    description: Mở Xem thông tin của đợt
+    expected:
+      description: Hiển thị màn thông tin đợt
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: verify
+    target: lbl_info
+    input: null
+    description: Kiểm tra đợt Bị từ chối
+    expected:
+      description: Hiển thị lý do từ chối trong Lịch sử xử lý
+      assertions: []
+      status: confirmed
+  expected_result: Hiển thị lý do từ chối trong Lịch sử xử lý
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E1.2_008
+  title: Lịch sử xử lý ghi từ chối thủ công, trình lại và lý do
+  type: positive
+  techniques:
+  - UC_FLOW
+  priority: high
+  requirement_refs:
+  - E1.2-BR-7
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ, phạm vi dữ liệu Đơn vị
+  - Đợt đã Trình > Từ chối > Trình lại
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_thong_tin
+    input: null
+    description: Mở Xem thông tin của đợt
+    expected:
+      description: Hiển thị màn thông tin đợt
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: verify
+    target: tbl_lich_su
+    input: null
+    description: Kiểm tra lịch sử đợt đã bị từ chối rồi trình lại
+    expected:
+      description: Có đủ sự kiện Trình, Từ chối (kèm lý do), Trình lại; mỗi sự kiện có người thực hiện và thời điểm; không có sự kiện mẫu
+      assertions: []
+      status: confirmed
+  expected_result: Lịch sử đầy đủ, theo đúng thực tế
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E1.2_009
+  title: Tự từ chối do hết hạn ghi người thực hiện là Hệ thống
+  type: positive
+  techniques:
+  - UC_FLOW
+  priority: high
+  requirement_refs:
+  - E1.2-BR-7
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ, phạm vi dữ liệu Đơn vị
+  - Có đợt bị tự từ chối do hết hạn
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_thong_tin
+    input: null
+    description: Mở Xem thông tin của đợt
+    expected:
+      description: Hiển thị màn thông tin đợt
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: verify
+    target: tbl_lich_su
+    input: null
+    description: Kiểm tra dòng tự từ chối
+    expected:
+      description: 'Người thực hiện: Hệ thống; lý do: hệ thống tự động hủy đề xuất do hết thời gian khảo sát mà chưa được phê duyệt'
+      assertions: []
+      status: confirmed
+  expected_result: Lịch sử ghi Hệ thống
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E1.2_010
+  title: Đường dẫn và mã QR cùng trỏ đúng đợt, sao chép/tải QR không đổi trạng thái
+  type: positive
+  techniques:
+  - UC_FLOW
+  priority: high
+  requirement_refs:
+  - E1.2-AF3
+  - E1.2-BR-6
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ, phạm vi dữ liệu Đơn vị
+  - Đợt có hình thức Trực tuyến
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_thong_tin
+    input: null
+    description: Mở Xem thông tin của đợt
+    expected:
+      description: Hiển thị màn thông tin đợt
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: btn_sao_chep
+    input: null
+    description: Chọn Sao chép đường dẫn
+    expected:
+      description: Đường dẫn được sao chép
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: click
+    target: btn_tai_qr
+    input: null
+    description: Chọn Tải mã QR
+    expected:
+      description: Tải được ảnh QR
+      assertions: []
+      status: confirmed
+  - seq: 5
+    action: verify
+    target: col_trang_thai
+    input: null
+    description: Kiểm tra trạng thái và thời gian mở đợt
+    expected:
+      description: Không thay đổi; đường dẫn và QR cùng trỏ đúng trang trả lời của đợt
+      assertions: []
+      status: confirmed
+  expected_result: Sao chép/tải QR đúng đợt, không thay đổi dữ liệu
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E1.2_011
+  title: Dùng link/QR của đợt chưa mở không mở thu thập trước kỳ
+  type: negative
+  techniques:
+  - ST
+  priority: high
+  requirement_refs:
+  - E1.2-BR-6
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ, phạm vi dữ liệu Đơn vị
+  - Đợt Đã phê duyệt chưa tới ngày bắt đầu
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_thong_tin
+    input: null
+    description: Mở Xem thông tin của đợt
+    expected:
+      description: Hiển thị màn thông tin đợt
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: navigate
+    target: lnk_public
+    input: null
+    description: Mở đường dẫn của đợt trong trình duyệt ẩn danh
+    expected:
+      description: Hiển thị 'Đợt khảo sát chưa bắt đầu' (MSG-078), không có form trả lời
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Đợt khảo sát chưa bắt đầu
+      status: confirmed
+  expected_result: Không thu thập trước kỳ
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E1.2_012
+  title: 'Chuyển nghiệp vụ: UC3.1 Danh sách phiếu'
+  type: positive
+  techniques:
+  - UC_FLOW
+  priority: medium
+  requirement_refs:
+  - E1.2-AF2
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ, phạm vi dữ liệu Đơn vị
+  - Đợt Đang diễn ra có hình thức không trực tuyến
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_thong_tin
+    input: null
+    description: Mở Xem thông tin của đợt
+    expected:
+      description: Hiển thị màn thông tin đợt
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: tab_phieu
+    input: null
+    description: Chọn mục chuyển đến UC3.1 Danh sách phiếu
+    expected:
+      description: Mở UC3.1 Danh sách phiếu của đúng đợt (kiểm tra quyền/thời gian tại UC đích)
+      assertions: []
+      status: confirmed
+  expected_result: Chuyển đến UC3.1 Danh sách phiếu
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E1.2_013
+  title: 'Chuyển nghiệp vụ: UC4.2 Kết quả'
+  type: positive
+  techniques:
+  - UC_FLOW
+  priority: medium
+  requirement_refs:
+  - E1.2-AF2
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ, phạm vi dữ liệu Đơn vị
+  - Đợt Đang diễn ra có hình thức không trực tuyến
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_thong_tin
+    input: null
+    description: Mở Xem thông tin của đợt
+    expected:
+      description: Hiển thị màn thông tin đợt
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: tab_ket_qua
+    input: null
+    description: Chọn mục chuyển đến UC4.2 Kết quả
+    expected:
+      description: Mở UC4.2 Kết quả của đúng đợt (kiểm tra quyền/thời gian tại UC đích)
+      assertions: []
+      status: confirmed
+  expected_result: Chuyển đến UC4.2 Kết quả
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E1.2_014
+  title: 'Chuyển nghiệp vụ: UC3.3 Tải mẫu phiếu'
+  type: positive
+  techniques:
+  - UC_FLOW
+  priority: medium
+  requirement_refs:
+  - E1.2-AF2
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ, phạm vi dữ liệu Đơn vị
+  - Đợt Đang diễn ra có hình thức không trực tuyến
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_thong_tin
+    input: null
+    description: Mở Xem thông tin của đợt
+    expected:
+      description: Hiển thị màn thông tin đợt
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: btn_tai_mau
+    input: null
+    description: Chọn mục chuyển đến UC3.3 Tải mẫu phiếu
+    expected:
+      description: Mở UC3.3 Tải mẫu phiếu của đúng đợt (kiểm tra quyền/thời gian tại UC đích)
+      assertions: []
+      status: confirmed
+  expected_result: Chuyển đến UC3.3 Tải mẫu phiếu
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E1.2_015
+  title: 'Chuyển nghiệp vụ: UC3.4 Nhập phiếu'
+  type: positive
+  techniques:
+  - UC_FLOW
+  priority: medium
+  requirement_refs:
+  - E1.2-AF2
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ, phạm vi dữ liệu Đơn vị
+  - Đợt Đang diễn ra có hình thức không trực tuyến
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_thong_tin
+    input: null
+    description: Mở Xem thông tin của đợt
+    expected:
+      description: Hiển thị màn thông tin đợt
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: btn_nhap_phieu
+    input: null
+    description: Chọn mục chuyển đến UC3.4 Nhập phiếu
+    expected:
+      description: Mở UC3.4 Nhập phiếu của đúng đợt (kiểm tra quyền/thời gian tại UC đích)
+      assertions: []
+      status: confirmed
+  expected_result: Chuyển đến UC3.4 Nhập phiếu
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E1.2_016
+  title: Tải mẫu phiếu và + Nhập phiếu chỉ hiện với hình thức không trực tuyến
+  type: decision_table
+  techniques:
+  - DT
+  priority: medium
+  requirement_refs:
+  - E1.2-AF2
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ, phạm vi dữ liệu Đơn vị
+  - Đợt Đang diễn ra chỉ có hình thức Trực tuyến
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_thong_tin
+    input: null
+    description: Mở Xem thông tin của đợt
+    expected:
+      description: Hiển thị màn thông tin đợt
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: verify
+    target: btn_tai_mau
+    input: null
+    description: Xem đợt chỉ có hình thức Trực tuyến
+    expected:
+      description: Không hiện Tải mẫu phiếu và + Nhập phiếu
+      assertions: []
+      status: needs_confirmation
+  expected_result: Hiển thị nút đúng theo hình thức
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E1.2_017
+  title: Quay lại về danh sách đợt, không thay đổi dữ liệu
+  type: positive
+  techniques:
+  - UC_FLOW
+  priority: low
+  requirement_refs:
+  - E1.2-AF4
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ, phạm vi dữ liệu Đơn vị
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_thong_tin
+    input: null
+    description: Mở Xem thông tin của đợt
+    expected:
+      description: Hiển thị màn thông tin đợt
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: btn_quay_lai
+    input: null
+    description: Chọn Quay lại
+    expected:
+      description: Trở về danh sách UC1.1
+      assertions: []
+      status: confirmed
+  expected_result: Về danh sách, không đổi dữ liệu
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E1.2_018
+  title: Không xem được đợt (đã xóa/ngoài quyền xem) báo MSG-044 và không hiển thị nội dung
+  type: error_handling
+  techniques:
+  - ERR
+  - PERM
+  priority: high
+  requirement_refs:
+  - E1.2-EF1
+  - E1.2-PERM
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ, phạm vi dữ liệu Đơn vị
+  - Đợt không tồn tại hoặc ngoài phạm vi
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: lnk_chi_tiet
+    input: null
+    description: Mở đường dẫn chi tiết của đợt không tồn tại/không được xem
+    expected:
+      description: Hiển thị MSG-044, không hiển thị nội dung đợt
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Nội dung không còn tồn tại hoặc bạn không có quyền xem
+      status: confirmed
+  expected_result: Báo MSG-044
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E1.2_019
+  title: Đợt ngoài phạm vi dữ liệu không được xem qua link trực tiếp
+  type: permission
+  techniques:
+  - PERM
+  priority: high
+  requirement_refs:
+  - E1.2-PERM
+  - E1.2-BR-1
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ, phạm vi dữ liệu Đơn vị
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: lnk_chi_tiet
+    input: null
+    description: Mở link chi tiết của đợt thuộc đơn vị ngoài phạm vi
+    expected:
+      description: Từ chối truy cập
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Nội dung không còn tồn tại hoặc bạn không có quyền xem
+      status: confirmed
+  expected_result: Không hiển thị dữ liệu đợt ngoài phạm vi
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E1.2_020
+  title: 'Lỗi tải thông tin đợt: MSG-025, không hiển thị thông tin mẫu và cho thử lại'
+  type: error_handling
+  techniques:
+  - ERR
+  priority: medium
+  requirement_refs:
+  - E1.2-EF2
+  - E1.2-BR-1
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ, phạm vi dữ liệu Đơn vị
+  - Giả lập lỗi
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_thong_tin
+    input: null
+    description: Mở Xem thông tin khi hệ thống lỗi
+    expected:
+      description: Hiển thị MSG-025
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Đã xảy ra lỗi hệ thống. Vui lòng thử lại sau
+      status: confirmed
+  - seq: 3
+    action: verify
+    target: lbl_info
+    input: null
+    description: Kiểm tra nội dung
+    expected:
+      description: Không hiển thị thông tin mẫu/đợt khác
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: click
+    target: btn_retry
+    input: null
+    description: Thử lại
+    expected:
+      description: Tải lại từ bước 2
+      assertions: []
+      status: confirmed
+  expected_result: Báo MSG-025, cho thử lại
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần giả lập lỗi
+  notes: null
+- id: TC_E1.2_021
+  title: 'Lỗi tải thông tin đợt: MSG-026, không hiển thị thông tin mẫu và cho thử lại'
+  type: error_handling
+  techniques:
+  - ERR
+  priority: medium
+  requirement_refs:
+  - E1.2-EF2
+  - E1.2-BR-1
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ, phạm vi dữ liệu Đơn vị
+  - Giả lập lỗi
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_thong_tin
+    input: null
+    description: Mở Xem thông tin khi hệ thống lỗi
+    expected:
+      description: Hiển thị MSG-026
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Không thể kết nối đến máy chủ. Vui lòng kiểm tra đường truyền
+      status: confirmed
+  - seq: 3
+    action: verify
+    target: lbl_info
+    input: null
+    description: Kiểm tra nội dung
+    expected:
+      description: Không hiển thị thông tin mẫu/đợt khác
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: click
+    target: btn_retry
+    input: null
+    description: Thử lại
+    expected:
+      description: Tải lại từ bước 2
+      assertions: []
+      status: confirmed
+  expected_result: Báo MSG-026, cho thử lại
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần giả lập lỗi
+  notes: null
+- id: TC_E1.2_022
+  title: Tiến độ và phiếu mục tiêu trên màn thông tin theo quy tắc UC1.1 (85/200 = 43%, không đồng nhất phiếu với người)
+  type: positive
+  techniques:
+  - DT
+  priority: medium
+  requirement_refs:
+  - E1.2-BR-8
+  preconditions:
+  - Đã đăng nhập bằng tài khoản Cán bộ, phạm vi dữ liệu Đơn vị
+  - Đợt Đang diễn ra có 85 phiếu, mục tiêu 200
+  test_data: {}
+  steps:
+  - seq: 1
+    action: click
+    target: menu_khao_sat_hai_long
+    input: null
+    description: Chọn menu Khảo sát hài lòng > Đợt khảo sát
+    expected:
+      description: Hiển thị danh sách đợt khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_xem_thong_tin
+    input: null
+    description: Mở Xem thông tin của đợt
+    expected:
+      description: Hiển thị màn thông tin đợt
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: verify
+    target: blk_tien_do
+    input: null
+    description: Kiểm tra khối tiến độ của đợt 85/200
+    expected:
+      description: Hiển thị 85/200 và 43%; không gọi là số người
+      assertions: []
+      status: confirmed
+  expected_result: Làm tròn và hiển thị đúng như UC1.1
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null

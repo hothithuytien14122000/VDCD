@@ -1,0 +1,1612 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prototype khảo sát hài lòng</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F6F5F3;--line:#E7E5E2;--line2:#EFEDEA;--text:#1C1B1A;--muted:#6B6762;--muted2:#57534E;--accent:#A3201B;--accent-soft:#FBEDEC;--err:#B42318;--chg:#8A3B00;--chg-bg:#FDE7D3;--be:#0B4A8F;--be-bg:#E3EEFB;color-scheme:light}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--text);font-family:'Be Vietnam Pro',system-ui,sans-serif;display:flex;flex-direction:column}
+button{font-family:inherit;cursor:pointer}
+input,select,textarea{font-family:inherit}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.hidden{display:none!important}
+
+/* Khung điều hướng luồng */
+.bar{background:#151413;color:#fff;display:flex;align-items:center;gap:14px;padding:10px 16px;flex:0 0 auto}
+.bar b{font-size:14.5px;white-space:nowrap}
+.bar .cur{font-size:13px;color:#C9C6C1;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar button{height:32px;padding:0 12px;border-radius:8px;border:1px solid #3A3734;background:#24221F;color:#fff;font-size:12.5px;white-space:nowrap}
+.bar button:disabled{opacity:.35;cursor:not-allowed}
+.bar button.pri{background:var(--accent);border-color:var(--accent)}
+.body{flex:1;display:flex;min-height:0}
+nav{flex:0 0 290px;background:#fff;border-right:1px solid var(--line);overflow:auto;padding:12px 10px 24px}
+.ov{display:block;width:100%;text-align:left;border:0;background:transparent;padding:9px 10px;border-radius:8px;font-size:13px;font-weight:600;color:var(--text)}
+.ov.on,.it.on{background:var(--accent-soft)}
+nav .gh{margin:16px 10px 2px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.gd{margin:0 10px 6px;font-size:11.5px;color:var(--muted)}
+.it{display:flex;gap:10px;width:100%;text-align:left;border:0;background:transparent;padding:7px 10px;border-radius:8px;align-items:flex-start;color:var(--text)}
+.it:hover,.ov:hover{background:#F3F1EE}
+.it .no{flex:0 0 30px;height:22px;border-radius:6px;background:#F3F1EE;font-size:11.5px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.it.on .no{background:var(--accent);color:#fff}
+.it .tx{font-size:13px;line-height:1.4}
+main{flex:1;min-width:0;overflow:auto}
+
+/* Trang màn hình */
+.wrap{padding:22px 24px 48px;max-width:1640px}
+.sh{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline;margin-bottom:14px}
+.sh h1{margin:0;font-size:20px}
+.sh .fl{font-size:12px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.05em}
+.sh .ac{font-size:12.5px;color:var(--muted2);flex-basis:100%}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:18px;align-items:start}
+@media (max-width:1280px){.grid{grid-template-columns:minmax(0,1fr)}}
+.fscroll{overflow-x:auto;border-radius:12px;border:1px solid var(--line);background:#fff}
+.notes{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px;position:sticky;top:0}
+.notes h3{margin:0 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+.notes ul{margin:0 0 14px;padding-left:18px;font-size:12.5px;line-height:1.65;color:var(--muted2)}
+.notes code,.api code{font-size:11.5px;background:#F3F1EE;border-radius:4px;padding:1px 5px;color:var(--text);word-break:break-all}
+.api{display:flex;flex-direction:column;gap:6px;font-size:12px}
+.nextb{margin-top:6px;display:flex;gap:8px;flex-wrap:wrap}
+.chg{display:inline-flex;align-items:center;font-size:10.5px;font-weight:600;color:var(--chg);background:var(--chg-bg);border-radius:4px;padding:1px 6px;white-space:nowrap;vertical-align:1px}
+.be{display:inline-flex;align-items:center;font-size:10.5px;font-weight:600;color:var(--be);background:var(--be-bg);border-radius:4px;padding:1px 6px;white-space:nowrap;vertical-align:1px}
+
+/* Trang tổng quan */
+.home{padding:26px 28px 48px;max-width:1180px;display:flex;flex-direction:column;gap:16px}
+.home h1{margin:0;font-size:22px}
+.home .sub{margin:2px 0 0;font-size:13px;color:var(--muted)}
+.box{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+.box h2{margin:0 0 4px;font-size:15px}
+.box p.d{margin:0 0 12px;font-size:12.5px;color:var(--muted)}
+.box ul{margin:0;padding-left:18px;font-size:13px;line-height:1.75;color:var(--muted2)}
+.sm{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:12.5px}
+.sm .ar{color:#A8A49E}
+.sm .lb{font-size:11.5px;color:var(--muted)}
+.mx{width:100%;border-collapse:collapse;font-size:12.5px}
+.mx th,.mx td{border-top:1px solid var(--line2);padding:8px 10px;text-align:left;vertical-align:top}
+.mx th{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);background:#FAF9F7}
+.mx td.y{color:#17603A;font-weight:600}
+.mx td.n{color:#B5B1AB}
+.cards{display:flex;flex-wrap:wrap;gap:8px}
+.fc{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:#FAF9F7;text-align:left;width:250px;display:flex;flex-direction:column;gap:3px;color:var(--text)}
+.fc:hover{border-color:var(--accent);background:var(--accent-soft)}
+.fc .n{font-size:11px;font-weight:700;color:var(--accent)}
+.fc .t{font-size:13px;font-weight:600}
+.fc .w{font-size:11.5px;color:var(--muted2);line-height:1.45}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.pm{width:100%;border-collapse:collapse;font-size:12.5px}
+.pm th,.pm td{border-top:1px solid var(--line2);padding:7px 10px;text-align:left;vertical-align:top}
+.pm th{font-size:11px;letter-spacing:.03em;color:var(--muted);background:#FAF9F7;font-weight:600}
+.pm td:last-child{text-align:left;white-space:nowrap}
+.pm tr.g td{background:#FAF9F7;font-weight:600;color:var(--text)}
+.pm .ok{color:#17603A;font-weight:700}.pm .no{color:#C9C5BF}
+.pm tr.cur td{background:var(--accent-soft)}
+.pm .sl{border:1px solid var(--line);background:#fff;border-radius:6px;padding:1px 6px;font-size:11px;color:var(--accent);font-weight:600;margin-right:3px;cursor:pointer}
+.rl{margin:10px 0 0;padding-left:18px;font-size:12.5px;line-height:1.7;color:var(--muted2)}
+.fw{display:flex;flex-direction:column;gap:10px}
+.fk{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:#FAF9F7}
+.fk h4{margin:0 0 8px;font-size:13px}
+.fk h4 small{font-weight:400;color:var(--muted);margin-left:6px}
+.fs{display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:12.5px}
+.fs .ar{color:#A8A49E}
+.st0{display:inline-flex;flex-direction:column;gap:3px;border:1px solid var(--line);background:#fff;border-radius:8px;padding:6px 9px;cursor:pointer}
+.st0:hover{border-color:var(--accent)}
+.st0 .ac{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+.st0 .ac.a1{color:#1F5FAE}.st0 .ac.a2{color:#8A3B00}.st0 .ac.a3{color:#57534E}
+.st0 .tx{font-size:12.5px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.lgd{display:flex;gap:14px;font-size:11.5px;color:var(--muted);margin-bottom:10px}
+.lgd b.a1{color:#1F5FAE}.lgd b.a2{color:#8A3B00}.lgd b.a3{color:#57534E}
+@media (max-width:900px){.two{grid-template-columns:1fr}nav{display:none}}
+
+/* ===== Ứng dụng giả lập ===== */
+.app{--a:#B10E1C;display:flex;min-width:1240px;min-height:820px;background:#FAF9F8;position:relative;font-size:13.5px;color:#141414}
+.side{flex:0 0 244px;background:#151413;color:#C9C6C1;padding:20px 12px;display:flex;flex-direction:column;gap:4px}
+.brand{display:flex;gap:10px;align-items:center;padding:4px 8px 20px}
+.logo{width:34px;height:34px;border-radius:8px;background:var(--a);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px}
+.brand b{display:block;font-size:14px;font-weight:600;color:#fff}.brand span{font-size:11px;color:#A8A49E}
+/* Menu trái cùng kiểu prototype phân hệ D: nhóm chữ trắng đậm + ⌄, mục con thụt lề, mục đang mở nền nâu đỏ */
+.menu{flex:1;display:flex;flex-direction:column;gap:2px}
+.mi0,.mg,.mi{display:flex;justify-content:space-between;align-items:center;padding:9px 12px;border-radius:8px;font-size:13px;color:#C9C6C1}
+.mi0:hover,.mg:hover,.mi:hover{background:#24221F;color:#fff}
+.mg{color:#fff;font-weight:600;margin-top:6px}
+.mg .chv{color:#8E8A85;font-weight:400}
+.mi{padding-left:28px;font-size:12.5px;color:#A8A49E}
+.mi.on,.mi.on:hover{background:#2C1A18;color:#fff}
+.who{margin-top:auto;display:flex;gap:10px;align-items:center;padding:14px 8px 0;border-top:1px solid #2A2826}
+.av{width:32px;height:32px;border-radius:50%;background:#3A3734;color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;flex:none}
+.who b{display:block;font-size:13px;font-weight:500;color:#fff}.who span{font-size:11px;color:#A8A49E}
+.am{flex:1;min-width:0;display:flex;flex-direction:column}
+.tb{height:56px;border-bottom:1px solid #E8E6E4;display:flex;align-items:center;padding:0 28px;font-size:12.5px;color:#6E6E73;gap:8px}
+.tb b{color:#141414;font-weight:500}
+.bell{margin-left:auto;position:relative;width:34px;height:34px;border-radius:10px;border:1px solid #E8E6E4;display:flex;align-items:center;justify-content:center;font-size:15px;background:#fff}
+.bell i{position:absolute;top:-6px;right:-6px;min-width:18px;height:18px;border-radius:9px;background:#D92D20;color:#fff;font-style:normal;font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;padding:0 4px}
+.npn{position:absolute;top:52px;right:20px;width:400px;background:#fff;border:1px solid #E8E6E4;border-radius:14px;box-shadow:0 16px 40px rgba(20,20,20,.16);z-index:6;overflow:hidden}
+.npn .nh{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid #F0EEEC}
+.npn .nh h3{font-size:14px;margin:0}.npn .nh span{font-size:12px;color:#2563EB}
+.npn .nf{display:flex;gap:6px;padding:10px 16px 4px}.npn .nf b{font-size:12px;font-weight:500;padding:4px 10px;border-radius:999px;background:#F3F2F1;color:#6E6E73}.npn .nf b.on{background:#141414;color:#fff}
+.npn .ni{display:flex;gap:10px;padding:12px 16px;border-top:1px solid #F5F4F3;font-size:12.5px;line-height:1.5;color:#3A3A3C}
+.npn .ni.un{background:#F6F9FF}.npn .ni .dt0{width:8px;height:8px;border-radius:4px;background:#2563EB;margin-top:6px;flex:none}.npn .ni .dt0.rd{background:transparent}
+.npn .ni b{display:block;color:#141414;font-weight:600}.npn .ni small{display:block;color:#8E8E93;margin-top:2px}
+.pg{padding:24px 28px 32px;display:flex;flex-direction:column;gap:16px}
+.ph{display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
+.ph h2{margin:0;font-size:24px;line-height:1.3;letter-spacing:-.01em;display:flex;align-items:flex-start;gap:10px}
+.ph>div:first-child{flex:1;min-width:0}
+.ph h2 .st,.ph h2 .scope{flex:none;margin-top:6px}
+.ph p{margin:4px 0 0;font-size:12.5px;color:#6E6E73}
+.ph .acts{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.back{width:34px;height:34px;border:1px solid #E8E6E4;border-radius:8px;background:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:15px;flex:0 0 auto}
+.b{display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 14px;border-radius:8px;font-size:13px;font-weight:500;border:1px solid #DAD7D3;background:#fff;color:#141414;white-space:nowrap}
+.b:hover{background:#F5F3F1}
+.b.p{background:var(--a);border-color:var(--a);color:#fff}
+.b.p:hover{background:#930B17}
+.b.dk{background:#141414;border-color:#141414;color:#fff}
+.b.dg{color:var(--a);border-color:#F0C4C7}
+.b.s{height:30px;padding:0 10px;font-size:12.5px}
+.b.gh{border-color:transparent;background:transparent;color:#3A3A3C}
+.b.gh:hover{background:#F0EEEC}
+.b[disabled]{opacity:.45;cursor:not-allowed}
+.pn{background:#fff;border:1px solid #E8E6E4;border-radius:12px}
+.pn-h{padding:14px 18px;border-bottom:1px solid #F0EEEC;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.pn-h h3{margin:0;font-size:14.5px}
+.pn-h small{display:block;font-size:11.5px;color:#6E6E73;font-weight:400;margin-top:2px}
+.pn-b{padding:16px 18px;display:flex;flex-direction:column;gap:14px}
+.cols{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:16px;align-items:start}
+.stack{display:flex;flex-direction:column;gap:16px}
+.tabs{display:flex;gap:4px;border-bottom:1px solid #F0EEEC;padding:0 14px}
+.tab{padding:13px 8px;font-size:13px;color:#6E6E73;border-bottom:2px solid transparent;margin-right:12px}
+.tab.on{color:#141414;font-weight:600;border-bottom-color:var(--a)}
+.flt{display:flex;gap:10px;padding:14px 18px;flex-wrap:wrap}
+.in{height:38px;border:1px solid #DAD7D3;border-radius:8px;padding:0 12px;font-size:13px;background:#fff;color:#141414;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.in.ph0{color:#A6A6AB}
+.in.err{border-color:var(--err);background:#FEF3F2}
+.in.ro{background:#F5F3F1;color:#6E6E73}
+textarea.in,.ta{height:auto;min-height:70px;padding:10px 12px;align-items:flex-start}
+.fr{display:grid;gap:14px}
+.f{display:flex;flex-direction:column;gap:6px;min-width:0}
+.f label{font-size:12.5px;font-weight:600}
+.f label i{color:var(--a);font-style:normal}
+.f .e,.e0{font-size:11.5px;color:var(--err)}
+.f .h{font-size:11.5px;color:#6E6E73}
+table.t{width:100%;border-collapse:collapse}
+.t th{font-size:10.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#6E6E73;text-align:left;padding:10px 14px;border-top:1px solid #F0EEEC;border-bottom:1px solid #F0EEEC;background:#FCFBFA;white-space:nowrap}
+.t td{padding:12px 14px;border-bottom:1px solid #F0EEEC;vertical-align:middle;font-size:13px}
+.t tr.hl td{background:#FFF8F2}
+.t .cd{color:#6E6E73;font-size:12.5px;white-space:nowrap}
+.t .nm b{font-weight:600}
+.t .nm .rj{display:block;font-size:11.5px;color:var(--a);margin-top:3px}
+.t .dt{font-size:12.5px;line-height:1.45;white-space:nowrap}
+.t .r{text-align:right}
+.ra{display:flex;gap:2px;justify-content:flex-end}
+.mts{display:inline-flex;flex-wrap:wrap;gap:4px;vertical-align:middle}
+.mt{display:inline-flex;align-items:center;gap:5px;height:22px;padding:0 8px 0 6px;border-radius:6px;background:#F3F2F1;color:#2C2C2E;font-size:12px;font-weight:500;line-height:1;white-space:nowrap;vertical-align:middle}
+.mic{width:14px;height:14px;flex:none;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.mt-on .mic,.mic.mic-on{color:#1D63C4}
+.mt-direct .mic,.mic.mic-direct{color:#7A3FC2}
+.mt-paper .mic,.mic.mic-paper{color:#B25E09}
+.chk b .mic,.mb .mh .mic{width:16px;height:16px;margin-right:6px;vertical-align:-3px}
+.scope{display:inline-flex;align-items:center;height:24px;padding:0 10px;border-radius:999px;border:1px solid #E8E6E4;background:#fff;color:#3A3A3C;font-size:12px;font-weight:500;vertical-align:middle;margin-left:8px}
+.st{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:600;border-radius:999px;padding:3px 10px;white-space:nowrap}
+.st::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.st-draft{background:#F0EEEC;color:#6E6E73}
+.st-pending{background:#FDF3DC;color:#8A5A00}
+.st-rejected{background:#FCE8E9;color:#B10E1C}
+.st-approved{background:#E6F4EC;color:#17603A}
+.st-running{background:#E3EEFB;color:#0B4A8F}
+.st-finished{background:#ECEBEA;color:#3A3A3C}
+.pgn{display:flex;justify-content:space-between;align-items:center;padding:12px 18px;font-size:12.5px;color:#6E6E73}
+.kv{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px 18px}
+.kv>div>span{display:block;font-size:11.5px;color:#6E6E73;margin-bottom:4px}
+.kv>div>b{font-weight:500;font-size:13.5px}
+.kv .w3{grid-column:1/-1}
+.qg{border-top:1px solid #F0EEEC;padding-top:12px}
+.qg:first-child{border-top:0;padding-top:0}
+.qgh{display:flex;justify-content:space-between;align-items:center;font-size:13px;font-weight:600;margin-bottom:6px}
+.qgh small{font-weight:400;color:#6E6E73;margin-left:6px}
+.q{display:flex;gap:12px;padding:6px 0;font-size:13.5px}
+.q .no{color:#6E6E73;width:20px;flex:0 0 20px}
+.qe{display:flex;gap:8px;align-items:center;padding:5px 0}
+.qe .no{color:#6E6E73;width:20px;flex:0 0 20px;font-size:13px}
+.qe .in{flex:1}
+.ib{width:32px;height:32px;border:1px solid transparent;background:transparent;border-radius:7px;color:#6E6E73;font-size:14px;display:inline-flex;align-items:center;justify-content:center}
+.ib:hover{background:#F0EEEC}
+.chk{display:flex;gap:10px;align-items:flex-start;border:1px solid #E8E6E4;border-radius:10px;padding:12px 14px;cursor:pointer;user-select:none}
+.chk:hover{border-color:#CFCBC6}
+.ab .m{cursor:pointer}
+.chk.on{border-color:var(--a);background:#FFF9F9}
+.cb{width:18px;height:18px;border:1.5px solid #B9B6B2;border-radius:5px;flex:0 0 18px;margin-top:1px;display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff}
+.chk.on .cb{background:var(--a);border-color:var(--a)}
+.chk b{display:block;font-size:13.5px;font-weight:600}
+.chk span{font-size:12px;color:#6E6E73;line-height:1.45}
+.scale{display:flex;gap:8px;flex-wrap:wrap}
+.pn-h .scl{display:flex;align-items:center;gap:8px;font-size:11.5px;color:#6E6E73;white-space:nowrap}
+.pn-h .scl .lv{font-size:11.5px;padding:2px 9px}
+.lv{font-size:12px;font-weight:600;border-radius:999px;padding:3px 10px}
+.lv.y{background:#E6F4EC;color:#17603A}.lv.n{background:#FCE8E9;color:#B10E1C}
+.al{border-radius:10px;padding:10px 14px;font-size:12.5px;line-height:1.55;display:flex;gap:10px;align-items:flex-start}
+.al::before{content:"i";flex:0 0 18px;height:18px;margin-top:1px;border-radius:50%;border:1.5px solid currentColor;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.al.r::before{content:"!"}
+.al b{display:block;font-size:13px;margin-bottom:1px}
+.al.r{background:#FCE8E9;color:#7A0A13}
+.al.y{background:#FDF3DC;color:#6B4600}
+.al.bl{background:#E3EEFB;color:#0B3A70}
+.al.g{background:#E6F4EC;color:#11502F}
+.hist{display:flex;flex-direction:column;gap:14px}
+.hi{display:flex;gap:12px}
+.hi .dot{width:9px;height:9px;border-radius:50%;background:#141414;margin-top:5px;flex:0 0 9px}
+.hi b{font-size:13px;font-weight:600;display:block}
+.hi span{font-size:11.5px;color:#6E6E73}
+.hi p{margin:4px 0 0;font-size:12.5px;color:#7A0A13;background:#FCE8E9;border-radius:6px;padding:6px 8px}
+.mb{border:1px solid #E8E6E4;border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:10px}
+.mb .mh{display:flex;justify-content:space-between;align-items:center;font-weight:600;font-size:13.5px}
+.mb .mh small{font-weight:400;font-size:11.5px;color:#6E6E73;white-space:nowrap}
+.mb .mh>span{display:flex;align-items:center;white-space:nowrap}
+.mb .tx0{font-size:12.5px;color:#6E6E73;line-height:1.5}
+.qrrow{display:flex;gap:14px;align-items:flex-start}
+.qr{display:grid;grid-template-columns:repeat(21,4px);grid-template-rows:repeat(21,4px);padding:8px;border:1px solid #E8E6E4;border-radius:8px;background:#fff;flex:0 0 auto}
+.qr i{background:#fff}.qr i.k{background:#141414}
+.qr.off{opacity:.35}
+.link{font-size:12px;background:#F5F3F1;border-radius:6px;padding:7px 9px;word-break:break-all;color:#3A3A3C}
+.prog{height:8px;background:#F0EEEC;border-radius:4px;overflow:hidden}
+.prog i{display:block;height:100%;background:#141414;border-radius:4px}
+.big{font-size:22px;font-weight:700}
+.big small{font-size:13px;color:#6E6E73;font-weight:400}
+.ov2{position:absolute;inset:0;background:rgba(20,20,20,.46);display:flex;align-items:center;justify-content:center;z-index:5}
+.ov2.dr{justify-content:flex-end;align-items:stretch}
+.mdl{background:#fff;border-radius:16px;width:520px;box-shadow:0 20px 48px rgba(20,20,20,.18)}
+.mdl .mh{padding:18px 22px 12px;display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #F0EEEC}
+.mdl .mh h3{margin:0;font-size:17px}
+.mdl .mh p{margin:3px 0 0;font-size:12.5px;color:#6E6E73}
+.mdl .mbd{padding:16px 22px;display:flex;flex-direction:column;gap:12px;font-size:13.5px;line-height:1.55}
+.mdl .mf{padding:14px 22px;border-top:1px solid #F0EEEC;display:flex;justify-content:flex-end;gap:8px}
+.sum{background:#F5F3F1;border-radius:10px;padding:10px 12px;display:flex;gap:10px;font-size:13px}
+.sum span{color:#6E6E73;white-space:nowrap}
+.toast{pointer-events:none;position:absolute;top:70px;right:28px;background:#141414;color:#fff;border-radius:10px;padding:11px 16px;font-size:13px;z-index:6;display:flex;gap:8px;align-items:center;box-shadow:0 8px 24px rgba(0,0,0,.18)}
+.toast i{color:#6FD39B;font-style:normal}
+.stk{position:sticky;bottom:0;background:#fff;border-top:1px solid #E8E6E4;padding:12px 28px;display:flex;justify-content:flex-end;gap:8px;margin-top:auto}
+.ck{display:flex;flex-direction:column;gap:8px;font-size:12.5px}
+.ck div{display:flex;gap:8px}
+.ck .ok{color:#17603A}.ck .no{color:var(--err)}
+.empty{padding:40px;text-align:center;color:#6E6E73;font-size:13px}
+.ann{outline:2px dashed #E28A2E;outline-offset:3px;border-radius:8px}
+
+/* ===== Người dân, cập nhật kết quả, kết quả ===== */
+/* Trang người dân responsive: 1 trang web, tự co theo khung. Prototype đổi khung Máy tính / Điện thoại để xem 2 bố cục */
+.dvt{display:flex;align-items:center;gap:10px;justify-content:center;margin-bottom:16px;flex-wrap:wrap}
+.dvt .sw{display:inline-flex;background:#fff;border:1px solid #DAD7D3;border-radius:9px;padding:3px;gap:2px}
+.dvt button{border:0;background:transparent;border-radius:7px;height:30px;padding:0 14px;font-size:13px;color:#3A3A3C}
+.dvt button.on{background:#141414;color:#fff}
+.dvt span{font-size:12px;color:#6E6E73}
+.pubw.rs{flex-direction:column;align-items:center;justify-content:flex-start}
+.dvf{container-type:inline-size;background:#FAF9F8;overflow:hidden;display:flex;flex-direction:column;color:#141414;font-size:14px}
+.dvf.web{width:100%;max-width:1180px;border:1px solid #D6D3CF;border-radius:12px;box-shadow:0 12px 32px rgba(20,20,20,.10);min-height:760px}
+.dvf.mob{width:390px;border:8px solid #141414;border-radius:36px;min-height:800px}
+.dvf .chr{display:flex;align-items:center;gap:10px;background:#F0EEEC;border-bottom:1px solid #E1DEDA;padding:8px 12px}
+.dvf .chr i{width:10px;height:10px;border-radius:50%;background:#D6D3CF;display:inline-block}
+.dvf .chr b{flex:1;max-width:520px;margin:0 auto;background:#fff;border-radius:7px;padding:4px 12px;font-size:12px;font-weight:400;color:#6E6E73;text-align:center}
+.dvf.mob .chr{display:none}
+.pu-w{width:100%;max-width:960px;margin:0 auto;padding:0 16px;box-sizing:border-box}
+.pu-top{background:#B10E1C;color:#fff;padding:14px 0 18px}
+.pu-nav{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.pu-nav .br{display:flex;gap:10px;align-items:center;font-size:11.5px;color:#F6D3D5;line-height:1.35}
+.pu-nav .br i{width:32px;height:32px;border-radius:8px;background:#fff;color:#B10E1C;font-style:normal;font-weight:700;font-size:11px;display:flex;align-items:center;justify-content:center;flex:0 0 32px}
+.pu-nav .br b{color:#fff;font-size:12.5px}
+.pu-nav .lk{display:none;font-size:12.5px;color:#fff;background:rgba(255,255,255,.14);border:0;border-radius:7px;padding:6px 12px}
+.pu-top .bk{display:inline-block;margin-top:12px;font-size:12px;color:#F6D3D5;background:transparent;border:0;padding:0}
+.pu-top h2{margin:10px 0 4px;font-size:18px;line-height:1.35}
+.pu-top p{margin:0;font-size:12.5px;color:#F6D3D5;line-height:1.5}
+.pu-bd{flex:1;padding:16px 0 20px}
+.pu-bd>.pu-w{display:flex;flex-direction:column;gap:12px}
+.pu-cards{display:grid;grid-template-columns:1fr;gap:12px}
+.pu-main{display:grid;grid-template-columns:1fr;gap:16px;align-items:start}
+.pu-qs{display:flex;flex-direction:column;gap:12px}
+.pu-side{display:none}
+.pu-side .bx{background:#fff;border:1px solid #E8E6E4;border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:12px;position:sticky;top:16px}
+.pu-side .bx h4{margin:0;font-size:14px}
+.pu-side .bx .b{height:44px;justify-content:center;font-size:14px;width:100%}
+.pu-side .bx small{font-size:12px;color:#6E6E73;line-height:1.5}
+.pu-done{max-width:480px;width:100%;margin:0 auto}
+@container (min-width:720px){
+  .pu-w{padding:0 28px}
+  .pu-top{padding:16px 0 28px}
+  .pu-nav .lk{display:inline-block}
+  .pu-top .bk{display:none}
+  .pu-top h2{font-size:24px;margin-top:18px}
+  .pu-top p{font-size:13.5px}
+  .pu-bd{padding:24px 0 32px}
+  .pu-cards{grid-template-columns:1fr 1fr;gap:16px}
+  .pu-cards .sc .b{align-self:flex-start;padding:0 18px}
+  .pu-main{grid-template-columns:minmax(0,1fr) 280px;gap:24px}
+  .pu-side{display:block}
+  .pu-m{display:none!important}
+  .pu-qs .pq{display:grid;grid-template-columns:minmax(0,1fr) 300px;align-items:center;gap:16px;padding:14px 16px}
+  .pu-qs .pq .e{grid-column:1/-1}
+  .pu-qs .pg2{margin-top:8px}
+  .pu-done{background:#fff;border:1px solid #E8E6E4;border-radius:16px;margin-top:12px}
+}
+
+.tag{display:inline-flex;align-items:center;font-size:10.5px;font-weight:600;color:#3A3A3C;background:#EFEDEA;border-radius:4px;padding:1px 6px;white-space:nowrap;vertical-align:1px}
+.pubw{--a:#B10E1C;background:#ECEAE7;padding:28px 24px;display:flex;justify-content:center;min-height:860px}
+.phone{width:390px;background:#FAF9F8;border:8px solid #141414;border-radius:36px;overflow:hidden;display:flex;flex-direction:column;min-height:800px;font-size:14px;color:#141414}
+.pt{background:#B10E1C;color:#fff;padding:16px 18px 18px}
+.pt .br{display:flex;gap:10px;align-items:center;font-size:11.5px;color:#F6D3D5;line-height:1.35}
+.pt .br i{width:32px;height:32px;border-radius:8px;background:#fff;color:#B10E1C;font-style:normal;font-weight:700;font-size:11px;display:flex;align-items:center;justify-content:center;flex:0 0 32px}
+.pt .br b{color:#fff;font-size:12.5px}
+.pt .bk{display:inline-block;margin-top:12px;font-size:12px;color:#F6D3D5;background:transparent;border:0;padding:0}
+.pt h2{margin:10px 0 4px;font-size:18px;line-height:1.35}
+.pt p{margin:0;font-size:12.5px;color:#F6D3D5;line-height:1.5}
+.pb{padding:16px;display:flex;flex-direction:column;gap:12px;flex:1}
+.sc{background:#fff;border:1px solid #E8E6E4;border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:8px}
+.sc b{font-size:14.5px;line-height:1.4}
+.sc .mm{font-size:12px;color:#6E6E73;line-height:1.55}
+.sc .b{justify-content:center}
+.pg2{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#6E6E73;margin-top:4px}
+.pq{background:#fff;border:1px solid #E8E6E4;border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:10px}
+.pq.miss{border-color:#B42318;background:#FEF6F5}
+.pq .qt{font-size:14px;line-height:1.45}
+.pq .qt span{color:#6E6E73;margin-right:4px}
+.pq .e{font-size:12px;color:#B42318}
+.ab{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ab span{border:1.5px solid #DAD7D3;border-radius:10px;padding:10px 8px;text-align:center;font-size:13.5px;font-weight:500;background:#fff}
+.ab .y.on{border-color:#17603A;background:#E6F4EC;color:#17603A;font-weight:600}
+.ab .n.on{border-color:#B10E1C;background:#FCE8E9;color:#B10E1C;font-weight:600}
+.pbar{display:flex;align-items:center;gap:10px;font-size:12px;color:#6E6E73}
+.pbar .prog{flex:1;height:6px}
+.pf{position:sticky;bottom:0;background:#fff;border-top:1px solid #E8E6E4;padding:12px 16px;display:flex;flex-direction:column;gap:8px}
+.pf .b{height:44px;justify-content:center;font-size:14px;width:100%}
+.done{display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;padding:36px 12px}
+.done .ic{width:64px;height:64px;border-radius:50%;background:#E6F4EC;color:#17603A;font-size:30px;display:flex;align-items:center;justify-content:center}
+.done .ic.x{background:#F0EEEC;color:#6E6E73}
+.done h3{margin:0;font-size:18px}
+.done p{margin:0;font-size:13px;color:#6E6E73;line-height:1.55}
+.done .b{width:100%;justify-content:center;height:44px}
+.code{font-size:20px;font-weight:700;letter-spacing:.04em;background:#F5F3F1;border-radius:10px;padding:10px 18px}
+.aq{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:7px 10px;border-radius:8px}
+.aq .qt{font-size:13.5px;line-height:1.45;flex:1;display:flex;flex-wrap:wrap;column-gap:12px}
+.aq .qt span{color:#6E6E73;width:20px;flex:0 0 20px}
+.aq .qt em{flex:0 0 100%;padding-left:32px;font-style:normal;font-size:11.5px;color:var(--err);margin-top:2px}
+.aq.miss{background:#FEF3F2}
+.sg{display:inline-flex;border:1px solid #DAD7D3;border-radius:8px;overflow:hidden;flex:0 0 auto}
+.sg span{padding:6px 12px;font-size:12.5px;background:#fff;color:#3A3A3C;white-space:nowrap}
+.sg span+span{border-left:1px solid #DAD7D3}
+.sg .y.on{background:#17603A;color:#fff}
+.sg .n.on{background:#B10E1C;color:#fff}
+.aq.miss .sg{border-color:var(--err)}
+.rd .cb{border-radius:50%}
+.chk.off{opacity:.45}
+.drw{background:#fff;width:620px;height:100%;display:flex;flex-direction:column;box-shadow:-12px 0 32px rgba(20,20,20,.16)}
+.drw .mh{padding:18px 22px 12px;display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #F0EEEC}
+.drw .mh h3{margin:0;font-size:17px;display:flex;gap:8px;align-items:center}
+.drw .mh p{margin:3px 0 0;font-size:12.5px;color:#6E6E73}
+.drw .mbd{padding:16px 22px;display:flex;flex-direction:column;gap:14px;flex:1;overflow:auto}
+.drw .mf{padding:14px 22px;border-top:1px solid #F0EEEC;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.drw .mf .l{font-size:12.5px;color:#6E6E73}
+.drw .mf .r{display:flex;gap:8px}
+.pn-b>.mt{align-self:flex-start}
+.tc{table-layout:fixed;width:100%}.cols .stack .tc th,.cols .stack .tc td{padding:9px 8px;font-size:12.5px}.tc th:first-child,.tc td:first-child{width:40%;padding-left:16px}.cols .stack .tc th{letter-spacing:0;white-space:nowrap;font-size:10.5px}
+.chn{font-size:11.5px;color:#6E6E73;margin-top:5px;white-space:nowrap}
+.tc tr.tot td{font-weight:600;background:#FAF9F8;border-bottom:0}
+.chn-n{font-size:11.5px;color:#6E6E73;padding:10px 16px;border-top:1px solid #F0EEEC;display:flex;align-items:center;gap:6px}
+.pn-b>.h{font-size:12px;color:#6E6E73;line-height:1.5}
+.kr{display:flex;justify-content:space-between;align-items:center;font-size:13px;padding-top:10px;border-top:1px solid #F0EEEC}
+.kv1{display:grid;grid-template-columns:auto 1fr;gap:8px 16px;font-size:13px}.kv1 span{color:#6E6E73}.kv1 b{font-weight:500;text-align:right}
+.pn-b .aq{padding:6px 8px;margin:0 -8px;border-radius:8px}
+
+.ab .m{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;line-height:1.25}
+.ab .m .mic{width:16px;height:16px}
+.ab .m.on{border-color:#141414;background:#F3F2F1;color:#141414;font-weight:600}
+.kpi span .mic{width:13px;height:13px;margin-right:5px;vertical-align:-2px}
+.kpis{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:12px}
+.kpi{background:#fff;border:1px solid #E8E6E4;border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:4px}
+.kpi span{font-size:12px;color:#6E6E73}
+.kpi b{font-size:24px;font-weight:700;letter-spacing:-.01em}
+.kpi small{font-size:11.5px;color:#6E6E73}
+.kpi.g b{color:#17603A}.kpi.r b{color:#B10E1C}
+.sb{display:flex;height:10px;border-radius:5px;overflow:hidden;background:#F0EEEC}
+.sb i{display:block;height:100%}
+.sb .y{background:#2F8F5B}.sb .n{background:#D9474E}
+.lg{display:flex;gap:14px;font-size:12px;color:#6E6E73;align-items:center}
+.lg i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.qs{display:grid;grid-template-columns:20px minmax(0,1fr) 230px 62px;gap:12px;align-items:center;padding:6px 0;font-size:13.5px}
+.qs .no{color:#6E6E73}
+.qs .rt{text-align:right;font-weight:600}
+.qs .cn{font-size:11.5px;color:#6E6E73;display:flex;justify-content:space-between;margin-top:4px}
+.rate{display:flex;align-items:center;gap:8px;justify-content:flex-end;font-weight:600}
+.rate .sb{width:64px;height:6px}
+.cm{border-top:1px solid #F0EEEC;padding:10px 0;display:flex;flex-direction:column;gap:4px;font-size:13px;line-height:1.5}
+.cm:first-child{border-top:0;padding-top:0}
+.cm small{font-size:11.5px;color:#6E6E73}
+.cols .stack .t th,.cols .stack .t td{padding:10px 10px}
+.t .nt{max-width:240px;color:#3A3A3C;font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* Tab lọc của danh sách: chữ rõ, gạch chân dày */
+.pn>.tabs{padding:0 18px;gap:0}
+.pn>.tabs .tab{padding:15px 2px 13px;margin-right:26px;font-size:13.5px;font-weight:500;color:#57534E;border-bottom-width:3px;cursor:pointer}
+.pn>.tabs .tab:hover{color:#141414}
+.pn>.tabs .tab.on{color:#141414;font-weight:700}
+.ct0{display:inline-block;min-width:20px;padding:1px 6px;border-radius:999px;background:#F0EEEC;font-size:11px;font-weight:700;color:#3A3A3C;text-align:center;margin-left:6px;vertical-align:1px}
+/* Tab của chi tiết đợt: thanh khối, tab đang chọn nền tối */
+.dbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:2px 0 16px;min-height:38px}
+.dbar .acts{display:flex;gap:8px}
+.dtabs{display:inline-flex;gap:2px;background:#EFEDEA;border:0;border-radius:10px;padding:3px;margin:0}
+.dtabs .tab{display:flex;align-items:center;gap:6px;padding:7px 16px;margin:0;border:0;border-radius:8px;font-size:13.5px;font-weight:600;color:#6E6E73;white-space:nowrap}
+.dtabs .tab:hover{color:#141414}
+.dtabs .tab.on{background:#fff;color:#141414;box-shadow:0 1px 3px rgba(20,20,20,.12),0 0 0 1px rgba(20,20,20,.04)}
+.dtabs .ct0{background:#E2DFDB;margin-left:2px}
+.dtabs .tab.on .ct0{background:#F0EEEC}
+.dtabs .tmp{margin-left:2px}
+.tmp{display:inline-block;padding:1px 7px;border-radius:999px;background:#FDF3DC;color:#8A5A00;font-size:11px;font-weight:600;margin-left:4px;vertical-align:1px}
+.stn{font-size:12.5px;line-height:1.55;margin-bottom:14px}
+.stn .stq{padding:8px 10px;border-radius:8px;background:#F3F1EE;margin-bottom:8px;color:#8E8A85}
+.stn .stq .ok{color:#3A3A3C}.stn .stq .cur{color:#141414}.stn .stq .cur.bad{color:#B10E1C}
+.stn .stx i{color:#6E6E73}
+.stn a{color:inherit;text-decoration:underline;cursor:pointer}
+
+/* ===== Prototype cho design ===== */
+/* Nhãn ghi chú cho designer, BE (Khác Figma, Đề xuất, Cần BE) chỉ có ở file luồng */
+.be,.chg,.tag{display:none!important}
+.bar{padding:7px 14px;gap:8px 12px;flex-wrap:wrap}
+.bar .cur{min-width:0;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rl0{font-size:11px;color:#8E8A85;padding:0 6px 0 4px;align-self:center;text-transform:uppercase;letter-spacing:.05em}
+.bar button{height:28px}
+.role{display:flex;background:#24221F;border:1px solid #3A3734;border-radius:8px;padding:2px;gap:2px}
+.role button{border:0;height:24px;background:transparent;color:#C9C6C1}
+.role button.on{background:var(--accent);color:#fff}
+main{background:#FAF9F8}
+main>.app{min-height:100%;width:100%}
+main>.pubw{min-height:100%}
+[data-go]{cursor:pointer}
+#alt{position:fixed;z-index:35;width:300px;max-height:calc(100vh - 70px);overflow:auto;background:#151413;color:#fff;border-radius:12px;padding:12px 14px;display:none;flex-direction:column;gap:6px;box-shadow:0 12px 32px rgba(0,0,0,.3);border:1px solid #3A3734}
+#alt.on{display:flex}
+#bnote.on{background:var(--accent);border-color:var(--accent)}
+#alt b{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#C9C6C1}
+#alt button{text-align:left;border:1px solid #3A3734;background:#24221F;color:#fff;border-radius:8px;padding:6px 10px;font-size:12.5px}
+#alt button:hover{border-color:var(--accent)}
+#alt .stn{font-size:11.5px;line-height:1.5;color:#C9C6C1;margin:0 0 4px}
+#alt .stn .stq{background:#24221F;color:#8E8A85}
+#alt .stn .stq .ok{color:#C9C6C1}#alt .stn .stq .cur{color:#fff}#alt .stn .stq .cur.bad{color:#FF8A8A}
+#alt .stn b{font-size:inherit;letter-spacing:0;text-transform:none}
+#alt .stn .stx b{color:#fff}
+#alt .stn .stx i{color:#A8A49E}
+#alt .stn a{color:#fff}
+#ovl{position:fixed;inset:0;z-index:30;background:rgba(20,20,20,.46);display:none;align-items:flex-start;justify-content:center;padding:48px 16px;overflow:auto}
+#ovl.on{display:flex}
+#ovl .ob{background:#fff;border-radius:14px;max-width:1080px;width:100%;padding:18px 20px 20px;box-shadow:0 20px 48px rgba(20,20,20,.25)}
+#ovl .oh{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:12px}
+#ovl .oh h2{margin:0;font-size:17px}#ovl .oh p{margin:3px 0 0;font-size:12.5px;color:#6E6E73}
+#ovl .oh button{border:1px solid #E7E5E2;background:#fff;border-radius:8px;height:30px;padding:0 10px}
+/* ===== Tương tác tại chỗ: bộ lọc, ô nhập, chọn, phân trang ===== */
+main .in:not(.ro),main .tab:not(.on),main .chk,main .sg span,main .ab span,main .pg0,main .mg,main .mi0,main .mi,main .tb .cg,main .bell,main .ib{cursor:pointer}
+main .in[contenteditable="true"]{cursor:text;outline:none;border-color:#141414;box-shadow:0 0 0 3px rgba(20,20,20,.08)}
+main .in.ta[contenteditable="true"]{display:block;padding-top:9px;padding-bottom:9px;height:auto;min-height:76px;white-space:pre-wrap}
+main .tb .cg:hover{color:#141414;text-decoration:underline}
+main .pg0{display:inline-block;min-width:22px;padding:2px 6px;border-radius:6px;text-align:center}
+main .pg0:hover{background:#F0EEEC}
+main .pg0.on{color:#141414;font-weight:700;background:#F0EEEC}
+main .pg0.dis{opacity:.35;pointer-events:none}
+main .mi.hid{display:none}
+#dd{position:fixed;z-index:40;background:#fff;border:1px solid #E7E5E2;border-radius:10px;box-shadow:0 12px 32px rgba(20,20,20,.16);padding:4px;min-width:180px;max-height:320px;overflow:auto;display:none;font-size:13px}
+#dd.on{display:block}
+#dd .o{padding:8px 10px;border-radius:7px;cursor:pointer;white-space:nowrap;display:flex;justify-content:space-between;gap:16px}
+#dd .o:hover{background:#F3F1EE}
+#dd .o.on{font-weight:600}#dd .o.on::after{content:"✓"}
+#dd .dr{display:flex;flex-direction:column;gap:8px;padding:8px}
+#dd .dr label{font-size:12px;color:#6E6E73;display:flex;flex-direction:column;gap:4px}
+#dd .dr input{height:34px;border:1px solid #DAD7D3;border-radius:8px;padding:0 8px;font:inherit}
+#dd .dr .rw{display:flex;gap:6px;justify-content:flex-end}
+#tst{position:fixed;top:70px;right:28px;display:none;z-index:45}
+#tst.on{display:flex}
+main tr.emp td{text-align:center;color:#A6A6AB;padding:28px 10px}
+</style>
+</head>
+<body>
+<div class="bar"><b>Prototype · Khảo sát hài lòng</b><div class="role" role="group" aria-label="Góc nhìn"><button id="vcb" class="on">Cán bộ</button><button id="vnd">Người dân</button></div><span class="cur" id="cur"></span><button id="bnote">Ghi chú</button><button id="bflow">Luồng duyệt</button><button id="back">← Quay lại</button></div>
+<div class="body">
+  <div id="alt"></div><div id="ovl"></div><div id="dd"></div><div id="tst" class="toast"></div>
+  <main id="main"></main>
+</div>
+<script>
+/* ---------- Dữ liệu mẫu ---------- */
+var ST={draft:'Nháp',pending:'Chờ phê duyệt',rejected:'Bị từ chối',approved:'Đã phê duyệt',running:'Đang diễn ra',finished:'Đã kết thúc'};
+var MT={on:'Trực tuyến',direct:'Trực tiếp',paper:'Gián tiếp qua phiếu'};
+var ORG='Sở Dân tộc và Tôn giáo tỉnh A';
+var REASON='Bổ sung câu hỏi về thời gian chờ tại bộ phận một cửa';
+var ROWS=[
+ {c:'KS-2026-018',n:'Khảo sát hài lòng về dịch vụ công trực tuyến Quý IV/2026',m:['on'],d:['15/10/2026','15/11/2026'],s:'draft',r:null,by:'Nguyễn Văn Nam'},
+ {c:'KS-2026-017',n:'Khảo sát hài lòng về xử lý phản ánh, kiến nghị tháng 10/2026',m:['direct','paper'],d:['20/10/2026','20/11/2026'],s:'rejected',r:null,by:'Nguyễn Văn Nam'},
+ {c:'KS-2026-016',n:'Khảo sát hoạt động chuyển đổi số tại bộ phận một cửa',m:['paper'],d:['20/10/2026','30/11/2026'],s:'pending',r:null,by:'Nguyễn Văn Nam'},
+ {c:'KS-2026-025',n:'Khảo sát hài lòng về tiếp nhận hồ sơ trực tuyến tháng 11/2026',m:['on','direct'],d:['01/11/2026','30/11/2026'],s:'pending',r:null,by:'Phạm Thu Trang',at:'11/10/2026 14:30'},
+ {c:'KS-2026-015',n:'Khảo sát hài lòng về Cổng thông tin điện tử của Sở',m:['on','paper'],d:['20/10/2026','20/11/2026'],s:'approved',r:null,by:'Phạm Thu Trang'},
+ {c:'KS-2026-014',n:'Khảo sát hài lòng về tiếp nhận phản ánh, kiến nghị tại xã tháng 10/2026',m:['direct','paper'],d:['05/10/2026','05/11/2026'],s:'running',r:[86,300],by:'Phạm Thu Trang'},
+ {c:'KS-2026-012',n:'Khảo sát hài lòng về dịch vụ công trực tuyến Quý III/2026',m:['on','direct','paper'],d:['01/10/2026','31/10/2026'],s:'running',r:[412,600],by:'Nguyễn Văn Nam'},
+ {c:'KS-2026-009',n:'Khảo sát hài lòng về dịch vụ công trực tuyến Quý II/2026',m:['on','paper'],d:['01/06/2026','30/06/2026'],s:'finished',r:[1026,800],y:879,by:'Phạm Thu Trang'},
+ {c:'KS-2026-006',n:'Khảo sát hài lòng về xử lý phản ánh, kiến nghị Quý II/2026',m:['direct','paper'],d:['15/05/2026','15/06/2026'],s:'finished',r:[540,500],y:432,by:'Phạm Thu Trang'},
+ {c:'KS-2026-004',n:'Khảo sát hoạt động chuyển đổi số 6 tháng đầu năm 2026',m:['paper'],d:['01/04/2026','31/05/2026'],s:'finished',r:[318,300],y:241,by:'Nguyễn Văn Nam'},
+ {c:'KS-2026-002',n:'Khảo sát hài lòng về Cổng thông tin điện tử Quý I/2026',m:['on'],d:['01/03/2026','31/03/2026'],s:'finished',r:[0,300],y:0,by:'Phạm Thu Trang'},
+ {c:'KS-2026-001',n:'Khảo sát hài lòng về dịch vụ công trực tuyến Quý I/2026',m:['on','paper'],d:['01/02/2026','28/02/2026'],s:'finished',r:[764,800],y:688,by:'Nguyễn Văn Nam'}
+];
+var QS=[
+ {g:'Kết quả xử lý PAKN',q:['Việc tiếp nhận phản ánh, kiến nghị được thực hiện thuận tiện, dễ dàng','Kết quả xử lý phản ánh, kiến nghị đáp ứng yêu cầu']},
+ {g:'Dịch vụ công trực tuyến',q:['Cổng dịch vụ công trực tuyến dễ truy cập, dễ sử dụng','Hồ sơ trực tuyến được giải quyết đúng thời hạn']},
+ {g:'Hoạt động chuyển đổi số',q:['Thông tin về chuyển đổi số được cung cấp đầy đủ, dễ tiếp cận','Các ứng dụng số của địa phương mang lại lợi ích thiết thực']}
+];
+function row(code){for(var i=0;i<ROWS.length;i++)if(ROWS[i].c===code)return ROWS[i];}
+function rowAny(c){var r=row(c)||(typeof XR!=='undefined'?XR.filter(function(x){return x.c===c;})[0]:null);return r&&typeof SOV!=='undefined'?sov(r):r;}
+/* Đợt theo ngữ cảnh nếu đúng trạng thái màn, không thì đợt mẫu */
+function ctxRow(st,def){var r=CTX.c&&rowAny(CTX.c);return r&&st.indexOf(r.s)>=0?r:row(def);}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function badge(s){return '<span class="st st-'+s+'">'+ST[s]+'</span>';}
+var MI={on:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9M12 3c-2.5 2.6-3.8 5.6-3.8 9s1.3 6.4 3.8 9"/>',
+ direct:'<circle cx="12" cy="8" r="3.6"/><path d="M4.8 20.5c.6-3.9 3.6-6.5 7.2-6.5s6.6 2.6 7.2 6.5"/>',
+ paper:'<path d="M6.5 3h8l4 4v14h-12z"/><path d="M14.5 3v4h4M9.5 12.5h6M9.5 16.5h6"/>'};
+function micon(k){return '<svg class="mic mic-'+k+'" viewBox="0 0 24 24" aria-hidden="true">'+MI[k]+'</svg>';}
+function mtag(k){return '<span class="mt mt-'+k+'">'+micon(k)+MT[k]+'</span>';}
+function mts(m){return '<span class="mts">'+m.map(mtag).join('')+'</span>';}
+function chg(t){return ' <span class="chg">'+(t||'Khác Figma')+'</span>';}
+function be(t){return ' <span class="be">'+(t||'Cần BE bổ sung')+'</span>';}
+/* Ngữ cảnh dòng đang xem: c = mã đợt, p = mã phiếu. Nút go() mang theo ngữ cảnh để màn chi tiết hiện đúng dữ liệu của dòng được bấm */
+var CTX={};
+function ctxA(c){c=c||CTX;return Object.keys(c).length?' data-ctx="'+esc(JSON.stringify(c))+'"':'';}
+function go(id,label,cls,c){return '<button class="b '+(cls||'')+'" data-go="'+id+'"'+ctxA(c)+'>'+label+'</button>';}
+/* Nút lưu phiếu: prototype kiểm tra đủ câu thì sang data-ok, thiếu thì sang data-bad */
+function goOk(id,ok,bad,label,cls){return go(id,label,cls).replace('<button ','<button data-ok="'+ok+'" data-bad="'+bad+'" ');}
+function setCtx(el){var c=el.getAttribute('data-ctx');if(c)CTX=JSON.parse(c);else if(!el.closest('.tabs,#alt')&&!el.classList.contains('back'))CTX={};}
+
+/* ---------- Khung ứng dụng ---------- */
+/* Phân quyền theo quyền chức năng + phạm vi, không theo tên nhóm.
+   VR: tài khoản đang xem {p:{list,appr,entry,res}, sc:'unit'|'sub'|'all'}, prototype đặt khi bật tắt quyền */
+var VR=null;
+var PK=['list','appr','entry','res'];
+var PN={list:'Đợt khảo sát',appr:'Phê duyệt đợt khảo sát',entry:'Cập nhật kết quả khảo sát không trực tuyến',res:'Kết quả khảo sát'};
+function can(k){return !VR||!!VR.p[k];}
+function scopeOf(o){return VR?VR.sc:((o&&o.scope)||'unit');}
+function permsOf(o){
+  if(VR) return PK.filter(function(k){return VR.p[k];});
+  if(o.role==='lead') return ['list','appr','entry','res'];
+  if(o.role==='none') return [];
+  return ['list','entry','res'];
+}
+function whoOf(ps){
+  if(ps.indexOf('list')>=0||ps.indexOf('entry')>=0) return ['NN','Nguyễn Văn Nam'];
+  if(ps.length) return ['LH','Lê Văn Hùng'];
+  return ['TT','Trần Văn Thành'];
+}
+function asPerm(ps,sc,f){var v=VR,p={};ps.forEach(function(k){p[k]=1;});VR={p:p,sc:sc};try{return f();}finally{VR=v;}}
+/* Đợt của đơn vị khác, chỉ hiện khi phạm vi rộng hơn Đơn vị */
+var SUBORG=['Phòng Dân tộc, Sở Dân tộc và Tôn giáo tỉnh A','Phòng Tôn giáo, Sở Dân tộc và Tôn giáo tỉnh A'];
+var XR=[
+   {c:'KS-2026-021',n:'Khảo sát hài lòng về hỗ trợ đồng bào vùng khó khăn Quý IV/2026',o:SUBORG[0],m:['direct'],d:['25/10/2026','25/11/2026'],s:'pending',r:null,by:'Trần Thị Lan',at:'11/10/2026 09:20',sub:1},
+   {c:'KS-2026-019',n:'Khảo sát hài lòng về thủ tục đăng ký sinh hoạt tôn giáo tập trung Quý IV/2026',o:SUBORG[1],m:['direct','paper'],d:['01/10/2026','31/10/2026'],s:'running',r:[45,150],by:'Hoàng Văn Bình',sub:1},
+   {c:'KS-2026-024',n:'Khảo sát hài lòng về dịch vụ công trực tuyến tháng 11/2026',o:'Sở Dân tộc và Tôn giáo tỉnh B',m:['on'],d:['01/11/2026','30/11/2026'],s:'draft',r:null,by:'Đỗ Thị Hà'},
+   {c:'KS-2026-023',n:'Khảo sát hài lòng về tiếp nhận phản ánh, kiến nghị Quý IV/2026',o:'Sở Dân tộc và Tôn giáo tỉnh C',m:['paper'],d:['28/10/2026','28/11/2026'],s:'pending',r:null,by:'Vũ Văn Tâm',at:'10/10/2026 15:45'},
+   {c:'KS-2026-022',n:'Khảo sát hài lòng về Cổng thông tin điện tử của Bộ Quý IV/2026',o:'Trung tâm Thông tin, Bộ Dân tộc và Tôn giáo',m:['on'],d:['20/10/2026','20/11/2026'],s:'approved',r:null,by:'Ngô Minh Khoa'},
+   {c:'KS-2026-020',n:'Khảo sát hài lòng về dịch vụ công tại bộ phận một cửa tháng 10/2026',o:'Sở Dân tộc và Tôn giáo tỉnh B',m:['direct'],d:['05/10/2026','05/11/2026'],s:'running',r:[120,300],by:'Đỗ Thị Hà'},
+   {c:'KS-2026-011',n:'Khảo sát hài lòng về hỗ trợ đồng bào vùng khó khăn Quý II/2026',o:SUBORG[0],m:['direct'],d:['10/06/2026','10/07/2026'],s:'finished',r:[286,300],y:231,by:'Trần Thị Lan',sub:1},
+   {c:'KS-2026-008',n:'Khảo sát hài lòng về thủ tục đăng ký sinh hoạt tôn giáo tập trung',o:SUBORG[1],m:['direct','paper'],d:['01/06/2026','30/06/2026'],s:'finished',r:[142,150],y:109,by:'Hoàng Văn Bình',sub:1},
+   {c:'KS-2026-010',n:'Khảo sát hài lòng về dịch vụ công trực tuyến Quý II/2026',o:'Sở Dân tộc và Tôn giáo tỉnh B',m:['on'],d:['01/06/2026','30/06/2026'],s:'finished',r:[918,800],y:744,by:'Đỗ Thị Hà'},
+   {c:'KS-2026-007',n:'Khảo sát hài lòng về Cổng thông tin điện tử của Bộ',o:'Văn phòng Bộ Dân tộc và Tôn giáo',m:['on'],d:['15/05/2026','15/06/2026'],s:'finished',r:[2104,2000],y:1863,by:'Ngô Minh Khoa'},
+   {c:'KS-2026-005',n:'Khảo sát hoạt động chuyển đổi số tại bộ phận một cửa',o:'Sở Dân tộc và Tôn giáo tỉnh C',m:['paper'],d:['01/05/2026','31/05/2026'],s:'finished',r:[405,400],y:298,by:'Vũ Văn Tâm'}];
+function scopeRows(){
+  var sc=scopeOf();if(sc==='unit')return [];
+  var X=XR;
+  return X.filter(function(x){return sc==='all'||x.sub;});
+}
+function unitCol(sc){return sc==='unit'?'':'<div class="in" style="width:240px">Tất cả đơn vị'+(sc==='sub'?' trong phạm vi':'')+' <span>⌄</span></div>';}
+/* Trạng thái đổi khi thao tác trên prototype (trình, duyệt, từ chối, xóa): SOV[mã đợt] */
+var SOV={};
+function sov(r){return SOV[r.c]?Object.assign({},r,{s:SOV[r.c]}):r;}
+function allRows(){return ROWS.map(function(r){return Object.assign({mine:1},sov(r));}).concat(scopeRows().map(sov)).filter(function(r){return r.s!=='deleted';});}
+function listHome(o){return '1.1';}
+/* Đợt nào hiện với tài khoản: theo quyền (ma trận quyền §8.4) */
+function canSee(r,ps){var h=function(k){return ps.indexOf(k)>=0;};
+  return h('list')||(h('appr')&&['pending','approved','rejected'].indexOf(r.s)>=0)||(h('entry')&&r.s==='running'&&r.m.some(function(m){return m!=='on';}))||(h('res')&&r.s==='finished');}
+/* Màn chi tiết mở khi bấm Xem ở dòng */
+function dId(r,ps){var h=function(k){return ps.indexOf(k)>=0;}, ld=!h('list'), ap=h('appr');
+  return {draft:'1.4',pending:(ld||ap)?'3.2':'2.2',rejected:'4.2b',approved:'3.6',running:(h('list')||h('entry'))?'8.2':'6.3',finished:h('res')?'9.2':'6.2'}[r.s];}
+function yOf(r){if(r.y!=null&&!MUT[r.c])return r.y;var t=totOf(r);return Math.round(t*(r.y!=null&&r.r[0]?r.y/r.r[0]:.72+(+r.c.slice(-2)%7)*.03));}
+/* Không còn kết quả chung của phiếu. Kết quả tính theo lượt đánh giá: mỗi câu trả lời của mỗi phiếu là 1 lượt.
+   qYes: số lượt Hài lòng từng câu; ansY: tổng lượt Hài lòng; ansN: tổng lượt đánh giá = số phiếu × số câu */
+function qYes(r){var p=totOf(r),rt=p?yOf(r)/p:0,OFF=[.04,-.03,.03,0,-.06,.02];return qFlat().map(function(x,i){return Math.max(0,Math.min(p,Math.round(p*(rt+OFF[i%OFF.length]))));});}
+function ansY(r){return qYes(r).reduce(function(s,v){return s+v;},0);}
+function ansN(r){return totOf(r)*qFlat().length;}
+function progCell(r){
+  if(r.s==='running'){var t=totOf(r),p=Math.round(t/r.r[1]*100);return '<div style="min-width:150px"><div style="display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:5px"><span>'+num(t)+' / '+num(r.r[1])+' phiếu</span><span style="color:#6E6E73">'+p+'%</span></div><div class="prog"><i style="width:'+Math.min(100,p)+'%"></i></div></div>';}
+  if(r.s==='finished')return r.r[0]?'<div style="font-size:12.5px;line-height:1.5">'+num(r.r[0])+' phiếu<br><span style="color:#17603A;font-weight:600">'+pct(ansY(r),ansN(r))+'% hài lòng</span></div>':'<span style="font-size:12.5px;color:#A6A6AB">Không có phiếu</span>';
+  return '<span style="color:#A6A6AB">—</span>';}
+function shell(o){
+  var ps=permsOf(o), lead=!VR&&o.role==='lead';
+  /* Một mục menu cho mọi quyền: quyền chỉ quyết định thấy đợt nào, nút nào. Menu không hiện số */
+  var m='<div class="mi on" data-go="'+listHome(o)+'"><span>Đợt khảo sát</span></div>';
+  /* Menu đầy đủ của hệ thống như prototype phân hệ D; mục ngoài khảo sát thuộc phân hệ khác */
+  var G=[['Bộ chỉ số DTI',['Thang xếp loại','Quản lý tự đánh giá']],['Đánh giá CĐS',['Đến hạn tự đánh giá','Kết quả tự đánh giá']]];
+  if(ps.length)G.push(['Khảo sát hài lòng',[m]]);
+  G.push(['Báo cáo thống kê',['Dashboard đơn vị','Bảng xếp hạng','So sánh đơn vị']]);
+  var menu='<div class="mi0">Trang chủ</div>'+G.map(function(g){return '<div class="mg"><span>'+g[0]+'</span><span class="chv">⌄</span></div>'+g[1].map(function(x){return x.charAt(0)==='<'?x:'<div class="mi">'+x+'</div>';}).join('');}).join('');
+  var who=whoOf(ps), bell=ps.indexOf('appr')>=0;
+  return '<div class="app"><aside class="side"><div class="brand"><div class="logo">CĐS</div><div><b>Đánh giá CĐS</b><span>Bộ Dân tộc và Tôn giáo</span></div></div>'+
+    '<div class="menu">'+menu+'</div>'+
+    '<div class="who"><div class="av">'+who[0]+'</div><div><b>'+who[1]+'</b><span>'+ORG+'</span></div></div></aside>'+
+    '<div class="am"><div class="tb">'+o.crumb.map(function(c,i){return i===o.crumb.length-1?'<b>'+c+'</b>':c+' <span>›</span>';}).join(' ')+'<div class="bell"'+(bell?' data-go="3.7"':'')+'>🔔'+(bell?'<i>1</i>':'')+'</div></div>'+(o.notif||'')+
+    '<div class="pg">'+o.body+'</div>'+(o.foot||'')+'</div>'+(o.toast?'<div class="toast"><i>✓</i>'+o.toast+'</div>':'')+(o.overlay||'')+'</div>';
+}
+function modal(title,sub,body,foot,wide){
+  return '<div class="ov2"><div class="mdl"'+(wide?' style="width:'+wide+'px"':'')+'><div class="mh"><div><h3>'+title+'</h3>'+(sub?'<p>'+sub+'</p>':'')+'</div><button class="ib">✕</button></div><div class="mbd">'+body+'</div><div class="mf">'+foot+'</div></div></div>';
+}
+
+/* ---------- Danh sách đợt: 1 danh sách cho mọi quyền ----------
+   Tab lọc tại chỗ theo trạng thái. o.tab: tab chọn sẵn */
+function listScreen(o){
+  o=o||{};
+  var sc=scopeOf(o), multi=sc!=='unit', ps=permsOf(o), h=function(k){return ps.indexOf(k)>=0;}, me=whoOf(ps)[1];
+  var all=allRows().filter(function(r){return canSee(r,ps);});
+  var ap=function(r){return h('appr')&&r.s==='pending';};
+  var tab=o.tab||'all', show=function(r){return tab==='all'||r.s===tab;};
+  var TB=[['all','Tất cả']];
+  ['draft','pending','rejected','approved','running','finished'].forEach(function(s){if(all.some(function(r){return r.s===s;}))TB.push([s,ST[s]]);});
+  function tr(r){
+    var x={c:r.c,v:1}, edit=h('list')&&(r.s==='draft'||r.s==='rejected');
+    var acts=go(dId(r,ps),ap(r)?'Xem và duyệt':'Xem','gh s',x);
+    if(edit) acts+=go(r.s==='rejected'?'4.3':'1.5','Sửa','gh s',{c:r.c})+go('2.1','Trình','gh s',{c:r.c})+go('5.1','Xóa','gh s',{c:r.c});
+    if(h('entry')&&r.s==='running'&&r.m.some(function(m){return m!=='on';})) acts+=go('8.3','Nhập phiếu','gh s',{c:r.c});
+    var sub=r.s==='rejected'&&h('list')?'<span class="rj">Lý do từ chối: '+REASON+'</span>':r.s==='pending'?'<span class="rj" style="color:#8A5A00">Hạn duyệt hết '+prevDay(r.d[0])+'</span>':'';
+    return '<tr data-s="'+r.s+'"'+(show(r)?'':' style="display:none"')+(r.mine&&o.hl===r.s?' class="hl"':'')+'><td class="cd">'+r.c+'</td><td class="nm"><b>'+esc(r.n)+'</b>'+sub+'</td>'+(multi?'<td style="font-size:12.5px;min-width:170px;max-width:220px">'+esc(r.o||ORG)+'</td>':'')+'<td>'+mts(r.m)+'</td><td class="dt">'+r.d[0]+'<br>'+r.d[1]+'</td><td>'+progCell(r)+'</td><td>'+badge(r.s)+'</td><td><div class="ra">'+acts+'</div></td></tr>';
+  }
+  var n=all.filter(show).length;
+  var body='<div class="ph"><div><h2>Đợt khảo sát'+(multi?' <span class="scope">Phạm vi: '+SCOPE[sc]+'</span>':'')+'</h2><p>Khảo sát mức độ hài lòng của người dân về PAKN, dịch vụ công trực tuyến và hoạt động chuyển đổi số</p></div><div class="acts"><button class="b">⬇ Xuất Excel</button>'+(h('list')?go('1.2','＋ Tạo đợt khảo sát','p',{}):'')+'</div></div>'+
+   '<div class="pn"><div class="tabs">'+TB.map(function(t){return '<div class="tab'+(t[0]===tab?' on':'')+'" data-f="'+t[0]+'">'+t[1]+(t[2]?' <span class="ct0">'+t[2]+'</span>':'')+'</div>';}).join('')+'</div>'+
+   '<div class="flt"><div class="in ph0" style="width:340px">Tìm theo mã, tên đợt, tên đơn vị…</div>'+unitCol(sc)+'<div class="in" style="width:200px">Tất cả hình thức <span>⌄</span></div><div class="in" style="width:140px">Năm 2026 <span>⌄</span></div></div>'+
+   '<table class="t"><thead><tr><th>Mã</th><th>Tên đợt khảo sát</th>'+(multi?'<th>Đơn vị</th>':'')+'<th>Hình thức</th><th>Thời gian</th><th>Tiến độ</th><th>Trạng thái</th><th class="r">Thao tác</th></tr></thead><tbody>'+all.map(tr).join('')+'</tbody></table>'+
+   '<div class="pgn"><span>Hiển thị 1–'+Math.min(n,10)+' / '+n+' đợt</span><span>‹ <b style="color:#141414">1</b> › &nbsp; 10 / trang ⌄</span></div></div>';
+  var msg=CTX.msg;delete CTX.msg;
+  return shell({role:o.role,menu:'list',crumb:['Khảo sát hài lòng','Đợt khảo sát'],body:body,overlay:o.overlay,toast:o.toast||msg,notif:o.notif?notifPanel():''});
+}
+
+/* ---------- Form tạo / sửa ---------- */
+function formScreen(o){
+  o=o||{};
+  var err=!!o.err, rej=o.mode==='rejected', dr=o.mode==='draft', many=!!o.many, fresh=!rej&&!dr&&!many;
+  var r=rej?ctxRow(['rejected'],'KS-2026-017'):dr?ctxRow(['draft'],'KS-2026-018'):null;
+  var title=(rej||dr)?'Sửa đợt khảo sát':'Tạo đợt khảo sát';
+  var methods=(rej||dr)?r.m:(err?[]:['on']);
+  var mBox=['on','direct','paper'].map(function(k){
+    var d={on:'Người dân tự trả lời qua link, mã QR',direct:'Hỏi trực tiếp rồi nhập phiếu, nhập được trên điện thoại',paper:'Phát phiếu giấy theo mẫu, nhập lại vào hệ thống'}[k];
+    var on=methods.indexOf(k)>=0;
+    return '<div class="chk'+(on?' on':'')+'"><div class="cb">'+(on?'✓':'')+'</div><div><b>'+micon(k)+MT[k]+'</b><span>'+d+'</span></div></div>';
+  }).join('');
+  var qs=(err?[]:QS).map(function(g,gi){return g;});
+  /* Ô câu hỏi trống: tạo mới mỗi nhóm có sẵn 1 ô, bấm Thêm câu hỏi để thêm từng dòng */
+  var qNew=function(N,ST){return '<div class="qe"><span class="no">'+N+'.</span><div class="in ph0"'+ST+'>Nhập nội dung câu hỏi</div><button class="ib" title="Lên">↑</button><button class="ib" title="Xuống">↓</button><button class="ib" title="Xóa">🗑</button></div>';};
+  var qGroups=QS.map(function(g,gi){
+    if(fresh)return '<div class="qg"><div class="qgh"><span>'+g.g+'<small>0 câu</small></span><button class="b s gh">＋ Thêm câu hỏi</button></div>'+qNew(gi+1,err?' style="border-color:#B42318"':'')+'</div>';
+    var list=g.q;
+    var n=0;for(var k=0;k<gi;k++)n+=QS[k].q.length;if(gi>0&&!dr)n++;
+    var items=list.map(function(q,qi){if(dr&&gi===1&&qi===0)return '<div class="qe"><span class="no">'+(n+qi+1)+'.</span><div class="in" style="border-color:#B10E1C">Cổng dịch vụ công trực tuyến dễ truy cập, dễ sử dụng trên điện thoại</div><button class="b s p">Lưu</button><button class="b s gh">Hủy</button></div>';
+      return '<div class="qe"><span class="no">'+(n+qi+1)+'.</span><div class="in">'+esc(q)+'</div><button class="ib" title="Sửa">✎</button><button class="ib" title="Lên">↑</button><button class="ib" title="Xuống">↓</button><button class="ib" title="Xóa">🗑</button></div>';}).join('');
+    if(many&&gi===0) items+=qNew(list.length+1,' style="border-color:#141414;box-shadow:0 0 0 3px rgba(20,20,20,.08)"');
+    if(rej&&gi===0) items+='<div class="qe"><span class="no">3.</span><div class="in" style="border-color:#B10E1C">Thời gian chờ tại bộ phận một cửa hợp lý</div><button class="b s p">Lưu</button><button class="b s gh">Hủy</button></div>';
+    return '<div class="qg"><div class="qgh"><span>'+g.g+'<small>'+list.length+' câu</small></span><button class="b s gh">＋ Thêm câu hỏi</button></div>'+items+'</div>';
+  }).join('');
+  var banner=rej?'<div class="al r"><div><b>Bị từ chối · Lê Văn Hùng · 10/10/2026 09:12</b>'+REASON+be()+'</div></div>':'';
+  var errTop=err?'<div class="al r"><div><b>Chưa trình được đợt khảo sát</b>Còn 6 lỗi, sửa ở các ô đánh dấu đỏ</div></div>':'';
+  var name=err?'<div class="in err ph0">VD: Khảo sát hài lòng về dịch vụ công trực tuyến Quý IV/2026</div><span class="e">Nhập tên đợt khảo sát</span>':'<div class="in">'+(rej||dr?esc(r.n):'Khảo sát hài lòng về dịch vụ công trực tuyến Quý IV/2026')+'</div>';
+  var code=err?'<div class="in err ph0">VD: KS-2026-018</div><span class="e">Nhập mã đợt khảo sát</span>':'<div class="in">'+(rej||dr?r.c:'KS-2026-018')+'</div>';
+  var d1=err?'10/10/2026':(rej||dr?r.d[0]:'15/10/2026'), d2=err?'05/10/2026':(rej||dr?r.d[1]:'15/11/2026');
+  var body='<div class="ph"><div style="display:flex;gap:12px"><button class="back" data-go="1.1">←</button><div><h2>'+title+' '+badge(rej?'rejected':'draft')+'</h2>'+((rej||dr)?'<p>'+r.c+'</p>':'')+'</div></div><div class="acts">'+go(dr?'1.4':'1.1','Hủy','gh')+go(rej?'1.1':'1.4','Lưu nháp')+go(rej?'2.2':(err?'1.3':'2.2'),rej?'Lưu và trình lại':'Lưu và trình phê duyệt','p')+'</div></div>'+
+   banner+errTop+
+   '<div class="cols"><div class="stack">'+
+    '<div class="pn"><div class="pn-h"><h3>Thông tin chung</h3></div><div class="pn-b">'+
+      '<div class="fr" style="grid-template-columns:200px 1fr"><div class="f"><label>Mã đợt <i>*</i>'+chg('Nhập tay')+'</label>'+code+'</div><div class="f"><label>Tên đợt khảo sát <i>*</i></label>'+name+'</div></div>'+
+      '<div class="f"><label>Mô tả, mục đích</label><div class="in ta ph0">Mục đích, đối tượng và phạm vi khảo sát</div></div>'+
+      '<div class="fr" style="grid-template-columns:1fr 1fr 1fr"><div class="f"><label>Ngày bắt đầu <i>*</i></label><div class="in'+(err?' err':'')+'">'+d1+' <span>📅</span></div>'+(err?'<span class="e">Ngày bắt đầu phải sau hôm nay</span>':'')+'</div>'+
+      '<div class="f"><label>Ngày kết thúc <i>*</i></label><div class="in'+(err?' err':'')+'">'+d2+' <span>📅</span></div>'+(err?'<span class="e">Ngày kết thúc phải sau hoặc bằng ngày bắt đầu</span>':'')+'</div>'+
+      '<div class="f"><label>Số phiếu mục tiêu</label><div class="in">'+(rej||dr?tgtOf(r):'800')+'</div></div></div>'+
+      (scopeOf()==='unit'?'<div class="f"><label>Đơn vị thực hiện</label><div class="in ro">'+ORG+'</div><span class="h">Theo đơn vị của tài khoản</span></div>':'<div class="f"><label>Đơn vị thực hiện <i>*</i></label><div class="in">'+ORG+' <span>⌄</span></div><span class="h">Mặc định là đơn vị của tài khoản</span></div>')+
+    '</div></div>'+
+    '<div class="pn"><div class="pn-h"><h3>Nội dung khảo sát<small>Câu hỏi chia theo 3 nhóm</small></h3><div class="scl">Thang đánh giá'+chg('Cố định')+'<span class="lv y">Hài lòng</span><span class="lv n">Chưa hài lòng</span></div></div><div class="pn-b">'+
+      (err?'<span class="e0">Cần ít nhất 1 câu hỏi để trình phê duyệt</span>':'')+qGroups+'</div></div>'+
+   '</div><div class="stack">'+
+    '<div class="pn"><div class="pn-h"><h3>Hình thức khảo sát <i style="color:#B10E1C;font-style:normal">*</i>'+chg('Chọn nhiều')+'</h3></div><div class="pn-b">'+mBox+(err?'<span class="e" style="font-size:11.5px;color:#B42318">Chọn ít nhất 1 hình thức</span>':'')+'</div></div>'+
+    '<div class="pn"><div class="pn-h"><h3>Điều kiện để trình</h3></div><div class="pn-b"><div class="ck">'+
+      (err?'<div class="no">✕ Có mã đợt, không trùng</div><div class="no">✕ Có tên đợt khảo sát</div><div class="no">✕ Ngày bắt đầu sau hôm nay</div><div class="no">✕ Ngày kết thúc sau hoặc bằng ngày bắt đầu</div><div class="no">✕ Có ít nhất 1 hình thức</div><div class="no">✕ Có ít nhất 1 câu hỏi</div>'
+           :'<div class="ok">✓ Có mã đợt, không trùng</div><div class="ok">✓ Có tên đợt khảo sát</div><div class="ok">✓ Ngày bắt đầu sau hôm nay</div><div class="ok">✓ Ngày kết thúc sau hoặc bằng ngày bắt đầu</div><div class="ok">✓ Có ít nhất 1 hình thức</div>'+(fresh?'<div class="no">✕ Có ít nhất 1 câu hỏi</div>':'<div class="ok">✓ Có ít nhất 1 câu hỏi</div>'))+
+    '</div></div></div>'+
+   '</div></div>';
+  return shell({menu:'list',crumb:['Khảo sát hài lòng','Đợt khảo sát',title],body:body,toast:o.toast});
+}
+
+/* ---------- Chi tiết đợt ---------- */
+function qr(off){
+  var s='',seed=7;
+  function f(x,y){function inF(a,b){return x>=a&&x<a+7&&y>=b&&y<b+7;}
+    var fs=[[0,0],[14,0],[0,14]];
+    for(var i=0;i<3;i++){var a=fs[i][0],b=fs[i][1];if(inF(a,b)){var dx=x-a,dy=y-b;return dx===0||dy===0||dx===6||dy===6||(dx>=2&&dx<=4&&dy>=2&&dy<=4);}}
+    seed=(seed*9301+49297)%233280;return seed/233280>.52;}
+  for(var y=0;y<21;y++)for(var x=0;x<21;x++)s+='<i'+(f(x,y)?' class="k"':'')+'></i>';
+  return '<div class="qr'+(off?' off':'')+'">'+s+'</div>';
+}
+function qView(){
+  var n=0;
+  return QS.map(function(g){return '<div class="qg"><div class="qgh"><span>'+g.g+'<small>'+g.q.length+' câu</small></span></div>'+g.q.map(function(q){n++;return '<div class="q"><span class="no">'+n+'.</span><span>'+esc(q)+'</span></div>';}).join('')+'</div>';}).join('');
+}
+/* Mốc tạo, trình, duyệt của từng đợt, luôn trước ngày bắt đầu */
+var HD={'KS-2026-025':['10/10/2026 16:00','11/10/2026 14:30'],'KS-2026-018':['05/10/2026 10:15','12/10/2026 16:20'],'KS-2026-017':['03/10/2026 09:30','06/10/2026 14:02','10/10/2026 09:12'],'KS-2026-016':['05/10/2026 10:15','06/10/2026 14:02'],
+ 'KS-2026-015':['02/10/2026 15:20','04/10/2026 09:10','07/10/2026 08:40'],'KS-2026-014':['24/09/2026 10:05','25/09/2026 16:30','29/09/2026 08:15'],
+ 'KS-2026-012':['22/09/2026 10:15','23/09/2026 14:02','24/09/2026 08:40'],'KS-2026-009':['18/05/2026 09:00','19/05/2026 14:30','22/05/2026 10:05']};
+function tgtOf(r){return r.r?r.r[1]:({'KS-2026-018':800,'KS-2026-017':300,'KS-2026-016':200,'KS-2026-015':500})[r.c]||300;}
+function hist(r,s,auto){
+  var t=HD[r.c]||['01/10/2026 09:00',r.at||'02/10/2026 10:00','03/10/2026 14:00'], by=r.by;
+  var h=[[by,'Tạo đợt khảo sát',t[0],null]];
+  if(s==='rejected'){h.push([by,'Trình phê duyệt',t[1],null]);h.push(auto?['Hệ thống','Tự trả lại',r.d[0]+' 00:00','Đến ngày bắt đầu '+r.d[0]+' mà chưa được phê duyệt. Sửa lại thời gian rồi trình lại']:['Lê Văn Hùng','Từ chối',t[2],REASON]);}
+  if(['pending','approved','running','finished'].indexOf(s)>=0)h.push([by,'Trình phê duyệt',t[1],null]);
+  if(['approved','running','finished'].indexOf(s)>=0)h.push(['Lê Văn Hùng','Phê duyệt',t[2],null]);
+  if(['running','finished'].indexOf(s)>=0)h.push(['Hệ thống','Bắt đầu nhận phiếu',r.d[0]+' 00:00',null]);
+  if(s==='finished')h.push(['Hệ thống','Kết thúc nhận phiếu',r.d[1]+' 23:59',null]);
+  return '<div class="hist">'+h.map(function(x){return '<div class="hi"><span class="dot"></span><div><b>'+x[0]+' · '+x[1]+'</b><span>'+x[2]+'</span>'+(x[3]?'<p>Lý do: '+x[3]+be()+'</p>':'')+'</div></div>';}).join('')+'</div>';
+}
+function methodBlocks(r){
+  var s=r.s, live=s==='running', post=s==='approved'||s==='running'||s==='finished';
+  if(!post) return '';
+  var link='https://cds.geneat.pro/khao-sat/'+r.c.toLowerCase();
+  var stt=s==='approved'?'Chưa mở':live?'Đang nhận phiếu':'Đã đóng';
+  var b=r.m.map(function(m){
+    var hd='<div class="mh"><span>'+micon(m)+MT[m]+'</span><small>'+stt+'</small></div>';
+    /* Đã kết thúc: ẩn link, mã QR, mẫu phiếu. QR đã in vẫn quét được nhưng vào trang báo đợt đã kết thúc (7.5) */
+    if(s==='finished') return '<div class="mb">'+hd+
+      (m==='on'?'<div class="tx0">Đã ẩn link, mã QR. Quét mã QR đã in sẽ thấy trang báo khảo sát đã kết thúc</div><div>'+go('7.5','Xem trang khi quét mã QR','s')+'</div>':'')+'</div>';
+    if(m==='on') return '<div class="mb">'+hd+'<div class="qrrow">'+qr(s!=='running')+'<div style="display:flex;flex-direction:column;gap:6px;min-width:0"><div class="link">'+link+'</div><div style="display:flex;gap:6px;flex-wrap:wrap"><button class="b s">Sao chép</button><button class="b s">Tải mã QR</button>'+(live?go('7.2','Mở trang khảo sát','s'):'')+'</div></div></div></div>';
+    var paper=m==='paper'||m==='direct';
+    return '<div class="mb">'+hd+'<div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">'+(paper?'<button class="b s">⬇ Tải mẫu phiếu (.doc)</button>'+chg('Thêm mới'):'')+(live&&can('entry')?go('8.3','＋ Nhập phiếu','s',{c:r.c}):'')+'</div></div>';
+  }).join('');
+  return '<div class="pn"><div class="pn-h"><h3>Hình thức thực hiện</h3></div><div class="pn-b">'+b+'</div></div>';
+}
+function nonOn(m){return m!=='on';}
+/* Tab của chi tiết đợt: chỉ có khi đợt Đang diễn ra hoặc Đã kết thúc. Tab theo quyền */
+function dTabs(r,tab,ps){
+  if(r.s!=='running'&&r.s!=='finished')return '';
+  /* Theo ma trận quyền: Thông tin cần quyền xem đợt (Đợt khảo sát, Phê duyệt, Cập nhật kết quả); Phiếu cần Đợt khảo sát hoặc Cập nhật kết quả; Kết quả cần Kết quả khảo sát. Chỉ 1 tab thì ẩn thanh tab */
+  var run=r.s==='running', h=function(k){return ps.indexOf(k)>=0;}, T=[];
+  if(h('list')||h('appr')||h('entry'))T.push(['info','Thông tin',run?'6.1':'6.2']);
+  if(h('list')||h('entry'))T.push(['ph','Phiếu <span class="ct0">'+num(totOf(r))+'</span>',run?'8.2':'6.4']);
+  if(h('res'))T.push(['kq',run?'Kết quả <span class="tmp">Tạm tính</span>':'Kết quả',run?'6.3':'9.2']);
+  if(T.length<2)return '';
+  return '<div class="tabs dtabs">'+T.map(function(t){return '<div class="tab'+(t[0]===tab?' on':'')+'" data-go="'+t[2]+'" style="cursor:pointer">'+t[1]+'</div>';}).join('')+'</div>';
+}
+function detailScreen(o){
+  var r=row(o.code),rc=CTX.c&&rowAny(CTX.c);var from={pending:['draft','rejected','pending'],rejected:['pending','rejected']}[o.as]||[r.s];if(rc&&from.indexOf(rc.s)>=0)r=rc;if(o.as)r=Object.assign({},r,{s:o.as});
+  var s=r.s, lead=o.role==='lead', ps=permsOf(o), h=function(k){return ps.indexOf(k)>=0;}, run=s==='running', tab=o.tab||'info', cx={c:r.c};
+  var edit=!lead&&can('list')&&(s==='draft'||s==='rejected');
+  var acts='';
+  var canAp=s==='pending'&&h('appr');
+  NOTE_ST=stepNote(r,o,ps);
+  if(tab==='info'&&edit) acts=go('5.1','Xóa','dg',cx)+go(s==='rejected'?'4.3':'1.5','Sửa','',cx)+go('2.1','Trình phê duyệt','p',cx);
+  if(canAp) acts=go('4.1','✕ Từ chối','dg',cx)+go('3.3','✓ Phê duyệt','dk',cx);
+  if(tab==='ph'&&run&&h('entry')&&r.m.some(nonOn)) acts=go('8.9','📱 Nhập trên điện thoại','',cx)+go('8.3','＋ Nhập phiếu','p',cx);
+  if(tab==='kq'&&totOf(r)) acts='<button class="b">⬇ Xuất Excel</button>';
+  var ph=tab==='ph'?phPanel(r,o,ps):null, msg=CTX.msg;if(tab==='ph')delete CTX.msg;
+  var main=tab==='ph'?ph:tab==='kq'?kqPanel(r):infoPanel(r,o,lead,ps), tb=dTabs(r,tab,ps);
+  var body='<div class="ph"><div style="display:flex;gap:12px"><button class="back" data-go="'+listHome(o)+'">←</button><div><h2>'+esc(r.n)+' '+badge(s)+'</h2><p>'+r.c+' · '+esc(r.o||ORG)+' · '+r.d[0]+' – '+r.d[1]+(run?' · Nhận phiếu đến hết '+r.d[1]:s==='approved'?' · Mở nhận phiếu từ '+r.d[0]:'')+'</p></div></div><div class="acts">'+(tb?'':acts)+'</div></div>'+(tb?'<div class="dbar">'+tb+'<div class="acts">'+acts+'</div></div>':'')+main;
+  var foot='';
+  return shell({role:o.role,menu:'list',crumb:['Khảo sát hài lòng','Đợt khảo sát',r.c],body:body,foot:foot,overlay:o.overlay,toast:(CTX.v?'':o.toast)||msg});
+}
+/* Ghi chú chuyển trạng thái cho khu ghi chú của prototype (không vẽ trong màn hệ thống).
+   detailScreen ghi vào NOTE_ST; prototype hiện ở khung Trạng thái khác, file luồng hiện ở cột Quy tắc */
+var NOTE_ST='';
+function stepNote(r,o,ps){
+  var s=r.s, rej=s==='rejected', h=function(k){return ps.indexOf(k)>=0;};
+  var K=['draft','pending','approved','running','finished'], ci=K.indexOf(rej?'pending':s);
+  var seq=K.map(function(k,i){var t=(k==='pending'&&rej)?'Bị từ chối':ST[k];return i===ci?'<b class="cur'+(rej?' bad':'')+'">'+t+'</b>':'<span'+(i<ci?' class="ok"':'')+'>'+t+'</span>';}).join(' → ');
+  var N={
+   draft:'<b>Trình phê duyệt</b> → Chờ phê duyệt, khóa chỉnh sửa. Nháp còn Sửa, Xóa được',
+   pending:'Người có quyền Phê duyệt: <b>Phê duyệt</b> → Đã phê duyệt, <b>Từ chối</b> → Bị từ chối. 00:00 ngày '+r.d[0]+' chưa duyệt: tự trả lại'+(h('appr')?'':'<br><i>Tài khoản đang xem không duyệt được</i>'),
+   rejected:'Sửa rồi <b>Lưu và trình lại</b> → Chờ phê duyệt, hoặc <b>Lưu nháp</b> → Nháp. Xóa được',
+   approved:'Hệ thống tự chuyển <b>Đang diễn ra</b> lúc 00:00 ngày '+r.d[0],
+   running:'Hệ thống tự chuyển <b>Đã kết thúc</b> sau 23:59 ngày '+r.d[1]+'. Trong lúc này nhận phiếu trực tuyến và nhập phiếu',
+   finished:'Trạng thái cuối, không nhận thêm phiếu'
+  }[s];
+  return '<div class="stq">'+seq+'</div><div class="stx"><b>Tiếp theo:</b> '+N+'</div>';
+}
+function infoPanel(r,o,lead,ps){
+  var s=r.s, side='', h=function(k){return ps.indexOf(k)>=0;};
+  if(s==='rejected') side+=o.auto?'<div class="al r"><div><b>Hệ thống tự trả lại · '+r.d[0]+' 00:00</b>Quá ngày bắt đầu mà chưa được duyệt. Sửa thời gian rồi trình lại</div></div>':'<div class="al r"><div><b>Bị từ chối · Lê Văn Hùng · 10/10/2026</b>'+REASON+be()+'</div></div>';
+  if(s==='pending') side+='<div class="al y"><div>'+(h('appr')?'<b>Chờ bạn phê duyệt</b>Hạn duyệt hết '+prevDay(r.d[0]):'<b>Đang chờ phê duyệt</b>Khóa chỉnh sửa đến khi được xử lý')+'</div></div>';
+  if(s==='running'||s==='finished'){var t=totOf(r);side+='<div class="pn"><div class="pn-h"><h3>Tiến độ</h3></div><div class="pn-b"><div class="big">'+num(t)+' <small>/ '+num(r.r[1])+' phiếu mục tiêu</small></div><div class="prog"><i style="width:'+Math.min(100,Math.round(t/r.r[1]*100))+'%"></i></div><span style="font-size:11.5px;color:#6E6E73">Đạt '+Math.round(t/r.r[1]*100)+'% mục tiêu</span></div></div>';}
+  side+=methodBlocks(r);
+  side+='<div class="pn"><div class="pn-h"><h3>Lịch sử xử lý</h3></div><div class="pn-b">'+hist(r,s,o.auto)+'</div></div>';
+  return '<div class="cols"><div class="stack">'+
+    '<div class="pn"><div class="pn-h"><h3>Thông tin chung</h3></div><div class="pn-b"><div class="kv">'+
+     '<div><span>Mã đợt</span><b>'+r.c+'</b></div><div><span>Hình thức</span><b>'+mts(r.m)+'</b></div><div><span>Đơn vị thực hiện</span><b>'+esc(r.o||ORG)+'</b></div>'+
+     '<div><span>Thời gian</span><b>'+r.d[0]+' – '+r.d[1]+'</b></div><div><span>Phiếu mục tiêu</span><b>'+tgtOf(r)+'</b></div><div><span>Người tạo</span><b>'+r.by+'</b></div>'+
+     '<div class="w3"><span>Mô tả</span><b>Đánh giá mức độ hài lòng của người dân về tiếp nhận, xử lý PAKN, dịch vụ công trực tuyến và các ứng dụng số của tỉnh</b></div>'+
+     '<div class="w3"><span>Thang đánh giá</span><div class="scale"><span class="lv y">Hài lòng</span><span class="lv n">Chưa hài lòng</span></div></div>'+
+    '</div></div></div>'+
+    '<div class="pn"><div class="pn-h"><h3>Nội dung khảo sát<small>6 câu hỏi · 3 nhóm</small></h3></div><div class="pn-b">'+qView()+'</div></div>'+
+   '</div><div class="stack">'+side+'</div></div>';
+}
+
+/* ---------- Danh sách phê duyệt (quyền Phê duyệt đợt khảo sát) ---------- */
+function prevDay(d){var a=d.split('/'),t=new Date(+a[2],a[1]-1,+a[0]-1);return ('0'+t.getDate()).slice(-2)+'/'+('0'+(t.getMonth()+1)).slice(-2)+'/'+t.getFullYear();}
+function notifPanel(){
+  return '<div class="npn"><div class="nh"><h3>Thông báo</h3><span>Đánh dấu tất cả đã đọc</span></div><div class="nf"><b class="on">Tất cả</b><b>Chưa đọc</b></div>'+
+   '<div class="ni un" data-go="3.2"><span class="dt0"></span><div><b>Sắp hết hạn phê duyệt</b>Đợt KS-2026-025 Khảo sát hài lòng về tiếp nhận hồ sơ trực tuyến tháng 11/2026 cần phê duyệt trong hôm nay. Từ 01/11/2026 hệ thống tự trả lại cho người trình<small>08:00 · 31/10/2026</small></div></div>'+
+   '<div class="ni"><span class="dt0 rd"></span><div><b>Yêu cầu phê duyệt</b>Phạm Thu Trang trình phê duyệt đợt khảo sát KS-2026-025<small>11/10/2026</small></div></div></div>';
+}
+/* Màn cũ theo menu riêng nay là tab của danh sách chung */
+function apprScreen(o){o=o||{};return listScreen(Object.assign({role:'lead'},o,{tab:o.tab==='done'?'all':'pending'}));}
+
+/* ---------- Không có quyền (R1) ---------- */
+function noPerm(){
+  var body='<div class="pn"><div class="empty" style="padding:64px 40px"><div style="font-size:30px;margin-bottom:8px">🔒</div><b style="font-size:15px;color:#141414">Bạn không có quyền truy cập chức năng này</b><br><span style="font-size:12.5px">Tài khoản chưa được cấp quyền nào của Khảo sát hài lòng. Liên hệ quản trị hệ thống nếu cần</span></div></div>';
+  return shell({role:'none',menu:'',crumb:['Khảo sát hài lòng'],body:body});
+}
+
+/* ---------- Hộp thoại ---------- */
+var R16=function(){return ctxRow(['pending'],'KS-2026-025');};
+function mnote(t){return '<div class="al y" style="padding:9px 12px"><div>'+t+'</div></div>';}
+function mSubmit(){var r=ctxRow(['draft','rejected'],'KS-2026-018');return modal('Trình phê duyệt đợt khảo sát?','',
+  '<div class="sum"><span>'+r.c+'</span><b>'+esc(r.n)+'</b></div>'+
+  '<div>Đợt chuyển sang <b>Chờ phê duyệt</b>, người duyệt của đơn vị nhận thông báo</div>'+
+  mnote('Đợt bị khóa chỉnh sửa đến khi được duyệt hoặc từ chối'),
+  go('1.4','Hủy')+go('2.2','➤ Trình phê duyệt','dk').replace('<button ','<button data-st="pending" '));}
+function mApprove(){var r=R16();return modal('Phê duyệt đợt khảo sát?','',
+  '<div class="sum"><span>'+r.c+'</span><b>'+esc(r.n)+'</b></div>'+
+  '<div>Đợt chuyển sang <b>Đã phê duyệt</b> và tự mở nhận phiếu ngày <b>'+r.d[0]+'</b></div>',
+  go('3.2','Hủy')+go('3.4','✓ Phê duyệt','dk').replace('<button ','<button data-st="approved" '));}
+function mReject(){var r=R16();return modal('Từ chối đợt khảo sát?','',
+  '<div class="sum"><span>'+r.c+'</span><b>'+esc(r.n)+'</b></div>'+
+  '<div class="f"><label>Lý do từ chối <i>*</i>'+be()+'</label><div class="in ta" style="min-height:96px">'+REASON+'</div><span class="h">Tối đa 500 ký tự</span></div>'+
+  mnote('Đợt chuyển về <b>Bị từ chối</b>, người trình nhận thông báo kèm lý do'),
+  go('3.2','Hủy')+go('4.2','✕ Từ chối','dk').replace('<button ','<button data-st="rejected" '),560);}
+function mDelete(){var r=ctxRow(['draft','rejected'],'KS-2026-018');return modal('Xóa đợt khảo sát?','',
+  '<div class="sum"><span>'+r.c+'</span><b>'+esc(r.n)+'</b></div><div>Đợt bị xóa cùng toàn bộ câu hỏi</div>'+mnote('Thao tác không thể hoàn tác'),
+  go('1.1','Hủy')+go('1.1t','🗑 Xóa đợt','dk').replace('<button ','<button data-st="deleted" '));}
+
+/* ---------- Tiện ích số liệu ---------- */
+function num(n){return n.toLocaleString('vi-VN');}
+function pct(a,b){return b?(a/b*100).toFixed(2).replace('.',','):'—';}
+function de(t){return ' <span class="tag">'+(t||'Đề xuất')+'</span>';}
+function sbar(y,n){var t=y+n;return '<div class="sb">'+(t?'<i class="y" style="width:'+(y/t*100)+'%"></i><i class="n" style="width:'+(n/t*100)+'%"></i>':'')+'</div>';}
+function qFlat(){var a=[];QS.forEach(function(g){g.q.forEach(function(q){a.push({g:g.g,q:q});});});return a;}
+
+/* ---------- Trang công khai cho người dân ---------- */
+var PUB=[
+ {c:'KS-2026-012',n:'Khảo sát hài lòng về dịch vụ công trực tuyến Quý III/2026',o:ORG,e:'31/10/2026',q:6,min:3},
+ {c:'KS-2026-013',n:'Khảo sát hài lòng về tiếp nhận phản ánh, kiến nghị năm 2026',o:'Sở Dân tộc và Tôn giáo tỉnh B',e:'15/11/2026',q:4,min:2}
+];
+function phone(o){
+  var br=o.brand||['Khảo sát mức độ hài lòng','Bộ Dân tộc và Tôn giáo'];
+  return '<div class="pubw"><div class="phone"><div class="pt"><div class="br"><i>CĐS</i><span><b>'+br[0]+'</b><br>'+br[1]+'</span></div>'+
+    (o.back?'<button class="bk" data-go="'+o.back+'">'+(o.backLabel||'‹ Các khảo sát đang mở')+'</button>':'')+
+    (o.t?'<h2>'+o.t+'</h2>':'')+(o.p?'<p>'+o.p+'</p>':'')+'</div>'+
+    '<div class="pb">'+o.body+'</div>'+(o.foot?'<div class="pf">'+o.foot+'</div>':'')+'</div></div>';
+}
+/* Trang người dân: 1 trang web responsive. PDEV chỉ để prototype xem bố cục máy tính hoặc điện thoại */
+var PDEV='web';
+function pub(o){
+  var tg='<div class="dvt"><div class="sw"><button data-dev="web"'+(PDEV==='web'?' class="on"':'')+'>🖥 Máy tính</button><button data-dev="mob"'+(PDEV==='mob'?' class="on"':'')+'>📱 Điện thoại</button></div><span>Cùng 1 trang web, bố cục tự co theo độ rộng màn hình</span></div>';
+  return '<div class="pubw rs">'+tg+'<div class="dvf '+PDEV+'"><div class="chr"><i></i><i></i><i></i><b>khaosat.dantoctongiao.gov.vn'+(o.url||'')+'</b></div>'+
+    '<div class="pu-top"><div class="pu-w"><div class="pu-nav"><div class="br"><i>CĐS</i><span><b>Khảo sát mức độ hài lòng</b><br>Bộ Dân tộc và Tôn giáo</span></div><button class="lk" data-go="7.1">Các khảo sát đang mở</button></div>'+
+    (o.back?'<button class="bk" data-go="'+o.back+'">‹ Các khảo sát đang mở</button>':'')+(o.t?'<h2>'+o.t+'</h2>':'')+(o.p?'<p>'+o.p+'</p>':'')+'</div></div>'+
+    '<div class="pu-bd"><div class="pu-w">'+o.body+'</div></div>'+(o.foot?'<div class="pf pu-m">'+o.foot+'</div>':'')+'</div></div>';
+}
+function pubList(){
+  var cards=PUB.map(function(p,i){return '<div class="sc"><b>'+esc(p.n)+'</b><div class="mm">'+p.o+'<br>Hạn đến '+p.e+' · '+p.q+' câu hỏi · khoảng '+p.min+' phút</div>'+go('7.2','Tham gia khảo sát','p')+'</div>';}).join('');
+  return pub({t:'Khảo sát mức độ hài lòng của người dân',p:'Về kết quả xử lý PAKN, dịch vụ công trực tuyến và hoạt động chuyển đổi số. Không cần đăng nhập',
+    body:'<div style="font-size:12.5px;color:#6E6E73">'+PUB.length+' khảo sát đang mở</div><div class="pu-cards">'+cards+'</div>'});
+}
+function pubForm(o){
+  o=o||{};
+  var A=['y','y','n','y',null,null], n=0, done=A.filter(function(x){return x;}).length;
+  var pb='<div class="pbar"><div class="prog"><i style="width:'+Math.round(done/A.length*100)+'%"></i></div><span>Đã trả lời '+done+'/'+A.length+'</span></div>';
+  var body=(o.err?'<div class="al r"><div><b>Còn '+(A.length-done)+' câu chưa trả lời</b>Chọn Hài lòng hoặc Chưa hài lòng cho các câu được đánh dấu</div></div>':'')+
+    '<div class="pu-m">'+pb+'</div>';
+  QS.forEach(function(g){
+    body+='<div class="pg2">'+g.g+'</div>';
+    g.q.forEach(function(q){
+      var a=A[n], miss=o.err&&!a; n++;
+      body+='<div class="pq'+(miss?' miss':'')+'"><div class="qt"><span>'+n+'.</span>'+esc(q)+'</div><div class="ab"><span class="y'+(a==='y'?' on':'')+'">Hài lòng</span><span class="n'+(a==='n'?' on':'')+'">Chưa hài lòng</span></div>'+(miss?'<span class="e">Chọn mức đánh giá cho câu này</span>':'')+'</div>';
+    });
+  });
+  body+='<div class="f"><label>Góp ý thêm <span style="font-weight:400;color:#6E6E73">(không bắt buộc)</span></label><div class="in ta ph0" style="min-height:84px">Ý kiến của bạn giúp đơn vị phục vụ tốt hơn</div></div>';
+  var send=go(o.err?'7.4':'7.3','Gửi đánh giá','p');
+  var side='<aside class="pu-side"><div class="bx"><h4>Tiến độ</h4>'+pb+send+'<small>Trả lời đủ '+A.length+' câu để gửi. Không cần đăng nhập, không lưu tạm</small></div></aside>';
+  return pub({back:'7.1',url:'/'+PUB[0].c,t:esc(PUB[0].n),p:PUB[0].o+' · Hạn đến '+PUB[0].e+' · '+A.length+' câu hỏi',body:'<div class="pu-main"><div class="pu-qs">'+body+'</div>'+side+'</div>',foot:send});
+}
+function pubDone(){
+  return pub({url:'/'+PUB[0].c,body:'<div class="pu-done"><div class="done"><div class="ic">✓</div><h3>Cảm ơn bạn đã tham gia</h3><p>Đánh giá của bạn đã được ghi nhận cho<br><b style="color:#141414">'+esc(PUB[0].n)+'</b></p>'+go('7.1','Xem khảo sát khác')+'</div></div>'});
+}
+function pubClosed(o){
+  o=o||{};
+  var t=o.notyet?'Khảo sát chưa mở':'Khảo sát đã kết thúc';
+  var p=o.notyet?'<b style="color:#141414">Khảo sát hài lòng về Cổng thông tin điện tử của Sở</b><br>bắt đầu nhận đánh giá từ ngày 20/10/2026. Bạn quay lại từ ngày này nhé':'<b style="color:#141414">Khảo sát hài lòng về dịch vụ công trực tuyến Quý II/2026</b><br>đã kết thúc ngày 30/06/2026 và không nhận thêm đánh giá. Cảm ơn bạn đã quan tâm';
+  return pub({url:'/'+(o.notyet?'KS-2026-015':'KS-2026-009'),body:'<div class="pu-done"><div class="done"><div class="ic x">!</div><h3>'+t+'</h3><p>'+p+'</p>'+go('7.1','Xem các khảo sát đang mở','p')+'</div></div>'});
+}
+
+/* ---------- Cập nhật kết quả (quyền Cập nhật kết quả) ---------- */
+var PH=[
+ {c:'P-000412',m:'direct',a:[1,1,1,1,1,0],t:'',d:'12/10/2026 15:42'},
+ {c:'P-000411',m:'on',a:[1,1,1,1,1,1],t:'Thủ tục nhanh, cán bộ hỗ trợ nhiệt tình',d:'12/10/2026 15:10'},
+ {c:'P-000410',m:'paper',a:[1,0,1,0,0,0],t:'Thời gian chờ tại bộ phận một cửa còn lâu',d:'12/10/2026 14:55'},
+ {c:'P-000409',m:'on',a:[1,1,0,1,1,1],t:'',d:'12/10/2026 11:03'},
+ {c:'P-000408',m:'paper',a:[0,0,1,0,0,0],t:'Cổng dịch vụ công hay bị lỗi khi nộp hồ sơ',d:'12/10/2026 10:21'},
+ {c:'P-000407',m:'direct',a:[1,1,1,1,0,1],t:'',d:'11/10/2026 16:30'},
+ {c:'P-000406',m:'on',a:[1,1,1,1,1,1],t:'',d:'11/10/2026 09:12'},
+ {c:'P-000405',m:'on',a:[0,1,0,0,1,0],t:'Cần hướng dẫn rõ hơn cách dùng ứng dụng trên điện thoại',d:'10/10/2026 20:47'}
+];
+/* Phiếu mẫu của từng đợt: KS-2026-012 dùng PH, đợt khác sinh cố định theo mã đợt và hình thức của đợt */
+var PH_T=['Cán bộ hướng dẫn tận tình','','Thời gian chờ còn lâu','','Mong có thêm hướng dẫn trên điện thoại','','Thủ tục rõ ràng, dễ hiểu',''];
+/* Thao tác trên prototype: phiếu thêm, sửa, xóa theo từng đợt */
+var MUT={};
+function mut(c){return MUT[c]||(MUT[c]={add:[],ed:{},del:{}});}
+function phOf(r){
+  var b=phBase(r),M=MUT[r.c];if(!M)return b;
+  return M.add.slice().reverse().concat(b).filter(function(x){return !M.del[x.c];}).map(function(x){return M.ed[x.c]?Object.assign({},x,M.ed[x.c]):x;});
+}
+function totOf(r){var M=MUT[r.c];return r.r[0]+(M?M.add.length-Object.keys(M.del).length:0);}
+function addPh(r,v){var n=totOf(r)+1,M=mut(r.c),x=Object.assign({c:'P-'+('00000'+(r.r[0]+M.add.length+1)).slice(-6),d:'12/10/2026 16:'+('0'+(5+M.add.length*3)%60).slice(-2)},v);M.add.push(x);return x.c;}
+function phBase(r){
+  if(r.c==='KS-2026-012')return PH.slice();
+  var sd=+r.c.slice(-3), ms=r.m, tot=r.r?r.r[0]:0, out=[];
+  for(var i=0;i<Math.min(8,tot);i++){var k=(sd*7+i*5)%11, a=[];for(var j=0;j<6;j++)a.push((k+j*3+i)%4===0?0:1);
+    var h=16-i, e=r.s==='finished'?r.d[1].split('/'):['12','10','2026'], dd=+e[0]-Math.floor(i/3);
+    out.push({c:'P-'+('00000'+(tot-i)).slice(-6),m:ms[(sd+i)%ms.length],a:a,t:PH_T[(sd+i)%PH_T.length],d:('0'+dd).slice(-2)+'/'+e[1]+'/'+e[2]+' '+('0'+h).slice(-2)+':'+('0'+((sd*13+i*17)%60)).slice(-2)});}
+  return out;
+}
+function cntOf(r){
+  var o=cnt0(r),M=MUT[r.c];if(!M)return o;
+  var all=phBase(r).concat(M.add),f=function(c){return all.filter(function(x){return x.c===c;})[0];};
+  M.add.forEach(function(x){o[x.m]=(o[x.m]||0)+1;});
+  Object.keys(M.ed).forEach(function(c){var x=f(c),m=M.ed[c].m;if(x&&m&&m!==x.m&&!M.del[c]){o[x.m]--;o[m]=(o[m]||0)+1;}});
+  Object.keys(M.del).forEach(function(c){var x=f(c);if(x)o[(M.ed[c]&&M.ed[c].m)||x.m]--;});
+  return o;
+}
+function cnt0(r){
+  if(r.c==='KS-2026-012')return {on:298,direct:72,paper:42};
+  var W={on:6,direct:2.5,paper:1.5},sw=0,t=r.r?r.r[0]:0,o={},left=t;r.m.forEach(function(m){sw+=W[m];});
+  r.m.forEach(function(m,i){o[m]=i===r.m.length-1?left:Math.round(t*W[m]/sw);left-=o[m];});return o;
+}
+function phFind(r,code,manual){var L=phOf(r);return L.filter(function(x){return x.c===code&&(!manual||x.m!=='on');})[0]||L.filter(function(x){return manual?x.m!=='on':x.m==='on';})[0]||L[0];}
+function okCount(a){return a.filter(function(x){return x===1;}).length;}
+function entryScreen(){return listScreen({tab:'running'});}
+function resultsScreen(o){o=o||{};return detailScreen(Object.assign({code:'KS-2026-012',tab:'ph'},o));}
+/* Tab Phiếu: tiến độ theo hình thức + danh sách phiếu. Đang diễn ra và có quyền Cập nhật kết quả thì sửa, xóa phiếu nhập tay */
+function phPanel(r,o,ps){
+  var run=r.s==='running', ed=run&&ps.indexOf('entry')>=0, list=phOf(r), total=totOf(r), cn=cntOf(r), hl=CTX.hl;
+  var nm=r.m.indexOf('paper')>=0?'paper':'direct';if(run&&o.added&&!MUT[r.c]){hl=1;list.unshift({c:'P-'+('00000'+(total+1)).slice(-6),m:nm,a:[1,1,0,1,1,1],t:'',d:'12/10/2026 16:05'});total++;cn[nm]++;}
+  var rows=list.map(function(p,i){
+    var cx={c:r.c,p:p.c}, acts=go('8.8','Xem','gh s',cx);
+    if(ed&&p.m!=='on') acts+=go('8.6','Sửa','gh s',cx)+go('8.7','Xóa','gh s',cx);
+    return '<tr'+((hl===1&&i===0)||p.c===hl?' class="hl"':'')+'><td class="r">'+(i+1)+'</td><td>'+mtag(p.m)+'</td><td>'+okCount(p.a)+'/'+p.a.length+' câu</td><td><div class="nt">'+(p.t?esc(p.t):'<span style="color:#A6A6AB">—</span>')+'</div></td><td class="dt">'+p.d+'</td><td><div class="ra">'+acts+'</div></td></tr>';
+  }).join('');
+  var k=function(l,v,s){return '<div class="kpi"><span>'+l+'</span><b>'+v+'</b>'+(s?'<small>'+s+'</small>':'')+'</div>';};
+  var pc=Math.round(total/r.r[1]*100);
+  return '<div class="kpis">'+'<div class="kpi"><span>Tổng phiếu</span><b>'+num(total)+'</b><small>/ '+num(r.r[1])+' phiếu mục tiêu · '+pc+'%</small><div class="prog" style="margin-top:6px"><i style="width:'+Math.min(100,pc)+'%"></i></div></div>'+r.m.map(function(m){return k(micon(m)+MT[m],num(cn[m]),m==='on'?'Người dân gửi':'Nhập tại hệ thống');}).join('')+'</div>'+
+   (total?'<div class="pn"><div class="flt"><div class="in" style="width:220px">Ghi nhận từ ngày – đến ngày <span>📅</span></div><div class="in" style="width:200px">Tất cả hình thức <span>⌄</span></div></div>'+
+   '<table class="t"><thead><tr><th class="r">STT</th><th>Hình thức</th><th>Câu hài lòng</th><th>Góp ý</th><th>Ghi nhận lúc</th><th class="r">Thao tác</th></tr></thead><tbody>'+rows+'</tbody></table>'+
+   '<div class="pgn"><span>Hiển thị 1–'+Math.min(10,total)+' / '+num(total)+' phiếu</span><span>‹ <b style="color:#141414">1</b> 2 3 … ›  &nbsp; 10 / trang ⌄</span></div></div>'
+   :'<div class="pn"><div class="empty">'+(run?'Chưa có phiếu nào':'Đợt kết thúc mà không có phiếu nào')+'</div></div>');
+}
+function entryPage(o){
+  var mode=o.mode, view=mode==='view', edit=mode==='edit', err=mode==='err', next=mode==='next';
+  var r=ctxRow(view?['running','finished']:['running'],'KS-2026-012'), bk=r.s==='finished'?'6.4':'8.2', av=r.m.filter(function(m){return m!=='on';});
+  var p=view?phFind(r,CTX.p):edit?phFind(r,CTX.p,1):next?{m:'paper',a:[null,null,null,null,null,null],t:''}:{m:'paper',a:[1,1,0,1,null,null],t:''};
+  if(!view&&av.indexOf(p.m)<0)p=Object.assign({},p,{m:av[0]});
+  var onl=view&&p.m==='on';
+  var Q=qFlat(), done=p.a.filter(function(x){return x!==null;}).length, pc=Math.round(done/Q.length*100);
+  var groups='', last='', cur='';
+  Q.forEach(function(x,i){
+    if(x.g!==last){if(last)groups+=cur+'</div>';last=x.g;cur='';groups+='<div class="qg"><div class="qgh"><span>'+x.g+'<small>'+Q.filter(function(z){return z.g===x.g;}).length+' câu</small></span></div>';}
+    var a=p.a[i], miss=err&&a===null;
+    var ctl=view?'<span class="lv '+(a===1?'y':'n')+'">'+(a===1?'Hài lòng':'Chưa hài lòng')+'</span>'
+      :'<div class="sg"><span class="y'+(a===1?' on':'')+'">Hài lòng</span><span class="n'+(a===0?' on':'')+'">Chưa hài lòng</span></div>';
+    cur+='<div class="aq'+(miss?' miss':'')+'"><div class="qt"><span>'+(i+1)+'.</span>'+esc(x.q)+(miss?'<em>Chọn mức đánh giá</em>':'')+'</div>'+ctl+'</div>';
+  });
+  groups+=cur+'</div>';
+  var note=view?(p.t?'<div style="font-size:13.5px;line-height:1.6;white-space:pre-wrap">'+esc(p.t)+'</div>':'<div style="font-size:13px;color:#A6A6AB">Người dân không ghi góp ý</div>')
+    :'<div class="in ta'+(p.t?'':' ph0')+'">'+(p.t?esc(p.t):'Chép ý kiến ghi trên phiếu, nếu có')+'</div><span class="h">Không bắt buộc · tối đa 1000 ký tự</span>';
+  var method=view?mtag(p.m)+'<span class="h">'+(onl?'Người dân tự gửi qua Web, mã QR':'Nhập tại hệ thống')+'</span>'
+    :av.map(function(m){var on=p.m===m;return '<div class="chk rd'+(on?' on':'')+'"><div class="cb">'+(on?'•':'')+'</div><div><b>'+micon(m)+MT[m]+'</b><span>'+(m==='direct'?'Hỏi người dân tại chỗ':'Nhập lại từ phiếu giấy')+'</span></div></div>';}).join('');
+  var prog='<div style="display:flex;justify-content:space-between;font-size:13px"><span>Đã chọn <b>'+done+'/'+Q.length+'</b> câu</span><span style="color:#6E6E73">'+pc+'%</span></div><div class="prog"><i style="width:'+pc+'%"></i></div>';
+  var info=(view||edit)?'<div class="pn"><div class="pn-h"><h3>Thông tin phiếu</h3></div><div class="pn-b"><div class="kv1"><span>Ghi nhận lúc</span><b>'+p.d+'</b>'+(onl?'<span>Kênh gửi</span><b>Web, mã QR</b>':'<span>Người nhập</span><b>Nguyễn Văn Nam</b>')+'</div></div></div>':'';
+  var title=view?'Xem phiếu':edit?'Sửa phiếu':'Nhập phiếu khảo sát';
+  var sub=r.c+' · '+esc(r.n)+(view||edit?' · Ghi nhận '+p.d:'');
+  var acts=view?(onl?'':go('8.6','Sửa','gh',{c:r.c,p:p.c}))+go(bk,'Đóng')
+    :go('8.2','Hủy','gh')+(edit?go('8.2','Lưu thay đổi','p').replace('<button ','<button data-sv="edit" '):goOk(err?'8.5b':'8.4','8.5b','8.4','Lưu và nhập tiếp').replace('<button ','<button data-sv="new" ')+goOk(err?'8.5':'8.4','8.5','8.4','Lưu phiếu','p').replace('<button ','<button data-sv="new" '));
+  var top=(err?'<div class="al r"><div><b>Chưa lưu được phiếu</b>Còn 2 câu chưa chọn mức đánh giá</div></div>':'');
+  var body='<div class="ph"><div style="display:flex;gap:12px"><button class="back" data-go="'+bk+'">←</button><div><h2>'+title+'</h2><p>'+sub+'</p></div></div><div class="acts">'+acts+'</div></div>'+top+
+   '<div class="cols"><div class="stack">'+
+    '<div class="pn"><div class="pn-h"><h3>Câu trả lời<small>'+Q.length+' câu hỏi · 3 nhóm'+(view?'':' · bắt buộc trả lời đủ')+'</small></h3>'+(view?'':'<button class="b s gh">Chọn tất cả Hài lòng</button>')+'</div><div class="pn-b">'+groups+'</div></div>'+
+    '<div class="pn"><div class="pn-h"><h3>Góp ý của người dân</h3></div><div class="pn-b"><div class="f">'+note+'</div></div></div>'+
+   '</div><div class="stack">'+
+    '<div class="pn"><div class="pn-h"><h3>Hình thức'+(view?'':' <i style="color:#B10E1C;font-style:normal">*</i>')+'</h3></div><div class="pn-b">'+method+'</div></div>'+
+    (view?'':'<div class="pn"><div class="pn-h"><h3>Tiến độ phiếu</h3></div><div class="pn-b">'+prog+'</div></div>')+
+    info+
+   '</div></div>';
+  return shell({menu:'entry',crumb:['Khảo sát hài lòng','Đợt khảo sát',r.c,view?'Xem phiếu':edit?'Sửa phiếu':'Nhập phiếu'],body:body,toast:o.toast});
+}
+function entryPhone(){
+  var A=[1,1,0,1,null,null],n=0,done=4,last='',body='', r=ctxRow(['running'],'KS-2026-012'), av=r.m.filter(function(m){return m!=='on';});
+  body+='<div class="f"><label>Hình thức <i>*</i></label><div class="ab">'+av.map(function(m,i){return '<span class="m'+(i===0?' on':'')+'">'+micon(m)+MT[m]+'</span>';}).join('')+'</div></div>';
+  body+='<div class="pbar"><div class="prog"><i style="width:'+Math.round(done/6*100)+'%"></i></div><span>Đã chọn '+done+'/6</span></div>';
+  QS.forEach(function(g){
+    body+='<div class="pg2">'+g.g+'</div>';
+    g.q.forEach(function(q){var a=A[n];n++;
+      body+='<div class="pq"><div class="qt"><span>'+n+'.</span>'+esc(q)+'</div><div class="ab"><span class="y'+(a===1?' on':'')+'">Hài lòng</span><span class="n'+(a===0?' on':'')+'">Chưa hài lòng</span></div></div>';});
+  });
+  body+='<div class="f"><label>Góp ý của người dân</label><div class="in ta ph0" style="min-height:70px">Ghi ý kiến người dân nêu, nếu có</div></div>';
+  return phone({brand:['Đánh giá CĐS','Nguyễn Văn Nam · '+ORG],back:'8.2',backLabel:'‹ Phiếu của đợt',t:'Nhập phiếu',p:r.c+' · '+r.n,body:body,
+    foot:goOk('8.5','8.5','8.9','Lưu phiếu','p').replace('<button ','<button data-sv="new" ')+goOk('8.5','8.5','8.9','Lưu và nhập tiếp').replace('<button ','<button data-sv="new" ')});
+}
+function mDelResult(){var r=ctxRow(['running'],'KS-2026-012'),p=phFind(r,CTX.p||'P-000410',1);return modal('Xóa phiếu này?','',
+  '<div class="sum"><span>'+MT[p.m]+'</span><b>Ghi nhận '+p.d+'</b></div><div>Phiếu bị xóa khỏi đợt, số phiếu đã nhận giảm 1</div>'+mnote('Thao tác không thể hoàn tác'),
+  go('8.2','Hủy')+go('8.2','🗑 Xóa phiếu','dk').replace('<button ','<button data-sv="del" '));}
+
+/* ---------- Tab Kết quả của chi tiết đợt ----------
+   Đã kết thúc: kết quả chính thức. Đang diễn ra: kết quả tạm tính, ghi rõ */
+var SCOPE={unit:'Đơn vị',sub:'Đơn vị và đơn vị con',all:'Toàn hệ thống'};
+function resList(o){o=o||{};return listScreen(Object.assign({},o,{tab:'finished'}));}
+function resDetail(o){return detailScreen({code:o.code,role:o.role,tab:'kq'});}
+function kqPanel(r){
+  var p=totOf(r), QY=qYes(r), y=ansY(r), N=ansN(r), u=N-y, empty=!p, run=r.s==='running';
+  var k=function(c,l,v,s){return '<div class="kpi '+c+'"><span>'+l+'</span><b>'+v+'</b>'+(s?'<small>'+s+'</small>':'')+'</div>';};
+  var top=run?'<div class="al y" style="margin-bottom:14px"><div><b>Tạm tính đến 12/10/2026 16:00</b>Số liệu còn thay đổi, chốt khi đợt kết thúc '+r.d[1]+de()+'</div></div>':'';
+  var kp='<div class="kpis">'+k('','Số phiếu',num(p),'/ '+num(r.r[1])+' phiếu mục tiêu · '+num(N)+' lượt đánh giá')+k('g','Lượt Hài lòng',num(y),empty?'':pct(y,N)+'% số lượt')+k('r','Lượt Chưa hài lòng',num(u),empty?'':pct(u,N)+'% số lượt')+
+    '<div class="kpi"><span>Tỷ lệ hài lòng'+(run?' tạm tính':'')+'</span><b>'+(empty?'—':pct(y,N)+'%')+'</b>'+(empty?'<small>Không có phiếu</small>':sbar(y,u))+'</div></div>';
+  if(empty) return top+kp+'<div class="pn"><div class="empty">'+(run?'Chưa có phiếu nào, kết quả hiện khi nhận phiếu đầu tiên':'Đợt kết thúc mà không có phiếu nào')+'</div></div>';
+  var i=0, qh='';
+  QS.forEach(function(g){
+    qh+='<div class="qg"><div class="qgh"><span>'+g.g+'<small>'+g.q.length+' câu</small></span></div>';
+    g.q.forEach(function(q){var yy=QY[i], n=p-yy; i++;
+      qh+='<div class="qs"><span class="no">'+i+'.</span><span>'+esc(q)+'</span><div>'+sbar(yy,n)+'<div class="cn"><span>'+num(yy)+' hài lòng</span><span>'+num(n)+' chưa</span></div></div><span class="rt">'+pct(yy,p)+'%</span></div>';});
+    qh+='</div>';
+  });
+  var nq=qFlat().length, cn=cntOf(r), left=y, OF=[.012,-.02,.008], SRC=r.m.map(function(m,j){var yy=j===r.m.length-1?left:Math.min(cn[m]*nq,Math.round(cn[m]*nq*(y/N+OF[j%3])));left-=yy;return [m,cn[m],yy,cn[m]*nq];});
+  var src='<table class="t tc"><thead><tr><th>Hình thức</th><th class="r">Số phiếu</th><th class="r">Lượt Hài lòng</th><th class="r">Tỷ lệ</th></tr></thead><tbody>'+
+    SRC.map(function(x){return '<tr><td>'+mtag(x[0])+(x[0]==='on'?'<div class="chn">Web, mã QR '+num(Math.round(x[1]*.79))+' · App Bộ '+num(x[1]-Math.round(x[1]*.79))+'</div>':'')+'</td><td class="r">'+num(x[1])+'</td><td class="r">'+num(x[2])+'</td><td class="r">'+pct(x[2],x[3])+'%</td></tr>';}).join('')+
+    '<tr class="tot"><td>Tổng</td><td class="r">'+num(p)+'</td><td class="r">'+num(y)+'</td><td class="r">'+pct(y,N)+'%</td></tr></tbody></table>';
+  var e=run?['12','10','2026']:r.d[1].split('/');
+  var CM=['Nộp hồ sơ trực tuyến nhanh, không phải đi lại nhiều lần','Mong có thêm hướng dẫn bằng tiếng dân tộc tại bộ phận một cửa','Cổng dịch vụ công đôi lúc chậm vào giờ cao điểm','Cán bộ trả lời câu hỏi qua tổng đài rất chu đáo','Kết quả trả đúng hẹn'];
+  var cm=CM.map(function(c,j){return '<div class="cm">'+esc(c)+'<small>'+MT[r.m[j%r.m.length]]+' · '+('0'+(+e[0]-j)).slice(-2)+'/'+e[1]+'/'+e[2]+' '+(['15:14','10:02','15:40','08:55','16:20'][j])+'</small></div>';}).join('')+'<div style="font-size:12px;color:#6E6E73;text-align:center;padding-top:6px">Cuộn để tải thêm</div>';
+  return top+kp+'<div class="cols"><div class="pn"><div class="pn-h"><h3>Kết quả theo câu hỏi<small>6 câu hỏi · 3 nhóm</small></h3><div class="lg"><span><i style="background:#2F8F5B"></i>Hài lòng</span><span><i style="background:#D9474E"></i>Chưa hài lòng</span></div></div><div class="pn-b">'+qh+'</div></div>'+
+    '<div class="stack"><div class="pn"><div class="pn-h"><h3>Theo hình thức</h3></div>'+src+'</div>'+
+    '<div class="pn"><div class="pn-h"><h3>Ý kiến góp ý<small>'+num(Math.round(p*186/1026))+' ý kiến · mới nhất trước</small></h3></div><div class="pn-b" style="gap:0;max-height:330px;overflow:auto">'+cm+'</div></div></div></div>';
+}
+
+/* ---------- Danh sách màn ---------- */
+var CB='User có quyền Đợt khảo sát', LD='User có quyền Phê duyệt đợt khảo sát';
+var ND='Người dân, không cần tài khoản', CN='User có quyền Cập nhật kết quả khảo sát không trực tuyến', KQ='User có quyền Kết quả khảo sát';
+var S=[
+ {id:'1.1',f:'Luồng 1 · Tạo đợt và lưu nháp',t:'Danh sách đợt khảo sát',a:'User có ít nhất 1 quyền khảo sát',yc:'YC 198, 209, 215, 219',
+  r:function(){return listScreen();},
+  n:['1 menu Đợt khảo sát cho mọi quyền khảo sát. Quyền chỉ quyết định thấy đợt nào, hiện nút nào'+chg('Gộp 4 menu'),'Quyền Đợt khảo sát: thấy mọi trạng thái. Quyền Phê duyệt: đợt đã trình. Quyền Cập nhật kết quả: đợt Đang diễn ra có hình thức nhập tay. Quyền Kết quả: đợt Đã kết thúc','Tab: Tất cả, rồi các trạng thái có đợt. Tab chỉ hiện trạng thái tài khoản được thấy','Cột Tiến độ: Đang diễn ra hiện phiếu đã nhận / mục tiêu; Đã kết thúc hiện số phiếu và tỷ lệ hài lòng','Nút trên dòng theo trạng thái và quyền: Xem; Sửa, Trình, Xóa (Nháp, Bị từ chối); Xem và duyệt (Chờ phê duyệt, khi có quyền Phê duyệt); Nhập phiếu (Đang diễn ra)','Thấy đợt theo phạm vi của quyền. Phạm vi rộng hơn Đơn vị: thêm cột và bộ lọc Đơn vị (10.3, 10.4)','Tìm theo mã, tên đợt, tên đơn vị. Lọc Hình thức, Năm','Xuất Excel theo bộ lọc đang chọn'],
+  api:['GET /api/v1/survey/surveys','filter: keyword, status, method, year · BE trả đợt theo quyền và phạm vi của tài khoản'+be('Cần BE bổ sung')]},
+ {id:'1.2',f:'Luồng 1 · Tạo đợt và lưu nháp',t:'Tạo đợt khảo sát',a:CB,yc:'YC 200–206',
+  r:function(){return formScreen();},
+  n:['Mã đợt người tạo nhập, bắt buộc, không trùng. Hệ thống không tự sinh mã'+chg('Nhập tay'),'Tên đợt bắt buộc, tối đa 300 ký tự','Ngày bắt đầu sau hôm nay','Ngày bắt đầu, ngày kết thúc bắt buộc, ngày kết thúc ≥ ngày bắt đầu','Hình thức chọn nhiều, ít nhất 1: bấm từng ô để chọn hoặc bỏ chọn. Bỏ hết thì báo lỗi dưới khối và Điều kiện để trình chuyển ✕'+chg(),'Đơn vị thực hiện: phạm vi Đơn vị thì lấy theo đơn vị của tài khoản, không sửa. Phạm vi rộng hơn thì chọn đơn vị trong phạm vi (10.7)','Số phiếu mục tiêu không bắt buộc, số nguyên dương','Thang đánh giá cố định Hài lòng, Chưa hài lòng'+chg(),'YC 206 hiểu là: kết quả mỗi nội dung là Hài lòng hoặc Chưa hài lòng, người dân hoặc người nhập phiếu chọn khi trả lời, nhập phiếu. Không cấu hình thang vì YC không cần mức chi tiết hơn'+chg('Đã chốt'),'Câu hỏi thuộc 1 trong 3 nhóm, bỏ nhóm Đánh giá chung'+chg(),'Mặc định mỗi nhóm có sẵn 1 ô nhập câu hỏi trống. Bấm ＋ Thêm câu hỏi để thêm từng dòng mới ở cuối nhóm (xem 1.2b)'+chg('Theo feedback'),'Ô mới là ô nhập luôn, gõ là xong, không cần bấm Lưu từng câu. Có Lên, Xuống, Xóa','Mỗi nhóm luôn giữ ít nhất 1 ô: xóa ô cuối cùng của nhóm thì chỉ xóa nội dung','Ô để trống không tính là câu hỏi, bỏ qua khi lưu. Số câu cạnh tên nhóm chỉ đếm ô có nội dung','Câu đã có nội dung có Sửa, Lên, Xuống, Xóa. Bấm Sửa thì câu thành ô nhập kèm Lưu, Hủy (xem 1.5)','Thứ tự câu hỏi gửi lên theo thứ tự hiển thị, đổi bằng nút lên xuống','Lưu nháp: được phép chưa có câu hỏi','Lưu và trình phê duyệt: bắt buộc ít nhất 1 câu hỏi','Không chọn người phê duyệt, không có ghi chú trình'+chg()],
+  api:['POST /api/v1/survey/surveys','status Nháp → lưu nháp','status Chờ phê duyệt → lưu và trình','code: mã đợt người dùng nhập, BE kiểm tra trùng'],
+  next:[['1.2b','Thêm nhiều câu hỏi'],['1.4','Bấm Lưu nháp'],['1.3','Bấm Lưu và trình khi thiếu dữ liệu']]},
+ {id:'1.2b',f:'Luồng 1 · Tạo đợt và lưu nháp',t:'Tạo đợt · đã thêm nhiều câu hỏi',a:CB,yc:'YC 203–205',
+  r:function(){return formScreen({many:true});},
+  n:['Sau khi nhập ô mặc định và bấm ＋ Thêm câu hỏi nhiều lần','Mỗi lần bấm thêm 1 dòng trống ở cuối nhóm, con trỏ vào luôn ô mới (câu 3)'+chg('Theo feedback'),'Số thứ tự đánh liên tục qua 3 nhóm, tự đánh lại khi thêm, xóa, đổi thứ tự','Câu đã nhập: Sửa, Lên, Xuống, Xóa. Lên, Xuống chỉ đổi trong nhóm','Không giới hạn số câu mỗi nhóm'+be('Cần BE xác nhận')],
+  api:['POST /api/v1/survey/surveys','questions: content, typeName, order · bỏ ô trống trước khi gửi']},
+ {id:'1.3',f:'Luồng 1 · Tạo đợt và lưu nháp',t:'Lỗi nhập liệu khi trình',a:CB,yc:'YC 200',
+  r:function(){return formScreen({err:true});},
+  n:['Kiểm tra khi bấm Lưu nháp hoặc Lưu và trình','Mã đợt trống hoặc trùng mã đợt khác: báo dưới trường','Lỗi hiện dưới từng trường, cuộn tới lỗi đầu tiên','Lỗi thiếu câu hỏi chỉ hiện khi bấm Lưu và trình. Cả 3 nhóm chỉ có ô trống thì tính là chưa có câu hỏi, viền đỏ ô trống','Khối Điều kiện để trình cập nhật ngay khi nhập','Ngày bắt đầu là hôm nay hoặc đã qua: chặn, báo dưới trường. Cần ít nhất 1 ngày để duyệt. Kiểm tra cả khi Lưu nháp, Lưu và trình, Trình từ danh sách','Nháp lưu từ trước mà nay ngày bắt đầu đã qua: Trình bị chặn, phải sửa ngày'],
+  api:['POST /api/v1/survey/surveys → 400 khi sai dữ liệu']},
+ {id:'1.4',f:'Luồng 1 · Tạo đợt và lưu nháp',t:'Chi tiết đợt · Nháp',a:CB,yc:'YC 199',
+  r:function(){return detailScreen({code:'KS-2026-018',toast:'Đã lưu nháp đợt khảo sát'});},
+  n:['Sau khi lưu mở chi tiết đợt, hiện thông báo Đã lưu nháp','Nút Xóa, Sửa, Trình phê duyệt hiện ở Nháp và Bị từ chối','Lịch sử xử lý: trạng thái, người, thời gian','Lịch sử không có ghi chú hay ý kiến'+chg()],
+  api:['GET /api/v1/survey/surveys/{id}','lịch sử lấy từ histories']},
+ {id:'1.5',f:'Luồng 1 · Tạo đợt và lưu nháp',t:'Sửa đợt Nháp',a:CB,yc:'YC 201, 203–205',
+  r:function(){return formScreen({mode:'draft'});},
+  n:['Mở từ nút Sửa ở danh sách (1.1) hoặc chi tiết đợt Nháp (1.4)','Dùng chung form Tạo đợt, nạp sẵn dữ liệu đã lưu, sửa được cả mã đợt','Sửa câu hỏi: bấm ✎, câu thành ô nhập kèm Lưu, Hủy. Hủy trả lại nội dung cũ','Một lúc chỉ sửa 1 câu','Thêm, xóa, đổi thứ tự câu như khi tạo','Lưu nháp: đợt vẫn Nháp, quay về chi tiết đợt','Lưu và trình phê duyệt: kiểm tra như 1.3, đợt sang Chờ phê duyệt','Danh sách câu hỏi gửi lên thay toàn bộ câu hỏi cũ'],
+  api:['GET /api/v1/survey/surveys/{id}','PUT /api/v1/survey/surveys/{id}','status Nháp hoặc Chờ phê duyệt'],
+  next:[['1.4','Bấm Lưu nháp'],['2.2','Bấm Lưu và trình phê duyệt']]},
+ {id:'2.1',f:'Luồng 2 · Trình phê duyệt',t:'Xác nhận trình',a:CB,yc:'YC 208',
+  r:function(){return detailScreen({code:'KS-2026-018',overlay:mSubmit()});},
+  n:['Mở từ nút Trình ở danh sách hoặc ở chi tiết','Chưa có câu hỏi: không mở hộp thoại, báo Cần ít nhất 1 câu hỏi để trình','Không chọn người duyệt'+chg(),'Người nhận thông báo: '+LD.toLowerCase()+' của đơn vị'+be('Cần BE xác nhận')],
+  api:['PUT /api/v1/survey/surveys/{id}','gửi lại toàn bộ dữ liệu đợt, status Chờ phê duyệt']},
+ {id:'2.2',f:'Luồng 2 · Trình phê duyệt',t:'Chi tiết đợt · Chờ phê duyệt',a:CB,yc:'YC 208, 209',
+  r:function(){return detailScreen({code:'KS-2026-018',as:'pending',toast:'Đã trình phê duyệt'});},
+  n:['Chỉ xem, ẩn Sửa, Trình, Xóa','Lịch sử thêm dòng Trình phê duyệt','Người trình theo dõi đợt đã trình ở tab Chờ phê duyệt của danh sách'],
+  next:[['4.4','Đến ngày bắt đầu chưa được duyệt']]},
+ {id:'3.1',f:'Luồng 3 · Phê duyệt',t:'Danh sách đợt · tab Chờ phê duyệt',a:LD,yc:'YC 210',
+  r:function(){return apprScreen();},
+  n:['Không còn menu Phê duyệt riêng: người có quyền Phê duyệt dùng tab Chờ phê duyệt của danh sách đợt'+chg('Gộp 4 menu'),'Ai có quyền Phê duyệt thì duyệt được mọi đợt Chờ phê duyệt. Người trình và người duyệt tách nhau bằng cấu hình phân quyền, hệ thống không kiểm tra riêng','Dòng chờ duyệt hiện hạn duyệt dưới tên đợt, nút Xem và duyệt','Thấy đợt theo phạm vi của quyền: Đơn vị, Đơn vị và đơn vị con (10.5), Toàn hệ thống'],
+  api:['GET /api/v1/survey/surveys','filter: status Chờ phê duyệt']},
+ {id:'3.2',f:'Luồng 3 · Phê duyệt',t:'Xem đợt chờ phê duyệt',a:LD,yc:'YC 210–212',
+  r:function(){return detailScreen({code:'KS-2026-025',role:'lead'});},
+  n:['Dùng chung màn chi tiết đợt, chỉ xem','Thanh dưới có Từ chối, Phê duyệt khi trạng thái Chờ phê duyệt','Không có ô ý kiến phê duyệt'+chg()],
+  api:['GET /api/v1/survey/surveys/{id}'],
+  next:[['3.3','Bấm Phê duyệt'],['4.1','Bấm Từ chối'],['3.7','Thông báo nhắc hạn duyệt']]},
+ {id:'3.3',f:'Luồng 3 · Phê duyệt',t:'Xác nhận phê duyệt',a:LD,yc:'YC 211',
+  r:function(){return detailScreen({code:'KS-2026-025',role:'lead',overlay:mApprove()});},
+  n:['Không nhập ý kiến','Đợt luôn còn hạn khi tới người duyệt: trình bị chặn nếu ngày bắt đầu không sau hôm nay (1.3), đến ngày bắt đầu mà chưa duyệt thì hệ thống tự trả lại (4.4)','Đợt được duyệt luôn trước ngày bắt đầu, nên chuyển Đã phê duyệt rồi tự mở nhận phiếu vào ngày bắt đầu'],
+  api:['PUT /api/v1/survey/surveys/{id}/status','status Approved']},
+ {id:'3.4',f:'Luồng 3 · Phê duyệt',t:'Sau phê duyệt',a:LD,yc:'YC 211',
+  r:function(){return apprScreen({toast:'Đã phê duyệt '+(CTX.c||'KS-2026-025')});},
+  n:['Đợt rời tab Chờ phê duyệt, sang trạng thái Đã phê duyệt','Người trình nhận thông báo đã phê duyệt'+be('Cần BE xác nhận')]},
+ {id:'3.6',f:'Luồng 3 · Phê duyệt',t:'Chi tiết đợt · Đã phê duyệt',a:CB,yc:'YC 199',
+  r:function(){return detailScreen({code:'KS-2026-015'});},
+  n:['Chưa nhận phiếu, đầu trang ghi Mở nhận phiếu từ ngày bắt đầu','Tự chuyển Đang diễn ra vào ngày bắt đầu'+be('Cần BE xác nhận'),'Trực tuyến: hiện sẵn link và QR để in trước. Quét trước ngày bắt đầu thì báo chưa mở (7.6)','Trực tiếp và Gián tiếp qua phiếu: tải mẫu phiếu từ khi Đã phê duyệt'+chg('Thêm mới'),'Đợt có Trực tuyến: phiếu in kèm mã QR của đợt để người dân tự trả lời online'+de()+be('Cần BE bổ sung')],
+  api:['GET /api/v1/survey/surveys/{id}/form-template','Link public FE tự ghép theo id đợt']},
+ {id:'3.7',f:'Luồng 3 · Phê duyệt',t:'Thông báo nhắc hạn phê duyệt',a:LD,yc:'YC 210',
+  r:function(){return apprScreen({notif:true});},
+  n:['Job 08:00 hằng ngày: đợt Chờ phê duyệt có ngày bắt đầu là ngày mai','Người nhận: user có quyền Phê duyệt đợt khảo sát, phạm vi chứa đơn vị của đợt','Mỗi đợt nhắc 1 lần. Đợt được duyệt hoặc từ chối trước 08:00 thì không nhắc','Bấm thông báo mở chi tiết đợt (3.2)','Hiển thị theo Đặc tả thông báo CĐS: chuông, chấm chưa đọc, lọc Tất cả, Chưa đọc'+de()],
+  api:['Job BE nhắc hạn phê duyệt (BE bổ sung)','Thêm 2 dòng vào bảng thông báo: Sắp hết hạn phê duyệt, Đợt khảo sát bị trả lại'],
+  next:[['3.2','Bấm thông báo'],['4.4','Không duyệt, đến ngày bắt đầu']]},
+ {id:'4.1',f:'Luồng 4 · Từ chối và trình lại',t:'Từ chối kèm lý do',a:LD,yc:'YC 212',
+  r:function(){return detailScreen({code:'KS-2026-025',role:'lead',overlay:mReject()});},
+  n:['Lý do từ chối bắt buộc, tối đa 500 ký tự','Đợt về Bị từ chối, người trình nhận thông báo kèm lý do','API hiện chưa có trường lý do'+be()],
+  api:['PUT /api/v1/survey/surveys/{id}/status','status Rejected + rejectReason (BE bổ sung)']},
+ {id:'4.2',f:'Luồng 4 · Từ chối và trình lại',t:'Người tạo thấy đợt bị từ chối',a:CB,yc:'YC 198',
+  r:function(){return listScreen({hl:'rejected'});},
+  n:['Dòng Bị từ chối hiện lý do dưới tên đợt','Có nút Sửa, Trình, Xóa'],
+  api:['GET /api/v1/survey/surveys (cần trả rejectReason)']},
+ {id:'4.2b',f:'Luồng 4 · Từ chối và trình lại',t:'Chi tiết đợt bị từ chối',a:CB,yc:'YC 198',
+  r:function(){return detailScreen({code:'KS-2026-017'});},
+  n:['Mở khi bấm Xem ở dòng Bị từ chối','Đầu cột phải hiện người từ chối, thời gian và lý do','Có nút Xóa, Sửa, Trình phê duyệt như đợt Nháp']},
+ {id:'4.3',f:'Luồng 4 · Từ chối và trình lại',t:'Sửa đợt bị từ chối',a:CB,yc:'YC 201, 204',
+  r:function(){return formScreen({mode:'rejected'});},
+  n:['Đầu form hiện lý do từ chối gần nhất','Lưu nháp: đợt về Nháp','Lưu và trình lại: đợt về Chờ phê duyệt','Danh sách câu hỏi gửi lên thay toàn bộ câu hỏi cũ'],
+  api:['PUT /api/v1/survey/surveys/{id}','status Nháp hoặc Chờ phê duyệt']},
+ {id:'4.4',f:'Luồng 4 · Từ chối và trình lại',t:'Hệ thống tự trả lại khi đến ngày bắt đầu',a:CB,yc:'YC 208, 211',
+  r:function(){return detailScreen({code:'KS-2026-016',as:'rejected',auto:true});},
+  n:['Đợt Chờ phê duyệt mà đến ngày bắt đầu vẫn chưa được duyệt: hệ thống tự chuyển về Bị từ chối lúc 00:00 ngày bắt đầu. Phải duyệt chậm nhất trong ngày trước ngày bắt đầu','Lý do soạn sẵn, người thao tác ghi Hệ thống','Thông báo Đợt khảo sát bị trả lại cho user có quyền tạo, sửa đợt và user có quyền phê duyệt của đơn vị','Đợt rời tab Chờ phê duyệt','Người tạo sửa thời gian (ngày bắt đầu sau hôm nay) rồi trình lại như đợt bị từ chối','Danh sách chờ phê duyệt có cột Hạn duyệt, user có quyền Phê duyệt nhận thông báo nhắc trước 1 ngày (3.7)'+de()],
+  api:['Job BE chạy 00:00 hằng ngày: đợt Chờ phê duyệt có ngày bắt đầu ≤ hôm nay → Bị từ chối + lý do + lịch sử + thông báo (BE bổ sung)']},
+ {id:'5.1',f:'Luồng 5 · Xóa đợt',t:'Xác nhận xóa',a:CB,yc:'YC 207',
+  r:function(){return listScreen({overlay:mDelete()});},
+  n:['Nút Xóa chỉ hiện ở Nháp và Bị từ chối','BE chặn xóa ở trạng thái nào'+be('Cần BE xác nhận'),'Xóa cả câu hỏi của đợt, không hoàn tác','Xóa xong ở lại danh sách, hiện thông báo Đã xóa đợt khảo sát'],
+  api:['DELETE /api/v1/survey/surveys/{id}']},
+ {id:'6.1',f:'Luồng 6 · Theo dõi đợt',t:'Chi tiết đợt · Đang diễn ra · tab Thông tin',a:CB,yc:'YC 199, 213',
+  r:function(){return detailScreen({code:'KS-2026-012'});},
+  n:['Đợt Đang diễn ra có 3 tab: Thông tin, Phiếu (8.2), Kết quả tạm tính (6.3). Tab theo quyền'+chg('Gộp 4 menu'),'Khối Tiến độ: phiếu đã nhận trên phiếu mục tiêu','Mỗi hình thức của đợt có 1 khối thao tác','Trực tuyến: link, QR, Sao chép, Tải QR, Mở trang khảo sát','Trực tiếp, Gián tiếp: Nhập phiếu (8.3)','Tự chuyển Đã kết thúc sau ngày kết thúc'+be('Cần BE xác nhận')],
+  api:['GET /api/v1/survey/surveys/{id} (resultCount, voteTarget)']},
+ {id:'6.2',f:'Luồng 6 · Theo dõi đợt',t:'Chi tiết đợt · Đã kết thúc · tab Thông tin',a:CB,yc:'YC 199',
+  r:function(){return detailScreen({code:'KS-2026-009'});},
+  n:['Đợt Đã kết thúc có 3 tab: Thông tin, Phiếu chỉ xem (6.4), Kết quả (9.2)','Ngừng nhận phiếu mọi hình thức','Ẩn link, mã QR, nút Sao chép, Tải mã QR, Tải mẫu phiếu. Không tạo lại được QR cho đợt đã kết thúc','Mã QR đã in vẫn quét được (QR chỉ là link), nhưng trang mở ra báo đợt đã kết thúc (7.5), không cho trả lời'],
+  api:['GET /api/v1/survey/surveys/{id}']},
+ {id:'6.3',f:'Luồng 6 · Theo dõi đợt',t:'Chi tiết đợt · Đang diễn ra · tab Kết quả tạm tính',a:KQ,yc:'YC 217',
+  r:function(){return detailScreen({code:'KS-2026-012',tab:'kq'});},
+  n:['Cùng bố cục với tab Kết quả của đợt đã kết thúc (9.2)','Ghi rõ Tạm tính ở tên tab, nhãn thẻ Tỷ lệ hài lòng và khung vàng đầu tab, kèm thời điểm tính','Số liệu thay đổi khi nhận thêm phiếu; kết quả chính thức chốt khi đợt kết thúc','Chưa có phiếu thì báo kết quả hiện khi nhận phiếu đầu tiên','Không Xuất Excel khi chưa có phiếu','YC 217 chỉ nêu kết quả đợt đã kết thúc: tạm tính là đề xuất, cần khách xác nhận'+de()],
+  api:['GET /api/v1/survey/surveys/{id}/statistics (kết quả tạm tính)'+be('Cần BE bổ sung')]},
+ {id:'6.4',f:'Luồng 6 · Theo dõi đợt',t:'Chi tiết đợt · Đã kết thúc · tab Phiếu',a:CB,yc:'YC 220',
+  r:function(){return detailScreen({code:'KS-2026-009',tab:'ph'});},
+  n:['Danh sách phiếu của đợt, mọi hình thức','Đợt đã kết thúc: chỉ Xem, không Nhập, Sửa, Xóa','Thẻ trên đếm phiếu theo hình thức'],
+  api:['GET /api/v1/survey/surveys/{surveyId}/results']},
+ {id:'7.1',f:'Luồng 7 · Người dân tham gia khảo sát',t:'Các khảo sát đang mở',a:ND,yc:'YC 213',
+  r:function(){return pubList();},
+  n:['Trang công khai, không đăng nhập (R18)','Chỉ hiện đợt Đang diễn ra, có hình thức Trực tuyến, còn trong thời gian','Gồm đợt của mọi đơn vị','App Bộ mở trang khảo sát công khai này trong app (webview), không đăng nhập. Link có tham số kênh App để phiếu ghi kênh gửi App Bộ. Bên App không cần gọi API riêng'+de()+be('Cần BE bổ sung'),'Quét QR hoặc mở link ở chi tiết đợt (3.6, 6.1) vào thẳng màn 7.2','Số câu và thời gian ước tính do BE trả về','Trang web responsive cho cả máy tính và điện thoại, không làm app riêng. Prototype có nút Máy tính / Điện thoại để xem 2 bố cục'+chg('Theo feedback'),'Máy tính: danh sách khảo sát 2 cột. Điện thoại: 1 cột'],
+  api:['GET /api/v1/public/surveys','id, name, organizationName, endDate, questionCount, estimatedMinutes']},
+ {id:'7.2',f:'Luồng 7 · Người dân tham gia khảo sát',t:'Trả lời khảo sát',a:ND,yc:'YC 213–214',
+  r:function(){return pubForm();},
+  n:['Máy tính: câu hỏi bên trái, mỗi câu 1 dòng với 2 lựa chọn bên phải; khối Tiến độ và nút Gửi bám bên phải khi cuộn. Điện thoại: câu hỏi xếp dọc, lựa chọn dưới câu, thanh tiến độ trên đầu, nút Gửi dính đáy màn'+chg('Theo feedback'),'Câu hỏi chia theo 3 nhóm (typeName), thứ tự theo order','Mỗi câu chọn 1 trong 2: Hài lòng, Chưa hài lòng. Bấm lựa chọn khác để đổi','Thanh tiến độ đếm số câu đã chọn','Góp ý không bắt buộc. Giới hạn ký tự'+be('Cần BE xác nhận'),'Không giới hạn số lần gửi (R18)','Không lưu tạm, tải lại trang thì chọn lại từ đầu'],
+  api:['GET /api/v1/public/surveys/{id}','questions: id, order, content, typeName'],
+  next:[['7.3','Gửi khi chưa trả lời đủ'],['7.4','Gửi thành công'],['7.5','Đợt không còn mở']]},
+ {id:'7.3',f:'Luồng 7 · Người dân tham gia khảo sát',t:'Chưa trả lời đủ câu',a:ND,yc:'YC 214',
+  r:function(){return pubForm({err:true});},
+  n:['FE kiểm tra trước khi gửi, BE cũng chặn khi thiếu câu','Báo số câu còn thiếu ở đầu trang','Đánh dấu từng câu thiếu, cuộn tới câu thiếu đầu tiên','Chọn xong câu nào thì bỏ đánh dấu câu đó'],
+  api:['POST /api/v1/public/surveys/{id}/responses → 400 khi thiếu câu']},
+ {id:'7.4',f:'Luồng 7 · Người dân tham gia khảo sát',t:'Gửi thành công',a:ND,yc:'YC 214',
+  r:function(){return pubDone();},
+  n:['Không hiện mã phiếu, hệ thống không sinh mã','Phiếu cộng ngay vào Phiếu đã nhận của đợt','Bấm quay lại trình duyệt không gửi lại phiếu cũ'],
+  api:['POST /api/v1/public/surveys/{id}/responses','body: answers[{questionId, result 1|2}], note']},
+ {id:'7.5',f:'Luồng 7 · Người dân tham gia khảo sát',t:'Quét QR đợt đã kết thúc',a:ND,yc:'YC 213',
+  r:function(){return pubClosed();},
+  n:['Mở link hoặc quét mã QR đã in của đợt đã kết thúc: báo ngày ngừng nhận, không cho trả lời','Đợt đã xóa hoặc link sai: cùng màn này, câu chữ "Khảo sát không tồn tại"','Đợt hết hạn trong lúc đang trả lời: BE từ chối khi gửi, hiện màn này','Mã lỗi BE trả về cho từng trường hợp'+be('Cần BE xác nhận'),'Hiện hệ thống còn hiện đợt quá hạn là đang mở, phụ thuộc job tự chuyển trạng thái'+be('Cần BE xác nhận')],
+  api:['GET /api/v1/public/surveys/{id} → lỗi khi đợt không mở']},
+ {id:'7.6',f:'Luồng 7 · Người dân tham gia khảo sát',t:'Quét QR đợt chưa mở',a:ND,yc:'YC 213',
+  r:function(){return pubClosed({notyet:true});},
+  n:['Đợt Đã phê duyệt có sẵn link, QR để in trước (3.6). Quét trước ngày bắt đầu thì báo ngày mở, không cho trả lời','Từ ngày bắt đầu, cùng mã QR đó vào thẳng màn trả lời (7.2)'],
+  api:['GET /api/v1/public/surveys/{id} → lỗi chưa đến ngày bắt đầu, trả kèm startDate']},
+ {id:'8.1',f:'Luồng 8 · Nhập phiếu',t:'Danh sách đợt · tab Đang diễn ra',a:CN,yc:'YC 219',
+  r:function(){return entryScreen();},
+  n:['Không còn menu Cập nhật kết quả riêng: tab Đang diễn ra trong danh sách đợt'+chg('Gộp 4 menu'),'Dòng có hình thức Trực tiếp hoặc Gián tiếp qua phiếu có nút Nhập phiếu','Tài khoản chỉ có quyền Cập nhật kết quả chỉ thấy đợt Đang diễn ra có hình thức nhập tay','Cột Tiến độ gồm phiếu mọi hình thức, kể cả trực tuyến','Thấy đợt theo phạm vi của quyền (10.6)'],
+  api:['GET /api/v1/survey/surveys','filter: status Đang diễn ra']},
+ {id:'8.2',f:'Luồng 8 · Nhập phiếu',t:'Chi tiết đợt · Đang diễn ra · tab Phiếu',a:CN,yc:'YC 220–222',
+  r:function(){return resultsScreen();},
+  n:['Mở khi bấm Xem ở đợt Đang diễn ra, hoặc tab Phiếu của chi tiết đợt'+chg('Gộp 4 menu'),'Thẻ trên: tổng phiếu trên mục tiêu kèm thanh tiến độ, đếm theo từng hình thức của đợt','Bảng gồm cả phiếu trực tuyến, chỉ được Xem','Phiếu Trực tiếp, Gián tiếp: Xem, Sửa, Xóa (quyền Cập nhật kết quả)','Câu hài lòng: số câu chọn Hài lòng trên tổng số câu của phiếu','Bỏ cột Kết quả chung và bộ lọc kết quả: phiếu không còn kết quả chung Hài lòng, Chưa hài lòng'+chg('Theo feedback'),'Phiếu không có mã. Cột STT theo thứ tự hiển thị, mới nhất trước. Lọc theo khoảng ngày ghi nhận, hình thức'],
+  api:['GET /api/v1/survey/surveys/{surveyId}/results','id, method, note, answers, createdOnDate · không dùng overallResult'+be('Cần BE bỏ')],
+  next:[['8.3','Nhập phiếu'],['8.9','Nhập phiếu trên điện thoại'],['8.6','Sửa phiếu'],['8.7','Xóa phiếu'],['8.8','Xem phiếu']]},
+ {id:'8.3',f:'Luồng 8 · Nhập phiếu',t:'Nhập phiếu',a:CN,yc:'YC 220',
+  r:function(){return entryPage({mode:'new'});},
+  n:['Mở trang riêng, bố cục như trang Tạo đợt: nút thao tác trên đầu trang, cột trái câu trả lời, cột phải hình thức và tiến độ','Nút ← và Hủy quay về Phiếu của đợt. Đã chọn câu mà rời trang thì hỏi xác nhận bỏ thay đổi','Hình thức bắt buộc, chỉ các hình thức không trực tuyến của đợt. Đợt chỉ có 1 hình thức nhập tay thì chọn sẵn','Mỗi câu chọn Hài lòng hoặc Chưa hài lòng, bắt buộc đủ','Chọn tất cả Hài lòng để nhập nhanh rồi sửa câu khác'+de(),'Góp ý không bắt buộc, chép từ phiếu giấy','Lưu và nhập tiếp: lưu, giữ hình thức, xóa câu trả lời để nhập phiếu kế tiếp'+de()],
+  api:['POST /api/v1/survey/surveys/{surveyId}/results','body: method, note, answers[{surveyQuestionId, result 1|2}]'],
+  next:[['8.4','Lưu khi thiếu câu'],['8.5','Lưu phiếu thành công'],['8.5b','Lưu và nhập tiếp']]},
+ {id:'8.4',f:'Luồng 8 · Nhập phiếu',t:'Lỗi thiếu câu khi lưu',a:CN,yc:'YC 220',
+  r:function(){return entryPage({mode:'err'});},
+  n:['Báo số câu chưa chọn ở đầu trang','Đánh dấu từng câu thiếu, cuộn tới câu thiếu đầu tiên','Ở lại trang, không mất dữ liệu đã chọn'],
+  api:['POST …/results → 400 khi thiếu câu hoặc đợt không còn Đang diễn ra']},
+ {id:'8.5',f:'Luồng 8 · Nhập phiếu',t:'Sau khi lưu phiếu',a:CN,yc:'YC 220',
+  r:function(){return resultsScreen({added:true,toast:'Đã lưu phiếu'});},
+  n:['Lưu phiếu: quay về tab Phiếu của đợt, phiếu mới lên đầu bảng, tô nổi','Tổng phiếu, thẻ hình thức và số trên tab Phiếu cộng 1']},
+ {id:'8.5b',f:'Luồng 8 · Nhập phiếu',t:'Lưu và nhập tiếp',a:CN,yc:'YC 220',
+  r:function(){return entryPage({mode:'next',toast:'Đã lưu phiếu · nhập phiếu tiếp theo'});},
+  n:['Ở lại trang nhập, xóa câu trả lời và góp ý, giữ hình thức đã chọn'+de(),'Cuộn lên đầu trang, hiện thông báo Đã lưu phiếu']},
+ {id:'8.6',f:'Luồng 8 · Nhập phiếu',t:'Sửa phiếu',a:CN,yc:'YC 221',
+  r:function(){return entryPage({mode:'edit'});},
+  n:['Chỉ phiếu Trực tiếp, Gián tiếp, khi đợt Đang diễn ra','Sửa được hình thức, câu trả lời, góp ý','Thời gian ghi nhận, người nhập không đổi','Vẫn bắt buộc trả lời đủ câu'],
+  api:['GET /api/v1/survey/surveys/{surveyId}/results/{id}','PUT /api/v1/survey/surveys/{surveyId}/results/{id}']},
+ {id:'8.7',f:'Luồng 8 · Nhập phiếu',t:'Xóa phiếu',a:CN,yc:'YC 222',
+  r:function(){return resultsScreen({overlay:mDelResult()});},
+  n:['Chỉ phiếu Trực tiếp, Gián tiếp, khi đợt Đang diễn ra','Phiếu trực tuyến không có nút Xóa','Không hoàn tác','Xóa xong ở lại danh sách, thông báo Đã xóa phiếu'],
+  api:['DELETE /api/v1/survey/surveys/{surveyId}/results/{id}']},
+ {id:'8.8',f:'Luồng 8 · Nhập phiếu',t:'Xem phiếu',a:CN,yc:'YC 220',
+  r:function(){return entryPage({mode:'view'});},
+  n:['Trang chỉ xem, không có Sửa, Xóa','Phiếu Trực tiếp, Gián tiếp bấm Xem cũng mở trang chỉ xem này'],
+  api:['GET /api/v1/survey/surveys/{surveyId}/results/{id}']},
+ {id:'8.9',f:'Luồng 8 · Nhập phiếu',t:'Nhập phiếu trên điện thoại',a:CN,yc:'YC 220',
+  r:function(){return entryPhone();},
+  n:['Dùng khi người khảo sát gặp trực tiếp người dân, nhập ngay tại chỗ','Cùng quy tắc với 8.3: hình thức bắt buộc, trả lời đủ câu, góp ý không bắt buộc','Nút lựa chọn to, đủ để bấm bằng ngón tay','Màn web tự co theo màn hình, không làm app riêng'+de(),'Người dân tự quét QR tại quầy thì tính là Trực tuyến, không nhập ở đây'],
+  api:['POST /api/v1/survey/surveys/{surveyId}/results']},
+ {id:'9.1',f:'Luồng 9 · Xem kết quả',t:'Danh sách đợt · tab Đã kết thúc',a:KQ,yc:'YC 215–216',
+  r:function(){return resList();},
+  n:['Không còn menu Kết quả khảo sát riêng: tab Đã kết thúc trong danh sách đợt'+chg('Gộp 4 menu'),'Cột Tiến độ: số phiếu và tỷ lệ hài lòng; không có phiếu thì ghi Không có phiếu','Bấm Xem mở chi tiết đợt ở tab Kết quả (9.2)','Tỷ lệ hài lòng = Tổng lượt Hài lòng / Tổng lượt đánh giá × 100, 2 chữ số thập phân. 1 lượt = 1 câu trả lời của 1 phiếu'+chg('Theo feedback'),'Phạm vi Đơn vị và đơn vị con xem 9.1b, Toàn hệ thống xem 9.1c'],
+  api:['GET /api/v1/survey/surveys','filter: status Đã kết thúc · GET /api/v1/survey/surveys/finished/export']},
+ {id:'9.1b',f:'Luồng 9 · Xem kết quả',t:'Danh sách đợt · tab Đã kết thúc · Đơn vị và đơn vị con',a:KQ,yc:'YC 215–216',
+  r:function(){return resList({scope:'sub'});},
+  n:['Gồm đợt của đơn vị mình và các đơn vị con','Hiện cột Đơn vị, bộ lọc Đơn vị chỉ liệt kê đơn vị trong phạm vi'],
+  api:['GET /api/v1/survey/surveys','filter: organizationId trong phạm vi']},
+ {id:'9.1c',f:'Luồng 9 · Xem kết quả',t:'Danh sách đợt · tab Đã kết thúc · Toàn hệ thống',a:KQ,yc:'YC 215–216',
+  r:function(){return resList({scope:'all'});},
+  n:['Gồm đợt của mọi đơn vị cấp Bộ và địa phương','Bộ lọc Đơn vị liệt kê mọi đơn vị'],
+  api:['GET /api/v1/survey/surveys']},
+ {id:'9.2',f:'Luồng 9 · Xem kết quả',t:'Chi tiết đợt · Đã kết thúc · tab Kết quả',a:KQ,yc:'YC 217–218',
+  r:function(){return resDetail({code:'KS-2026-009'});},
+  n:['Tab Kết quả của chi tiết đợt, không còn màn Kết quả riêng'+chg('Gộp 4 menu'),'Thẻ trên: số phiếu (kèm tổng lượt đánh giá), lượt Hài lòng, lượt Chưa hài lòng, tỷ lệ hài lòng. Phiếu không còn kết quả chung nên không đếm số phiếu Hài lòng, Chưa hài lòng'+chg('Theo feedback'),'Lượt đánh giá = số phiếu × số câu hỏi. Tỷ lệ hài lòng = lượt Hài lòng / lượt đánh giá','Đối chiếu YC 217: số người tham gia = số phiếu. Số người hài lòng, không hài lòng thay bằng lượt Hài lòng, lượt Chưa hài lòng vì phiếu không có kết quả chung'+be('Cần PO xác nhận'),'Theo câu hỏi: chia 3 nhóm, thanh xanh đỏ theo số câu trả lời','Theo hình thức: chỉ các hình thức của đợt, mỗi hình thức 1 dòng, cột Lượt Hài lòng trên tổng lượt của hình thức, dòng Tổng khớp thẻ trên','Kênh gửi (Web/QR, App Bộ) chỉ ghi chú dưới dòng Trực tuyến, không thành dòng riêng để tránh cộng trùng'+de()+be('Cần BE bổ sung'),'Ý kiến góp ý: mới nhất trước, cuộn để tải trang tiếp theo','Xuất Excel: sheet thông tin khảo sát và sheet danh sách kết quả','Số liệu hiện ở Dashboard (phân hệ D), mục Mức độ hài lòng của người dân, chỉ để tham khảo, không tính vào điểm chuyển đổi số'],
+  api:['GET /api/v1/survey/surveys/finished/{id}','GET /api/v1/survey/surveys/finished/{id}/comments','GET /api/v1/survey/surveys/finished/{id}/export']},
+ {id:'9.3',f:'Luồng 9 · Xem kết quả',t:'Chi tiết đợt · tab Kết quả · không có phiếu',a:KQ,yc:'YC 217',
+  r:function(){return resDetail({code:'KS-2026-002'});},
+  n:['Thẻ hiện 0, tỷ lệ hiện —','Ẩn khối theo câu hỏi, theo hình thức, góp ý','Vẫn cho Xuất Excel','Đợt không làm thay đổi Mức độ hài lòng ở Dashboard']}
+];
+S.push(
+ {id:'10.2',f:'Luồng 10 · Quyền và phạm vi',t:'Có đủ 4 quyền',a:'User có đủ 4 quyền',yc:'Phân quyền',pv:[['list','appr','entry','res'],'unit'],
+  r:function(){return asPerm(['list','appr','entry','res'],'unit',function(){return listScreen();});},
+  n:['Vẫn 1 menu Đợt khảo sát; danh sách có đủ tab','Nút trên dòng gộp theo mọi quyền đang có']},
+ {id:'10.3',f:'Luồng 10 · Quyền và phạm vi',t:'Đợt khảo sát · phạm vi Đơn vị và đơn vị con',a:CB+', phạm vi Đơn vị và đơn vị con',yc:'YC 198',pv:[['list','entry','res'],'sub'],
+  r:function(){return asPerm(['list','entry','res'],'sub',function(){return listScreen();});},
+  n:['Thấy đợt của đơn vị mình và đơn vị con','Thêm cột Đơn vị, bộ lọc Đơn vị chỉ liệt kê đơn vị trong phạm vi','Sửa, trình, xóa đợt của đơn vị con như đợt của đơn vị mình','Xuất Excel có thêm cột Đơn vị']},
+ {id:'10.4',f:'Luồng 10 · Quyền và phạm vi',t:'Đợt khảo sát · phạm vi Toàn hệ thống',a:CB+', phạm vi Toàn hệ thống',yc:'YC 198',pv:[['list','entry','res'],'all'],
+  r:function(){return asPerm(['list','entry','res'],'all',function(){return listScreen();});},
+  n:['Thấy đợt của mọi đơn vị cấp Bộ và địa phương','Bộ lọc Đơn vị liệt kê mọi đơn vị']},
+ {id:'10.5',f:'Luồng 10 · Quyền và phạm vi',t:'Danh sách đợt · tab Chờ phê duyệt · phạm vi Đơn vị và đơn vị con',a:LD+', phạm vi Đơn vị và đơn vị con',yc:'YC 210',pv:[['list','appr','entry','res'],'sub'],
+  r:function(){return asPerm(['list','appr','entry','res'],'sub',function(){return apprScreen();});},
+  n:['Thấy và duyệt đợt Chờ phê duyệt của đơn vị mình và đơn vị con','Thông báo trình, nhắc hạn gửi tới user có quyền Phê duyệt có phạm vi chứa đơn vị của đợt']},
+ {id:'10.6',f:'Luồng 10 · Quyền và phạm vi',t:'Danh sách đợt · tab Đang diễn ra · phạm vi Đơn vị và đơn vị con',a:CN+', phạm vi Đơn vị và đơn vị con',yc:'YC 219',pv:[['list','entry','res'],'sub'],
+  r:function(){return asPerm(['list','entry','res'],'sub',function(){return entryScreen();});},
+  n:['Tab Đang diễn ra của danh sách đợt, phạm vi Đơn vị và đơn vị con','Nhập phiếu cho đợt đang diễn ra của đơn vị mình và đơn vị con','Thêm cột, bộ lọc Đơn vị']},
+ {id:'10.7',f:'Luồng 10 · Quyền và phạm vi',t:'Tạo đợt · phạm vi rộng hơn Đơn vị',a:CB+', phạm vi Đơn vị và đơn vị con',yc:'YC 200',pv:[['list','entry','res'],'sub'],
+  r:function(){return asPerm(['list','entry','res'],'sub',function(){return formScreen();});},
+  n:['Trường Đơn vị thực hiện thành ô chọn, chỉ liệt kê đơn vị trong phạm vi','Mặc định là đơn vị của tài khoản','Phạm vi Đơn vị thì trường này chỉ đọc (1.2)']}
+);
+var ALIAS={'d-draft':'1.4','d-pending':'2.2','d-rejected':'4.2b','d-approved':'3.6','d-running':'6.1','d-finished':'6.2','d-rejected-lead':'4.2b','d-approved-lead':'3.6','1.1t':'1.1'};
+
+/* ---------- Quyền và phạm vi ---------- */
+var PROWS=[
+ ['list','Xem danh sách, chi tiết',['1.1','1.4']],['list','Thêm',['1.2']],['list','Sửa thông tin',['1.5','4.3']],['list','Thêm, sửa, xóa nội dung khảo sát',['1.5']],['list','Xóa',['5.1']],['list','Xuất Excel',['1.1']],['list','Trình phê duyệt',['2.1']],['list','Xem danh sách trình phê duyệt',['1.1']],
+ ['appr','Xem danh sách trình phê duyệt',['3.1']],['appr','Phê duyệt',['3.3']],['appr','Từ chối',['4.1']],
+ ['entry','Xem danh sách đợt đang diễn ra',['8.1','8.2']],['entry','Thêm kết quả',['8.3','8.9']],['entry','Sửa kết quả',['8.6']],['entry','Xóa kết quả',['8.7']],
+ ['res','Xem danh sách, chi tiết',['9.1','9.2','6.3']],['res','Xuất Excel',['9.1','9.2']]
+];
+var PSC=[
+ ['unit','Đơn vị','Dữ liệu của đơn vị gắn với tài khoản','Không có cột, bộ lọc Đơn vị. Thêm đợt lấy đơn vị của tài khoản',['1.1','3.1','8.1','9.1']],
+ ['sub','Đơn vị và đơn vị con','Dữ liệu của đơn vị mình và các đơn vị con','Có cột Đơn vị, bộ lọc chỉ liệt kê đơn vị trong phạm vi. Thêm đợt chọn đơn vị trong phạm vi',['10.3','10.5','10.6','10.7','9.1b']],
+ ['all','Toàn hệ thống','Dữ liệu của mọi đơn vị','Có cột Đơn vị, bộ lọc liệt kê mọi đơn vị',['10.4','9.1c']]
+];
+function sl(ids){return ids.map(function(id){return '<span class="sl" data-go="'+id+'">'+id+'</span>';}).join('');}
+function permBox(v){
+  var t1='<table class="pm"><thead><tr><th>Quyền</th><th>Hành động</th><th>Màn</th></tr></thead><tbody>'+
+   PK.map(function(k){var rs=PROWS.filter(function(r){return r[0]===k;}), on=v&&v.p[k];
+     return rs.map(function(r,i){return '<tr'+(on?' class="cur"':'')+'>'+(i===0?'<td rowspan="'+rs.length+'" style="font-weight:600;vertical-align:top">'+PN[k]+(v?'<br><span style="font-weight:400;font-size:11.5px;color:'+(on?'#17603A':'#A8A49E')+'">'+(on?'✓ đang có':'chưa có')+'</span>':'')+'</td>':'')+'<td>'+r[1]+'</td><td>'+sl(r[2])+'</td></tr>';}).join('');}).join('')+
+   '<tr><td style="font-weight:600">Không cần quyền</td><td>Người dân xem đợt đang mở, trả lời, gửi phiếu, không đăng nhập</td><td>'+sl(['7.1','7.2'])+'</td></tr></tbody></table>';
+  var t2='<table class="pm"><thead><tr><th>Phạm vi</th><th>Thấy dữ liệu</th><th>Khác trên giao diện</th><th>Màn</th></tr></thead><tbody>'+
+   PSC.map(function(r){return '<tr'+(v&&v.sc===r[0]?' class="cur"':'')+'><td style="font-weight:600">'+r[1]+'</td><td>'+r[2]+'</td><td>'+r[3]+'</td><td>'+sl(r[4])+'</td></tr>';}).join('')+'</tbody></table>';
+  return '<div style="overflow-x:auto">'+t1+'</div><h3 style="font-size:13.5px;margin:16px 0 6px">Phạm vi của quyền</h3><div style="overflow-x:auto">'+t2+'</div>'+
+   '<ul class="rl"><li>Tài khoản thuộc nhóm do quản trị tạo, quyền của tài khoản là các quyền được tick cho nhóm. Mockup mô tả theo quyền và phạm vi, không theo tên nhóm</li>'+
+   '<li>Phạm vi chọn cho từng hành động khi cấu hình nhóm. Prototype dùng chung 1 phạm vi cho mọi quyền để demo</li>'+
+   '<li>Không có quyền: ẩn menu và nút, mở URL hoặc gọi API bị chặn (R1)</li>'+
+   '<li>Người trình và người duyệt tách nhau bằng cấu hình phân quyền, hệ thống không kiểm tra riêng</li>'+
+   '<li>Có quyền nhưng sai trạng thái vẫn bị chặn (R11), xem bảng Thao tác theo trạng thái</li>'+
+   '<li>Super admin bỏ qua kiểm tra quyền</li></ul>';
+}
+/* ---------- Các kiểu luồng duyệt đợt khảo sát ---------- */
+function flowBox(){
+  function st(a,t,b,id){var ac={1:'Người tạo',2:'Người duyệt',3:'Hệ thống'}[a];return '<span class="st0" data-go="'+id+'"><span class="ac a'+a+'">'+ac+'</span><span class="tx">'+t+(b?' '+badge(b):'')+'</span></span>';}
+  var ar='<span class="ar">→</span>';
+  var K=[
+   ['1. Duyệt bình thường','đợt được duyệt trước ngày bắt đầu',[st(1,'Tạo, lưu nháp','draft','1.2'),st(1,'Trình phê duyệt','pending','2.1'),st(2,'Phê duyệt','approved','3.3'),st(3,'Đến ngày bắt đầu','running','6.1'),st(3,'Qua ngày kết thúc','finished','6.2')]],
+   ['2. Từ chối, sửa, trình lại','người duyệt nhập lý do bắt buộc',[st(1,'Trình phê duyệt','pending','2.1'),st(2,'Từ chối kèm lý do','rejected','4.1'),st(1,'Thấy lý do ở danh sách',null,'4.2'),st(1,'Sửa, Lưu và trình lại','pending','4.3')]],
+   ['3. Sửa xong lưu lại chưa trình','đợt bị từ chối được đưa về nháp',[st(2,'Từ chối kèm lý do','rejected','4.1'),st(1,'Sửa rồi bấm Lưu nháp','draft','4.3'),st(1,'Trình lại khi sẵn sàng','pending','2.1')]],
+   ['4. Quá hạn duyệt','không ai xử lý trước ngày bắt đầu',[st(1,'Trình phê duyệt','pending','2.1'),st(3,'08:00 ngày trước ngày bắt đầu: nhắc người duyệt',null,'3.7'),st(3,'00:00 ngày bắt đầu: tự trả lại','rejected','4.4'),st(1,'Sửa ngày, trình lại','pending','4.3')]],
+   ['5. Xóa đợt','chỉ khi chưa trình hoặc bị từ chối',[st(1,'Đợt Nháp hoặc Bị từ chối',null,'1.4'),st(1,'Xóa, không hoàn tác',null,'5.1')]]
+  ];
+  return '<div class="lgd"><span><b class="a1">Người tạo</b> tạo, trình, sửa</span><span><b class="a2">Người duyệt</b> phê duyệt, từ chối</span><span><b class="a3">Hệ thống</b> tự chuyển theo ngày</span><span>Bấm từng bước để mở màn</span></div><div class="fw">'+
+   K.map(function(k){return '<div class="fk"><h4>'+k[0]+'<small>'+k[1]+'</small></h4><div class="fs">'+k[2].join(ar)+'</div></div>';}).join('')+'</div>';
+}
+
+/* ---------- Tổng quan ---------- */
+function home(){
+  var flows={};S.forEach(function(s){(flows[s.f]=flows[s.f]||[]).push(s);});
+  var fl=Object.keys(flows).map(function(k){return '<div style="margin-bottom:12px"><div style="font-size:13px;font-weight:600;margin-bottom:6px">'+k+'</div><div class="cards">'+flows[k].map(function(s){return '<button class="fc" data-go="'+s.id+'"><span class="n">'+s.id+' · '+s.yc+'</span><span class="t">'+s.t+'</span><span class="w">'+s.a+'</span></button>';}).join('')+'</div></div>';}).join('');
+  var Y='<td class="y">✓</td>',N='<td class="n">—</td>';
+  function c(b){return b?Y:N;}
+  var mx=[['draft',1,1,1,0,0,0,0],['pending',0,0,0,1,0,0,0],['rejected',1,1,1,0,0,0,0],['approved',0,0,0,0,1,0,0],['running',0,0,0,0,1,1,2],['finished',0,0,0,0,1,0,1]].map(function(r){return '<tr><td>'+badge(r[0])+'</td><td class="y">✓</td>'+c(r[1])+c(r[2])+c(r[3])+c(r[4])+c(r[5])+c(r[6])+(r[7]===2?'<td class="y">Tạm tính</td>':c(r[7]))+'</tr>';}).join('');
+  return '<div class="home"><div><h1>Khảo sát hài lòng · Toàn bộ luồng</h1><p class="sub">Mockup theo YC 198–222 và API BE (Swagger cds.geneat.pro). Bấm từng màn để xem, các nút trong màn bấm được</p></div>'+
+  '<div class="box"><h2>Vòng đời đợt khảo sát</h2><p class="d">6 trạng thái theo BE</p><div class="sm">'+badge('draft')+'<span class="ar">→ Trình →</span>'+badge('pending')+'<span class="ar">→ Phê duyệt →</span>'+badge('approved')+'<span class="ar">→ đến ngày bắt đầu →</span>'+badge('running')+'<span class="ar">→ qua ngày kết thúc →</span>'+badge('finished')+'</div><div class="sm" style="margin-top:10px">'+badge('pending')+'<span class="ar">→ Từ chối kèm lý do →</span>'+badge('rejected')+'<span class="ar">→ Sửa, lưu →</span>'+badge('draft')+'<span class="lb">hoặc Lưu và trình lại → Chờ phê duyệt</span></div><div class="sm" style="margin-top:10px">'+badge('pending')+'<span class="ar">→ đến ngày bắt đầu chưa duyệt, hệ thống tự trả lại →</span>'+badge('rejected')+'</div></div>'+
+  '<div class="box"><h2>Các kiểu luồng duyệt</h2><p class="d">Đợt khảo sát đi qua các bước theo quyền</p>'+flowBox()+'</div>'+
+  '<div class="box"><h2>Quyền và phạm vi</h2><p class="d">Mỗi quyền gồm các hành động dưới đây, áp dụng theo phạm vi Đơn vị, Đơn vị và đơn vị con hoặc Toàn hệ thống</p>'+permBox()+'</div>'+
+  '<div class="box"><h2>Các luồng</h2><p class="d">Mỗi thẻ là một màn</p>'+fl+'</div>'+
+  '<div class="box"><h2>Thao tác theo trạng thái</h2><p class="d">Nút không được phép thì ẩn, không làm mờ</p><div style="overflow-x:auto"><table class="mx"><thead><tr><th>Trạng thái</th><th>Xem</th><th>Sửa</th><th>Trình</th><th>Xóa</th><th>Phê duyệt / Từ chối</th><th>Link, QR, mẫu phiếu</th><th>Nhập phiếu</th><th>Xem kết quả</th></tr></thead><tbody>'+mx+'</tbody></table></div></div>'+
+  '<div class="two"><div class="box"><h2>Khác với Figma hiện tại <span class="chg">Khác Figma</span></h2><p class="d">Luồng 1–6, chuyển cho designer sửa. Luồng 7–9 chưa đối chiếu Figma, điểm mới gắn nhãn <span class="tag">Đề xuất</span></p><ul>'+
+   '<li>Loại đợt chọn 1 → Hình thức chọn nhiều</li><li>Bỏ cấu hình thang 2/3/5 mức, cố định Hài lòng, Chưa hài lòng</li><li>Bỏ nhóm Đánh giá chung, còn 3 nhóm câu hỏi</li><li>Bỏ chọn người phê duyệt, ghi chú trình, ý kiến phê duyệt</li><li>Bỏ số đếm trên tab trạng thái</li><li>Bỏ Kết quả chung Hài lòng, Chưa hài lòng của phiếu; kết quả đợt tính theo lượt đánh giá</li><li>Gộp 4 menu Đợt khảo sát, Phê duyệt, Cập nhật kết quả, Kết quả thành 1 menu Đợt khảo sát; chi tiết đợt có tab Thông tin, Phiếu, Kết quả</li><li>Đợt Đang diễn ra có tab Kết quả tạm tính, ghi rõ Tạm tính</li><li>Điều kiện trình gồm 6 điều kiện BE kiểm tra</li><li>Thêm Tải mẫu phiếu cho hình thức Gián tiếp qua phiếu</li><li>Chi tiết đợt có đủ biến thể theo 6 trạng thái</li><li>Lịch sử chỉ có trạng thái, người, thời gian</li><li>Tên trạng thái theo BE: Chờ phê duyệt, Đã phê duyệt</li><li>Phê duyệt làm trên trang chi tiết, không dùng drawer</li><li>Mã đợt nhập tay, phiếu không có mã</li><li>Câu hỏi có nút Sửa, thêm màn Sửa đợt Nháp (1.5)</li></ul></div>'+
+   '<div class="box"><h2>Cần BE bổ sung hoặc xác nhận <span class="be">BE</span></h2><p class="d">Chốt trước khi FE ghép</p><ul>'+
+   '<li><b>Bổ sung</b> lý do từ chối: API đổi trạng thái, model đợt, lịch sử</li><li>Bảng mã enum status 1–6, method 1–3, kết quả 1–2</li><li>Điều kiện chặn xóa</li><li><b>Bổ sung</b> job 00:00 tự trả lại đợt Chờ phê duyệt khi đến ngày bắt đầu, kèm lý do, lịch sử, thông báo</li><li><b>Bổ sung</b> job 08:00 nhắc user có quyền Phê duyệt về đợt Chờ phê duyệt có ngày bắt đầu là ngày mai</li><li><b>Bổ sung</b> kênh gửi (Web/QR, App Bộ) cho phiếu trực tuyến. App Bộ mở trang khảo sát công khai trong webview, BE đọc tham số kênh trên link để ghi kênh</li><li><b>Bổ sung</b> mẫu phiếu in kèm QR khi đợt có Trực tuyến</li><li>Job tự chuyển Đã phê duyệt → Đang diễn ra → Đã kết thúc</li><li>Chặn ngày bắt đầu từ hôm nay trở về trước khi lưu và khi trình</li><li>Phạm vi đơn vị và quyền gọi API phê duyệt</li><li>Người nhận thông báo khi trình, duyệt, từ chối</li>'+
+   '<li><b>Bỏ</b> Kết quả chung của phiếu (overallResult). Kết quả đợt tính theo lượt đánh giá: BE trả tổng lượt Hài lòng, lượt Chưa hài lòng theo đợt, theo câu hỏi, theo hình thức. Dashboard phân hệ D dùng cùng công thức</li><li>Hệ thống không tự sinh mã: Mã đợt do người dùng nhập (kiểm tra trùng), phiếu không có mã</li><li>Các trường lọc của API danh sách phiếu và danh sách kết quả</li><li><b>Bổ sung</b> số phiếu theo hình thức cho đợt đang diễn ra</li><li>Phạm vi dữ liệu Kết quả khảo sát: Swagger ghi toàn hệ thống, đặc tả phân quyền ghi theo đơn vị (R2)</li><li>Giới hạn ký tự góp ý</li><li>Mã lỗi khi người dân mở đợt không còn mở</li></ul></div></div></div>';
+}
+
+/* ---------- Thao tác trong form: chọn hình thức ----------
+   Hình thức đợt: chọn nhiều, ít nhất 1. Hình thức phiếu: chọn 1 */
+document.addEventListener('click',function(e){
+  var m=e.target.closest('.ab .m');
+  if(m){[].forEach.call(m.parentNode.querySelectorAll('.m'),function(x){x.classList.toggle('on',x===m);});return;}
+  var c=e.target.closest('.chk');if(!c)return;
+  var box=c.parentNode, cb=c.querySelector('.cb');
+  if(c.classList.contains('rd')){[].forEach.call(box.querySelectorAll('.chk.rd'),function(x){x.classList.toggle('on',x===c);x.querySelector('.cb').textContent=x===c?'•':'';});return;}
+  c.classList.toggle('on');cb.textContent=c.classList.contains('on')?'✓':'';
+  var n=box.querySelectorAll('.chk.on').length, er=box.querySelector('.e');
+  if(!n&&!er){er=document.createElement('span');er.className='e';er.style.cssText='font-size:11.5px;color:#B42318';er.textContent='Chọn ít nhất 1 hình thức';box.appendChild(er);}
+  if(n&&er)er.parentNode.removeChild(er);
+  var pg=c.closest('.pg')||document;
+  [].forEach.call(pg.querySelectorAll('.ck div'),function(x){if(x.textContent.indexOf('Có ít nhất 1 hình thức')>=0){x.className=n?'ok':'no';x.textContent=(n?'✓ ':'✕ ')+'Có ít nhất 1 hình thức';}});
+});
+
+/* ---------- Prototype: chuyển màn bằng thao tác trong giao diện ---------- */
+var cur=-1, navStack=[], ctxStack=[], PCTX={}, P={}, SC='unit', NDV=false;
+/* Prototype không minh họa phân quyền: tài khoản cán bộ có đủ chức năng, phạm vi Đơn vị. Phân quyền chốt riêng với dev */
+function pFull(){return {list:1,appr:1,entry:1,res:1};}
+function idx(id){id=ALIAS[id]||id;for(var i=0;i<S.length;i++)if(S[i].id===id)return i;return -1;}
+function homeOf(){return '1.1';}
+function sync(){
+  VR=NDV?null:{p:P,sc:SC};
+  document.getElementById('vcb').classList.toggle('on',!NDV);document.getElementById('vnd').classList.toggle('on',NDV);
+}
+/* Màn người dân (Luồng 7) bật góc nhìn Người dân; màn mẫu có pv giữ bộ quyền riêng của màn đó */
+function presetFor(s){
+  if(s.pv){P={};s.pv[0].forEach(function(k){P[k]=1;});SC=s.pv[1];NDV=false;return;}
+  P=pFull();SC='unit';NDV=s.f.indexOf('Luồng 7')===0;
+}
+/* Ghi chú prototype (chuyển trạng thái, nhánh khác): mở từ nút Ghi chú trên thanh, đóng khi bấm ra ngoài hoặc chuyển màn */
+function altOff(){document.getElementById('alt').classList.remove('on');document.getElementById('bnote').classList.remove('on');}
+function altOn(){var a=document.getElementById('alt'),b=document.getElementById('bnote').getBoundingClientRect();a.classList.add('on');document.getElementById('bnote').classList.add('on');
+  a.style.top=(b.bottom+8)+'px';a.style.left=Math.max(8,Math.min(b.left,innerWidth-a.offsetWidth-12))+'px';}
+function render(i){
+  cur=i;var s=S[i],m=document.getElementById('main');
+  NOTE_ST='';m.innerHTML=s.r();m.scrollTop=0;
+  document.getElementById('cur').textContent=s.id+' · '+s.t;
+  document.getElementById('back').disabled=!navStack.length;
+  var a=document.getElementById('alt'),nx=s.next||[];altOff();
+  document.getElementById('bnote').style.display=(nx.length||NOTE_ST)?'':'none';
+  a.innerHTML=(NOTE_ST?'<b>Trạng thái</b><div class="stn">'+NOTE_ST+'</div>':'')+(nx.length?'<b>Thử nhánh khác</b>'+nx.map(function(x){return '<button data-go="'+x[0]+'">'+x[1]+'</button>';}).join(''):'');
+  try{history.replaceState(null,'','#'+s.id);}catch(e){}
+}
+function goId(id){var i=idx(id);if(i<0)return;if(i===cur){render(cur);tst('Đang ở màn này');return;}if(cur>=0){navStack.push(cur);ctxStack.push(PCTX);}presetFor(S[i]);sync();render(i);}
+function goBack(){if(!navStack.length)return;CTX=ctxStack.pop()||{};var j=navStack.pop();presetFor(S[j]);sync();render(j);}
+function ovl(h){var o=document.getElementById('ovl');o.innerHTML=h;o.classList.add('on');}
+function ovlOff(){document.getElementById('ovl').classList.remove('on');}
+function ovlHead(t,p){return '<div class="oh"><div><h2>'+t+'</h2><p>'+p+'</p></div><button data-x="1">✕ Đóng</button></div>';}
+function restart(){navStack=[];ctxStack=[];CTX={};cur=-1;sync();render(idx(NDV?'7.1':homeOf()));}
+document.addEventListener('click',function(e){
+  if(e.target.closest('#bnote')){if(document.getElementById('alt').classList.contains('on'))altOff();else altOn();return;}
+  if(!e.target.closest('#alt'))altOff();
+  var dv=e.target.closest('[data-dev]');if(dv){PDEV=dv.getAttribute('data-dev');render(cur);return;}
+  var o=e.target.closest('#ovl');
+  if(o){if(e.target.id==='ovl'||e.target.closest('[data-x]')){ovlOff();return;}var g=e.target.closest('[data-go]');if(g){ovlOff();PCTX=CTX;setCtx(g);goId(g.getAttribute('data-go'));}return;}
+  var t=e.target.closest('[data-go]');
+  if(t){var gid=t.getAttribute('data-go');
+    if(t.hasAttribute('data-ok')){var qs=document.querySelectorAll('#main .aq,#main .pq'),miss=[].filter.call(qs,function(q){return !q.querySelector('.sg .on,.ab:not(:has(.m)) .on');});
+      gid=miss.length?t.getAttribute('data-bad'):t.getAttribute('data-ok');
+      if(miss.length&&idx(gid)===cur){miss.forEach(function(q){q.classList.add('miss');});miss[0].scrollIntoView({block:'center'});tst('Còn '+miss.length+' câu chưa chọn mức đánh giá');return;}}
+    var sv=t.getAttribute('data-sv'),sr=sv&&ctxRow(['running'],'KS-2026-012'),pv=CTX.p;
+    if(sv&&sv!=='del'){var m0=document.getElementById('main'),ch=m0.querySelector('.chk.rd.on b,.ab .m.on'),mm='direct';if(ch)Object.keys(MT).forEach(function(k){if(ch.textContent.indexOf(MT[k])>=0)mm=k;});
+      var aa=[].map.call(m0.querySelectorAll('.aq,.pq'),function(q){var o=q.querySelector('.sg .on,.ab:not(:has(.m)) .on');return o&&o.classList.contains('y')?1:0;});
+      var nt=m0.querySelector('.in.ta:not(.ro)'),tt=nt&&!nt.classList.contains('ph0')?nt.textContent.trim():'';var pay={m:mm,a:aa,t:tt};}
+    PCTX=CTX;setCtx(t);
+    var nst=t.getAttribute('data-st');if(nst&&CTX.c){SOV[CTX.c]=nst;if(nst==='deleted')CTX={msg:'Đã xóa đợt khảo sát'};}
+    if(sv==='new'){var nc=addPh(sr,pay);CTX=Object.assign({},CTX,{c:sr.c,hl:nc});delete CTX.p;}
+    else if(sv==='edit'){mut(sr.c).ed[pv]=pay;CTX=Object.assign({},CTX,{c:sr.c,hl:pv,msg:'Đã lưu thay đổi phiếu'});}
+    else if(sv==='del'){mut(sr.c).del[pv]=1;CTX=Object.assign({},CTX,{c:sr.c,msg:'Đã xóa phiếu'});delete CTX.hl;}
+    goId(gid);return;}
+  ix(e);
+});
+document.getElementById('vcb').onclick=function(){if(NDV){NDV=false;P=pFull();SC='unit';restart();}};
+document.getElementById('vnd').onclick=function(){if(!NDV){NDV=true;restart();}};
+document.getElementById('bflow').onclick=function(){ovl('<div class="ob">'+ovlHead('Các kiểu luồng duyệt đợt khảo sát','Bấm từng bước để mở màn tương ứng')+flowBox()+'</div>');};
+document.getElementById('back').onclick=function(){goBack();document.getElementById('back').disabled=!navStack.length;};
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){ovlOff();ddOff();altOff();}if(e.key==='Backspace'&&navStack.length&&!/input|textarea/i.test(e.target.tagName)&&!e.target.isContentEditable){e.preventDefault();goBack();}});
+/* ---------- Tương tác tại chỗ cho phần không chuyển màn: bộ lọc, tìm kiếm, tab, phân trang, ô nhập, chọn ---------- */
+function tst(msg){var t=document.getElementById('tst');t.innerHTML='<i>✓</i>'+esc(msg);t.classList.add('on');clearTimeout(tst.h);tst.h=setTimeout(function(){t.classList.remove('on');},1800);}
+function ddOff(){var d=document.getElementById('dd');d.classList.remove('on');d._t=null;}
+function ddAt(el,html){var d=document.getElementById('dd'),r=el.getBoundingClientRect();d.innerHTML=html;d.style.minWidth=Math.max(180,r.width)+'px';d.classList.add('on');
+  var top=r.bottom+4;if(top+d.offsetHeight>innerHeight-8)top=Math.max(8,r.top-4-d.offsetHeight);d.style.top=top+'px';d.style.left=Math.min(r.left,innerWidth-d.offsetWidth-8)+'px';d._t=el;}
+function txt(el){return (el.textContent||'').replace(/[⌄📅]/g,'').trim();}
+function low(s){return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/đ/g,'d');}
+function scopeEl(el){return el.closest('.pn')||el.closest('.pg')||document.getElementById('main');}
+function rowsOf(sc){return [].slice.call(sc.querySelectorAll('table.t tbody tr')).filter(function(r){return !r.classList.contains('emp');});}
+/* Tô lại bảng theo mọi bộ lọc đang chọn trong khối */
+function applyF(sc){
+  var f=sc._f||{}, rows=rowsOf(sc), n=0;
+  rows.forEach(function(r){
+    var ok=Object.keys(f).every(function(k){return f[k](r);});
+    r.style.display=ok?'':'none';if(ok)n++;
+  });
+  var tb=sc.querySelector('table.t tbody');if(!tb)return;
+  var em=tb.querySelector('tr.emp');
+  if(!n&&rows.length){if(!em){em=document.createElement('tr');em.className='emp';em.innerHTML='<td colspan="20">Không có dữ liệu phù hợp với bộ lọc</td>';tb.appendChild(em);}}
+  else if(em)em.remove();
+}
+function hasTxt(r,v){return [].slice.call(r.querySelectorAll('*')).some(function(e){return txt(e)===v;});}
+function colIdx(sc,h){var th=[].slice.call(sc.querySelectorAll('table.t thead th'));for(var i=0;i<th.length;i++)if(txt(th[i])===h)return i;return -1;}
+function optsFor(el){
+  var t=txt(el), sc=scopeEl(el);
+  if(/trang$/.test(t))return ['10 / trang','20 / trang','50 / trang'];
+  if(/hình thức/i.test(t))return ['Tất cả hình thức','Trực tuyến','Trực tiếp','Gián tiếp qua phiếu'];
+  if(/^Năm/.test(t))return ['Năm 2026','Năm 2025','Năm 2024'];
+  if(/trạng thái/i.test(t)){var s={};sc.querySelectorAll('table.t .st').forEach(function(b){s[txt(b)]=1;});return ['Tất cả trạng thái'].concat(Object.keys(s));}
+  if(/đơn vị/i.test(t)){var c=colIdx(sc,'Đơn vị'),u={};if(c>=0)rowsOf(sc).forEach(function(r){var td=r.children[c];if(td)u[txt(td)]=1;});return [el._all||t].concat(Object.keys(u));}
+  if(el.closest('.f')){var all=[ORG,'Xã Hòa Bình','Xã Tân Lập','Phường Trung Tâm'];return all.indexOf(t)<0?[t].concat(all):all;}
+  return [t];
+}
+function pickOpt(el,v){
+  el._opts=el._opts||optsFor(el); if(!el._all)el._all=el._opts[0];
+  var sp=el.querySelector('span');el.innerHTML=esc(v)+' '+(sp?sp.outerHTML:'<span>⌄</span>');
+  if(el.closest('.pgn')){tst('Hiển thị '+v);return;}
+  var sc=scopeEl(el);if(!sc.querySelector('table.t'))return;
+  sc._f=sc._f||{};var key='d'+[].indexOf.call(sc.querySelectorAll('.flt .in'),el);
+  if(v===el._all)delete sc._f[key];
+  else if(/^Năm (\d+)/.test(v)){var y=v.slice(4);sc._f[key]=function(r){return r.textContent.indexOf('/'+y)>=0;};}
+  else sc._f[key]=function(r){return hasTxt(r,v);};
+  applyF(sc);
+}
+function dateBox(el){
+  var two=/–/.test(txt(el))&&/từ ngày|–/.test(txt(el)), cur=txt(el).match(/\d{2}\/\d{2}\/\d{4}/g)||[];
+  var iso=function(d){return d?d.split('/').reverse().join('-'):'';};
+  var h='<div class="dr">'+(two?'<label>Từ ngày<input type="date" value="'+iso(cur[0])+'"></label><label>Đến ngày<input type="date" value="'+iso(cur[1])+'"></label>':'<label>Chọn ngày<input type="date" value="'+iso(cur[0])+'"></label>')+
+    '<div class="rw">'+(two?'<button class="b s" data-dd="clr">Xóa</button>':'')+'<button class="b s dk" data-dd="ok">Áp dụng</button></div></div>';
+  ddAt(el,h);
+}
+function dateOk(el,clr){
+  var ins=document.querySelectorAll('#dd input'), vn=function(v){return v?v.split('-').reverse().join('/'):'';};
+  var a=vn(ins[0]&&ins[0].value), b=vn(ins[1]&&ins[1].value);
+  if(ins.length>1){
+    el.innerHTML=(clr||(!a&&!b)?'Ghi nhận từ ngày – đến ngày':(a||'…')+' – '+(b||'…'))+' <span>📅</span>';
+    var sc=scopeEl(el);sc._f=sc._f||{};
+    var num=function(s){var m=s.match(/(\d{2})\/(\d{2})\/(\d{4})/);return m?+(m[3]+m[2]+m[1]):0;};
+    if(clr||(!a&&!b))delete sc._f.dt;else sc._f.dt=function(r){var c=r.querySelector('td.dt'),v=c?num(c.textContent):0;return (!a||v>=num(a))&&(!b||v<=num(b));};
+    applyF(sc);
+  }else if(a){el.innerHTML=a+' <span>📅</span>';el.classList.remove('err','ph0');}
+  ddOff();
+}
+/* Phân trang: tách chữ ‹ 1 2 3 … › thành nút bấm được */
+function pgEnhance(root){
+  root.querySelectorAll('.pgn').forEach(function(p){
+    var sp=p.children[p.children.length-1];if(!sp||sp._x)return;sp._x=1;
+    var raw=sp.textContent, per=(raw.match(/\d+ \/ trang/)||[''])[0];
+    var nums=(raw.replace(per,'').match(/\d+|…/g)||['1']);
+    sp.innerHTML='<span class="pg0 dis" data-pg="prev">‹</span>'+nums.map(function(x,i){return x==='…'?'<span style="padding:0 4px">…</span>':'<span class="pg0'+(i===0?' on':'')+'" data-pg="'+x+'">'+x+'</span>';}).join('')+'<span class="pg0'+(nums.length<2?' dis':'')+'" data-pg="next">›</span>'+
+      (per?'&nbsp;&nbsp;<span class="in" style="display:inline-flex;height:28px;padding:0 8px">'+per+' <span>⌄</span></span>':'');
+  });
+}
+function pgGo(b){
+  var sp=b.parentNode, pages=[].slice.call(sp.querySelectorAll('.pg0[data-pg]')).filter(function(x){return /^\d+$/.test(x.getAttribute('data-pg'));});
+  var on=sp.querySelector('.pg0.on'), i=pages.indexOf(on), k=b.getAttribute('data-pg');
+  var n=k==='prev'?i-1:k==='next'?i+1:pages.indexOf(b);if(n<0||n>=pages.length)return;
+  pages.forEach(function(x){x.classList.remove('on');});pages[n].classList.add('on');
+  sp.querySelector('[data-pg="prev"]').classList.toggle('dis',n===0);sp.querySelector('[data-pg="next"]').classList.toggle('dis',n===pages.length-1);
+  var pg=+pages[n].getAttribute('data-pg'), info=sp.parentNode.children[0];
+  if(info&&/Hiển thị/.test(info.textContent)){var m=info.textContent.match(/\/ ([\d.]+)/), tot=m?+m[1].replace(/\./g,''):0, per=10;
+    info.textContent=info.textContent.replace(/\d+–\d+/,((pg-1)*per+1)+'–'+Math.min(pg*per,tot));}
+  tst('Trang '+pg+' · prototype chỉ có dữ liệu mẫu của trang 1');
+}
+/* Nhập phiếu: đếm lại tiến độ */
+function ansRecount(){
+  var m=document.getElementById('main'), qs=m.querySelectorAll('.aq,.pq'), Q=qs.length;if(!Q)return;
+  var done=0,y=0;qs.forEach(function(q){var o=q.querySelector('.sg .on,.ab .on');if(o){done++;if(o.classList.contains('y'))y++;q.classList.remove('miss');var e=q.querySelector('.qt em,.e');if(e)e.remove();}});
+  var pc=Math.round(done/Q*100);
+  m.querySelectorAll('.prog i').forEach(function(i){var box=i.closest('.pn-b,.pbar');if(box&&/Đã (chọn|trả lời)/.test(box.textContent))i.style.width=pc+'%';});
+  m.querySelectorAll('.pbar span').forEach(function(s){s.textContent=s.textContent.replace(/\d+\/\d+/,done+'/'+Q);});
+  m.querySelectorAll('.pn-b b').forEach(function(b){if(/^\d+\/\d+$/.test(b.textContent)&&/Đã chọn/.test(b.parentNode.textContent)){b.textContent=done+'/'+Q;var p=b.parentNode.nextElementSibling;if(p)p.textContent=pc+'%';}});
+}
+function qRenum(){var i=0;document.querySelectorAll('#main .qe .no').forEach(function(n){n.textContent=(++i)+'.';});
+  document.querySelectorAll('#main .qg').forEach(function(g){var s=g.querySelector('.qgh small');if(s)s.textContent=[].filter.call(g.querySelectorAll('.qe .in'),function(x){return !x.classList.contains('ph0')&&x.textContent.trim();}).length+' câu';});}
+function qRow(t){var d=document.createElement('div');d.className='qe';d.innerHTML='<span class="no"></span><div class="in">'+esc(t)+'</div><button class="ib" title="Sửa">✎</button><button class="ib" title="Lên">↑</button><button class="ib" title="Xuống">↓</button><button class="ib" title="Xóa">🗑</button>';return d;}
+function qEditRow(){var d=document.createElement('div');d.className='qe';d.innerHTML='<span class="no"></span><div class="in ph0">Nhập nội dung câu hỏi</div><button class="ib" title="Lên">↑</button><button class="ib" title="Xuống">↓</button><button class="ib" title="Xóa">🗑</button>';return d;}
+function editIn(el){
+  if(el.isContentEditable)return;
+  if(el.classList.contains('ph0')){el.textContent='';el.classList.remove('ph0');}
+  el.classList.remove('err');var f=el.closest('.f');if(f){var e=f.querySelector('.e');if(e)e.remove();}
+  el.contentEditable='true';el.focus();
+  var r=document.createRange();r.selectNodeContents(el);r.collapse(false);var s=getSelection();s.removeAllRanges();s.addRange(r);
+}
+var CG={'Đợt khảo sát':'1.1','Cập nhật kết quả':'8.1','Kết quả khảo sát':'9.1','Phê duyệt đợt khảo sát':'3.1','KS-2026-012':'8.2'};
+/* Tab lọc danh sách theo data-f: all hoặc mã trạng thái; dòng mang data-s */
+function tabF(x){var sc=scopeEl(x),f=x.getAttribute('data-f');sc._f=sc._f||{};
+  if(!f||f==='all')delete sc._f.tab;else sc._f.tab=function(r){return r.getAttribute('data-s')===f;};applyF(sc);}
+/* Menu trái: bấm tên nhóm để thu gọn, mở rộng (giữ khi chuyển màn) */
+var NAVC={};
+function navC(h){var c=NAVC[txt(h.firstChild)],n=h.nextElementSibling;while(n&&n.classList.contains('mi')){n.classList.toggle('hid',!!c);n=n.nextElementSibling;}h.lastChild.textContent=c?'›':'⌄';}
+function ixEnhance(){
+  document.querySelectorAll('#main .side .mg').forEach(navC);
+  document.querySelectorAll('#main .tabs .tab.on[data-f]').forEach(tabF);
+  var m=document.getElementById('main');pgEnhance(m);
+  var tb=m.querySelector('.tb');if(tb){
+    var bits=tb.innerHTML.split(' <span>›</span>');
+    if(bits.length>1){tb.innerHTML=bits.map(function(b,i){if(i===bits.length-1)return b;var t=b.replace(/<[^>]+>/g,'').trim();return '<span class="cg" data-cg="'+esc(t)+'">'+b.trim()+'</span>';}).join(' <span>›</span> ');}
+  }
+}
+function ix(e){
+  var t=e.target, m=document.getElementById('main'), x;
+  if(t.closest('#dd')){
+    var dd=document.getElementById('dd'), el=dd._t;
+    if((x=t.closest('#dd .o'))){pickOpt(el,x.getAttribute('data-v'));ddOff();}
+    else if((x=t.closest('[data-dd]')))dateOk(el,x.getAttribute('data-dd')==='clr');
+    return true;
+  }
+  if(document.getElementById('dd').classList.contains('on'))ddOff();
+  if(!t.closest('main'))return false;
+  if(t.closest('[contenteditable="true"]'))return true;
+  /* Thanh menu, breadcrumb, chuông */
+  if((x=t.closest('.side .mg'))){var g=txt(x.firstChild);NAVC[g]=!NAVC[g];navC(x);return true;}
+  if((x=t.closest('.side .mi0,.side .mi'))&&!x.hasAttribute('data-go')){tst(txt(x)+' thuộc phân hệ khác, không có trong prototype này');return true;}
+  if((x=t.closest('.tb .cg'))){var c=x.getAttribute('data-cg'),mi=[].filter.call(m.querySelectorAll('.side .mi'),function(i){return txt(i.firstChild)===c;})[0];if(c==='Khảo sát hài lòng')mi=m.querySelector('.side .mi.on')||m.querySelector('.side .mi');var id=mi?mi.getAttribute('data-go'):CG[c];if(id&&idx(id)>=0&&idx(id)!==cur){goId(id);}else tst('Đang ở '+c);return true;}
+  if(t.closest('.bell')){tst('Không có thông báo mới');return true;}
+  /* Hộp thoại: ✕ hoặc bấm nền = Hủy */
+  if((x=t.closest('.mdl .mh .ib'))||t.classList.contains('ov2')){var md=(x||t).closest('.ov2'),h=md.querySelector('.mf [data-go]');if(h)goId(h.getAttribute('data-go'));else md.remove();return true;}
+  if((x=t.closest('.drw .mh .ib'))){var dw=x.closest('.drw'),hg=dw.querySelector('[data-go]');if(hg)goId(hg.getAttribute('data-go'));else dw.remove();return true;}
+  /* Phân trang */
+  if((x=t.closest('.pg0'))){pgGo(x);return true;}
+  /* Tab lọc theo trạng thái */
+  if((x=t.closest('.tab'))){var tabs=x.parentNode;tabs.querySelectorAll('.tab').forEach(function(a){a.classList.toggle('on',a===x);});tabF(x);return true;}
+  /* Chọn mức hài lòng */
+  if((x=t.closest('.sg span,.ab span'))){x.parentNode.querySelectorAll('span').forEach(function(s){s.classList.toggle('on',s===x);});ansRecount();return true;}
+  if(t.closest('.chk,.ab .m'))return true; /* đã có xử lý riêng ở trên */
+  /* Câu hỏi của đợt */
+  if((x=t.closest('.qe .ib'))){var q=x.closest('.qe'),k=x.getAttribute('title');
+    if(k==='Sửa'){var n=q.querySelector('.in');editIn(n);n.onblur=function(){n.contentEditable='false';};}
+    else if(k==='Lên'){var p=q.previousElementSibling;if(p&&p.classList.contains('qe'))q.parentNode.insertBefore(q,p);else tst('Câu đã ở đầu nhóm');qRenum();}
+    else if(k==='Xuống'){var nx=q.nextElementSibling;if(nx&&nx.classList.contains('qe'))q.parentNode.insertBefore(nx,q);else tst('Câu đã ở cuối nhóm');qRenum();}
+    else if(k==='Xóa'){var gq=q.parentNode.querySelectorAll('.qe');if(gq.length===1){q.replaceWith(qEditRow());qRenum();tst('Nhóm luôn giữ 1 ô câu hỏi, đã xóa nội dung');}else{q.remove();qRenum();tst('Đã xóa câu hỏi');}}
+    return true;}
+  if((x=t.closest('.qgh .b'))){var g=x.closest('.qg'),em=g.querySelector(':scope>.h');if(em)em.remove();var r=qEditRow();g.appendChild(r);qRenum();editIn(r.querySelector('.in'));return true;}
+  if((x=t.closest('.qe .b'))){var q2=x.closest('.qe'),n2=q2.querySelector('.in');
+    if(x.classList.contains('p')){var v2=n2.textContent.trim();if(!v2||n2.classList.contains('ph0')){tst('Nhập nội dung câu hỏi');editIn(n2);return true;}q2.replaceWith(qRow(v2));tst('Đã lưu câu hỏi');}
+    else{if(n2.classList.contains('ph0')||!n2._o)q2.remove();else q2.replaceWith(qRow(n2._o));}
+    qRenum();return true;}
+  /* Nhập phiếu: chọn tất cả Hài lòng */
+  if((x=t.closest('button'))&&/Chọn tất cả Hài lòng/.test(x.textContent)){m.querySelectorAll('.sg,.ab').forEach(function(s){s.querySelectorAll('span').forEach(function(a){a.classList.toggle('on',a.classList.contains('y'));});});ansRecount();return true;}
+  /* Ô nhập: thả xuống, ngày, chữ */
+  if((x=t.closest('.in'))){
+    if(x.classList.contains('ro')){tst('Trường chỉ đọc, không sửa được');return true;}
+    if(/📅/.test(x.textContent)){dateBox(x);return true;}
+    if(/⌄/.test(x.textContent)){var cv=txt(x);x._opts=x._opts||optsFor(x);ddAt(x,x._opts.map(function(o){return '<div class="o'+(o===cv?' on':'')+'" data-v="'+esc(o)+'">'+esc(o)+'</div>';}).join(''));return true;}
+    var srch=x.classList.contains('ph0')&&/^Tìm/.test(x.textContent);
+    if(!x._o&&!x.classList.contains('ph0'))x._o=x.textContent;
+    editIn(x);
+    if(srch||x._srch){x._srch=1;x.oninput=function(){var sc=scopeEl(x),v=low(x.textContent.trim());sc._f=sc._f||{};if(!v)delete sc._f.q;else sc._f.q=function(r){return low(r.textContent).indexOf(v)>=0;};applyF(sc);};}
+    return true;}
+  /* Nút thao tác chỉ mô phỏng */
+  if((x=t.closest('button'))){var bt=x.textContent.replace(/[⬇＋]/g,'').trim();
+    if(/Sao chép/.test(bt)){var l=x.closest('.qrrow,.mb'),lk=l&&l.querySelector('.link');if(lk&&navigator.clipboard)navigator.clipboard.writeText(lk.textContent).catch(function(){});tst('Đã sao chép liên kết khảo sát');}
+    else if(/Xuất Excel/.test(bt))tst('Đã xuất file Excel');
+    else if(/Tải mã QR/.test(bt))tst('Đã tải mã QR (.png)');
+    else if(/Tải mẫu phiếu/.test(bt))tst('Đã tải mẫu phiếu (.doc)');
+    else tst(bt+' · prototype chỉ mô phỏng thao tác này');
+    return true;}
+  return false;
+}
+var _render=render;render=function(i){ddOff();_render(i);ixEnhance();};
+var h0=decodeURIComponent(location.hash.slice(1)), i0=idx(h0)>=0?idx(h0):idx('1.1');
+presetFor(S[i0]);sync();render(i0);
+</script>
+</body>
+</html>

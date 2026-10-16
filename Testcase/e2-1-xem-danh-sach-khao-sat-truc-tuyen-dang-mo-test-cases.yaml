@@ -1,0 +1,1406 @@
+schema_version: '1.0'
+meta:
+  uc_id: E2.1
+  uc_title: UC2.1 Xem danh sách khảo sát trực tuyến đang mở (Phân hệ E)
+  source_file: '[DTI] Tài liệu SRS.docx (mục 3.2.1)'
+  generated_at: '2026-10-16'
+  language: vi
+  total_test_cases: 30
+automation_config:
+  framework: playwright
+  base_url: ${env:BASE_URL}
+  route_hint: Trang nội bộ và trang công khai dùng ${env:BASE_URL} (.env); chưa có URL route cụ thể trong SRS
+  credentials:
+    can_bo:
+      username: ${env:CANBO_USERNAME}
+      password: ${env:CANBO_PASSWORD}
+    lanh_dao_don_vi:
+      username: ${env:LANHDAO_USERNAME}
+      password: ${env:LANHDAO_PASSWORD}
+    can_bo_dia_phuong:
+      username: ${env:CANBO_DP_USERNAME}
+      password: ${env:CANBO_DP_PASSWORD}
+    lanh_dao_dia_phuong:
+      username: ${env:LANHDAO_DP_USERNAME}
+      password: ${env:LANHDAO_DP_PASSWORD}
+  locators:
+    btn_cac_khao_sat:
+      strategy: null
+      value: null
+      status: missing
+    btn_sau:
+      strategy: null
+      value: null
+      status: missing
+    btn_tham_gia:
+      strategy: null
+      value: null
+      status: missing
+    btn_truoc:
+      strategy: null
+      value: null
+      status: missing
+    card_dot:
+      strategy: null
+      value: null
+      status: missing
+    hdr:
+      strategy: null
+      value: null
+      status: missing
+    lbl_rong:
+      strategy: null
+      value: null
+      status: missing
+    lbl_so_cau:
+      strategy: null
+      value: null
+      status: missing
+    lbl_tong:
+      strategy: null
+      value: null
+      status: missing
+    pag:
+      strategy: null
+      value: null
+      status: missing
+    pg_ds_cong_khai:
+      strategy: null
+      value: null
+      status: missing
+    toast_message:
+      strategy: null
+      value: null
+      status: missing
+  api_endpoints: {}
+  action_mapping:
+    click: null
+requirements:
+- id: E2.1-BR-1
+  type: business_rule
+  text: Chỉ hiển thị đợt đã phê duyệt, có hình thức Trực tuyến, trong khoảng ngày bắt đầu đến hết ngày kết thúc
+  status: clear
+- id: E2.1-BR-2
+  type: business_rule
+  text: Kiểm tra thời gian khi tải danh sách kể cả khi tác vụ cập nhật trạng thái chưa chạy; không hiển thị Nháp/Chờ phê duyệt/Bị từ chối/chưa bắt đầu/đã hết hạn
+  status: clear
+- id: E2.1-BR-3
+  type: business_rule
+  text: Mỗi đợt đủ điều kiện xuất hiện một lần dù có thêm hình thức không trực tuyến
+  status: clear
+- id: E2.1-BR-4
+  type: business_rule
+  text: Thẻ gồm tên đợt, đơn vị thực hiện, hạn kết thúc, số câu hỏi (không tính Góp ý thêm), nút Tham gia khảo sát
+  status: clear
+- id: E2.1-BR-5
+  type: business_rule
+  text: Tổng khảo sát đang mở = số đợt đủ điều kiện; chưa có thì 0 và trạng thái rỗng, không dữ liệu mẫu
+  status: clear
+- id: E2.1-BR-6
+  type: business_rule
+  text: Nút Tham gia chuyển đúng đợt tại UC2.2 và kiểm tra lại điều kiện truy cập
+  status: clear
+- id: E2.1-BR-7
+  type: business_rule
+  text: Không có bộ lọc, tìm kiếm, đăng nhập hoặc chức năng quản trị
+  status: clear
+- id: E2.1-BR-8
+  type: business_rule
+  text: Sắp xếp ngày kết thúc tăng dần, cùng ngày thì mã đợt tăng dần
+  status: clear
+- id: E2.1-BR-9
+  type: business_rule
+  text: Tối đa 10 đợt/trang, luôn hiển thị phân trang, tổng là tổng mọi trang
+  status: clear
+- id: E2.1-BR-10
+  type: business_rule
+  text: 'Trước vô hiệu ở trang đầu, Sau vô hiệu ở trang cuối; rỗng: Trang 1/1, 0 khảo sát, vô hiệu cả hai; trang không còn thì về trang cuối hợp lệ'
+  status: clear
+- id: E2.1-MF
+  type: main_flow
+  text: Mở danh sách, xem thẻ, chọn Tham gia khảo sát
+  status: clear
+- id: E2.1-AF1
+  type: alt_flow
+  text: Chưa có khảo sát đang mở
+  status: clear
+- id: E2.1-AF2
+  type: alt_flow
+  text: Trở lại từ UC2.2/UC2.3
+  status: clear
+- id: E2.1-AF3
+  type: alt_flow
+  text: Chuyển trang
+  status: clear
+- id: E2.1-EF1
+  type: exception_flow
+  text: Không tải được danh sách MSG-025/026
+  status: clear
+- id: E2.1-EF2
+  type: exception_flow
+  text: Đợt không còn đủ điều kiện khi chọn
+  status: clear
+- id: E2.1-UI
+  type: field
+  text: Header, tiêu đề, bản web/mobile
+  status: clear
+open_questions:
+- id: OQ-1
+  text: 'UC2.1/UC2.2: hạn ''Hạn đến'' và cách tính ngày hết hạn dùng múi giờ nào cho trang công khai? Nhóm 3 nêu Asia/Ho_Chi_Minh, UC2 không nêu.'
+  requirement_refs:
+  - E2.1-BR-2
+- id: OQ-2
+  text: UC2.1 AF1 'Chưa có khảo sát đang mở' là nội dung cố định không có mã MSG; UC2.1 EF1 không nêu cách thử lại (nút) ngoài tải lại trang.
+  requirement_refs:
+  - E2.1-AF1
+test_cases:
+- id: TC_E2.1_001
+  title: 'Mở danh sách khảo sát công khai: tổng số, thẻ đợt đầy đủ thông tin, nút Tham gia, không cần đăng nhập'
+  type: positive
+  techniques:
+  - UC_FLOW
+  priority: high
+  requirement_refs:
+  - E2.1-MF
+  - E2.1-BR-4
+  - E2.1-BR-5
+  - E2.1-UI
+  preconditions:
+  - Người dân truy cập trang công khai, không đăng nhập
+  - Có >= 2 đợt đủ điều kiện
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: pg_ds_cong_khai
+    input: null
+    description: Mở trang danh sách khảo sát công khai (không đăng nhập)
+    expected:
+      description: Hiển thị trang danh sách, không yêu cầu đăng nhập
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: verify
+    target: lbl_tong
+    input: null
+    description: Kiểm tra số khảo sát đang mở
+    expected:
+      description: Bằng số đợt đủ điều kiện, không phải số phiếu/người
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: verify
+    target: card_dot
+    input: null
+    description: Kiểm tra một thẻ
+    expected:
+      description: Có tên đợt, đơn vị thực hiện, Hạn đến (dd/mm/yyyy), số câu hỏi, nút Tham gia khảo sát
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: verify
+    target: hdr
+    input: null
+    description: Kiểm tra header
+    expected:
+      description: Quốc huy, Đánh giá CĐS, Bộ Dân tộc và Tôn giáo; không có menu/tài khoản nội bộ
+      assertions: []
+      status: confirmed
+  expected_result: Danh sách hiển thị đúng, không thay đổi dữ liệu, chưa tạo phiếu
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E2.1_002
+  title: 'Chọn Tham gia khảo sát: chuyển đúng đợt sang UC2.2, không yêu cầu đăng nhập'
+  type: positive
+  techniques:
+  - UC_FLOW
+  priority: high
+  requirement_refs:
+  - E2.1-MF
+  - E2.1-BR-6
+  preconditions: &id001
+  - Người dân truy cập trang công khai, không đăng nhập
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: pg_ds_cong_khai
+    input: null
+    description: Mở trang danh sách khảo sát công khai (không đăng nhập)
+    expected:
+      description: Hiển thị trang danh sách, không yêu cầu đăng nhập
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_tham_gia
+    input: null
+    description: Chọn Tham gia khảo sát tại thẻ đợt A
+    expected:
+      description: Mở nội dung đúng đợt A, không yêu cầu đăng nhập
+      assertions: []
+      status: confirmed
+  expected_result: Chuyển đúng đợt
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E2.1_003
+  title: 'Điều kiện hiển thị đợt: Nháp → không hiển thị'
+  type: decision_table
+  techniques:
+  - DT
+  priority: high
+  requirement_refs:
+  - E2.1-BR-1
+  - E2.1-BR-2
+  preconditions:
+  - Người dân truy cập trang công khai, không đăng nhập
+  - Có đợt Nháp
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: pg_ds_cong_khai
+    input: null
+    description: Mở trang danh sách khảo sát công khai (không đăng nhập)
+    expected:
+      description: Hiển thị trang danh sách, không yêu cầu đăng nhập
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: verify
+    target: card_dot
+    input: null
+    description: Tìm thẻ của đợt Nháp
+    expected:
+      description: Không hiển thị trong danh sách
+      assertions: []
+      status: confirmed
+  expected_result: Đợt không xuất hiện theo BR-1/BR-2
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E2.1_004
+  title: 'Điều kiện hiển thị đợt: Chờ phê duyệt → không hiển thị'
+  type: decision_table
+  techniques:
+  - DT
+  priority: high
+  requirement_refs:
+  - E2.1-BR-1
+  - E2.1-BR-2
+  preconditions:
+  - Người dân truy cập trang công khai, không đăng nhập
+  - Có đợt Chờ phê duyệt
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: pg_ds_cong_khai
+    input: null
+    description: Mở trang danh sách khảo sát công khai (không đăng nhập)
+    expected:
+      description: Hiển thị trang danh sách, không yêu cầu đăng nhập
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: verify
+    target: card_dot
+    input: null
+    description: Tìm thẻ của đợt Chờ phê duyệt
+    expected:
+      description: Không hiển thị trong danh sách
+      assertions: []
+      status: confirmed
+  expected_result: Đợt không xuất hiện theo BR-1/BR-2
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E2.1_005
+  title: 'Điều kiện hiển thị đợt: Bị từ chối → không hiển thị'
+  type: decision_table
+  techniques:
+  - DT
+  priority: high
+  requirement_refs:
+  - E2.1-BR-1
+  - E2.1-BR-2
+  preconditions:
+  - Người dân truy cập trang công khai, không đăng nhập
+  - Có đợt Bị từ chối
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: pg_ds_cong_khai
+    input: null
+    description: Mở trang danh sách khảo sát công khai (không đăng nhập)
+    expected:
+      description: Hiển thị trang danh sách, không yêu cầu đăng nhập
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: verify
+    target: card_dot
+    input: null
+    description: Tìm thẻ của đợt Bị từ chối
+    expected:
+      description: Không hiển thị trong danh sách
+      assertions: []
+      status: confirmed
+  expected_result: Đợt không xuất hiện theo BR-1/BR-2
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E2.1_006
+  title: 'Điều kiện hiển thị đợt: Đã phê duyệt, chưa tới ngày bắt đầu → không hiển thị'
+  type: decision_table
+  techniques:
+  - DT
+  priority: high
+  requirement_refs:
+  - E2.1-BR-1
+  - E2.1-BR-2
+  preconditions:
+  - Người dân truy cập trang công khai, không đăng nhập
+  - Có đợt Đã phê duyệt có ngày bắt đầu = ngày mai
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: pg_ds_cong_khai
+    input: null
+    description: Mở trang danh sách khảo sát công khai (không đăng nhập)
+    expected:
+      description: Hiển thị trang danh sách, không yêu cầu đăng nhập
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: verify
+    target: card_dot
+    input: null
+    description: Tìm thẻ của đợt Đã phê duyệt có ngày bắt đầu = ngày mai
+    expected:
+      description: Không hiển thị trong danh sách
+      assertions: []
+      status: confirmed
+  expected_result: Đợt không xuất hiện theo BR-1/BR-2
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E2.1_007
+  title: 'Điều kiện hiển thị đợt: Đang diễn ra, hình thức Trực tuyến → có hiển thị'
+  type: decision_table
+  techniques:
+  - DT
+  priority: high
+  requirement_refs:
+  - E2.1-BR-1
+  - E2.1-BR-2
+  preconditions:
+  - Người dân truy cập trang công khai, không đăng nhập
+  - Có đợt Đang diễn ra có Trực tuyến
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: pg_ds_cong_khai
+    input: null
+    description: Mở trang danh sách khảo sát công khai (không đăng nhập)
+    expected:
+      description: Hiển thị trang danh sách, không yêu cầu đăng nhập
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: verify
+    target: card_dot
+    input: null
+    description: Tìm thẻ của đợt Đang diễn ra có Trực tuyến
+    expected:
+      description: Có hiển thị
+      assertions: []
+      status: confirmed
+  expected_result: Đợt có xuất hiện theo BR-1/BR-2
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E2.1_008
+  title: 'Điều kiện hiển thị đợt: Đang diễn ra nhưng không có hình thức Trực tuyến → không hiển thị'
+  type: decision_table
+  techniques:
+  - DT
+  priority: high
+  requirement_refs:
+  - E2.1-BR-1
+  - E2.1-BR-2
+  preconditions:
+  - Người dân truy cập trang công khai, không đăng nhập
+  - Có đợt Đang diễn ra chỉ có Trực tiếp/Gián tiếp
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: pg_ds_cong_khai
+    input: null
+    description: Mở trang danh sách khảo sát công khai (không đăng nhập)
+    expected:
+      description: Hiển thị trang danh sách, không yêu cầu đăng nhập
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: verify
+    target: card_dot
+    input: null
+    description: Tìm thẻ của đợt Đang diễn ra chỉ có Trực tiếp/Gián tiếp
+    expected:
+      description: Không hiển thị trong danh sách
+      assertions: []
+      status: confirmed
+  expected_result: Đợt không xuất hiện theo BR-1/BR-2
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E2.1_009
+  title: 'Điều kiện hiển thị đợt: Ngày bắt đầu là hôm nay (biên dưới) → có hiển thị'
+  type: boundary
+  techniques:
+  - DT
+  - BVA
+  priority: high
+  requirement_refs:
+  - E2.1-BR-1
+  - E2.1-BR-2
+  preconditions:
+  - Người dân truy cập trang công khai, không đăng nhập
+  - Có đợt đã duyệt có Trực tuyến, ngày bắt đầu = hôm nay
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: pg_ds_cong_khai
+    input: null
+    description: Mở trang danh sách khảo sát công khai (không đăng nhập)
+    expected:
+      description: Hiển thị trang danh sách, không yêu cầu đăng nhập
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: verify
+    target: card_dot
+    input: null
+    description: Tìm thẻ của đợt đã duyệt có Trực tuyến, ngày bắt đầu = hôm nay
+    expected:
+      description: Có hiển thị
+      assertions: []
+      status: confirmed
+  expected_result: Đợt có xuất hiện theo BR-1/BR-2
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E2.1_010
+  title: 'Điều kiện hiển thị đợt: Ngày kết thúc là hôm nay (biên trên) → có hiển thị'
+  type: boundary
+  techniques:
+  - DT
+  - BVA
+  priority: high
+  requirement_refs:
+  - E2.1-BR-1
+  - E2.1-BR-2
+  preconditions:
+  - Người dân truy cập trang công khai, không đăng nhập
+  - Có đợt đã duyệt có Trực tuyến, ngày kết thúc = hôm nay
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: pg_ds_cong_khai
+    input: null
+    description: Mở trang danh sách khảo sát công khai (không đăng nhập)
+    expected:
+      description: Hiển thị trang danh sách, không yêu cầu đăng nhập
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: verify
+    target: card_dot
+    input: null
+    description: Tìm thẻ của đợt đã duyệt có Trực tuyến, ngày kết thúc = hôm nay
+    expected:
+      description: Có hiển thị
+      assertions: []
+      status: confirmed
+  expected_result: Đợt có xuất hiện theo BR-1/BR-2
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E2.1_011
+  title: 'Điều kiện hiển thị đợt: Ngày kết thúc là hôm qua nhưng trạng thái chưa cập nhật → không hiển thị'
+  type: boundary
+  techniques:
+  - DT
+  - BVA
+  priority: high
+  requirement_refs:
+  - E2.1-BR-1
+  - E2.1-BR-2
+  preconditions:
+  - Người dân truy cập trang công khai, không đăng nhập
+  - Có đợt có Trực tuyến, ngày kết thúc = hôm qua, tác vụ đóng chưa chạy
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: pg_ds_cong_khai
+    input: null
+    description: Mở trang danh sách khảo sát công khai (không đăng nhập)
+    expected:
+      description: Hiển thị trang danh sách, không yêu cầu đăng nhập
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: verify
+    target: card_dot
+    input: null
+    description: Tìm thẻ của đợt có Trực tuyến, ngày kết thúc = hôm qua, tác vụ đóng chưa chạy
+    expected:
+      description: Không hiển thị trong danh sách
+      assertions: []
+      status: confirmed
+  expected_result: Đợt không xuất hiện theo BR-1/BR-2
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E2.1_012
+  title: 'Điều kiện hiển thị đợt: Đã kết thúc → không hiển thị'
+  type: decision_table
+  techniques:
+  - DT
+  priority: high
+  requirement_refs:
+  - E2.1-BR-1
+  - E2.1-BR-2
+  preconditions:
+  - Người dân truy cập trang công khai, không đăng nhập
+  - Có đợt Đã kết thúc
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: pg_ds_cong_khai
+    input: null
+    description: Mở trang danh sách khảo sát công khai (không đăng nhập)
+    expected:
+      description: Hiển thị trang danh sách, không yêu cầu đăng nhập
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: verify
+    target: card_dot
+    input: null
+    description: Tìm thẻ của đợt Đã kết thúc
+    expected:
+      description: Không hiển thị trong danh sách
+      assertions: []
+      status: confirmed
+  expected_result: Đợt không xuất hiện theo BR-1/BR-2
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E2.1_013
+  title: Đợt có Trực tuyến và cả hình thức khác chỉ xuất hiện một thẻ
+  type: positive
+  techniques:
+  - EP
+  priority: medium
+  requirement_refs:
+  - E2.1-BR-3
+  preconditions:
+  - Người dân truy cập trang công khai, không đăng nhập
+  - Đợt đủ điều kiện có Trực tuyến + Trực tiếp
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: pg_ds_cong_khai
+    input: null
+    description: Mở trang danh sách khảo sát công khai (không đăng nhập)
+    expected:
+      description: Hiển thị trang danh sách, không yêu cầu đăng nhập
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: verify
+    target: card_dot
+    input: null
+    description: Đếm thẻ của đợt nhiều hình thức
+    expected:
+      description: Đúng 1 thẻ
+      assertions: []
+      status: confirmed
+  expected_result: Không nhân thẻ
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E2.1_014
+  title: Số câu hỏi trên thẻ bằng tổng câu các nhóm, không tính Góp ý thêm và không phải số nhóm
+  type: positive
+  techniques:
+  - EP
+  priority: medium
+  requirement_refs:
+  - E2.1-BR-4
+  preconditions:
+  - Người dân truy cập trang công khai, không đăng nhập
+  - Đợt có 3 nhóm, tổng 6 câu
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: pg_ds_cong_khai
+    input: null
+    description: Mở trang danh sách khảo sát công khai (không đăng nhập)
+    expected:
+      description: Hiển thị trang danh sách, không yêu cầu đăng nhập
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: verify
+    target: lbl_so_cau
+    input: null
+    description: So sánh số câu với nội dung đợt (3 nhóm, 6 câu)
+    expected:
+      description: Hiển thị 6
+      assertions: []
+      status: confirmed
+  expected_result: Số câu đúng
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E2.1_015
+  title: Danh sách sắp xếp theo ngày kết thúc tăng dần, cùng ngày thì mã đợt tăng dần
+  type: positive
+  techniques:
+  - EP
+  priority: high
+  requirement_refs:
+  - E2.1-BR-8
+  preconditions:
+  - Người dân truy cập trang công khai, không đăng nhập
+  - Có đợt khác ngày kết thúc và 2 đợt cùng ngày kết thúc
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: pg_ds_cong_khai
+    input: null
+    description: Mở trang danh sách khảo sát công khai (không đăng nhập)
+    expected:
+      description: Hiển thị trang danh sách, không yêu cầu đăng nhập
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: verify
+    target: card_dot
+    input: null
+    description: Kiểm tra thứ tự các thẻ
+    expected:
+      description: Đợt sắp kết thúc trước; cùng ngày kết thúc xếp mã tăng dần
+      assertions: []
+      status: confirmed
+  expected_result: Thứ tự đúng BR-8
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E2.1_016
+  title: 'Chưa có khảo sát đang mở: tổng 0, nội dung ''Chưa có khảo sát đang mở'', phân trang Trang 1/1 vô hiệu hai nút, không dữ liệu mẫu'
+  type: boundary
+  techniques:
+  - BVA
+  priority: high
+  requirement_refs:
+  - E2.1-AF1
+  - E2.1-BR-5
+  - E2.1-BR-10
+  preconditions:
+  - Người dân truy cập trang công khai, không đăng nhập
+  - Không có đợt đủ điều kiện
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: pg_ds_cong_khai
+    input: null
+    description: Mở trang danh sách khảo sát công khai (không đăng nhập)
+    expected:
+      description: Hiển thị trang danh sách, không yêu cầu đăng nhập
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: verify
+    target: lbl_tong
+    input: null
+    description: Kiểm tra tổng
+    expected:
+      description: '0'
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: verify
+    target: lbl_rong
+    input: null
+    description: Kiểm tra nội dung rỗng
+    expected:
+      description: Hiển thị 'Chưa có khảo sát đang mở'; không có thẻ/nút tham gia mẫu
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: verify
+    target: pag
+    input: null
+    description: Kiểm tra phân trang
+    expected:
+      description: Trang 1/1, 0 khảo sát; Trước/Sau bị vô hiệu
+      assertions: []
+      status: confirmed
+  expected_result: Trạng thái rỗng đúng
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E2.1_017
+  title: Tải lại trang để xem danh sách mới sau khi có đợt mở
+  type: positive
+  techniques:
+  - UC_FLOW
+  priority: low
+  requirement_refs:
+  - E2.1-AF1
+  preconditions:
+  - Người dân truy cập trang công khai, không đăng nhập
+  - Ban đầu không có đợt
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: pg_ds_cong_khai
+    input: null
+    description: Mở trang danh sách khảo sát công khai (không đăng nhập)
+    expected:
+      description: Hiển thị trang danh sách, không yêu cầu đăng nhập
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: api_call
+    target: null
+    input: null
+    description: Phê duyệt một đợt (đến ngày bắt đầu)
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: navigate
+    target: pg_ds_cong_khai
+    input: null
+    description: Tải lại trang
+    expected:
+      description: Hiển thị đợt mới
+      assertions: []
+      status: confirmed
+  expected_result: Danh sách cập nhật
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E2.1_018
+  title: Không có bộ lọc, ô tìm kiếm, đăng nhập, chức năng quản trị
+  type: ui
+  techniques:
+  - UC_FLOW
+  priority: low
+  requirement_refs:
+  - E2.1-BR-7
+  preconditions: *id001
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: pg_ds_cong_khai
+    input: null
+    description: Mở trang danh sách khảo sát công khai (không đăng nhập)
+    expected:
+      description: Hiển thị trang danh sách, không yêu cầu đăng nhập
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: verify
+    target: pg_ds_cong_khai
+    input: null
+    description: Kiểm tra trang
+    expected:
+      description: Không có bộ lọc/ô tìm kiếm/nút đăng nhập/chức năng quản trị
+      assertions: []
+      status: confirmed
+  expected_result: Chỉ có chức năng đã chốt
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E2.1_019
+  title: 'Phân trang: 10 thẻ trang 1, tổng là tổng mọi trang, Trước vô hiệu ở trang đầu'
+  type: boundary
+  techniques:
+  - BVA
+  priority: high
+  requirement_refs:
+  - E2.1-BR-9
+  - E2.1-BR-10
+  preconditions:
+  - Người dân truy cập trang công khai, không đăng nhập
+  - Có đúng 11 đợt đủ điều kiện
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: pg_ds_cong_khai
+    input: null
+    description: Mở trang danh sách khảo sát công khai (không đăng nhập)
+    expected:
+      description: Hiển thị trang danh sách, không yêu cầu đăng nhập
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: verify
+    target: card_dot
+    input: null
+    description: Đếm thẻ trang 1
+    expected:
+      description: Đúng 10
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: verify
+    target: pag
+    input: null
+    description: Kiểm tra phân trang
+    expected:
+      description: Trang 1/2; tổng 11; nút Trước vô hiệu
+      assertions: []
+      status: confirmed
+  expected_result: Đúng BR-9/BR-10
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E2.1_020
+  title: 'Chuyển trang bằng Sau/số trang: trang cuối còn 1 thẻ, nút Sau vô hiệu, giữ thứ tự'
+  type: boundary
+  techniques:
+  - BVA
+  priority: high
+  requirement_refs:
+  - E2.1-AF3
+  - E2.1-BR-10
+  preconditions:
+  - Người dân truy cập trang công khai, không đăng nhập
+  - Có đúng 11 đợt
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: pg_ds_cong_khai
+    input: null
+    description: Mở trang danh sách khảo sát công khai (không đăng nhập)
+    expected:
+      description: Hiển thị trang danh sách, không yêu cầu đăng nhập
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_sau
+    input: null
+    description: Chọn Sau
+    expected:
+      description: Hiển thị trang 2 với 1 thẻ; nút Sau vô hiệu; Trước bật
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: btn_truoc
+    input: null
+    description: Chọn Trước
+    expected:
+      description: Quay lại trang 1
+      assertions: []
+      status: confirmed
+  expected_result: Chuyển trang đúng
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E2.1_021
+  title: Số trang hiện tại được phân biệt; không chọn được trang ngoài phạm vi
+  type: ui
+  techniques:
+  - BVA
+  priority: low
+  requirement_refs:
+  - E2.1-AF3
+  - E2.1-UI
+  preconditions:
+  - Người dân truy cập trang công khai, không đăng nhập
+  - Có >= 2 trang
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: pg_ds_cong_khai
+    input: null
+    description: Mở trang danh sách khảo sát công khai (không đăng nhập)
+    expected:
+      description: Hiển thị trang danh sách, không yêu cầu đăng nhập
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: verify
+    target: pag
+    input: null
+    description: Kiểm tra các nút số trang
+    expected:
+      description: Trang hiện tại được đánh dấu; không có số trang ngoài phạm vi
+      assertions: []
+      status: confirmed
+  expected_result: Đúng đặc tả
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E2.1_022
+  title: Một trang duy nhất vẫn hiển thị phân trang
+  type: boundary
+  techniques:
+  - BVA
+  priority: medium
+  requirement_refs:
+  - E2.1-BR-9
+  preconditions:
+  - Người dân truy cập trang công khai, không đăng nhập
+  - Có 2 đợt đủ điều kiện
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: pg_ds_cong_khai
+    input: null
+    description: Mở trang danh sách khảo sát công khai (không đăng nhập)
+    expected:
+      description: Hiển thị trang danh sách, không yêu cầu đăng nhập
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: verify
+    target: pag
+    input: null
+    description: Kiểm tra phân trang
+    expected:
+      description: Hiển thị Trang 1/1 và tổng số khảo sát
+      assertions: []
+      status: confirmed
+  expected_result: Luôn có phân trang
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E2.1_023
+  title: 'Trang đang xem không còn tồn tại sau khi tải lại: về trang cuối hợp lệ'
+  type: boundary
+  techniques:
+  - BVA
+  priority: medium
+  requirement_refs:
+  - E2.1-AF3
+  - E2.1-BR-10
+  preconditions:
+  - Người dân truy cập trang công khai, không đăng nhập
+  - 11 đợt
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: pg_ds_cong_khai
+    input: null
+    description: Mở trang danh sách khảo sát công khai (không đăng nhập)
+    expected:
+      description: Hiển thị trang danh sách, không yêu cầu đăng nhập
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_sau
+    input: null
+    description: Chuyển sang trang 2 (1 thẻ)
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: api_call
+    target: null
+    input: null
+    description: Đợt ở trang 2 hết hạn
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 4
+    action: click
+    target: btn_sau
+    input: null
+    description: Tải lại/chuyển trang
+    expected:
+      description: Hệ thống về trang cuối hợp lệ (trang 1)
+      assertions: []
+      status: confirmed
+  expected_result: Không hiển thị trang rỗng
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần thay đổi dữ liệu giữa chừng
+  notes: null
+- id: TC_E2.1_024
+  title: 'Không tải được danh sách: MSG-025, không hiển thị như danh sách rỗng và không dữ liệu mẫu'
+  type: error_handling
+  techniques:
+  - ERR
+  priority: high
+  requirement_refs:
+  - E2.1-EF1
+  preconditions:
+  - Người dân truy cập trang công khai, không đăng nhập
+  - Giả lập lỗi
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: pg_ds_cong_khai
+    input: null
+    description: Mở trang khi hệ thống lỗi
+    expected:
+      description: Hiển thị MSG-025
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Đã xảy ra lỗi hệ thống. Vui lòng thử lại sau
+      status: confirmed
+  - seq: 2
+    action: verify
+    target: lbl_rong
+    input: null
+    description: Kiểm tra
+    expected:
+      description: Không hiển thị 'Chưa có khảo sát đang mở' và không có thẻ mẫu
+      assertions: []
+      status: confirmed
+  expected_result: Báo MSG-025
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần giả lập lỗi
+  notes: null
+- id: TC_E2.1_025
+  title: 'Không tải được danh sách: MSG-026, không hiển thị như danh sách rỗng và không dữ liệu mẫu'
+  type: error_handling
+  techniques:
+  - ERR
+  priority: high
+  requirement_refs:
+  - E2.1-EF1
+  preconditions:
+  - Người dân truy cập trang công khai, không đăng nhập
+  - Giả lập lỗi
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: pg_ds_cong_khai
+    input: null
+    description: Mở trang khi hệ thống lỗi
+    expected:
+      description: Hiển thị MSG-026
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Không thể kết nối đến máy chủ. Vui lòng kiểm tra đường truyền
+      status: confirmed
+  - seq: 2
+    action: verify
+    target: lbl_rong
+    input: null
+    description: Kiểm tra
+    expected:
+      description: Không hiển thị 'Chưa có khảo sát đang mở' và không có thẻ mẫu
+      assertions: []
+      status: confirmed
+  expected_result: Báo MSG-026
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần giả lập lỗi
+  notes: null
+- id: TC_E2.1_026
+  title: 'Lỗi khi chuyển trang: giữ trang và dữ liệu đã tải, không đánh dấu sang trang mới'
+  type: error_handling
+  techniques:
+  - ERR
+  priority: medium
+  requirement_refs:
+  - E2.1-EF1
+  - E2.1-AF3
+  preconditions:
+  - Người dân truy cập trang công khai, không đăng nhập
+  - Có >= 2 trang
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: pg_ds_cong_khai
+    input: null
+    description: Mở trang danh sách khảo sát công khai (không đăng nhập)
+    expected:
+      description: Hiển thị trang danh sách, không yêu cầu đăng nhập
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_sau
+    input: null
+    description: Chọn Sau khi máy chủ lỗi
+    expected:
+      description: Báo MSG-025/026, vẫn ở trang 1 với dữ liệu cũ
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: verify
+    target: pag
+    input: null
+    description: Kiểm tra số trang
+    expected:
+      description: Vẫn Trang 1
+      assertions: []
+      status: confirmed
+  expected_result: Giữ trang cũ
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần giả lập lỗi
+  notes: null
+- id: TC_E2.1_027
+  title: Quay lại danh sách từ UC2.2 (Các khảo sát đang mở / nút quay lại)
+  type: positive
+  techniques:
+  - UC_FLOW
+  priority: medium
+  requirement_refs:
+  - E2.1-AF2
+  preconditions: *id001
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: pg_ds_cong_khai
+    input: null
+    description: Mở trang danh sách khảo sát công khai (không đăng nhập)
+    expected:
+      description: Hiển thị trang danh sách, không yêu cầu đăng nhập
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: click
+    target: btn_tham_gia
+    input: null
+    description: Tham gia một đợt
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: btn_cac_khao_sat
+    input: null
+    description: Chọn Các khảo sát đang mở
+    expected:
+      description: Tải lại danh sách theo điều kiện hiện tại
+      assertions: []
+      status: confirmed
+  expected_result: Về UC2.1
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E2.1_028
+  title: 'Đợt hết hạn sau khi danh sách đã tải: Tham gia → UC2.2 báo MSG-077, không mở form'
+  type: error_handling
+  techniques:
+  - ERR
+  - BVA
+  priority: high
+  requirement_refs:
+  - E2.1-EF2
+  - E2.1-BR-6
+  preconditions: *id001
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: pg_ds_cong_khai
+    input: null
+    description: Mở trang danh sách khảo sát công khai (không đăng nhập)
+    expected:
+      description: Hiển thị trang danh sách, không yêu cầu đăng nhập
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: api_call
+    target: null
+    input: null
+    description: Đợt A hết ngày kết thúc khi danh sách còn mở
+    expected:
+      description: —
+      assertions: []
+      status: confirmed
+  - seq: 3
+    action: click
+    target: btn_tham_gia
+    input: null
+    description: Chọn Tham gia khảo sát tại thẻ A
+    expected:
+      description: Hiển thị trang không truy cập được MSG-077, không có form
+      assertions:
+      - type: text_contains
+        target: toast_message
+        value: Đợt khảo sát đã kết thúc
+      status: confirmed
+  expected_result: Kiểm tra lại điều kiện khi mở
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+    - Cần thay đổi dữ liệu giữa chừng
+  notes: null
+- id: TC_E2.1_029
+  title: Tài khoản nội bộ phạm vi 'Đơn vị' vẫn thấy mọi đợt công khai đủ điều kiện (phạm vi tài khoản không giới hạn người dân)
+  type: permission
+  techniques:
+  - PERM
+  priority: medium
+  requirement_refs:
+  - E2.1-BR-1
+  preconditions:
+  - Đã đăng nhập tài khoản nội bộ phạm vi Đơn vị trong cùng trình duyệt
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: pg_ds_cong_khai
+    input: null
+    description: Mở trang danh sách khảo sát công khai (không đăng nhập)
+    expected:
+      description: Hiển thị trang danh sách, không yêu cầu đăng nhập
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: verify
+    target: lbl_tong
+    input: null
+    description: Kiểm tra tổng khi đang đăng nhập tài khoản nội bộ phạm vi Đơn vị
+    expected:
+      description: Bằng tổng khi không đăng nhập
+      assertions: []
+      status: needs_confirmation
+  expected_result: Trang công khai độc lập phạm vi
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
+- id: TC_E2.1_030
+  title: 'Bản mobile (390px): nút Tham gia rộng cả thẻ, bỏ nút Các khảo sát đang mở ở góc phải'
+  type: ui
+  techniques:
+  - EP
+  priority: low
+  requirement_refs:
+  - E2.1-UI
+  preconditions:
+  - Người dân truy cập trang công khai, không đăng nhập
+  - Viewport 390px
+  test_data: {}
+  steps:
+  - seq: 1
+    action: navigate
+    target: pg_ds_cong_khai
+    input: null
+    description: Mở trang danh sách khảo sát công khai (không đăng nhập)
+    expected:
+      description: Hiển thị trang danh sách, không yêu cầu đăng nhập
+      assertions: []
+      status: confirmed
+  - seq: 2
+    action: verify
+    target: card_dot
+    input: null
+    description: Xem ở viewport 390px
+    expected:
+      description: Nút Tham gia rộng cả thẻ; header không có nút trùng ở góc phải; cùng nội dung/quy tắc với bản web
+      assertions: []
+      status: confirmed
+  expected_result: Responsive đúng
+  automation:
+    automatable: partial
+    blockers:
+    - Thiếu locator
+  notes: null
