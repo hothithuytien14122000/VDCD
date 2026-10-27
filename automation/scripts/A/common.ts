@@ -25,8 +25,9 @@ export const test = base.extend({
     await use(await ctx.newPage()); await ctx.close();
   },
 });
-export const WRITE = process.env.RUN_WRITE === '1';
-export const needWrite = () => test.skip(!WRITE, 'Test ghi dữ liệu: chạy với RUN_WRITE=1');
+// Môi trường test: luôn chạy test ghi dữ liệu (có case xóa để dọn dữ liệu rác).
+export const WRITE = true;
+export const needWrite = () => {};
 
 // ---------- Cấu hình từng page ----------
 export interface PageCfg {
