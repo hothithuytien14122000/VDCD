@@ -1,0 +1,20 @@
+{
+  "name": "cds-automation",
+  "private": true,
+  "type": "commonjs",
+  "scripts": {
+    "auth": "node save-session.mjs",
+    "test": "playwright test",
+    "test:A": "node testcases/tools/run-phan-he.mjs A",
+    "test:AUTH": "PLAYWRIGHT_JSON_OUTPUT_NAME=results/_raw.json playwright test --project=auth --workers=1 --reporter=list,json",
+    "test:AUTH:report": "ONLY=LGN,RPW,CPW,LGO node testcases/tools/report.mjs results/_raw.json && rm results/_raw.json && node testcases/tools/build-yaml.mjs",
+    "cleanup": "node cleanup-all.mjs",
+    "tc:build": "node testcases/tools/build-docs.mjs && node testcases/tools/build-yaml.mjs && node testcases/tools/coverage-check.mjs && node testcases/tools/trace-check.mjs",
+    "report": "playwright show-report",
+    "test:B": "node testcases/tools/run-phan-he.mjs B",
+    "test:C": "node testcases/tools/run-phan-he.mjs C"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.48.0"
+  }
+}

@@ -1,0 +1,533 @@
+title: "Đơn vị hành chính cấp tỉnh"
+phan_he: "A - Quản trị hệ thống"
+tong_so: 38
+testcases:
+  - id: PRV-L01
+    title: "Danh sách Đơn vị hành chính cấp tỉnh hiển thị đúng các cột"
+    uc: "A.IV.1-UC1"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xem danh sách"
+    loai: "Chức năng"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đăng nhập admin"
+      - "2. Mở trang Đơn vị hành chính cấp tỉnh"
+    ket_qua_mong_doi:
+      - "Bảng có đủ cột: STT, Mã tỉnh/thành, Tên tỉnh/thành, Số đơn vị, Thao tác; có dữ liệu"
+  - id: PRV-L02
+    title: "Phân trang mặc định 10 bản ghi/trang và hiển thị tổng số bản ghi"
+    uc: "A.IV.1-UC1"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xem danh sách"
+    loai: "Chức năng"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Mở trang Đơn vị hành chính cấp tỉnh"
+    ket_qua_mong_doi:
+      - "Hiển thị \"Hiển thị 1-10 trong N bản ghi\"; tối đa 10 dòng dữ liệu; thanh phân trang xuất hiện khi N>10"
+  - id: PRV-L03
+    title: "Tìm theo mã tỉnh/thành trả về đúng bản ghi"
+    uc: "A.IV.1-UC6"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Tìm kiếm"
+    loai: "Chức năng"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Mở trang Đơn vị hành chính cấp tỉnh"
+      - "2. Nhập một mã tỉnh/thành có sẵn vào ô tìm kiếm"
+    ket_qua_mong_doi:
+      - "Chỉ hiển thị các dòng chứa từ khóa; có ít nhất 1 dòng"
+  - id: PRV-L04
+    title: "Tìm theo tên tỉnh/thành trả về đúng bản ghi"
+    uc: "A.IV.1-UC6"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Tìm kiếm"
+    loai: "Chức năng"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Nhập một tên tỉnh/thành có sẵn vào ô tìm kiếm"
+    ket_qua_mong_doi:
+      - "Chỉ hiển thị các dòng chứa từ khóa"
+  - id: PRV-L05
+    title: "Từ khóa không tồn tại → không có dữ liệu"
+    uc: "A.IV.1-UC6"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Tìm kiếm"
+    loai: "Chức năng"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Nhập \"zzqcxx_khongtontai_999\""
+    ket_qua_mong_doi:
+      - "Bảng rỗng / hiển thị trạng thái không có dữ liệu, không lỗi"
+  - id: PRV-L06
+    title: "Tìm kiếm không phân biệt chữ hoa/chữ thường"
+    uc: "A.IV.1-UC6"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Tìm kiếm"
+    loai: "Chức năng"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Nhập từ khóa viết HOA rồi viết thường của cùng một giá trị"
+    ket_qua_mong_doi:
+      - "Hai lần tìm trả về cùng số bản ghi"
+  - id: PRV-L07
+    title: "Ký tự đặc biệt / chuỗi SQL trong ô tìm kiếm không gây lỗi hệ thống"
+    uc: "A.IV.1-UC6"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Tìm kiếm"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Nhập  ' OR 1=1 --  và  <script>alert(1)</script>"
+    ket_qua_mong_doi:
+      - "Không hiện lỗi 500/trắng trang, không thực thi script, không trả về toàn bộ dữ liệu bất thường"
+  - id: PRV-L08
+    title: "Chuyển sang trang 2 hiển thị dữ liệu khác trang 1"
+    uc: "A.IV.1-UC1"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Phân trang"
+    loai: "Chức năng"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Bấm trang 2 trên thanh phân trang"
+    ket_qua_mong_doi:
+      - "Trang 2 được đánh dấu active; nội dung bảng khác trang 1"
+  - id: PRV-L09
+    title: "Đổi số bản ghi/trang sang 20 thì số dòng thay đổi theo"
+    uc: "A.IV.1-UC1"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Phân trang"
+    loai: "Chức năng"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Chọn \"20 / trang\" ở thanh phân trang"
+    ket_qua_mong_doi:
+      - "Số dòng tối đa mỗi trang = 20; tổng số bản ghi không đổi"
+  - id: PRV-L10
+    title: "Xóa từ khóa thì danh sách trở về đầy đủ"
+    uc: "A.IV.1-UC6"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Tìm kiếm"
+    loai: "Chức năng"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Tìm một từ khóa"
+      - "2. Xóa trắng ô tìm kiếm"
+    ket_qua_mong_doi:
+      - "Danh sách hiển thị lại như ban đầu (tổng số bản ghi bằng lúc đầu)"
+  - id: PRV-L11
+    title: "Xuất Excel danh sách Đơn vị hành chính cấp tỉnh"
+    uc: "A.IV.1-UC7"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Export"
+    loai: "Chức năng"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Bấm \"Xuất Excel\" ở trang Đơn vị hành chính cấp tỉnh"
+    ket_qua_mong_doi:
+      - "Trình duyệt tải về file .xlsx chứa dữ liệu danh sách (UC: Xuất danh sách ra Excel)"
+    ghi_chu: "UC_1409 ghi FE \"Chưa làm\" → có thể FAIL (chức năng chưa phát triển)"
+  - id: PRV-V01
+    title: "Chi tiết tỉnh hiển thị thông tin và danh sách đơn vị thuộc tỉnh"
+    uc: "A.IV.1-UC5"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xem chi tiết"
+    loai: "Chức năng"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Bấm \"Xem chi tiết\" ở một tỉnh có đơn vị"
+    ket_qua_mong_doi:
+      - "Hiển thị mã, tên tỉnh và bảng đơn vị thuộc tỉnh; có nút Chỉnh sửa, Thêm mới đơn vị vào tỉnh, Mở module Đơn vị"
+  - id: PRV-V02
+    title: "Cột \"Số đơn vị\" khớp với số đơn vị trong màn chi tiết"
+    uc: "A.IV.1-UC5"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xem chi tiết"
+    loai: "Nghiệp vụ"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Ghi Số đơn vị của tỉnh"
+      - "2. Mở chi tiết"
+    ket_qua_mong_doi:
+      - "Số bản ghi đơn vị trong chi tiết = Số đơn vị"
+  - id: PRV-V03
+    title: "Nút \"Chỉnh sửa\" ở chi tiết mở form cập nhật"
+    uc: "A.IV.1-UC3"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xem chi tiết"
+    loai: "Chức năng"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Mở chi tiết tỉnh"
+      - "2. Bấm Chỉnh sửa"
+    ket_qua_mong_doi:
+      - "Form cập nhật mở với dữ liệu hiện tại"
+  - id: PRV-C01
+    title: "Thêm tỉnh/thành thành công"
+    uc: "A.IV.1-UC2"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Chức năng"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Bấm \"Thêm mới tỉnh/thành\""
+      - "2. Nhập mã, tên hợp lệ"
+      - "3. Lưu"
+    ket_qua_mong_doi:
+      - "Thông báo thành công; tỉnh xuất hiện trong danh sách với Số đơn vị = 0"
+  - id: PRV-C02
+    title: "Bỏ trống Mã/Tên thì báo lỗi bắt buộc"
+    uc: "A.IV.1-UC2"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Validate"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Bấm Lưu khi chưa nhập"
+    ket_qua_mong_doi:
+      - "Báo lỗi bắt buộc; không tạo"
+  - id: PRV-C03
+    title: "Trùng mã tỉnh bị từ chối"
+    uc: "A.IV.1-UC2"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Nghiệp vụ"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Tạo tỉnh A"
+      - "2. Tạo tỉnh B cùng mã"
+    ket_qua_mong_doi:
+      - "Báo \"Mã tỉnh đã tồn tại\"; chỉ 1 bản ghi"
+  - id: PRV-C04
+    title: "Mã tỉnh dài hơn 10 ký tự bị chặn"
+    uc: "A.IV.1-UC2"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Validate"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Nhập mã 11 ký tự"
+      - "2. Lưu"
+    ket_qua_mong_doi:
+      - "Báo \"Không được nhập vượt quá 10 ký tự\"; không tạo"
+  - id: PRV-C05
+    title: "Hủy form thêm mới không tạo bản ghi"
+    uc: "A.IV.1-UC2"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Chức năng"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Nhập mã tên"
+      - "2. Hủy"
+    ket_qua_mong_doi:
+      - "Không có tỉnh mới"
+  - id: PRV-C06
+    title: "Trùng tên tỉnh (khác mã)"
+    uc: "A.IV.1-UC2"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Nghiệp vụ"
+    uu_tien: "Thấp"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Tạo tỉnh A"
+      - "2. Tạo tỉnh B khác mã, trùng tên"
+    ket_qua_mong_doi:
+      - "Hệ thống cảnh báo/từ chối tên trùng"
+    ghi_chu: "Khảo sát: API hiện cho tạo trùng tên → cần BA xác nhận quy tắc"
+  - id: PRV-E01
+    title: "Sửa tên tỉnh thành công"
+    uc: "A.IV.1-UC3"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Chỉnh sửa"
+    loai: "Chức năng"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Menu → Cập nhật"
+      - "2. Đổi tên"
+      - "3. Lưu"
+    ket_qua_mong_doi:
+      - "Thông báo thành công; tên mới hiển thị"
+  - id: PRV-E02
+    title: "Mã tỉnh không đổi sau khi sửa tên"
+    uc: "A.IV.1-UC3"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Chỉnh sửa"
+    loai: "Nghiệp vụ"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Sửa tên"
+      - "2. Kiểm tra mã"
+    ket_qua_mong_doi:
+      - "Mã giữ nguyên"
+  - id: PRV-E03
+    title: "Xóa trắng tên khi sửa bị chặn"
+    uc: "A.IV.1-UC3"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Chỉnh sửa"
+    loai: "Validate"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Xóa tên"
+      - "2. Lưu"
+    ket_qua_mong_doi:
+      - "Báo lỗi bắt buộc; không lưu"
+  - id: PRV-E04
+    title: "Hủy chỉnh sửa không đổi dữ liệu"
+    uc: "A.IV.1-UC3"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Chỉnh sửa"
+    loai: "Chức năng"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đổi tên"
+      - "2. Hủy"
+    ket_qua_mong_doi:
+      - "Dữ liệu giữ nguyên"
+  - id: PRV-D01
+    title: "Xóa tỉnh chưa có đơn vị thành công"
+    uc: "A.IV.1-UC4"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xóa"
+    loai: "Chức năng"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Menu → Xoá"
+      - "2. Xác nhận"
+    ket_qua_mong_doi:
+      - "Tỉnh biến mất khỏi danh sách"
+  - id: PRV-D02
+    title: "Xóa tỉnh đang có đơn vị tham chiếu bị chặn"
+    uc: "A.IV.1-UC4"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xóa"
+    loai: "Nghiệp vụ"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Tạo tỉnh, tạo đơn vị tham chiếu tỉnh"
+      - "2. Xóa tỉnh"
+    ket_qua_mong_doi:
+      - "Báo \"Không thể xóa: đang có đơn vị thuộc tỉnh này\"; tỉnh còn nguyên"
+  - id: PRV-D03
+    title: "Chọn \"Không\" ở hộp xác nhận thì giữ nguyên"
+    uc: "A.IV.1-UC4"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xóa"
+    loai: "Chức năng"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Menu → Xoá"
+      - "2. Không"
+    ket_qua_mong_doi:
+      - "Tỉnh vẫn còn"
+  - id: PRV-S01
+    title: "API tỉnh: không token / token giả → 401"
+    uc: "A.IV.1-UC1"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Phân quyền"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. GET /provinces không token"
+    ket_qua_mong_doi:
+      - "HTTP 401"
+  - id: PRV-S02
+    title: "Quyền API tỉnh đúng theo ma trận quyền Cán bộ (không có PROVINCE.* → 403)"
+    uc: "A.IV.1-UC2"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Phân quyền"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Lấy ma trận quyền canbo"
+      - "2. GET/POST/PUT/DELETE /provinces"
+    ket_qua_mong_doi:
+      - "Không có quyền → 403 cho mọi thao tác"
+  - id: PRV-P01
+    title: "Danh sách tỉnh tải < 3 giây"
+    uc: "A.IV.1-UC1"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Hiệu năng"
+    loai: "Hiệu năng"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Mở trang và đo"
+    ket_qua_mong_doi:
+      - "API < 3000ms, hiển thị < 6000ms"
+  - id: PRV-G01
+    title: "Trường bắt buộc chỉ nhập khoảng trắng bị chặn (tỉnh/thành)"
+    uc: "A.IV.1-UC4"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Validate"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Mở form thêm mới"
+      - "2. Nhập chỉ dấu cách vào các trường văn bản bắt buộc"
+      - "3. Lưu"
+    ket_qua_mong_doi:
+      - "Báo lỗi bắt buộc (chuỗi rỗng sau khi trim); form còn mở; không tạo bản ghi"
+  - id: PRV-G02
+    title: "Tên chứa tiếng Việt có dấu, HTML, dấu nháy, & được lưu và hiển thị đúng sau khi tải lại trang (tỉnh/thành)"
+    uc: "A.IV.1-UC4"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Nghiệp vụ"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. [API] Tạo bản ghi có tên chứa ký tự đặc biệt"
+      - "2. Tải lại trang (F5), tìm theo mã"
+    ket_qua_mong_doi:
+      - "Tên hiển thị nguyên văn dạng chữ; thẻ HTML không bị render (chống XSS)"
+  - id: PRV-G03
+    title: "[API] Tên rỗng bị server từ chối bằng HTTP 400 (tỉnh/thành)"
+    uc: "A.IV.1-UC4"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Validate"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. [API] POST với name rỗng"
+    ket_qua_mong_doi:
+      - "HTTP 400 kèm thông báo; không tạo bản ghi"
+    ghi_chu: "Nếu API trả 200/500 → lỗi thiếu validate phía server"
+  - id: PRV-G04
+    title: "Server lỗi 500 khi lưu: hiển thị lỗi, giữ form và dữ liệu đã nhập (tỉnh/thành)"
+    uc: "A.IV.1-UC4"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Nghiệp vụ"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Điền form hợp lệ"
+      - "2. Giả lập API POST trả 500"
+      - "3. Lưu"
+    ket_qua_mong_doi:
+      - "Form còn mở và giữ dữ liệu; không lộ stacktrace; không tạo bản ghi"
+  - id: PRV-G05
+    title: "Mất kết nối khi lưu: không treo giao diện, giữ form (tỉnh/thành)"
+    uc: "A.IV.1-UC4"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Nghiệp vụ"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Điền form hợp lệ"
+      - "2. Giả lập mất mạng khi POST"
+      - "3. Lưu"
+    ket_qua_mong_doi:
+      - "Form còn mở và giữ dữ liệu; trang không trắng/lỗi; không tạo bản ghi"
+  - id: PRV-V04
+    title: "Mở chi tiết tỉnh với id không tồn tại không gây lỗi hệ thống"
+    uc: "A.IV.1-UC5"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xem chi tiết"
+    loai: "Validate"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. [API] GET /<tài nguyên>/<id lạ>"
+      - "2. Mở URL chi tiết với id lạ"
+    ket_qua_mong_doi:
+      - "API trả 4xx (không 500); trang không trắng, không lộ lỗi nội bộ"
+  - id: PRV-G06
+    title: "Bấm Lưu 2 lần liên tiếp chỉ tạo 1 bản ghi (tỉnh/thành)"
+    uc: "A.IV.1-UC4"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Nghiệp vụ"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Điền form hợp lệ"
+      - "2. Bấm Lưu 2 lần liên tiếp rất nhanh"
+    ket_qua_mong_doi:
+      - "Chỉ có đúng 1 bản ghi theo mã; không báo lỗi trùng gây hiểu nhầm"
+  - id: PRV-E05
+    title: "Sửa tên tỉnh thành tên trùng tỉnh khác bị từ chối"
+    uc: "A.IV.1-UC3"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Chỉnh sửa"
+    loai: "Nghiệp vụ"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Có tỉnh A, B"
+      - "2. Sửa tên B = tên A"
+      - "3. Lưu"
+    ket_qua_mong_doi:
+      - "Bị từ chối; tên B giữ nguyên"
+    ghi_chu: "Tương tự PRV-C06 (thêm trùng tên) — cần BA xác nhận quy tắc duy nhất của tên"

@@ -1,0 +1,1068 @@
+title: "Thang xếp loại"
+phan_he: "B - Bộ chỉ số DTI"
+tong_so: 78
+testcases:
+  - id: SCL-L01
+    title: "Danh sách Thang xếp loại hiển thị đúng các cột"
+    uc: "B.TXL-UC1"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xem danh sách"
+    loai: "Chức năng"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đăng nhập admin"
+      - "2. Mở trang Thang xếp loại"
+    ket_qua_mong_doi:
+      - "Bảng có đủ cột: Tên thang (mã ở dòng phụ), Các mức, Số kỳ sử dụng, Trạng thái, Thao tác; có dữ liệu"
+  - id: SCL-L02
+    title: "Phân trang mặc định 10 bản ghi/trang và hiển thị tổng số bản ghi"
+    uc: "B.TXL-UC1"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xem danh sách"
+    loai: "Chức năng"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Mở trang Thang xếp loại"
+    ket_qua_mong_doi:
+      - "Hiển thị \"Hiển thị 1-10 trong N bản ghi\"; tối đa 10 dòng dữ liệu; thanh phân trang xuất hiện khi N>10"
+  - id: SCL-L03
+    title: "Tìm theo mã thang trả về đúng bản ghi"
+    uc: "B.TXL-UC1"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Tìm kiếm"
+    loai: "Chức năng"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Mở trang Thang xếp loại"
+      - "2. Nhập một mã thang có sẵn vào ô tìm kiếm"
+    ket_qua_mong_doi:
+      - "Chỉ hiển thị các dòng chứa từ khóa; có ít nhất 1 dòng"
+  - id: SCL-L04
+    title: "Tìm theo tên thang trả về đúng bản ghi"
+    uc: "B.TXL-UC1"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Tìm kiếm"
+    loai: "Chức năng"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Nhập một tên thang có sẵn vào ô tìm kiếm"
+    ket_qua_mong_doi:
+      - "Chỉ hiển thị các dòng chứa từ khóa"
+  - id: SCL-L05
+    title: "Từ khóa không tồn tại → không có dữ liệu"
+    uc: "B.TXL-UC1"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Tìm kiếm"
+    loai: "Chức năng"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Nhập \"zzqcxx_khongtontai_999\""
+    ket_qua_mong_doi:
+      - "Bảng rỗng / hiển thị trạng thái không có dữ liệu, không lỗi"
+  - id: SCL-L06
+    title: "Tìm kiếm không phân biệt chữ hoa/chữ thường"
+    uc: "B.TXL-UC1"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Tìm kiếm"
+    loai: "Chức năng"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Nhập từ khóa viết HOA rồi viết thường của cùng một giá trị"
+    ket_qua_mong_doi:
+      - "Hai lần tìm trả về cùng số bản ghi"
+  - id: SCL-L07
+    title: "Ký tự đặc biệt / chuỗi SQL trong ô tìm kiếm không gây lỗi hệ thống"
+    uc: "B.TXL-UC1"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Tìm kiếm"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Nhập  ' OR 1=1 --  và  <script>alert(1)</script>"
+    ket_qua_mong_doi:
+      - "Không hiện lỗi 500/trắng trang, không thực thi script, không trả về toàn bộ dữ liệu bất thường"
+  - id: SCL-L08
+    title: "Chuyển sang trang 2 hiển thị dữ liệu khác trang 1"
+    uc: "B.TXL-UC1"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Phân trang"
+    loai: "Chức năng"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Bấm trang 2 trên thanh phân trang"
+    ket_qua_mong_doi:
+      - "Trang 2 được đánh dấu active; nội dung bảng khác trang 1"
+    ghi_chu: "Dữ liệu thang ít (≤ 10) nên có thể Skipped nếu không đủ trang"
+  - id: SCL-L09
+    title: "Đổi số bản ghi/trang sang 20 thì số dòng thay đổi theo"
+    uc: "B.TXL-UC1"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Phân trang"
+    loai: "Chức năng"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Chọn \"20 / trang\" ở thanh phân trang"
+    ket_qua_mong_doi:
+      - "Số dòng tối đa mỗi trang = 20; tổng số bản ghi không đổi"
+    ghi_chu: "Dữ liệu thang ít (≤ 10) nên có thể Skipped nếu không đủ trang"
+  - id: SCL-L10
+    title: "Xóa từ khóa thì danh sách trở về đầy đủ"
+    uc: "B.TXL-UC1"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Tìm kiếm"
+    loai: "Chức năng"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Tìm một từ khóa"
+      - "2. Xóa trắng ô tìm kiếm"
+    ket_qua_mong_doi:
+      - "Danh sách hiển thị lại như ban đầu (tổng số bản ghi bằng lúc đầu)"
+  - id: SCL-L12
+    title: "Bộ lọc Trạng thái gồm Tất cả/Chưa khóa/Đã khóa, mặc định Tất cả (BR-5)"
+    uc: "B.TXL-UC1"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Bộ lọc"
+    loai: "Chức năng"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Mở trang, xem bộ lọc"
+      - "2. Chọn từng giá trị"
+    ket_qua_mong_doi:
+      - "Mặc định \"Tất cả\"; mỗi giá trị chỉ hiện thang đúng trạng thái"
+  - id: SCL-L13
+    title: "Tìm kiếm kết hợp với bộ lọc trạng thái (BR-5)"
+    uc: "B.TXL-UC1"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Bộ lọc"
+    loai: "Chức năng"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Nhập từ khóa"
+      - "2. Chọn trạng thái"
+    ket_qua_mong_doi:
+      - "Kết quả thỏa mãn đồng thời cả hai"
+  - id: SCL-L14
+    title: "Mỗi dòng gồm Tên thang kèm mã ở dòng phụ, thanh các mức nhiều màu, tên mức cách nhau dấu chấm giữa (BR-2, BR-3)"
+    uc: "B.TXL-UC1"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xem danh sách"
+    loai: "UI"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Xem một dòng thang"
+    ket_qua_mong_doi:
+      - "Có mã dòng phụ; thanh các mức rộng theo khoảng điểm; tên mức liệt kê cách nhau \"·\""
+  - id: SCL-L15
+    title: "Số kỳ sử dụng đếm theo từng bộ chỉ số; thang chưa dùng hiển thị \"Chưa dùng\" (BR-4)"
+    uc: "B.TXL-UC1"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xem danh sách"
+    loai: "Nghiệp vụ"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Xem cột Số kỳ sử dụng của thang đã/chưa gán"
+    ket_qua_mong_doi:
+      - "Thang đã gán: số = số kỳ (mỗi bộ chỉ số tính một kỳ); chưa gán: \"Chưa dùng\""
+  - id: SCL-L16
+    title: "Menu thao tác: \"Xem\" luôn đứng đầu, các mục còn lại theo quyền và trạng thái (BR-6)"
+    uc: "B.TXL-UC1"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xem danh sách"
+    loai: "Chức năng"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Mở menu thao tác thang Chưa khóa / Đã khóa chưa gán / Đã gán"
+    ket_qua_mong_doi:
+      - "Xem đứng đầu; Chưa khóa: Sửa, Khóa, Xóa; Đã khóa chưa gán: Sửa, Mở khóa, Xóa; Đã gán: chỉ Xem"
+  - id: SCL-L17
+    title: "Chưa có thang nào: hiển thị \"Chưa có dữ liệu\" kèm nút + Thêm thang xếp loại (BR-1)"
+    uc: "B.TXL-UC1"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xem danh sách"
+    loai: "UI"
+    uu_tien: "Thấp"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Hệ thống không có thang"
+    ket_qua_mong_doi:
+      - "Trạng thái rỗng MSG-022 kèm nút thêm"
+  - id: SCL-V01
+    title: "Thông tin chung: Mã thang, Số mức, Số kỳ sử dụng (\"Chưa dùng\" nếu chưa gán), Mô tả (BR-1)"
+    uc: "B.TXL-UC2"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xem chi tiết"
+    loai: "Chức năng"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Chọn Xem một thang"
+    ket_qua_mong_doi:
+      - "Hiển thị đủ 4 mục; thang chưa gán: \"Chưa dùng\""
+  - id: SCL-V02
+    title: "Bảng các mức: STT, Tên mức, Từ(%), Đến dưới(%), Tương đương trên 1.000 điểm; mức cuối ghi \"gồm 100\" (BR-2)"
+    uc: "B.TXL-UC2"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xem chi tiết"
+    loai: "Chức năng"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Mở chi tiết thang nhiều mức"
+    ket_qua_mong_doi:
+      - "Đủ cột; mức cuối \"Đến dưới = 100 (gồm 100)\""
+  - id: SCL-V03
+    title: "Tương đương trên 1.000 điểm = Từ×10 đến Đến dưới×10, mức cuối đến 1.000 (BR-3)"
+    uc: "B.TXL-UC2"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xem chi tiết"
+    loai: "Nghiệp vụ"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Thang 0–40, 40–90, 90–100"
+    ket_qua_mong_doi:
+      - "\"0 - dưới 400\", \"400 - dưới 900\", \"900 - 1.000\""
+  - id: SCL-V04
+    title: "Thanh các mức có mốc từ 0% đến 100% bên dưới (BR-4)"
+    uc: "B.TXL-UC2"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xem chi tiết"
+    loai: "UI"
+    uu_tien: "Thấp"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Mở chi tiết"
+    ket_qua_mong_doi:
+      - "Thanh mức có mốc 0%…100%"
+  - id: SCL-V05
+    title: "Bảng Kỳ sử dụng: Tên đánh giá, Phân loại, Bộ chỉ số, Thời gian; 10 kỳ/trang; chưa gán → \"Chưa có dữ liệu\" (BR-5)"
+    uc: "B.TXL-UC2"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xem chi tiết"
+    loai: "Chức năng"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Mở chi tiết thang đã gán / chưa gán"
+    ket_qua_mong_doi:
+      - "Bảng đủ cột, phân trang 10; chưa gán: MSG-022"
+  - id: SCL-V06
+    title: "Thang đã gán cho kỳ: cảnh báo MSG-104 và không có nút thao tác (BR-6)"
+    uc: "B.TXL-UC2"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xem chi tiết"
+    loai: "Nghiệp vụ"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Mở chi tiết thang đã gán"
+    ket_qua_mong_doi:
+      - "Cảnh báo \"Thang xếp loại đang được kỳ sử dụng nên không thể sửa, mở khóa hoặc xóa\"; không nút Sửa/Khóa/Mở khóa/Xóa"
+  - id: SCL-V07
+    title: "Nút trên đầu trang hiển thị theo quyền, Sửa là nút chính (BR-7)"
+    uc: "B.TXL-UC2"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xem chi tiết"
+    loai: "Chức năng"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Mở chi tiết thang chưa gán với tài khoản đủ quyền"
+    ket_qua_mong_doi:
+      - "Có Sửa (nút chính), Khóa/Mở khóa, Xóa theo trạng thái"
+  - id: SCL-V08
+    title: "Mở chi tiết thang với id không tồn tại không gây lỗi hệ thống"
+    uc: "B.TXL-UC2"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xem chi tiết"
+    loai: "Validate"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. [API] GET /dti/score-scales/<id lạ>"
+      - "2. Mở URL id lạ"
+    ket_qua_mong_doi:
+      - "API 4xx; không 500; trang không trắng"
+  - id: SCL-C01
+    title: "Thêm thang hợp lệ thành công: mã TXL-nnn tự sinh, trạng thái Chưa khóa, mở chi tiết"
+    uc: "B.TXL-UC3"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Chức năng"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. + Thêm thang xếp loại"
+      - "2. Nhập tên, các mức phủ 0–100%"
+      - "3. Lưu"
+    ket_qua_mong_doi:
+      - "Tạo thành công; mã dạng TXL-nnn; Chưa khóa; chuyển sang màn chi tiết"
+  - id: SCL-C02
+    title: "Mã thang không nhập được, trước khi lưu hiển thị \"Tự động sinh khi lưu\" (BR-1)"
+    uc: "B.TXL-UC3"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "UI"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Mở form thêm"
+    ket_qua_mong_doi:
+      - "Ô mã chỉ-đọc, hiển thị \"Tự động sinh khi lưu\""
+  - id: SCL-C03
+    title: "Mã đã cấp không được dùng lại sau khi xóa (BR-1)"
+    uc: "B.TXL-UC3"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Nghiệp vụ"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Tạo thang (mã TXL-n)"
+      - "2. Xóa"
+      - "3. Tạo thang mới"
+    ket_qua_mong_doi:
+      - "Thang mới có mã lớn hơn, không trùng mã đã xóa"
+  - id: SCL-C04
+    title: "Tên thang rỗng báo \"Vui lòng nhập Tên thang\" (BR-2, MSG-010)"
+    uc: "B.TXL-UC3"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Validate"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Để trống tên"
+      - "2. Xem lỗi/nút Lưu"
+    ket_qua_mong_doi:
+      - "Báo lỗi bắt buộc; Lưu bị vô hiệu"
+  - id: SCL-C05
+    title: "Tên thang đúng 200 ký tự được nhận, 201 ký tự báo \"Tên thang tối đa 200 ký tự\" (BR-2, MSG-013)"
+    uc: "B.TXL-UC3"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Validate"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Nhập tên 200 rồi 201 ký tự"
+    ket_qua_mong_doi:
+      - "200: hợp lệ; 201: báo MSG-013"
+  - id: SCL-C06
+    title: "Mô tả không bắt buộc, nhập nhiều dòng được lưu nguyên (BR-2)"
+    uc: "B.TXL-UC3"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Chức năng"
+    uu_tien: "Thấp"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Nhập mô tả nhiều dòng"
+      - "2. Lưu"
+    ket_qua_mong_doi:
+      - "Mô tả hiển thị đủ các dòng ở chi tiết"
+  - id: SCL-C07
+    title: "Chỉ có 1 mức báo \"Thang xếp loại cần ít nhất 2 mức\" (BR-3, MSG-109)"
+    uc: "B.TXL-UC3"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Validate"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Chỉ nhập 1 mức (đến dưới 100)"
+    ket_qua_mong_doi:
+      - "Báo MSG-109; không lưu được"
+  - id: SCL-C08
+    title: "Thang nhiều mức (≥ 10) vẫn lưu được — không giới hạn số mức (BR-3)"
+    uc: "B.TXL-UC3"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Chức năng"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Tạo thang 10 mức"
+    ket_qua_mong_doi:
+      - "Lưu thành công"
+  - id: SCL-C09
+    title: "Mức cuối chưa đến 100% hoặc chưa nhập mốc báo MSG-107 (BR-4)"
+    uc: "B.TXL-UC3"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Validate"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Nhập mức cuối đến 90"
+    ket_qua_mong_doi:
+      - "Báo \"Thang xếp loại phải phủ đủ từ 0 đến 100%. Nhập 100 ở mức cuối\""
+  - id: SCL-C10
+    title: "Mức đầu bắt đầu từ 0; \"Từ\" của mức sau tự lấy bằng \"Đến dưới\" mức trước và không nhập được (BR-4, BR-5)"
+    uc: "B.TXL-UC3"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Nghiệp vụ"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Nhập Đến dưới mức 1 = 40"
+      - "2. Xem ô Từ mức 2"
+    ket_qua_mong_doi:
+      - "Từ mức 1 = 0 (chỉ-đọc); Từ mức 2 = 40 (chỉ-đọc)"
+  - id: SCL-C11
+    title: "Đến dưới để trống báo \"Vui lòng nhập Đến dưới (%)\" (BR-6, MSG-010)"
+    uc: "B.TXL-UC3"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Validate"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Để trống Đến dưới ở một mức"
+    ket_qua_mong_doi:
+      - "Báo MSG-010"
+  - id: SCL-C12
+    title: "Đến dưới quá 2 chữ số thập phân báo MSG-016; 2 chữ số hợp lệ lưu đúng (BR-6)"
+    uc: "B.TXL-UC3"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Validate"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Nhập 33.333"
+      - "2. Nhập 33.33"
+    ket_qua_mong_doi:
+      - "33.333 báo \"tối đa 2 chữ số thập phân\"; 33.33 lưu và hiển thị đúng"
+  - id: SCL-C13
+    title: "Đến dưới không lớn hơn Từ báo \"Đến dưới phải lớn hơn Từ ({Từ}%)\" (BR-6, MSG-105)"
+    uc: "B.TXL-UC3"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Validate"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Mức 1 đến 40, mức 2 đến 40 hoặc 30"
+    ket_qua_mong_doi:
+      - "Báo MSG-105 với giá trị Từ đúng"
+  - id: SCL-C14
+    title: "Đến dưới ngoài khoảng 0–100 (âm, >100) báo MSG-015 (BR-6)"
+    uc: "B.TXL-UC3"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Validate"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Nhập -1 và 101"
+    ket_qua_mong_doi:
+      - "Báo ngoài khoảng cho phép"
+  - id: SCL-C15
+    title: "Mốc 100 chỉ dùng cho mức cuối, nhập 100 ở mức khác báo MSG-106 (BR-7)"
+    uc: "B.TXL-UC3"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Validate"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Có 3 mức, nhập 100 ở mức 2"
+    ket_qua_mong_doi:
+      - "Báo \"Mốc 100 chỉ dùng cho mức cuối\""
+  - id: SCL-C16
+    title: "Tên mức bắt buộc, tối đa 50 ký tự (BR-8, MSG-010/013)"
+    uc: "B.TXL-UC3"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Validate"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Để trống tên mức"
+      - "2. Nhập 50 và 51 ký tự"
+    ket_qua_mong_doi:
+      - "Trống: MSG-010; 51 ký tự: MSG-013; 50 hợp lệ"
+  - id: SCL-C17
+    title: "Tên mức không trùng trong một thang, không phân biệt hoa/thường (BR-8, MSG-014)"
+    uc: "B.TXL-UC3"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Validate"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Hai mức tên \"Tốt\" và \"tốt\""
+    ket_qua_mong_doi:
+      - "Báo \"Tên mức đã tồn tại\""
+  - id: SCL-C18
+    title: "Nhập Đến dưới <100 ở dòng cuối thì tự thêm dòng mức tiếp theo, con trỏ vào Tên mức (BR-9)"
+    uc: "B.TXL-UC3"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Chức năng"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Nhập Đến dưới 50 ở dòng cuối"
+    ket_qua_mong_doi:
+      - "Xuất hiện dòng mới, focus ở Tên mức; dòng tự thêm chưa nhập không tính là mức"
+  - id: SCL-C19
+    title: "Xóa mức giữa: khoảng gộp vào mức sau và hiện MSG-110 (BR-10)"
+    uc: "B.TXL-UC3"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Chức năng"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Thang 3 mức"
+      - "2. Xóa mức 2"
+    ket_qua_mong_doi:
+      - "Thông báo \"Đã xóa mức …. Khoảng a% đến b% gộp vào mức …\"; mức 3 mở rộng"
+  - id: SCL-C20
+    title: "Xóa mức cuối: mức trước thành mức cuối đến 100% (BR-10)"
+    uc: "B.TXL-UC3"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Chức năng"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Thang 3 mức"
+      - "2. Xóa mức 3"
+    ket_qua_mong_doi:
+      - "Mức 2 thành mức cuối, đến 100%; có thông báo tương ứng"
+  - id: SCL-C21
+    title: "Xem trước: mức hợp lệ tô màu theo thứ tự, phần còn lại là vùng sọc xám \"chưa có mức\" (BR-11)"
+    uc: "B.TXL-UC3"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "UI"
+    uu_tien: "Thấp"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Nhập một phần mức chưa tới 100%"
+    ket_qua_mong_doi:
+      - "Phần chưa phủ hiển thị sọc xám ghi \"chưa có mức\""
+  - id: SCL-C22
+    title: "Thanh lưu: trạng thái \"Còn n lỗi cần sửa\" / \"n mức, đủ 0 đến 100%, lưu được\"; Lưu vô hiệu khi còn lỗi (BR-12)"
+    uc: "B.TXL-UC3"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Chức năng"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Nhập thang chưa hợp lệ"
+      - "2. Sửa cho hợp lệ"
+    ket_qua_mong_doi:
+      - "Nút Lưu disabled + thông điệp lỗi; hợp lệ: Lưu bật + thông điệp \"lưu được\""
+  - id: SCL-C23
+    title: "Hủy/quay lại khi đã nhập hiện hộp thoại \"Thoát khi chưa lưu\" (BR-13, MSG-009)"
+    uc: "B.TXL-UC3"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Chức năng"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Nhập tên"
+      - "2. Bấm Huỷ"
+    ket_qua_mong_doi:
+      - "Hộp thoại \"Các thay đổi chưa lưu sẽ bị mất. Bạn có muốn thoát không?\"; Thoát → về danh sách, Ở lại → giữ form"
+  - id: SCL-C24
+    title: "Hủy khi chưa nhập gì thoát luôn, không tạo thang (BR-1, BR-13)"
+    uc: "B.TXL-UC3"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Chức năng"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Mở form thêm"
+      - "2. Bấm Huỷ ngay"
+    ket_qua_mong_doi:
+      - "Về danh sách, không hộp thoại, không có thang mới"
+  - id: SCL-C25
+    title: "[API] Tạo thang không phủ 0–100% hoặc chỉ 1 mức bị từ chối 400"
+    uc: "B.TXL-UC3"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Validate"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. [API] POST thang các mức 0–60 / 1 mức"
+    ket_qua_mong_doi:
+      - "HTTP 400 có thông báo; không tạo"
+  - id: SCL-C26
+    title: "[API] Mức chồng lấn / không liên tục / tên rỗng bị từ chối 400"
+    uc: "B.TXL-UC3"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Validate"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. [API] POST các mức có khoảng chồng, hở, tên mức rỗng"
+    ket_qua_mong_doi:
+      - "HTTP 400 có thông báo"
+  - id: SCL-E01
+    title: "Sửa tên, mô tả, mức của thang Chưa khóa chưa gán thành công, giữ trạng thái (BR-2)"
+    uc: "B.TXL-UC4"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Chỉnh sửa"
+    loai: "Chức năng"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Menu → Sửa"
+      - "2. Đổi tên và một mức"
+      - "3. Lưu"
+    ket_qua_mong_doi:
+      - "Chi tiết hiển thị dữ liệu mới; trạng thái vẫn Chưa khóa"
+  - id: SCL-E02
+    title: "Thang Đã khóa chưa gán vẫn sửa được và giữ Đã khóa (BR-2)"
+    uc: "B.TXL-UC4"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Chỉnh sửa"
+    loai: "Nghiệp vụ"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Khóa thang"
+      - "2. Sửa tên"
+      - "3. Lưu"
+    ket_qua_mong_doi:
+      - "Lưu được; vẫn Đã khóa"
+  - id: SCL-E03
+    title: "Thang đã gán cho kỳ không vào được màn Sửa, báo MSG-104 (UI và API) (BR-1)"
+    uc: "B.TXL-UC4"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Chỉnh sửa"
+    loai: "Nghiệp vụ"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Thang đã gán"
+      - "2. Thử Sửa (URL /edit và [API] PUT)"
+    ket_qua_mong_doi:
+      - "Báo \"Thang xếp loại đang được kỳ sử dụng nên không thể sửa…\"; dữ liệu không đổi"
+  - id: SCL-E04
+    title: "Mã thang chỉ xem, không sửa được (BR-3)"
+    uc: "B.TXL-UC4"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Chỉnh sửa"
+    loai: "Nghiệp vụ"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Mở form Sửa"
+    ket_qua_mong_doi:
+      - "Mã hiển thị dạng chỉ xem"
+  - id: SCL-E05
+    title: "Quy tắc nhập tên/mô tả/mức giống thêm mới (BR-4)"
+    uc: "B.TXL-UC4"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Chỉnh sửa"
+    loai: "Validate"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Sửa: xóa tên; xóa mức; đặt mức cuối 90"
+    ket_qua_mong_doi:
+      - "Cùng thông báo MSG-010/109/107; Lưu bị vô hiệu"
+  - id: SCL-E06
+    title: "Dữ liệu bị người khác đổi sau khi mở form báo MSG-020 khi lưu (BR-5)"
+    uc: "B.TXL-UC4"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Chỉnh sửa"
+    loai: "Nghiệp vụ"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Mở form sửa ở 2 phiên"
+      - "2. Lưu phiên 1 rồi phiên 2"
+    ket_qua_mong_doi:
+      - "Phiên 2 báo \"Dữ liệu đã được người khác thay đổi. Vui lòng tải lại trang\""
+    ghi_chu: "Cần 2 phiên đăng nhập — khó tự động hóa"
+  - id: SCL-E07
+    title: "Hủy chỉnh sửa khi có thay đổi hỏi xác nhận thoát; Ở lại giữ form (MSG-009)"
+    uc: "B.TXL-UC4"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Chỉnh sửa"
+    loai: "Chức năng"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đổi tên"
+      - "2. Bấm Huỷ"
+    ket_qua_mong_doi:
+      - "Hộp thoại xác nhận; chọn Thoát không lưu thay đổi"
+  - id: SCL-D01
+    title: "Hộp thoại xóa: câu hỏi MSG-006 với tên thang, thẻ Mã thang & Số mức, ghi chú \"Không hoàn tác được\" (BR-2, BR-3)"
+    uc: "B.TXL-UC5"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xóa"
+    loai: "Chức năng"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Menu → Xóa"
+    ket_qua_mong_doi:
+      - "Hộp thoại \"Bạn có chắc chắn muốn xóa {tên thang}?\" kèm thẻ số liệu và ghi chú vàng"
+  - id: SCL-D02
+    title: "Xóa thang Chưa khóa chưa gán thành công (BR-1)"
+    uc: "B.TXL-UC5"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xóa"
+    loai: "Chức năng"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Menu → Xóa"
+      - "2. Xác nhận"
+    ket_qua_mong_doi:
+      - "Thang biến mất ở danh sách và API"
+  - id: SCL-D03
+    title: "Xóa thang Đã khóa chưa gán thành công (BR-1)"
+    uc: "B.TXL-UC5"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xóa"
+    loai: "Nghiệp vụ"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Khóa thang"
+      - "2. Xóa"
+    ket_qua_mong_doi:
+      - "Xóa được, không phụ thuộc trạng thái khóa"
+  - id: SCL-D04
+    title: "Chọn Hủy/Không ở hộp xác nhận thì giữ nguyên"
+    uc: "B.TXL-UC5"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xóa"
+    loai: "Chức năng"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Menu → Xóa"
+      - "2. Hủy"
+    ket_qua_mong_doi:
+      - "Thang còn nguyên"
+  - id: SCL-D05
+    title: "Thang đã gán cho kỳ không xóa được, báo MSG-104 (UI và API) (BR-1)"
+    uc: "B.TXL-UC5"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xóa"
+    loai: "Nghiệp vụ"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Thang đã gán"
+      - "2. Thử Xóa ([API] DELETE)"
+    ket_qua_mong_doi:
+      - "Bị chặn với MSG-104; thang còn nguyên"
+  - id: SCL-K01
+    title: "Hộp thoại khóa: MSG-007 với tên thang, thẻ Mã thang & Số mức, ghi chú vàng (BR-2, BR-3)"
+    uc: "B.TXL-UC6"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Khóa"
+    loai: "Chức năng"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Menu → Khóa"
+    ket_qua_mong_doi:
+      - "Hộp thoại \"Bạn có chắc chắn muốn khóa {tên thang}?\" kèm ghi chú \"Thang hiện trong danh sách chọn của kỳ…\""
+  - id: SCL-K02
+    title: "Khóa thang hợp lệ → Đã khóa và xuất hiện trong danh sách chọn thang của kỳ"
+    uc: "B.TXL-UC6"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Khóa"
+    loai: "Chức năng"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Khóa thang"
+      - "2. Mở form tạo kỳ tự đánh giá → select Thang xếp loại"
+    ket_qua_mong_doi:
+      - "Trạng thái Đã khóa; thang có trong danh sách chọn"
+  - id: SCL-K03
+    title: "Chỉ khóa được thang Chưa khóa, phủ đủ 0–100% và ≥ 2 mức (BR-1)"
+    uc: "B.TXL-UC6"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Khóa"
+    loai: "Nghiệp vụ"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Khóa thang đã Đã khóa"
+      - "2. [API] khóa thang không hợp lệ"
+    ket_qua_mong_doi:
+      - "Từ chối với thông báo; trạng thái giữ nguyên"
+  - id: SCL-K04
+    title: "Thang Đã khóa chưa gán vẫn sửa, mở khóa, xóa được (BR-4)"
+    uc: "B.TXL-UC6"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Khóa"
+    loai: "Nghiệp vụ"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Khóa thang"
+      - "2. Xem menu"
+    ket_qua_mong_doi:
+      - "Có Sửa, Mở khóa, Xóa"
+  - id: SCL-K05
+    title: "Hộp thoại mở khóa: MSG-008 với tên thang và ghi chú vàng (BR-2, BR-3)"
+    uc: "B.TXL-UC7"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Mở khóa"
+    loai: "Chức năng"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Menu → Mở khóa"
+    ket_qua_mong_doi:
+      - "Hộp thoại \"Bạn có chắc chắn muốn mở khóa {tên thang}?\" kèm ghi chú \"Thang không còn hiện trong danh sách chọn…\""
+  - id: SCL-K06
+    title: "Mở khóa thang Đã khóa chưa gán → Chưa khóa, không còn trong danh sách chọn của kỳ"
+    uc: "B.TXL-UC7"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Mở khóa"
+    loai: "Chức năng"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Mở khóa"
+      - "2. Mở form tạo kỳ"
+    ket_qua_mong_doi:
+      - "Chưa khóa; thang không còn trong select Thang xếp loại"
+  - id: SCL-K07
+    title: "Thang đã gán cho kỳ không mở khóa được, báo MSG-104 (UI và API) (BR-1)"
+    uc: "B.TXL-UC7"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Mở khóa"
+    loai: "Nghiệp vụ"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Thang đã gán"
+      - "2. [API] PUT /unlock"
+    ket_qua_mong_doi:
+      - "Bị chặn MSG-104; vẫn Đã khóa"
+  - id: SCL-G01
+    title: "Trường bắt buộc chỉ nhập khoảng trắng bị chặn (thang xếp loại)"
+    uc: "B.TXL-UC3"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Validate"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Mở form thêm mới"
+      - "2. Nhập chỉ dấu cách vào trường văn bản bắt buộc"
+      - "3. Lưu"
+    ket_qua_mong_doi:
+      - "Báo lỗi bắt buộc (chuỗi rỗng sau trim); không tạo bản ghi"
+  - id: SCL-G02
+    title: "Tên chứa tiếng Việt có dấu, HTML, dấu nháy, & được lưu và hiển thị đúng sau khi tải lại trang (thang xếp loại)"
+    uc: "B.TXL-UC3"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Nghiệp vụ"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. [API] Tạo bản ghi có tên chứa ký tự đặc biệt"
+      - "2. Tải lại trang (F5), tìm theo mã/tên"
+    ket_qua_mong_doi:
+      - "Tên hiển thị nguyên văn dạng chữ; thẻ HTML không bị render"
+  - id: SCL-G03
+    title: "Server lỗi 500 khi lưu: giữ form và dữ liệu đã nhập, không lộ lỗi nội bộ (thang xếp loại)"
+    uc: "B.TXL-UC3"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Nghiệp vụ"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Điền form hợp lệ"
+      - "2. Giả lập API POST trả 500"
+      - "3. Lưu"
+    ket_qua_mong_doi:
+      - "Form còn mở và giữ dữ liệu; không lộ stacktrace; không tạo bản ghi"
+  - id: SCL-G04
+    title: "Mất kết nối khi lưu: không treo giao diện, giữ form (thang xếp loại)"
+    uc: "B.TXL-UC3"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Nghiệp vụ"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Điền form hợp lệ"
+      - "2. Giả lập mất mạng khi POST"
+      - "3. Lưu"
+    ket_qua_mong_doi:
+      - "Form còn mở và giữ dữ liệu; trang không trắng; không tạo bản ghi"
+  - id: SCL-G05
+    title: "Bấm Lưu 2 lần liên tiếp chỉ tạo 1 bản ghi (thang xếp loại)"
+    uc: "B.TXL-UC3"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Nghiệp vụ"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Điền form hợp lệ"
+      - "2. Bấm Lưu 2 lần rất nhanh"
+    ket_qua_mong_doi:
+      - "Chỉ có đúng 1 bản ghi"
+  - id: SCL-A01
+    title: "API thang xếp loại: không token / token giả → 401"
+    uc: "B.TXL-UC1"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Phân quyền"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. GET danh sách không token"
+      - "2. GET với token giả"
+    ket_qua_mong_doi:
+      - "HTTP 401"
+  - id: SCL-A02
+    title: "Quyền API thang xếp loại đúng theo ma trận quyền Cán bộ"
+    uc: "B.TXL-UC1"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Phân quyền"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Lấy ma trận quyền canbo"
+      - "2. GET/POST/PUT/DELETE theo quyền Xem/Thêm/Sửa/Xóa/Khóa"
+    ket_qua_mong_doi:
+      - "Có quyền → được; không có → 403"
+  - id: SCL-A03
+    title: "Chưa đăng nhập vào trang thang xếp loại bị chuyển về màn đăng nhập, không lộ dữ liệu"
+    uc: "B.TXL-UC1"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Phân quyền"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Xóa session"
+      - "2. Mở URL trang"
+    ket_qua_mong_doi:
+      - "Hiện màn đăng nhập; không có dữ liệu"
+  - id: SCL-P01
+    title: "Danh sách thang xếp loại tải < 3 giây"
+    uc: "B.TXL-UC1"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Hiệu năng"
+    loai: "Hiệu năng"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Mở trang và đo"
+    ket_qua_mong_doi:
+      - "API < 3000ms, hiển thị < 6000ms"

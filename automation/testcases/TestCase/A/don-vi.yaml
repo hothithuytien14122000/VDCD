@@ -1,0 +1,666 @@
+title: "Đơn vị"
+phan_he: "A - Quản trị hệ thống"
+tong_so: 48
+testcases:
+  - id: ORG-L01
+    title: "Danh sách Đơn vị hiển thị đúng các cột"
+    uc: "A.IV.4-UC1"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xem danh sách"
+    loai: "Chức năng"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đăng nhập admin"
+      - "2. Mở trang Đơn vị"
+    ket_qua_mong_doi:
+      - "Bảng có đủ cột: STT, Mã đơn vị, Tên đơn vị, Loại đơn vị, Tỉnh/thành tham chiếu, Số lượng thành viên, Trạng thái, Thao tác; có dữ liệu"
+  - id: ORG-L02
+    title: "Phân trang mặc định 10 bản ghi/trang và hiển thị tổng số bản ghi"
+    uc: "A.IV.4-UC1"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xem danh sách"
+    loai: "Chức năng"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Mở trang Đơn vị"
+    ket_qua_mong_doi:
+      - "Hiển thị \"Hiển thị 1-10 trong N bản ghi\"; tối đa 10 dòng dữ liệu; thanh phân trang xuất hiện khi N>10"
+  - id: ORG-L03
+    title: "Tìm theo mã đơn vị trả về đúng bản ghi"
+    uc: "A.IV.4-UC1"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Tìm kiếm"
+    loai: "Chức năng"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Mở trang Đơn vị"
+      - "2. Nhập một mã đơn vị có sẵn vào ô tìm kiếm"
+    ket_qua_mong_doi:
+      - "Chỉ hiển thị các dòng chứa từ khóa; có ít nhất 1 dòng"
+  - id: ORG-L04
+    title: "Tìm theo tên đơn vị trả về đúng bản ghi"
+    uc: "A.IV.4-UC1"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Tìm kiếm"
+    loai: "Chức năng"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Nhập một tên đơn vị có sẵn vào ô tìm kiếm"
+    ket_qua_mong_doi:
+      - "Chỉ hiển thị các dòng chứa từ khóa"
+  - id: ORG-L05
+    title: "Từ khóa không tồn tại → không có dữ liệu"
+    uc: "A.IV.4-UC1"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Tìm kiếm"
+    loai: "Chức năng"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Nhập \"zzqcxx_khongtontai_999\""
+    ket_qua_mong_doi:
+      - "Bảng rỗng / hiển thị trạng thái không có dữ liệu, không lỗi"
+  - id: ORG-L06
+    title: "Tìm kiếm không phân biệt chữ hoa/chữ thường"
+    uc: "A.IV.4-UC1"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Tìm kiếm"
+    loai: "Chức năng"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Nhập từ khóa viết HOA rồi viết thường của cùng một giá trị"
+    ket_qua_mong_doi:
+      - "Hai lần tìm trả về cùng số bản ghi"
+  - id: ORG-L07
+    title: "Ký tự đặc biệt / chuỗi SQL trong ô tìm kiếm không gây lỗi hệ thống"
+    uc: "A.IV.4-UC1"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Tìm kiếm"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Nhập  ' OR 1=1 --  và  <script>alert(1)</script>"
+    ket_qua_mong_doi:
+      - "Không hiện lỗi 500/trắng trang, không thực thi script, không trả về toàn bộ dữ liệu bất thường"
+  - id: ORG-L08
+    title: "Chuyển sang trang 2 hiển thị dữ liệu khác trang 1"
+    uc: "A.IV.4-UC1"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Phân trang"
+    loai: "Chức năng"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Bấm trang 2 trên thanh phân trang"
+    ket_qua_mong_doi:
+      - "Trang 2 được đánh dấu active; nội dung bảng khác trang 1"
+  - id: ORG-L09
+    title: "Đổi số bản ghi/trang sang 20 thì số dòng thay đổi theo"
+    uc: "A.IV.4-UC1"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Phân trang"
+    loai: "Chức năng"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Chọn \"20 / trang\" ở thanh phân trang"
+    ket_qua_mong_doi:
+      - "Số dòng tối đa mỗi trang = 20; tổng số bản ghi không đổi"
+  - id: ORG-L10
+    title: "Xóa từ khóa thì danh sách trở về đầy đủ"
+    uc: "A.IV.4-UC1"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Tìm kiếm"
+    loai: "Chức năng"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Tìm một từ khóa"
+      - "2. Xóa trắng ô tìm kiếm"
+    ket_qua_mong_doi:
+      - "Danh sách hiển thị lại như ban đầu (tổng số bản ghi bằng lúc đầu)"
+  - id: ORG-L11
+    title: "Xuất Excel danh sách Đơn vị"
+    uc: "A.IV.4-UC2"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Export"
+    loai: "Chức năng"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Bấm \"Xuất Excel\" ở trang Đơn vị"
+    ket_qua_mong_doi:
+      - "Trình duyệt tải về file .xlsx chứa dữ liệu danh sách (UC: Xuất danh sách ra Excel)"
+    ghi_chu: "UC_1409 ghi FE \"Chưa làm\" → có thể FAIL (chức năng chưa phát triển)"
+  - id: ORG-L12
+    title: "Lọc theo loại đơn vị"
+    uc: "A.IV.4-UC1"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Bộ lọc"
+    loai: "Chức năng"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Chọn một loại đơn vị ở bộ lọc"
+    ket_qua_mong_doi:
+      - "Mọi dòng có cột Loại đơn vị = loại đã chọn"
+  - id: ORG-L13
+    title: "Lọc theo tỉnh/thành tham chiếu"
+    uc: "A.IV.4-UC1"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Bộ lọc"
+    loai: "Chức năng"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Chọn một tỉnh ở bộ lọc"
+    ket_qua_mong_doi:
+      - "Mọi dòng có Tỉnh/thành tham chiếu = tỉnh đã chọn"
+  - id: ORG-V01
+    title: "Chi tiết đơn vị hiển thị loại, tỉnh tham chiếu, số người dùng, kỳ đánh giá hiện tại"
+    uc: "A.IV.4-UC3"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xem chi tiết"
+    loai: "Chức năng"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Bấm \"Xem chi tiết\" một đơn vị"
+    ket_qua_mong_doi:
+      - "Hiển thị tên, mã, trạng thái, Loại đơn vị, Tham chiếu tỉnh, số Người dùng và bảng \"Người dùng trong đơn vị\"; có nút Thêm người dùng vào đơn vị, Đổi tỉnh, Bỏ tham chiếu"
+  - id: ORG-V02
+    title: "Bảng người dùng trong đơn vị có cột Tên đăng nhập, Họ tên, Vai trò, Email, Trạng thái và lọc theo vai trò"
+    uc: "A.IV.4-UC9"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Người dùng trong đơn vị"
+    loai: "Chức năng"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Mở chi tiết đơn vị có người dùng"
+      - "2. Lọc theo vai trò"
+    ket_qua_mong_doi:
+      - "Bảng lọc đúng theo vai trò"
+  - id: ORG-C01
+    title: "Thêm đơn vị thành công với Mã, Tên, Loại đơn vị"
+    uc: "A.IV.4-UC4"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Chức năng"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Bấm \"Thêm mới đơn vị\""
+      - "2. Nhập mã, tên, chọn loại"
+      - "3. Lưu"
+    ket_qua_mong_doi:
+      - "Thông báo thành công; đơn vị xuất hiện, trạng thái Chưa khóa"
+  - id: ORG-C02
+    title: "Bỏ trống Mã/Tên/Loại đơn vị thì báo lỗi bắt buộc"
+    uc: "A.IV.4-UC4"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Validate"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Bấm Lưu khi chưa nhập"
+    ket_qua_mong_doi:
+      - "Báo lỗi bắt buộc ở 3 trường; không tạo"
+  - id: ORG-C03
+    title: "Bỏ trống riêng Loại đơn vị thì báo lỗi"
+    uc: "A.IV.4-UC4"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Validate"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Nhập mã, tên, bỏ trống loại"
+      - "2. Lưu"
+    ket_qua_mong_doi:
+      - "Báo lỗi bắt buộc ở Loại đơn vị; không tạo"
+  - id: ORG-C04
+    title: "Trùng mã đơn vị bị từ chối"
+    uc: "A.IV.4-UC4"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Nghiệp vụ"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Tạo đơn vị A"
+      - "2. Tạo đơn vị B cùng mã"
+    ket_qua_mong_doi:
+      - "Báo mã đã tồn tại; chỉ 1 bản ghi"
+  - id: ORG-C05
+    title: "Thêm đơn vị con (chọn Đơn vị cha)"
+    uc: "A.IV.4-UC4"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Chức năng"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Tạo đơn vị cha"
+      - "2. Tạo đơn vị con chọn đơn vị cha"
+    ket_qua_mong_doi:
+      - "Đơn vị con tạo thành công, gắn đúng đơn vị cha"
+  - id: ORG-C06
+    title: "Thêm đơn vị có tham chiếu tỉnh/thành"
+    uc: "A.IV.4-UC4"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Chức năng"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Tạo đơn vị, chọn tỉnh tham chiếu"
+    ket_qua_mong_doi:
+      - "Cột Tỉnh/thành tham chiếu hiển thị đúng tỉnh"
+  - id: ORG-C07
+    title: "Email đơn vị sai định dạng bị chặn"
+    uc: "A.IV.4-UC4"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Validate"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Nhập email \"abc\""
+      - "2. Lưu"
+    ket_qua_mong_doi:
+      - "Báo lỗi định dạng email; không tạo"
+  - id: ORG-C09
+    title: "Chỉ đơn vị thuộc loại cấp xã mới được tham chiếu xã/phường"
+    uc: "A.IV.4-UC4"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Nghiệp vụ"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. [API] Tạo đơn vị loại cấp tỉnh kèm communeId"
+    ket_qua_mong_doi:
+      - "Bị từ chối: \"Chỉ đơn vị thuộc loại cấp xã mới tham chiếu đơn vị hành chính cấp xã\""
+  - id: ORG-C08
+    title: "Hủy form thêm mới không tạo bản ghi"
+    uc: "A.IV.4-UC4"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Chức năng"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Nhập dữ liệu"
+      - "2. Hủy"
+    ket_qua_mong_doi:
+      - "Không có đơn vị mới"
+  - id: ORG-E01
+    title: "Sửa tên đơn vị thành công"
+    uc: "A.IV.4-UC5"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Chỉnh sửa"
+    loai: "Chức năng"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Menu → Cập nhật"
+      - "2. Đổi tên"
+      - "3. Lưu"
+    ket_qua_mong_doi:
+      - "Thông báo thành công; tên mới hiển thị"
+  - id: ORG-E02
+    title: "Đổi loại đơn vị"
+    uc: "A.IV.4-UC5"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Chỉnh sửa"
+    loai: "Chức năng"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Cập nhật → chọn loại khác"
+      - "2. Lưu"
+    ket_qua_mong_doi:
+      - "Cột Loại đơn vị đổi theo"
+  - id: ORG-E03
+    title: "Xóa trắng tên khi sửa bị chặn"
+    uc: "A.IV.4-UC5"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Chỉnh sửa"
+    loai: "Validate"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Xóa tên"
+      - "2. Lưu"
+    ket_qua_mong_doi:
+      - "Báo lỗi bắt buộc; không lưu"
+  - id: ORG-E04
+    title: "Hủy chỉnh sửa không đổi dữ liệu"
+    uc: "A.IV.4-UC5"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Chỉnh sửa"
+    loai: "Chức năng"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đổi tên"
+      - "2. Hủy"
+    ket_qua_mong_doi:
+      - "Dữ liệu giữ nguyên"
+  - id: ORG-D01
+    title: "Xóa đơn vị chưa có người dùng thành công"
+    uc: "A.IV.4-UC6"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xóa"
+    loai: "Chức năng"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Menu → Xoá"
+      - "2. Xác nhận"
+    ket_qua_mong_doi:
+      - "Đơn vị biến mất"
+  - id: ORG-D02
+    title: "Xóa đơn vị đang có người dùng bị chặn"
+    uc: "A.IV.4-UC6"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xóa"
+    loai: "Nghiệp vụ"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Gán 1 user vào đơn vị"
+      - "2. Xóa đơn vị"
+    ket_qua_mong_doi:
+      - "Báo \"Không thể xóa: đang có người dùng thuộc đơn vị này\"; đơn vị còn nguyên"
+  - id: ORG-D03
+    title: "Chọn \"Không\" ở hộp xác nhận thì giữ nguyên"
+    uc: "A.IV.4-UC6"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xóa"
+    loai: "Chức năng"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Menu → Xoá"
+      - "2. Không"
+    ket_qua_mong_doi:
+      - "Đơn vị vẫn còn"
+  - id: ORG-K01
+    title: "Khóa đơn vị chuyển trạng thái Đã khóa"
+    uc: "A.IV.4-UC7"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Khóa/Mở khóa"
+    loai: "Chức năng"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Menu → Khoá"
+      - "2. Xác nhận"
+    ket_qua_mong_doi:
+      - "Trạng thái \"Đã khóa\""
+  - id: ORG-K02
+    title: "Mở khóa đơn vị chuyển lại Chưa khóa"
+    uc: "A.IV.4-UC7"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Khóa/Mở khóa"
+    loai: "Chức năng"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Menu → Mở khoá"
+    ket_qua_mong_doi:
+      - "Trạng thái \"Chưa khóa\""
+  - id: ORG-R01
+    title: "Đổi tỉnh tham chiếu của đơn vị ở màn chi tiết"
+    uc: "A.IV.4-UC8"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Tham chiếu tỉnh"
+    loai: "Chức năng"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Chi tiết đơn vị → Đổi tỉnh"
+      - "2. Chọn tỉnh"
+      - "3. Lưu"
+    ket_qua_mong_doi:
+      - "Tỉnh tham chiếu đổi; cột danh sách cập nhật"
+  - id: ORG-R02
+    title: "Bỏ tham chiếu tỉnh của đơn vị"
+    uc: "A.IV.4-UC8"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Tham chiếu tỉnh"
+    loai: "Chức năng"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Chi tiết đơn vị → Bỏ tham chiếu"
+      - "2. Xác nhận"
+    ket_qua_mong_doi:
+      - "Tỉnh tham chiếu trở thành trống / \"–\""
+  - id: ORG-M01
+    title: "Thêm người dùng vào đơn vị"
+    uc: "A.IV.4-UC11"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm người dùng"
+    loai: "Chức năng"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Chi tiết đơn vị → Thêm người dùng vào đơn vị"
+      - "2. Chọn user"
+      - "3. Lưu"
+    ket_qua_mong_doi:
+      - "User xuất hiện trong bảng người dùng; số Người dùng tăng; cột Đơn vị của user ở trang Người dùng đổi theo"
+  - id: ORG-M02
+    title: "Xóa người dùng khỏi đơn vị"
+    uc: "A.IV.4-UC10"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xóa người dùng"
+    loai: "Chức năng"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Trong bảng người dùng đơn vị, xóa user khỏi đơn vị"
+    ket_qua_mong_doi:
+      - "User biến mất khỏi bảng; số Người dùng giảm; user vẫn tồn tại"
+  - id: ORG-S01
+    title: "API đơn vị: không token / token giả → 401"
+    uc: "A.IV.4-UC1"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Phân quyền"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. GET /organizations không token"
+    ket_qua_mong_doi:
+      - "HTTP 401"
+  - id: ORG-S02
+    title: "Quyền API đơn vị đúng theo ma trận quyền Cán bộ"
+    uc: "A.IV.4-UC4"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Phân quyền"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Lấy ma trận quyền canbo"
+      - "2. GET/POST /organizations"
+    ket_qua_mong_doi:
+      - "Có quyền → được; không → 403"
+  - id: ORG-P01
+    title: "Danh sách đơn vị tải < 3 giây"
+    uc: "A.IV.4-UC1"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Hiệu năng"
+    loai: "Hiệu năng"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Mở trang và đo"
+    ket_qua_mong_doi:
+      - "API < 3000ms, hiển thị < 6000ms"
+  - id: ORG-G01
+    title: "Trường bắt buộc chỉ nhập khoảng trắng bị chặn (đơn vị)"
+    uc: "A.IV.4-UC4"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Validate"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Mở form thêm mới"
+      - "2. Nhập chỉ dấu cách vào các trường văn bản bắt buộc"
+      - "3. Lưu"
+    ket_qua_mong_doi:
+      - "Báo lỗi bắt buộc (chuỗi rỗng sau khi trim); form còn mở; không tạo bản ghi"
+  - id: ORG-G02
+    title: "Tên chứa tiếng Việt có dấu, HTML, dấu nháy, & được lưu và hiển thị đúng sau khi tải lại trang (đơn vị)"
+    uc: "A.IV.4-UC4"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Nghiệp vụ"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. [API] Tạo bản ghi có tên chứa ký tự đặc biệt"
+      - "2. Tải lại trang (F5), tìm theo mã"
+    ket_qua_mong_doi:
+      - "Tên hiển thị nguyên văn dạng chữ; thẻ HTML không bị render (chống XSS)"
+  - id: ORG-G04
+    title: "Server lỗi 500 khi lưu: hiển thị lỗi, giữ form và dữ liệu đã nhập (đơn vị)"
+    uc: "A.IV.4-UC4"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Nghiệp vụ"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Điền form hợp lệ"
+      - "2. Giả lập API POST trả 500"
+      - "3. Lưu"
+    ket_qua_mong_doi:
+      - "Form còn mở và giữ dữ liệu; không lộ stacktrace; không tạo bản ghi"
+  - id: ORG-G05
+    title: "Mất kết nối khi lưu: không treo giao diện, giữ form (đơn vị)"
+    uc: "A.IV.4-UC4"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Nghiệp vụ"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Điền form hợp lệ"
+      - "2. Giả lập mất mạng khi POST"
+      - "3. Lưu"
+    ket_qua_mong_doi:
+      - "Form còn mở và giữ dữ liệu; trang không trắng/lỗi; không tạo bản ghi"
+  - id: ORG-V03
+    title: "Mở chi tiết đơn vị với id không tồn tại không gây lỗi hệ thống"
+    uc: "A.IV.4-UC3"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xem chi tiết"
+    loai: "Validate"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. [API] GET /<tài nguyên>/<id lạ>"
+      - "2. Mở URL chi tiết với id lạ"
+    ket_qua_mong_doi:
+      - "API trả 4xx (không 500); trang không trắng, không lộ lỗi nội bộ"
+  - id: ORG-G06
+    title: "Bấm Lưu 2 lần liên tiếp chỉ tạo 1 bản ghi (đơn vị)"
+    uc: "A.IV.4-UC4"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Nghiệp vụ"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Điền form hợp lệ"
+      - "2. Bấm Lưu 2 lần liên tiếp rất nhanh"
+    ket_qua_mong_doi:
+      - "Chỉ có đúng 1 bản ghi theo mã; không báo lỗi trùng gây hiểu nhầm"
+  - id: ORG-V04
+    title: "Tìm người dùng trong chi tiết đơn vị"
+    uc: "A.IV.4-UC9"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Người dùng trong đơn vị"
+    loai: "Chức năng"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Mở chi tiết đơn vị có 2 user"
+      - "2. Nhập tên đăng nhập 1 user"
+    ket_qua_mong_doi:
+      - "Chỉ còn đúng user đó"
+  - id: ORG-M03
+    title: "Người dùng đang thuộc đơn vị khác được chuyển sang đơn vị mới"
+    uc: "A.IV.4-UC11"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm người dùng"
+    loai: "Nghiệp vụ"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. User thuộc đơn vị A"
+      - "2. Chi tiết đơn vị B → Thêm người dùng → chọn user → Lưu"
+    ket_qua_mong_doi:
+      - "User chuyển sang B (theo thông báo của màn hình)"
