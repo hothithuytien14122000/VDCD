@@ -15,6 +15,7 @@ testcases:
       - "1. Ở trang đăng nhập bấm \"Quên mật khẩu?\""
     ket_qua_mong_doi:
       - "Có tiêu đề \"Quên mật khẩu\", hướng dẫn gửi OTP 6 chữ số, ô Email đăng ký, nút Lấy mã OTP, nút Quay lại đăng nhập, ghi chú liên hệ Quản trị hệ thống"
+    ket_qua_chay: "Không chạy"
   - id: RPW-L02
     title: "Bỏ trống email thì báo lỗi bắt buộc"
     uc: "AUTH.2-UC1"
@@ -29,6 +30,7 @@ testcases:
       - "2. Bấm Lấy mã OTP"
     ket_qua_mong_doi:
       - "Báo \"Vui lòng nhập email đăng ký!\"; không gửi mail"
+    ket_qua_chay: "Không chạy"
   - id: RPW-L03
     title: "Email sai định dạng thì báo lỗi"
     uc: "AUTH.2-UC1"
@@ -43,6 +45,7 @@ testcases:
       - "2. Bấm Lấy mã OTP"
     ket_qua_mong_doi:
       - "Báo \"Email không đúng định dạng!\"; không gửi mail"
+    ket_qua_chay: "Không chạy"
   - id: RPW-L04
     title: "Email chưa đăng ký với hệ thống bị từ chối, ở lại bước nhập email"
     uc: "AUTH.2-UC1"
@@ -57,6 +60,7 @@ testcases:
       - "2. Bấm Lấy mã OTP"
     ket_qua_mong_doi:
       - "Báo email chưa được đăng ký với hệ thống; vẫn ở màn nhập email; không có mail gửi đi"
+    ket_qua_chay: "Không chạy"
   - id: RPW-L05
     title: "Bấm \"Quay lại đăng nhập\" trở về màn đăng nhập"
     uc: "AUTH.2-UC1"
@@ -70,6 +74,7 @@ testcases:
       - "1. Ở màn Quên mật khẩu bấm \"Quay lại đăng nhập\""
     ket_qua_mong_doi:
       - "Hiển thị lại form đăng nhập"
+    ket_qua_chay: "Không chạy"
   - id: RPW-L06
     title: "Thông báo email chưa đăng ký tách rõ chữ \"Email\" và địa chỉ"
     uc: "AUTH.2-UC1"
@@ -84,6 +89,7 @@ testcases:
     ket_qua_mong_doi:
       - "Thông báo dạng \"Email <địa chỉ> chưa được đăng kí...\" có khoảng trắng giữa \"Email\" và địa chỉ"
     ghi_chu: "Khảo sát: \"Emailkhongco@cds.local chưa được đăng kí…\" thiếu dấu cách → lỗi chính tả thông báo"
+    ket_qua_chay: "Không chạy"
   - id: RPW-L07
     title: "[API] Tài khoản bị khóa không nhận được OTP"
     uc: "AUTH.2-UC1"
@@ -97,6 +103,7 @@ testcases:
       - "1. [API] POST forgot-password với email của qc.locked"
     ket_qua_mong_doi:
       - "HTTP 400 \"Tài khoản bị khóa không thể thực hiện chức năng này\"; không gửi mail"
+    ket_qua_chay: "Không chạy"
   - id: RPW-L08
     title: "Email phân biệt hoa/thường khi quên mật khẩu"
     uc: "AUTH.2-UC1"
@@ -111,6 +118,7 @@ testcases:
     ket_qua_mong_doi:
       - "Được coi là cùng email: HTTP 200 và gửi OTP (email về nguyên tắc không phân biệt hoa/thường)"
     ghi_chu: "Khảo sát: HTTP 404 \"chưa đăng kí\" → nghi lỗi. Cần BA xác nhận quy tắc hoa/thường"
+    ket_qua_chay: "Không chạy"
   - id: RPW-L09
     title: "Ký tự đặc biệt / SQL trong email không gây lỗi hệ thống"
     uc: "AUTH.2-UC1"
@@ -124,6 +132,7 @@ testcases:
       - "1. [API] POST forgot-password với email  ' OR 1=1 --  và <script>alert(1)</script>"
     ket_qua_mong_doi:
       - "HTTP 4xx (không 500); không gửi mail"
+    ket_qua_chay: "Không chạy"
   - id: RPW-L10
     title: "Chống dò tài khoản: phản hồi giống nhau cho email có và không có tài khoản"
     uc: "AUTH.2-UC1"
@@ -140,6 +149,7 @@ testcases:
     ket_qua_mong_doi:
       - "Hai phản hồi cùng mã HTTP và cùng thông báo trung tính"
     ghi_chu: "Khảo sát: 200 (đã gửi OTP) so với 404 (chưa đăng kí) → lộ email nào có tài khoản. Cần BA xác nhận quy tắc (hệ thống nội bộ có thể chấp nhận)"
+    ket_qua_chay: "Không chạy"
   - id: RPW-L11
     title: "Giới hạn tần suất gửi OTP (chống spam mail)"
     uc: "AUTH.2-UC1"
@@ -154,6 +164,7 @@ testcases:
     ket_qua_mong_doi:
       - "Ít nhất một yêu cầu sau lần đầu bị từ chối (HTTP 429/400) để tránh spam mail"
     ghi_chu: "Khảo sát: cả 3 lần đều HTTP 200 (chỉ giao diện chặn bằng đếm ngược 1 phút) → nghi lỗi. Cần BA xác nhận quy tắc"
+    ket_qua_chay: "Không chạy"
   - id: RPW-O01
     title: "Email hợp lệ chuyển sang màn nhập OTP với 6 ô, email được che và có đếm ngược"
     uc: "AUTH.2-UC2"
@@ -168,6 +179,7 @@ testcases:
       - "2. Bấm Lấy mã OTP"
     ket_qua_mong_doi:
       - "Màn \"Nhập mã OTP\": 6 ô nhập; email hiển thị dạng q*****@<tên miền>; \"Mã có hiệu lực trong mm:ss\" đếm ngược; có nút Xác nhận, Đổi email khác"
+    ket_qua_chay: "Không chạy"
   - id: RPW-O02
     title: "Mail OTP có tiêu đề, mã 6 số và nội dung đúng"
     uc: "AUTH.2-UC2"
@@ -182,6 +194,7 @@ testcases:
       - "2. Mở mail nhận được"
     ket_qua_mong_doi:
       - "Tiêu đề dạng \"[<OTP>] Mã xác thực OTP khôi phục mật khẩu - Hệ thống CDS\"; nội dung có họ tên người dùng, mã 6 số trùng tiêu đề, hiệu lực 1 phút, cảnh báo không chia sẻ mã"
+    ket_qua_chay: "Không chạy"
   - id: RPW-O03
     title: "Nút gửi lại bị khóa trong thời gian đếm ngược"
     uc: "AUTH.2-UC2"
@@ -196,6 +209,7 @@ testcases:
       - "2. Quan sát phần \"Chưa nhận được mã?\""
     ket_qua_mong_doi:
       - "Hiển thị \"Gửi lại sau mm:ss\" (không bấm được), chưa có nút \"Gửi lại ngay\", trong thời gian đếm ngược"
+    ket_qua_chay: "Không chạy"
   - id: RPW-O04
     title: "Hết thời gian đếm ngược xuất hiện nút Gửi lại, gửi lại tạo OTP mới"
     uc: "AUTH.2-UC2"
@@ -210,6 +224,7 @@ testcases:
       - "2. Bấm Gửi lại"
     ket_qua_mong_doi:
       - "Đếm ngược về 00:00 và xuất hiện nút \"Gửi lại ngay\"; bấm gửi mail OTP mới (khác mã cũ); đếm ngược bắt đầu lại"
+    ket_qua_chay: "Không chạy"
   - id: RPW-O05
     title: "Nhập thiếu 6 chữ số OTP thì báo lỗi"
     uc: "AUTH.2-UC2"
@@ -224,6 +239,7 @@ testcases:
       - "2. Bấm Xác nhận"
     ket_qua_mong_doi:
       - "Báo \"Vui lòng nhập đủ 6 chữ số OTP!\"; không gọi xác thực"
+    ket_qua_chay: "Không chạy"
   - id: RPW-O06
     title: "OTP sai bị từ chối, ở lại màn OTP"
     uc: "AUTH.2-UC2"
@@ -238,6 +254,7 @@ testcases:
       - "2. Bấm Xác nhận"
     ket_qua_mong_doi:
       - "Báo \"Mã xác thực không đúng hoặc đã hết hạn\"; vẫn ở màn OTP"
+    ket_qua_chay: "Không chạy"
   - id: RPW-O07
     title: "Ô OTP không nhận ký tự chữ"
     uc: "AUTH.2-UC2"
@@ -252,6 +269,7 @@ testcases:
     ket_qua_mong_doi:
       - "Các ô không nhận ký tự chữ (vẫn trống) hoặc báo lỗi"
     ghi_chu: "Cần BA xác nhận quy tắc"
+    ket_qua_chay: "Không chạy"
   - id: RPW-O08
     title: "OTP đúng thì xác thực thành công và sang màn mật khẩu mới"
     uc: "AUTH.2-UC2"
@@ -266,6 +284,7 @@ testcases:
       - "2. Bấm Xác nhận"
     ket_qua_mong_doi:
       - "Báo \"Xác thực thành công\"; chuyển màn đặt mật khẩu mới"
+    ket_qua_chay: "Không chạy"
   - id: RPW-O09
     title: "Bấm \"Đổi email khác\" quay lại bước nhập email"
     uc: "AUTH.2-UC2"
@@ -279,6 +298,7 @@ testcases:
       - "1. Ở màn OTP bấm \"Đổi email khác\""
     ket_qua_mong_doi:
       - "Quay lại màn nhập email đăng ký"
+    ket_qua_chay: "Không chạy"
   - id: RPW-O10
     title: "[API] OTP hết hạn sau 1 phút bị từ chối"
     uc: "AUTH.2-UC2"
@@ -294,6 +314,7 @@ testcases:
       - "3. [API] verify-forgot-password-token"
     ket_qua_mong_doi:
       - "HTTP 400 \"Mã xác thực không đúng hoặc đã hết hạn\""
+    ket_qua_chay: "Không chạy"
   - id: RPW-O11
     title: "[API] Gửi lại OTP thì mã cũ mất hiệu lực"
     uc: "AUTH.2-UC2"
@@ -310,6 +331,7 @@ testcases:
       - "4. Xác thực mã B"
     ket_qua_mong_doi:
       - "Mã A bị từ chối (400); mã B xác thực thành công"
+    ket_qua_chay: "Không chạy"
   - id: RPW-O12
     title: "[API] OTP của tài khoản này không dùng được cho email khác"
     uc: "AUTH.2-UC2"
@@ -324,6 +346,7 @@ testcases:
       - "2. [API] verify với email qc.canbo@cds.local và OTP đó"
     ket_qua_mong_doi:
       - "HTTP 400 từ chối"
+    ket_qua_chay: "Không chạy"
   - id: RPW-O13
     title: "[API] Xác thực thiếu tham số bị từ chối, không lỗi 500"
     uc: "AUTH.2-UC2"
@@ -337,6 +360,7 @@ testcases:
       - "1. [API] GET verify-forgot-password-token không có resetPasswordToken, email"
     ket_qua_mong_doi:
       - "HTTP 4xx kèm thông báo; không 500"
+    ket_qua_chay: "Không chạy"
   - id: RPW-O14
     title: "Giới hạn số lần nhập sai OTP (chống vét cạn)"
     uc: "AUTH.2-UC2"
@@ -353,6 +377,7 @@ testcases:
     ket_qua_mong_doi:
       - "Sau nhiều lần sai OTP bị vô hiệu/khóa tạm: bước 3 bị từ chối"
     ghi_chu: "Khảo sát: 12 lần sai vẫn xác thực được OTP đúng; OTP 6 số hiệu lực 1 phút có thể bị vét cạn → nghi lỗi bảo mật. Cần BA xác nhận quy tắc số lần tối đa"
+    ket_qua_chay: "Không chạy"
   - id: RPW-P01
     title: "Màn mật khẩu mới có hai ô mật khẩu ẩn và nút Cập nhật mật khẩu"
     uc: "AUTH.2-UC3"
@@ -366,6 +391,7 @@ testcases:
       - "1. Xác thực OTP thành công"
     ket_qua_mong_doi:
       - "Có ô \"Nhập mật khẩu mới\", \"Nhập lại mật khẩu mới\" (type=password), nút \"Cập nhật mật khẩu\", \"Quay lại đăng nhập\""
+    ket_qua_chay: "Không chạy"
   - id: RPW-P02
     title: "Bỏ trống mật khẩu mới thì không cho cập nhật"
     uc: "AUTH.2-UC3"
@@ -380,6 +406,7 @@ testcases:
       - "2. Bấm Cập nhật mật khẩu"
     ket_qua_mong_doi:
       - "Báo lỗi bắt buộc hoặc nút bị vô hiệu; không gọi reset-password"
+    ket_qua_chay: "Không chạy"
   - id: RPW-P03
     title: "Mật khẩu xác nhận không khớp thì báo lỗi trên giao diện"
     uc: "AUTH.2-UC3"
@@ -393,6 +420,7 @@ testcases:
       - "1. Nhập mật khẩu mới \"Test!123456\", nhập lại \"Test!654321\""
     ket_qua_mong_doi:
       - "Báo \"Mật khẩu xác nhận không khớp!\" ngay dưới ô nhập lại; nút Cập nhật mật khẩu bị vô hiệu; không gọi reset-password; mật khẩu không đổi"
+    ket_qua_chay: "Không chạy"
   - id: RPW-P04
     title: "[API] Mật khẩu và xác nhận không khớp bị từ chối"
     uc: "AUTH.2-UC3"
@@ -406,6 +434,7 @@ testcases:
       - "1. [API] reset-password với password và confirmPassword khác nhau"
     ket_qua_mong_doi:
       - "HTTP 400 \"Confirm password không khớp\"; OTP vẫn dùng được; mật khẩu không đổi"
+    ket_qua_chay: "Không chạy"
   - id: RPW-P05
     title: "[API] Mật khẩu rỗng bị từ chối"
     uc: "AUTH.2-UC3"
@@ -420,6 +449,7 @@ testcases:
     ket_qua_mong_doi:
       - "HTTP 400 báo bắt buộc; mật khẩu không đổi"
     ghi_chu: "Khảo sát: HTTP 200 \"Thay đổi mật khẩu thành công\" và OTP bị tiêu thụ → có thể đặt mật khẩu rỗng → nghi lỗi nghiêm trọng. Test tự khôi phục mật khẩu sau khi chạy"
+    ket_qua_chay: "Không chạy"
   - id: RPW-P06
     title: "[API] Mật khẩu quá ngắn (\"abc\") bị từ chối"
     uc: "AUTH.2-UC3"
@@ -434,6 +464,7 @@ testcases:
     ket_qua_mong_doi:
       - "HTTP 400 báo mật khẩu chưa đủ độ dài tối thiểu"
     ghi_chu: "Khảo sát: nhận \"abc\" (200). Form tạo người dùng ghi \"Tối thiểu 6 ký tự\". Cần BA xác nhận quy tắc chính sách mật khẩu. Test tự khôi phục mật khẩu"
+    ket_qua_chay: "Không chạy"
   - id: RPW-P07
     title: "[API] Mật khẩu chỉ gồm số (\"12345678\") bị từ chối theo độ phức tạp"
     uc: "AUTH.2-UC3"
@@ -448,6 +479,7 @@ testcases:
     ket_qua_mong_doi:
       - "HTTP 400 báo mật khẩu chưa đủ độ phức tạp (chữ hoa, thường, số, ký tự đặc biệt)"
     ghi_chu: "Khảo sát: nhận (200); mật khẩu mẫu của hệ thống là dạng phức tạp \"Test!123456\". Cần BA xác nhận quy tắc chính sách mật khẩu. Test tự khôi phục mật khẩu"
+    ket_qua_chay: "Không chạy"
   - id: RPW-P08
     title: "[API] Mật khẩu dài đúng 128 ký tự được chấp nhận"
     uc: "AUTH.2-UC3"
@@ -462,6 +494,7 @@ testcases:
     ket_qua_mong_doi:
       - "HTTP 200 thay đổi thành công"
     ghi_chu: "Test tự khôi phục mật khẩu"
+    ket_qua_chay: "Không chạy"
   - id: RPW-P09
     title: "[API] Mật khẩu 129 ký tự bị từ chối"
     uc: "AUTH.2-UC3"
@@ -475,6 +508,7 @@ testcases:
       - "1. [API] reset-password với mật khẩu 129 ký tự"
     ket_qua_mong_doi:
       - "HTTP 400 \"Không được nhập vượt quá 128 ký tự\"; mật khẩu không đổi"
+    ket_qua_chay: "Không chạy"
   - id: RPW-P10
     title: "Đặt lại mật khẩu thành công trọn luồng trên giao diện"
     uc: "AUTH.2-UC3"
@@ -491,6 +525,7 @@ testcases:
       - "4. Bấm Đăng nhập ở màn thành công"
     ket_qua_mong_doi:
       - "Hiển thị màn \"Đặt lại mật khẩu thành công\" (nêu các phiên đăng nhập khác đã bị đăng xuất) kèm nút Đăng nhập; bấm nút về form đăng nhập; ngày đổi mật khẩu của user (lastPasswordChangeDate) được cập nhật"
+    ket_qua_chay: "Không chạy"
   - id: RPW-P11
     title: "[API] OTP đã dùng đặt mật khẩu không dùng lại được"
     uc: "AUTH.2-UC3"
@@ -505,6 +540,7 @@ testcases:
       - "2. [API] reset-password lần nữa với OTP X"
     ket_qua_mong_doi:
       - "Lần hai bị từ chối (4xx) \"không tìm thấy người dùng hoặc mã xác thực đã hết hạn\""
+    ket_qua_chay: "Không chạy"
   - id: RPW-P12
     title: "[API] Đặt lại với OTP sai bị từ chối"
     uc: "AUTH.2-UC3"
@@ -518,6 +554,7 @@ testcases:
       - "1. [API] reset-password với resetPasswordToken \"000000\""
     ket_qua_mong_doi:
       - "HTTP 404 \"Không tìm thấy người dùng hoặc mã xác thực đã hết hạn\"; mật khẩu không đổi"
+    ket_qua_chay: "Không chạy"
   - id: RPW-P13
     title: "[API] Đặt lại thiếu resetPasswordToken bị từ chối"
     uc: "AUTH.2-UC3"
@@ -531,6 +568,7 @@ testcases:
       - "1. [API] reset-password body rỗng"
     ket_qua_mong_doi:
       - "HTTP 400 \"Vui lòng nhập resetPasswordToken\""
+    ket_qua_chay: "Không chạy"
   - id: RPW-P14
     title: "Bấm \"Quay lại đăng nhập\" ở màn mật khẩu mới trở về đăng nhập"
     uc: "AUTH.2-UC3"
@@ -544,6 +582,7 @@ testcases:
       - "1. Ở màn mật khẩu mới bấm \"Quay lại đăng nhập\""
     ket_qua_mong_doi:
       - "Hiển thị form đăng nhập"
+    ket_qua_chay: "Không chạy"
   - id: RPW-M01
     title: "Sau khi đặt lại, đăng nhập được bằng mật khẩu mới"
     uc: "AUTH.2-UC3"
@@ -558,6 +597,7 @@ testcases:
       - "2. Đăng nhập bằng mật khẩu mới (captcha đúng)"
     ket_qua_mong_doi:
       - "Đăng nhập thành công"
+    ket_qua_chay: "Manual"
   - id: RPW-M02
     title: "Sau khi đặt lại, mật khẩu cũ không còn đăng nhập được"
     uc: "AUTH.2-UC3"
@@ -572,6 +612,7 @@ testcases:
       - "2. Đăng nhập bằng mật khẩu cũ (captcha đúng)"
     ket_qua_mong_doi:
       - "Bị từ chối sai mật khẩu"
+    ket_qua_chay: "Manual"
   - id: RPW-M03
     title: "Sau khi đặt lại, phiên (token) đang đăng nhập trước đó bị vô hiệu"
     uc: "AUTH.2-UC3"
@@ -588,3 +629,4 @@ testcases:
     ket_qua_mong_doi:
       - "Token cũ bị từ chối (401)"
     ghi_chu: "Cần BA xác nhận quy tắc"
+    ket_qua_chay: "Manual"

@@ -29,6 +29,7 @@ for (const r of [...RES, ...RES.filter(x => x.startsWith('dti/')).reverse()]) { 
         const u = `${BASE}/api/v1/${r}/${x.id}/unlock`;
         await fetch(r === 'dti/score-scales' ? `${u}?rowVersion=${x.rowVersion}` : u, { method: r === 'dti/score-scales' ? 'POST' : 'PUT', headers: H, body: '{}' });
       }
+      if (r === 'idm/roles') await fetch(`${BASE}/api/v1/idm/permission-matrix/roles/${x.id}`, { method: 'PUT', headers: H, body: JSON.stringify({ permissions: [] }) });   // nhóm còn quyền thì không xóa được
       const st = (await fetch(`${BASE}/api/v1/${r}/${x.id}`,{method:'DELETE',headers:H})).status;
       console.log(`${r}  ${x.code||x.userName||x.name}  -> ${st}`); total++;
     }

@@ -1,0 +1,18 @@
+{
+  "name": "gitlab-bug-mcp",
+  "version": "1.0.0",
+  "description": "MCP server + CLI + Playwright reporter để log bug lên GitLab",
+  "type": "module",
+  "bin": { "gitlab-bug-mcp": "src/server.js", "gitlab-bug": "src/cli.js" },
+  "scripts": {
+    "start": "node src/server.js",
+    "report:excel": "node src/cli.js excel",
+    "report:json": "node src/cli.js json"
+  },
+  "engines": { "node": ">=20.12" },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.17.0",
+    "exceljs": "4.4.0",
+    "zod": "3.25.76"
+  }
+}

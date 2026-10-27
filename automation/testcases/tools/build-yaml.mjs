@@ -3,11 +3,11 @@ import fs from 'node:fs';
 const T = JSON.parse(fs.readFileSync('testcases/docs/catalog.json', 'utf8'));
 const runs = fs.existsSync('results') ? fs.readdirSync('results').filter(d => /^\d{4}-/.test(d)).sort() : [];   // lần chạy mới nhất
 const status = runs.length ? JSON.parse(fs.readFileSync(`results/${runs.at(-1)}/status.json`, 'utf8')) : {};
-const PAGE = { USR: 'Người dùng', GRP: 'Nhóm người dùng', PRV: 'Đơn vị hành chính cấp tỉnh', COM: 'Đơn vị hành chính cấp xã', UTY: 'Loại đơn vị', ORG: 'Đơn vị', PIL: 'Trụ cột', IGR: 'Nhóm chỉ số', IND: 'Chỉ số', SET: 'Bộ chỉ số', SCL: 'Thang xếp loại', RES: 'Kết quả tự đánh giá', CMP: 'Quản lý tự đánh giá', LGN: 'Đăng nhập', RPW: 'Quên mật khẩu', CPW: 'Đổi mật khẩu', LGO: 'Đăng xuất' };
+const PAGE = { USR: 'Người dùng', GRP: 'Nhóm người dùng', PRM: 'Ma trận phân quyền', PRV: 'Đơn vị hành chính cấp tỉnh', COM: 'Đơn vị hành chính cấp xã', UTY: 'Loại đơn vị', ORG: 'Đơn vị', PIL: 'Trụ cột', IGR: 'Nhóm chỉ số', IND: 'Chỉ số', SET: 'Bộ chỉ số', SCL: 'Thang xếp loại', RES: 'Kết quả tự đánh giá', CMP: 'Quản lý tự đánh giá', LGN: 'Đăng nhập', RPW: 'Quên mật khẩu', CPW: 'Đổi mật khẩu', LGO: 'Đăng xuất' };
 const q = s => JSON.stringify(String(s ?? ''));
 const lines = s => String(s ?? '').split('\n').map(x => x.trim()).filter(Boolean);
 // Tên file theo tiếng Việt không dấu, khớp tên file script trong scripts/<Phân hệ>/
-const SLUG = { USR: 'nguoi-dung', GRP: 'nhom-nguoi-dung', PRV: 'don-vi-hanh-chinh-cap-tinh', COM: 'don-vi-hanh-chinh-cap-xa', UTY: 'loai-don-vi', ORG: 'don-vi', PIL: 'tru-cot', IGR: 'nhom-chi-so', IND: 'chi-so', SET: 'bo-chi-so', SCL: 'thang-xep-loai', CMP: 'quan-ly-tu-danh-gia', RES: 'ket-qua-tu-danh-gia', LGN: 'dang-nhap', RPW: 'quen-mat-khau', CPW: 'doi-mat-khau', LGO: 'dang-xuat' };
+const SLUG = { USR: 'nguoi-dung', GRP: 'nhom-nguoi-dung', PRM: 'ma-tran-phan-quyen', PRV: 'don-vi-hanh-chinh-cap-tinh', COM: 'don-vi-hanh-chinh-cap-xa', UTY: 'loai-don-vi', ORG: 'don-vi', PIL: 'tru-cot', IGR: 'nhom-chi-so', IND: 'chi-so', SET: 'bo-chi-so', SCL: 'thang-xep-loai', CMP: 'quan-ly-tu-danh-gia', RES: 'ket-qua-tu-danh-gia', LGN: 'dang-nhap', RPW: 'quen-mat-khau', CPW: 'doi-mat-khau', LGO: 'dang-xuat' };
 const GROUP = k => (['LGN', 'RPW', 'CPW', 'LGO'].includes(k) ? 'Auth' : ['RES'].includes(k) ? 'C' : ['PIL', 'IGR', 'IND', 'SET', 'SCL', 'CMP'].includes(k) ? 'B' : 'A');
 const PHAN_HE = { Auth: 'AUTH - Xác thực', C: 'C - Đánh giá CĐS', B: 'B - Bộ chỉ số DTI', A: 'A - Quản trị hệ thống' };
 for (const [k, name] of Object.entries(PAGE)) {

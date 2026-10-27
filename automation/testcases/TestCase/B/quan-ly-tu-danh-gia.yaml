@@ -16,6 +16,7 @@ testcases:
       - "2. Mở trang Quản lý tự đánh giá"
     ket_qua_mong_doi:
       - "Bảng có đủ cột: STT, Tên đánh giá, Bộ chỉ số, Loại, Số đơn vị, Trạng thái, Thao tác; có dữ liệu"
+    ket_qua_chay: "Không chạy"
   - id: CMP-L02
     title: "Phân trang mặc định 10 bản ghi/trang và hiển thị tổng số bản ghi"
     uc: "B.III.1-UC1"
@@ -29,6 +30,7 @@ testcases:
       - "1. Mở trang Quản lý tự đánh giá"
     ket_qua_mong_doi:
       - "Hiển thị \"Hiển thị 1-10 trong N bản ghi\"; tối đa 10 dòng dữ liệu; thanh phân trang xuất hiện khi N>10"
+    ket_qua_chay: "Không chạy"
   - id: CMP-L03
     title: "Tìm theo tên đánh giá trả về đúng bản ghi"
     uc: "B.III.1-UC1"
@@ -43,6 +45,7 @@ testcases:
       - "2. Nhập một tên đánh giá có sẵn vào ô tìm kiếm"
     ket_qua_mong_doi:
       - "Chỉ hiển thị các dòng chứa từ khóa; có ít nhất 1 dòng"
+    ket_qua_chay: "Không chạy"
   - id: CMP-L04
     title: "Tìm theo một phần tên đánh giá trả về đúng bản ghi"
     uc: "B.III.1-UC1"
@@ -56,6 +59,7 @@ testcases:
       - "1. Nhập một một phần tên đánh giá có sẵn vào ô tìm kiếm"
     ket_qua_mong_doi:
       - "Chỉ hiển thị các dòng chứa từ khóa"
+    ket_qua_chay: "Không chạy"
   - id: CMP-L05
     title: "Từ khóa không tồn tại → không có dữ liệu"
     uc: "B.III.1-UC1"
@@ -69,6 +73,7 @@ testcases:
       - "1. Nhập \"zzqcxx_khongtontai_999\""
     ket_qua_mong_doi:
       - "Bảng rỗng / hiển thị trạng thái không có dữ liệu, không lỗi"
+    ket_qua_chay: "Không chạy"
   - id: CMP-L06
     title: "Tìm kiếm không phân biệt chữ hoa/chữ thường"
     uc: "B.III.1-UC1"
@@ -82,6 +87,7 @@ testcases:
       - "1. Nhập từ khóa viết HOA rồi viết thường của cùng một giá trị"
     ket_qua_mong_doi:
       - "Hai lần tìm trả về cùng số bản ghi"
+    ket_qua_chay: "Không chạy"
   - id: CMP-L07
     title: "Ký tự đặc biệt / chuỗi SQL trong ô tìm kiếm không gây lỗi hệ thống"
     uc: "B.III.1-UC1"
@@ -95,6 +101,7 @@ testcases:
       - "1. Nhập  ' OR 1=1 --  và  <script>alert(1)</script>"
     ket_qua_mong_doi:
       - "Không hiện lỗi 500/trắng trang, không thực thi script, không trả về toàn bộ dữ liệu bất thường"
+    ket_qua_chay: "Không chạy"
   - id: CMP-L08
     title: "Chuyển sang trang 2 hiển thị dữ liệu khác trang 1"
     uc: "B.III.1-UC1"
@@ -108,6 +115,7 @@ testcases:
       - "1. Bấm trang 2 trên thanh phân trang"
     ket_qua_mong_doi:
       - "Trang 2 được đánh dấu active; nội dung bảng khác trang 1"
+    ket_qua_chay: "Không chạy"
   - id: CMP-L09
     title: "Đổi số bản ghi/trang sang 20 thì số dòng thay đổi theo"
     uc: "B.III.1-UC1"
@@ -121,6 +129,7 @@ testcases:
       - "1. Chọn \"20 / trang\" ở thanh phân trang"
     ket_qua_mong_doi:
       - "Số dòng tối đa mỗi trang = 20; tổng số bản ghi không đổi"
+    ket_qua_chay: "Không chạy"
   - id: CMP-L10
     title: "Xóa từ khóa thì danh sách trở về đầy đủ"
     uc: "B.III.1-UC1"
@@ -135,6 +144,7 @@ testcases:
       - "2. Xóa trắng ô tìm kiếm"
     ket_qua_mong_doi:
       - "Danh sách hiển thị lại như ban đầu (tổng số bản ghi bằng lúc đầu)"
+    ket_qua_chay: "Không chạy"
   - id: CMP-L11
     title: "Mặc định mở tab \"Định kỳ\", mọi dòng có Loại = Định kỳ"
     uc: "B.III.1-UC1"
@@ -149,6 +159,7 @@ testcases:
       - "2. Mở menu Quản lý tự đánh giá"
     ket_qua_mong_doi:
       - "Tab \"Định kỳ\" được chọn; mọi dòng cột Loại = Định kỳ; số bản ghi khớp API filter type=Periodic"
+    ket_qua_chay: "Không chạy"
   - id: CMP-L12
     title: "Tab \"Đột xuất\": mọi dòng Loại = Đột xuất và có cột Ngày bắt đầu / Ngày kết thúc"
     uc: "B.III.1-UC5"
@@ -163,6 +174,7 @@ testcases:
     ket_qua_mong_doi:
       - "Cột: STT, Tên đánh giá, Bộ chỉ số, Loại, Ngày bắt đầu, Ngày kết thúc, Số đơn vị, Trạng thái, Thao tác; mọi dòng Loại = Đột xuất"
     ghi_chu: "Khảo sát: tab Định kỳ không có cột ngày, tab Đột xuất có"
+    ket_qua_chay: "Không chạy"
   - id: CMP-L13
     title: "Từ khóa chỉ tìm trong loại của tab đang chọn"
     uc: "B.III.1-UC1"
@@ -176,6 +188,7 @@ testcases:
       - "1. Ở tab Đột xuất tìm tên một kỳ Định kỳ có sẵn"
     ket_qua_mong_doi:
       - "Không có kết quả (kỳ Định kỳ không lẫn vào tab Đột xuất); API gửi kèm filter type"
+    ket_qua_chay: "Không chạy"
   - id: CMP-L14
     title: "Tìm kiếm không phân biệt dấu tiếng Việt (\"ky danh gia\" tìm \"Kỳ đánh giá\")"
     uc: "B.III.1-UC1"
@@ -190,6 +203,7 @@ testcases:
     ket_qua_mong_doi:
       - "Trả về các kỳ có tên \"Kỳ đánh giá…\" hoặc không (theo quy tắc)"
     ghi_chu: "Khảo sát: API trả 0 bản ghi với từ khóa không dấu. Cần BA xác nhận quy tắc tìm không dấu"
+    ket_qua_chay: "Không chạy"
   - id: CMP-L15
     title: "Ký tự % và _ trong từ khóa được coi là ký tự thường"
     uc: "B.III.1-UC1"
@@ -205,6 +219,7 @@ testcases:
     ket_qua_mong_doi:
       - "\"%\": 0 bản ghi; \"_\": chỉ các kỳ có tên chứa ký tự \"_\" (không khớp mọi tên)"
     ghi_chu: "Khảo sát: \"%\" → 0 bản ghi, \"_\" → chỉ tên có dấu gạch dưới (đúng)"
+    ket_qua_chay: "Không chạy"
   - id: CMP-L16
     title: "Từ khóa có khoảng trắng đầu/cuối vẫn tìm đúng"
     uc: "B.III.1-UC1"
@@ -218,6 +233,7 @@ testcases:
       - "1. Nhập \"   qc.automation CMP  \" (có khoảng trắng 2 đầu)"
     ket_qua_mong_doi:
       - "Kết quả bằng khi nhập không khoảng trắng thừa"
+    ket_qua_chay: "Không chạy"
   - id: CMP-L17
     title: "Cột Số đơn vị khớp số đơn vị được phân công trong chi tiết"
     uc: "B.III.1-UC1"
@@ -232,6 +248,7 @@ testcases:
       - "2. Mở chi tiết"
     ket_qua_mong_doi:
       - "Bằng số dòng ở bảng \"Đơn vị được phân công\" và ô \"Số đơn vị\""
+    ket_qua_chay: "Không chạy"
   - id: CMP-L18
     title: "Cột Trạng thái hiển thị đúng 4 trạng thái Nháp / Chờ phê duyệt / Đã phê duyệt / Bị từ chối"
     uc: "B.III.1-UC1"
@@ -245,6 +262,7 @@ testcases:
       - "1. Xem các dòng ở các trạng thái khác nhau"
     ket_qua_mong_doi:
       - "Nhãn tiếng Việt khớp trạng thái API (Draft/Submitted/Approved/Rejected)"
+    ket_qua_chay: "Không chạy"
   - id: CMP-L19
     title: "Cột Bộ chỉ số hiển thị tên bộ chỉ số gốc đã chọn (kèm năm áp dụng nếu có)"
     uc: "B.III.1-UC1"
@@ -259,6 +277,7 @@ testcases:
       - "2. Xem dòng của kỳ trong danh sách"
     ket_qua_mong_doi:
       - "Cột Bộ chỉ số = tên bộ X (không phải mã bản sao dạng X_xxxxxxxx)"
+    ket_qua_chay: "Không chạy"
   - id: CMP-L20
     title: "Kỳ vừa tạo xuất hiện ở đầu danh sách"
     uc: "B.III.1-UC2"
@@ -273,6 +292,7 @@ testcases:
       - "2. Xem trang 1 danh sách đúng tab"
     ket_qua_mong_doi:
       - "Kỳ mới ở dòng đầu, trạng thái Nháp, Số đơn vị = 0"
+    ket_qua_chay: "Không chạy"
   - id: CMP-L21
     title: "Đổi tab Định kỳ/Đột xuất thì về trang 1"
     uc: "B.III.1-UC1"
@@ -287,6 +307,7 @@ testcases:
       - "2. Bấm tab Đột xuất"
     ket_qua_mong_doi:
       - "Trang 1 được chọn, tổng bản ghi theo tab mới"
+    ket_qua_chay: "Không chạy"
   - id: CMP-L22
     title: "Tên đánh giá rất dài (300 ký tự) không làm vỡ bố cục bảng"
     uc: "B.III.1-UC1"
@@ -301,6 +322,7 @@ testcases:
       - "2. Xem danh sách"
     ket_qua_mong_doi:
       - "Tên xuống dòng/cắt hợp lý, các cột khác vẫn thẳng hàng, nút Thao tác truy cập được"
+    ket_qua_chay: "Không chạy"
   - id: CMP-L23
     title: "Cán bộ thấy kỳ Định kỳ ở trạng thái \"Chờ phê duyệt\" sau khi trình"
     uc: "B.III.3-UC3"
@@ -316,6 +338,7 @@ testcases:
     ket_qua_mong_doi:
       - "Dòng kỳ có Trạng thái \"Chờ phê duyệt\"; không còn menu Cập nhật/Xoá/Trình"
     ghi_chu: "Khảo sát: không có danh sách riêng \"trình lãnh đạo\" mà dùng chung danh sách; UI không có bộ lọc trạng thái. Cần BA xác nhận quy tắc có cần bộ lọc/danh sách riêng"
+    ket_qua_chay: "Không chạy"
   - id: CMP-L24
     title: "Cán bộ thấy kỳ Đột xuất ở trạng thái \"Chờ phê duyệt\" sau khi trình"
     uc: "B.III.3-UC4"
@@ -330,6 +353,7 @@ testcases:
       - "2. Mở tab Đột xuất, tìm kỳ đó"
     ket_qua_mong_doi:
       - "Dòng kỳ có Trạng thái \"Chờ phê duyệt\" ở tab Đột xuất"
+    ket_qua_chay: "Không chạy"
   - id: CMP-L25
     title: "[API] Lọc status=Submitted chỉ trả kỳ Chờ phê duyệt"
     uc: "B.III.3-UC3"
@@ -344,6 +368,7 @@ testcases:
     ket_qua_mong_doi:
       - "Mọi bản ghi trả về có status = Submitted; tổng bản ghi khớp"
     ghi_chu: "Khảo sát: API hỗ trợ lọc status nhưng UI không có bộ lọc trạng thái"
+    ket_qua_chay: "Không chạy"
   - id: CMP-L26
     title: "Lãnh đạo Bộ xem được danh sách kỳ Định kỳ và thấy menu Phê duyệt/Từ chối ở kỳ Chờ phê duyệt"
     uc: "B.III.4-UC1"
@@ -359,6 +384,7 @@ testcases:
       - "3. Mở menu thao tác của kỳ Chờ phê duyệt"
     ket_qua_mong_doi:
       - "Danh sách hiển thị; menu chỉ có \"Phê duyệt\" và \"Từ chối\"; không có nút Thêm mới/Xuất Excel"
+    ket_qua_chay: "Không chạy"
   - id: CMP-L27
     title: "Lãnh đạo Bộ xem được danh sách kỳ Đột xuất và thao tác với kỳ Chờ phê duyệt"
     uc: "B.III.4-UC2"
@@ -374,6 +400,7 @@ testcases:
       - "3. Mở menu của kỳ Chờ phê duyệt"
     ket_qua_mong_doi:
       - "Danh sách hiển thị; menu có \"Phê duyệt\", \"Từ chối\""
+    ket_qua_chay: "Không chạy"
   - id: CMP-L28
     title: "Lãnh đạo Bộ không có thao tác ở kỳ Nháp, Đã phê duyệt, Bị từ chối"
     uc: "B.III.4-UC1"
@@ -388,6 +415,7 @@ testcases:
       - "2. Xem thao tác của kỳ Nháp / Đã phê duyệt / Bị từ chối"
     ket_qua_mong_doi:
       - "Không có menu thao tác (chỉ Xem chi tiết)"
+    ket_qua_chay: "Không chạy"
   - id: CMP-L29
     title: "Lãnh đạo Bộ chỉ thấy các kỳ đã trình (không thấy kỳ Nháp)"
     uc: "B.III.4-UC1"
@@ -403,6 +431,7 @@ testcases:
     ket_qua_mong_doi:
       - "Danh sách chỉ gồm kỳ đã trình lên lãnh đạo (Chờ phê duyệt / Đã phê duyệt / Bị từ chối)"
     ghi_chu: "Khảo sát: Lãnh đạo Bộ thấy cả kỳ Nháp (API trả tổng 94 giống Cán bộ) → nghi lệch UC \"danh sách trình\". Cần BA xác nhận quy tắc"
+    ket_qua_chay: "Không chạy"
   - id: CMP-L30
     title: "Tab Đột xuất không có dữ liệu thì hiển thị trạng thái rỗng"
     uc: "B.III.1-UC1"
@@ -416,6 +445,7 @@ testcases:
       - "1. Ở tab Đột xuất nhập từ khóa không tồn tại"
     ket_qua_mong_doi:
       - "Hiển thị \"Trống\", không lỗi"
+    ket_qua_chay: "Không chạy"
   - id: CMP-L31
     title: "Xuất Excel danh sách tự đánh giá tải được file"
     uc: "B.III.1-UC1"
@@ -432,6 +462,7 @@ testcases:
     ket_qua_mong_doi:
       - "Trình duyệt tải về file .xlsx có dữ liệu của tab đang chọn"
     ghi_chu: "Khảo sát: bấm \"Xuất Excel\" không có request, không tải file, không thông báo → nghi lỗi"
+    ket_qua_chay: "Không chạy"
   - id: CMP-L32
     title: "Xuất Excel theo từ khóa đang tìm chỉ chứa các dòng đã lọc"
     uc: "B.III.1-UC1"
@@ -447,6 +478,7 @@ testcases:
     ket_qua_mong_doi:
       - "File chỉ có các dòng khớp từ khóa"
     ghi_chu: "Phụ thuộc CMP-L31 (hiện chưa xuất được). Cần BA xác nhận quy tắc phạm vi xuất"
+    ket_qua_chay: "Không chạy"
   - id: CMP-L33
     title: "Xuất Excel không có dữ liệu thì báo không có dữ liệu để xuất"
     uc: "B.III.1-UC1"
@@ -462,6 +494,7 @@ testcases:
     ket_qua_mong_doi:
       - "Thông báo không có dữ liệu để xuất; không tải file rỗng"
     ghi_chu: "Phụ thuộc CMP-L31. Cần BA xác nhận quy tắc thông điệp"
+    ket_qua_chay: "Không chạy"
   - id: CMP-V01
     title: "Chi tiết kỳ hiển thị tiêu đề, trạng thái và 7 thông tin chung"
     uc: "B.III.1-UC1"
@@ -475,6 +508,7 @@ testcases:
       - "1. Bấm \"Xem chi tiết\" một kỳ"
     ket_qua_mong_doi:
       - "Hiển thị tên kỳ + nhãn trạng thái; Mã kỳ, Loại, Thời gian thực hiện, Bộ chỉ số áp dụng, Thang xếp loại, Số đơn vị, Cập nhật lần cuối (kèm người cập nhật)"
+    ket_qua_chay: "Không chạy"
   - id: CMP-V02
     title: "Mã kỳ có dạng TDG-<năm>-<4 ký tự>"
     uc: "B.III.1-UC1"
@@ -488,6 +522,7 @@ testcases:
       - "1. Mở chi tiết kỳ mới tạo"
     ket_qua_mong_doi:
       - "Mã kỳ dạng TDG-2026-XXXX; không đổi khi tải lại"
+    ket_qua_chay: "Không chạy"
   - id: CMP-V03
     title: "Thời gian thực hiện hiển thị đúng khoảng ngày và số ngày còn lại"
     uc: "B.III.1-UC1"
@@ -501,6 +536,7 @@ testcases:
       - "1. Mở chi tiết kỳ Định kỳ Quý và kỳ Đột xuất"
     ket_qua_mong_doi:
       - "Khoảng ngày khớp startDate-endDate; \"Còn N ngày\" = số ngày từ hôm nay đến ngày kết thúc"
+    ket_qua_chay: "Không chạy"
   - id: CMP-V04
     title: "Khối Tiến độ thực hiện: 4 bộ đếm cộng lại bằng số đơn vị"
     uc: "B.III.1-UC1"
@@ -514,6 +550,7 @@ testcases:
       - "1. Mở chi tiết kỳ đã phê duyệt có nhiều đơn vị"
     ket_qua_mong_doi:
       - "Đã phê duyệt kết quả + Đã nộp chờ duyệt + Đang thực hiện + Chưa bắt đầu = Số đơn vị; dòng \"x/y đơn vị đã nộp kết quả\" khớp"
+    ket_qua_chay: "Không chạy"
   - id: CMP-V05
     title: "Bảng Đơn vị được phân công có đủ cột và trạng thái trống khi chưa phân công"
     uc: "B.III.2-UC1"
@@ -527,6 +564,7 @@ testcases:
       - "1. Mở chi tiết kỳ chưa phân công đơn vị"
     ket_qua_mong_doi:
       - "Bảng có cột STT, Mã, Tên đơn vị, Loại, Trạng thái, Điểm, Ngày nộp, Thao tác; hiển thị \"Trống\""
+    ket_qua_chay: "Không chạy"
   - id: CMP-V06
     title: "Panel \"Bộ chỉ số của kỳ\" nêu bản sao riêng của bộ gốc và có link Xem bộ gốc"
     uc: "B.III.1-UC9"
@@ -541,6 +579,7 @@ testcases:
       - "2. Bấm \"Xem bộ gốc\""
     ket_qua_mong_doi:
       - "Hiển thị \"Bản sao riêng từ <mã gốc> · v<n>\"; \"Xem bộ gốc\" mở đúng bộ chỉ số gốc"
+    ket_qua_chay: "Không chạy"
   - id: CMP-V07
     title: "Lịch sử xử lý ghi các mốc Tạo kỳ, Trình phê duyệt, Từ chối kèm người và thời gian"
     uc: "B.III.3-UC1"
@@ -555,6 +594,7 @@ testcases:
       - "2. Mở chi tiết"
     ket_qua_mong_doi:
       - "Lịch sử có đủ 3 mốc đúng thứ tự mới nhất ở trên, mỗi mốc có tên người và thời gian; mốc Từ chối hiển thị lý do"
+    ket_qua_chay: "Không chạy"
   - id: CMP-V08
     title: "Chi tiết kỳ với id không tồn tại không gây lỗi hệ thống"
     uc: "B.III.1-UC1"
@@ -569,6 +609,7 @@ testcases:
       - "2. Mở URL chi tiết với id lạ"
     ket_qua_mong_doi:
       - "API 404 \"Không tìm thấy kỳ tự đánh giá\"; trang không trắng, không lộ lỗi nội bộ"
+    ket_qua_chay: "Không chạy"
   - id: CMP-V09
     title: "Chi tiết kỳ với id sai định dạng GUID trả 404, không 500"
     uc: "B.III.1-UC1"
@@ -582,6 +623,7 @@ testcases:
       - "1. [API] GET /dti/self-assessment-campaigns/abc"
     ket_qua_mong_doi:
       - "HTTP 404 (không 500), không lộ stacktrace"
+    ket_qua_chay: "Không chạy"
   - id: CMP-V10
     title: "Chi tiết kỳ Nháp (Cán bộ) có nút Trình phê duyệt, Xem cấu hình điểm, Phân công đơn vị"
     uc: "B.III.4-UC3"
@@ -595,6 +637,7 @@ testcases:
       - "1. Mở chi tiết kỳ Nháp bằng Cán bộ"
     ket_qua_mong_doi:
       - "Có đủ 3 nút"
+    ket_qua_chay: "Không chạy"
   - id: CMP-V11
     title: "Chi tiết kỳ Chờ phê duyệt (Cán bộ) ẩn Trình phê duyệt và Phân công đơn vị"
     uc: "B.III.1-UC4"
@@ -608,6 +651,7 @@ testcases:
       - "1. Mở chi tiết kỳ Chờ phê duyệt bằng Cán bộ"
     ket_qua_mong_doi:
       - "Không có nút Trình phê duyệt / Phân công đơn vị; chỉ xem"
+    ket_qua_chay: "Không chạy"
   - id: CMP-V12
     title: "Chi tiết kỳ Đã phê duyệt chỉ xem, không có nút sửa/phân công/trình"
     uc: "B.III.1-UC4"
@@ -621,6 +665,7 @@ testcases:
       - "1. Mở chi tiết kỳ Đã phê duyệt bằng Cán bộ"
     ket_qua_mong_doi:
       - "Không có nút Trình phê duyệt / Phân công đơn vị; vẫn có \"Xem cấu hình điểm\" để xem"
+    ket_qua_chay: "Không chạy"
   - id: CMP-V13
     title: "Chi tiết kỳ Bị từ chối hiển thị lý do từ chối và cho phép sửa lại"
     uc: "B.III.4-UC4"
@@ -635,6 +680,7 @@ testcases:
       - "2. Mở chi tiết bằng Cán bộ"
     ket_qua_mong_doi:
       - "Hiển thị lý do \"L\" ở lịch sử xử lý; có nút Trình phê duyệt, Phân công đơn vị; menu có Cập nhật"
+    ket_qua_chay: "Không chạy"
   - id: CMP-V14
     title: "Nút quay lại ở chi tiết trở về danh sách"
     uc: "B.III.1-UC1"
@@ -649,6 +695,7 @@ testcases:
       - "2. Bấm nút mũi tên quay lại"
     ket_qua_mong_doi:
       - "Về trang danh sách Quản lý tự đánh giá"
+    ket_qua_chay: "Không chạy"
   - id: CMP-V15
     title: "Điểm và ngày nộp hiển thị \"-\" khi đơn vị chưa nộp kết quả"
     uc: "B.III.2-UC1"
@@ -662,6 +709,7 @@ testcases:
       - "1. Mở chi tiết kỳ đã phê duyệt có đơn vị \"Chưa bắt đầu\""
     ket_qua_mong_doi:
       - "Cột Điểm, Ngày nộp hiển thị \"-\", không hiển thị 0 hay null"
+    ket_qua_chay: "Không chạy"
   - id: CMP-V16
     title: "Tìm đơn vị trong bảng Đơn vị được phân công theo mã/tên"
     uc: "B.III.2-UC1"
@@ -676,6 +724,7 @@ testcases:
       - "2. Nhập mã rồi tên một đơn vị vào ô \"Tìm đơn vị…\""
     ket_qua_mong_doi:
       - "Chỉ còn các đơn vị khớp; xóa từ khóa thì đủ lại"
+    ket_qua_chay: "Không chạy"
   - id: CMP-V17
     title: "Lọc bảng đơn vị theo trạng thái (Tất cả trạng thái)"
     uc: "B.III.2-UC1"
@@ -689,6 +738,7 @@ testcases:
       - "1. Chọn một trạng thái ở bộ lọc \"Tất cả trạng thái\""
     ket_qua_mong_doi:
       - "Chỉ còn đơn vị có trạng thái đó; chọn \"Tất cả\" thì đủ lại"
+    ket_qua_chay: "Không chạy"
   - id: CMP-V18
     title: "Bảng Đơn vị được phân công phân trang khi có nhiều đơn vị"
     uc: "B.III.2-UC1"
@@ -703,6 +753,7 @@ testcases:
       - "2. Sang trang 2"
     ket_qua_mong_doi:
       - "Có thanh phân trang, trang 2 hiển thị đơn vị khác trang 1; tổng khớp Số đơn vị"
+    ket_qua_chay: "Không chạy"
   - id: CMP-C01
     title: "Thêm kỳ Định kỳ theo Quý thành công"
     uc: "B.III.1-UC2"
@@ -719,6 +770,7 @@ testcases:
     ket_qua_mong_doi:
       - "Thông báo \"Tạo kỳ tự đánh giá thành công\"; kỳ có Loại Định kỳ, kỳ \"Quý <q> <năm>\", trạng thái Nháp"
     ghi_chu: "UC dòng 156 ghi Fail \"Lỗi chưa thêm mới được\". Khảo sát: tạo được thành công bằng Cán bộ → cần xác nhận lại trạng thái UC"
+    ket_qua_chay: "Không chạy"
   - id: CMP-C02
     title: "Thêm kỳ Định kỳ theo Tháng thành công, ngày tự tính theo tháng hiện tại"
     uc: "B.III.1-UC2"
@@ -732,6 +784,7 @@ testcases:
       - "1. Tạo kỳ Định kỳ chọn Kỳ - Tháng"
     ket_qua_mong_doi:
       - "Tạo thành công; periodValue \"Tháng <m> <năm>\"; ngày bắt đầu = ngày 1, ngày kết thúc = ngày cuối tháng"
+    ket_qua_chay: "Không chạy"
   - id: CMP-C03
     title: "Thêm kỳ Định kỳ theo Năm thành công, ngày tự tính theo năm hiện tại"
     uc: "B.III.1-UC2"
@@ -745,6 +798,7 @@ testcases:
       - "1. Tạo kỳ Định kỳ chọn Kỳ - Năm"
     ket_qua_mong_doi:
       - "Tạo thành công; periodValue \"Năm <năm>\"; 01/01 đến 31/12"
+    ket_qua_chay: "Không chạy"
   - id: CMP-C04
     title: "Thêm kỳ Đột xuất thành công với ngày bắt đầu/kết thúc nhập tay"
     uc: "B.III.1-UC5"
@@ -759,6 +813,7 @@ testcases:
       - "2. Lưu"
     ket_qua_mong_doi:
       - "Tạo thành công; kỳ xuất hiện ở tab Đột xuất với đúng ngày đã nhập"
+    ket_qua_chay: "Không chạy"
   - id: CMP-C05
     title: "Kỳ mới tạo có trạng thái Nháp, 0 đơn vị và mã kỳ được sinh"
     uc: "B.III.1-UC2"
@@ -773,6 +828,7 @@ testcases:
       - "2. Mở chi tiết"
     ket_qua_mong_doi:
       - "Trạng thái Nháp; Số đơn vị 0; có Mã kỳ TDG-…; người tạo = tài khoản đăng nhập"
+    ket_qua_chay: "Không chạy"
   - id: CMP-C06
     title: "Đổi Phân loại giữa Định kỳ và Đột xuất thì đổi trường thời gian tương ứng"
     uc: "B.III.1-UC5"
@@ -788,6 +844,7 @@ testcases:
       - "3. Chọn Đột xuất"
     ket_qua_mong_doi:
       - "Định kỳ: hiện trường \"Kỳ\" (Tháng/Quý/Năm), không có ngày; Đột xuất: hiện Ngày bắt đầu, Ngày kết thúc"
+    ket_qua_chay: "Không chạy"
   - id: CMP-C07
     title: "Chọn Định kỳ hiển thị đủ 3 lựa chọn Kỳ - Tháng/Quý/Năm"
     uc: "B.III.1-UC2"
@@ -802,6 +859,7 @@ testcases:
       - "2. Mở danh sách \"Kỳ\""
     ket_qua_mong_doi:
       - "Có đúng 3 lựa chọn: Kỳ - Tháng, Kỳ - Quý, Kỳ - Năm"
+    ket_qua_chay: "Không chạy"
   - id: CMP-C08
     title: "Bỏ trống tất cả trường bắt buộc thì báo lỗi từng trường, không tạo"
     uc: "B.III.1-UC2"
@@ -816,6 +874,7 @@ testcases:
       - "2. Bấm Thêm mới khi chưa nhập"
     ket_qua_mong_doi:
       - "Lỗi: \"Vui lòng nhập tên đợt đánh giá\", \"Vui lòng chọn phân loại đánh giá\", \"Vui lòng chọn bộ chỉ số\", \"Vui lòng chọn ngày bắt đầu\", \"Vui lòng chọn ngày kết thúc\", \"Vui lòng chọn thang xếp loại\"; không tạo"
+    ket_qua_chay: "Không chạy"
   - id: CMP-C09
     title: "Bỏ trống Tên đánh giá bị chặn"
     uc: "B.III.1-UC2"
@@ -830,6 +889,7 @@ testcases:
       - "2. Thêm mới"
     ket_qua_mong_doi:
       - "Báo \"Vui lòng nhập tên đợt đánh giá\"; không tạo"
+    ket_qua_chay: "Không chạy"
   - id: CMP-C10
     title: "Bỏ trống Bộ chỉ số bị chặn"
     uc: "B.III.1-UC2"
@@ -844,6 +904,7 @@ testcases:
       - "2. Thêm mới"
     ket_qua_mong_doi:
       - "Báo \"Vui lòng chọn bộ chỉ số\"; không tạo"
+    ket_qua_chay: "Không chạy"
   - id: CMP-C11
     title: "Bỏ trống Thang xếp loại bị chặn"
     uc: "B.III.1-UC2"
@@ -859,6 +920,7 @@ testcases:
     ket_qua_mong_doi:
       - "Báo \"Vui lòng chọn thang xếp loại\"; không tạo"
     ghi_chu: "SRS: thang xếp loại được gắn vào kỳ tự đánh giá để xếp loại kết quả"
+    ket_qua_chay: "Không chạy"
   - id: CMP-C12
     title: "Kỳ Định kỳ bỏ trống trường \"Kỳ\" (Tháng/Quý/Năm) bị chặn"
     uc: "B.III.1-UC2"
@@ -873,6 +935,7 @@ testcases:
       - "2. Thêm mới"
     ket_qua_mong_doi:
       - "Báo lỗi bắt buộc ở \"Kỳ\"; [API] type=Periodic không có periodType → 400 \"Vui lòng chọn kỳ đánh giá định kỳ\""
+    ket_qua_chay: "Không chạy"
   - id: CMP-C13
     title: "Kỳ Đột xuất bỏ trống Ngày bắt đầu bị chặn"
     uc: "B.III.1-UC5"
@@ -887,6 +950,7 @@ testcases:
       - "2. Thêm mới"
     ket_qua_mong_doi:
       - "Báo \"Vui lòng chọn ngày bắt đầu\"; [API] 400 \"Vui lòng chọn ngày bắt đầu và ngày kết thúc\""
+    ket_qua_chay: "Không chạy"
   - id: CMP-C14
     title: "Kỳ Đột xuất bỏ trống Ngày kết thúc bị chặn"
     uc: "B.III.1-UC5"
@@ -901,6 +965,7 @@ testcases:
       - "2. Thêm mới"
     ket_qua_mong_doi:
       - "Báo \"Vui lòng chọn ngày kết thúc\"; không tạo"
+    ket_qua_chay: "Không chạy"
   - id: CMP-C15
     title: "Tên chỉ gồm khoảng trắng bị chặn"
     uc: "B.III.1-UC2"
@@ -915,6 +980,7 @@ testcases:
       - "2. Nhập đủ các trường khác → Thêm mới"
     ket_qua_mong_doi:
       - "Báo lỗi bắt buộc / [API] 400 \"Dữ liệu không hợp lệ\"; không tạo"
+    ket_qua_chay: "Không chạy"
   - id: CMP-C16
     title: "Tên dài đúng 300 ký tự được nhận"
     uc: "B.III.1-UC2"
@@ -929,6 +995,7 @@ testcases:
     ket_qua_mong_doi:
       - "HTTP 200, tên lưu đầy đủ 300 ký tự"
     ghi_chu: "Khảo sát: API giới hạn 300; ô nhập UI giới hạn 255 (maxlength) → lệch UI/API, Cần BA xác nhận quy tắc độ dài tên"
+    ket_qua_chay: "Không chạy"
   - id: CMP-C17
     title: "Tên dài 301 ký tự bị chặn"
     uc: "B.III.1-UC2"
@@ -942,6 +1009,7 @@ testcases:
       - "1. [API] POST tên 301 ký tự"
     ket_qua_mong_doi:
       - "HTTP 400 \"Không được nhập vượt quá 300 ký tự\"; không tạo"
+    ket_qua_chay: "Không chạy"
   - id: CMP-C18
     title: "Ô nhập tên trên UI giới hạn độ dài"
     uc: "B.III.1-UC2"
@@ -955,6 +1023,7 @@ testcases:
       - "1. Nhập/dán chuỗi 310 ký tự vào ô Tên đánh giá"
     ket_qua_mong_doi:
       - "Chỉ nhận số ký tự tối đa cho phép (UI hiện 255), không báo lỗi 500"
+    ket_qua_chay: "Không chạy"
   - id: CMP-C19
     title: "Tên chứa thẻ HTML/script bị chặn"
     uc: "B.III.1-UC2"
@@ -968,6 +1037,7 @@ testcases:
       - "1. [API] POST tên \"<script>alert(1)</script>\""
     ket_qua_mong_doi:
       - "HTTP 400 \"Dữ liệu không được chứa thẻ HTML hoặc script\"; không tạo"
+    ket_qua_chay: "Không chạy"
   - id: CMP-C20
     title: "Tên có Unicode tiếng Việt, ngoặc kép, emoji lưu và hiển thị nguyên văn"
     uc: "B.III.1-UC2"
@@ -982,6 +1052,7 @@ testcases:
       - "2. Tải lại trang, xem danh sách và chi tiết"
     ket_qua_mong_doi:
       - "Tên hiển thị nguyên văn, không bị mã hóa HTML (&amp;) hay mất ký tự"
+    ket_qua_chay: "Không chạy"
   - id: CMP-C21
     title: "Tạo 2 kỳ có cùng tên"
     uc: "B.III.1-UC2"
@@ -997,6 +1068,7 @@ testcases:
     ket_qua_mong_doi:
       - "Bị từ chối hoặc cảnh báo trùng tên (theo quy tắc)"
     ghi_chu: "Khảo sát: hệ thống cho tạo 2 kỳ trùng tên. Cần BA xác nhận quy tắc duy nhất của tên kỳ"
+    ket_qua_chay: "Không chạy"
   - id: CMP-C22
     title: "Kỳ Định kỳ trùng kỳ (cùng loại Tháng/Quý/Năm, cùng năm) và cùng bộ chỉ số đã tồn tại"
     uc: "B.III.1-UC2"
@@ -1012,6 +1084,7 @@ testcases:
     ket_qua_mong_doi:
       - "Bị từ chối/cảnh báo trùng kỳ (theo quy tắc)"
     ghi_chu: "Khảo sát: hệ thống cho tạo 2 kỳ Định kỳ cùng \"Tháng 10 2026\" + cùng bộ. Cần BA xác nhận quy tắc trùng kỳ định kỳ"
+    ket_qua_chay: "Không chạy"
   - id: CMP-C23
     title: "Ngày kết thúc nhỏ hơn ngày bắt đầu bị chặn"
     uc: "B.III.1-UC5"
@@ -1027,6 +1100,7 @@ testcases:
     ket_qua_mong_doi:
       - "Báo \"Ngày kết thúc phải sau ngày bắt đầu\"; form giữ nguyên; không tạo"
     ghi_chu: "Khảo sát: dữ liệu có sẵn có kỳ \"Ngọc test\" bắt đầu 05/11/2026 > kết thúc 30/10/2026 → từng lọt kiểm tra"
+    ket_qua_chay: "Không chạy"
   - id: CMP-C24
     title: "Ngày bắt đầu bằng ngày kết thúc"
     uc: "B.III.1-UC5"
@@ -1041,6 +1115,7 @@ testcases:
     ket_qua_mong_doi:
       - "Theo quy tắc: tạo được kỳ 1 ngày hoặc báo lỗi"
     ghi_chu: "Khảo sát: API nhận. Thông báo \"kết thúc phải sau bắt đầu\" mơ hồ. Cần BA xác nhận quy tắc kỳ trong ngày"
+    ket_qua_chay: "Không chạy"
   - id: CMP-C25
     title: "Kỳ Đột xuất có ngày bắt đầu/kết thúc trong quá khứ"
     uc: "B.III.1-UC5"
@@ -1055,6 +1130,7 @@ testcases:
     ket_qua_mong_doi:
       - "Bị từ chối hoặc cho phép theo quy tắc"
     ghi_chu: "Khảo sát: API nhận kỳ trong quá khứ. Cần BA xác nhận quy tắc ngày quá khứ"
+    ket_qua_chay: "Không chạy"
   - id: CMP-C26
     title: "Ngày sai định dạng bị từ chối"
     uc: "B.III.1-UC5"
@@ -1068,6 +1144,7 @@ testcases:
       - "1. [API] POST startDate = \"abc\""
     ket_qua_mong_doi:
       - "HTTP 400, không 500"
+    ket_qua_chay: "Không chạy"
   - id: CMP-C27
     title: "Kỳ Định kỳ: ngày tự tính, ngày gửi kèm trong request bị bỏ qua"
     uc: "B.III.1-UC5"
@@ -1082,6 +1159,7 @@ testcases:
     ket_qua_mong_doi:
       - "Kỳ được tạo với ngày của kỳ hiện tại (tháng hiện tại), không dùng ngày 2030"
     ghi_chu: "Khảo sát: ngày gửi kèm bị bỏ qua. Cần BA xác nhận quy tắc cho chọn tháng/quý/năm khác kỳ hiện tại"
+    ket_qua_chay: "Không chạy"
   - id: CMP-C28
     title: "Dropdown Bộ chỉ số chỉ liệt kê bộ chỉ số đã khóa"
     uc: "B.III.1-UC2"
@@ -1097,6 +1175,7 @@ testcases:
       - "3. So với trang Bộ chỉ số"
     ket_qua_mong_doi:
       - "Chỉ có các bộ trạng thái Đã khóa; bộ Nháp không xuất hiện"
+    ket_qua_chay: "Không chạy"
   - id: CMP-C29
     title: "[API] Chọn bộ chỉ số chưa khóa (Nháp) khi tạo kỳ bị từ chối"
     uc: "B.III.1-UC2"
@@ -1111,6 +1190,7 @@ testcases:
     ket_qua_mong_doi:
       - "HTTP 400 yêu cầu bộ đã khóa; không tạo kỳ"
     ghi_chu: "Khảo sát: API nhận bộ Nháp và tạo kỳ (UI chỉ liệt kê bộ đã khóa) → nghi lỗi. Cần BA xác nhận quy tắc"
+    ket_qua_chay: "Không chạy"
   - id: CMP-C30
     title: "[API] Bộ chỉ số không tồn tại/thiếu bị từ chối"
     uc: "B.III.1-UC2"
@@ -1124,6 +1204,7 @@ testcases:
       - "1. [API] POST indicatorSetId lạ; không gửi; không phải GUID"
     ket_qua_mong_doi:
       - "HTTP 400 \"Bộ chỉ số không hợp lệ\" (lạ/thiếu), 400 \"Dữ liệu không hợp lệ\" (sai định dạng)"
+    ket_qua_chay: "Không chạy"
   - id: CMP-C31
     title: "[API] Thang xếp loại không tồn tại/thiếu bị từ chối"
     uc: "B.III.1-UC2"
@@ -1137,6 +1218,7 @@ testcases:
       - "1. [API] POST scaleId lạ; không gửi"
     ket_qua_mong_doi:
       - "HTTP 400 \"Thang xếp loại không hợp lệ\""
+    ket_qua_chay: "Không chạy"
   - id: CMP-C32
     title: "[API] Loại kỳ không hợp lệ bị từ chối"
     uc: "B.III.1-UC5"
@@ -1150,6 +1232,7 @@ testcases:
       - "1. [API] POST type=\"Foo\"; không gửi type; Periodic với periodType=\"Week\""
     ket_qua_mong_doi:
       - "400 \"Loại kỳ tự đánh giá không hợp lệ (Periodic/AdHoc)\"; 400 \"Vui lòng chọn kỳ đánh giá định kỳ\""
+    ket_qua_chay: "Không chạy"
   - id: CMP-C33
     title: "Dropdown Thang xếp loại liệt kê thang đang có, hiển thị \"mã – tên\""
     uc: "B.III.1-UC2"
@@ -1165,6 +1248,7 @@ testcases:
     ket_qua_mong_doi:
       - "Có TXL-001, TXL-002…; sau khi chọn hiển thị \"TXL-001 – Thang xếp loại mặc định\""
     ghi_chu: "SRS: thang gắn vào kỳ; thang đã gán không được sửa/xóa. Cần BA xác nhận quy tắc có chỉ cho phép thang đã khóa"
+    ket_qua_chay: "Không chạy"
   - id: CMP-C34
     title: "Hủy form thêm mới không tạo bản ghi"
     uc: "B.III.1-UC2"
@@ -1179,6 +1263,7 @@ testcases:
       - "2. Bấm Huỷ"
     ket_qua_mong_doi:
       - "Form đóng; không có kỳ mới"
+    ket_qua_chay: "Không chạy"
   - id: CMP-C35
     title: "Đóng form bằng nút X rồi mở lại thì form trống"
     uc: "B.III.1-UC2"
@@ -1194,6 +1279,7 @@ testcases:
       - "3. Mở lại form"
     ket_qua_mong_doi:
       - "Các trường trống, không còn lỗi cũ"
+    ket_qua_chay: "Không chạy"
   - id: CMP-C36
     title: "Bấm Thêm mới 2 lần liên tiếp chỉ tạo 1 kỳ"
     uc: "B.III.1-UC2"
@@ -1208,6 +1294,7 @@ testcases:
       - "2. Bấm Thêm mới 2 lần nhanh"
     ket_qua_mong_doi:
       - "Chỉ có 1 kỳ tên đó (nút bị vô hiệu sau lần đầu)"
+    ket_qua_chay: "Không chạy"
   - id: CMP-C37
     title: "Tạo kỳ tự động nhân bản bộ chỉ số thành bản sao riêng"
     uc: "B.III.1-UC9"
@@ -1222,6 +1309,7 @@ testcases:
       - "2. Mở chi tiết"
     ket_qua_mong_doi:
       - "Bộ chỉ số áp dụng = bản sao: mã dạng X_<8 ký tự>, cùng version, cùng số nhóm/chỉ số/điểm với X; panel ghi \"Giống bộ gốc, chưa có điều chỉnh\"; indicatorSetId của kỳ khác id bộ gốc"
+    ket_qua_chay: "Không chạy"
   - id: CMP-C38
     title: "Một bộ chỉ số gốc dùng cho nhiều kỳ, mỗi kỳ có bản sao riêng"
     uc: "B.III.1-UC9"
@@ -1236,6 +1324,7 @@ testcases:
       - "2. So indicatorSetId của 2 kỳ"
     ket_qua_mong_doi:
       - "Hai kỳ có 2 bản sao khác nhau (mã khác nhau), cùng originalIndicatorSetId = X; tạo kỳ B không báo lỗi bộ đang được dùng"
+    ket_qua_chay: "Không chạy"
   - id: CMP-C39
     title: "Tạo kỳ không yêu cầu mở khóa bộ chỉ số gốc"
     uc: "B.III.1-UC9"
@@ -1250,6 +1339,7 @@ testcases:
       - "2. Tạo kỳ"
     ket_qua_mong_doi:
       - "Tạo được; bộ gốc vẫn Đã khóa, không đổi"
+    ket_qua_chay: "Không chạy"
   - id: CMP-C40
     title: "Bản sao của kỳ không xuất hiện ở trang Bộ chỉ số"
     uc: "B.III.1-UC9"
@@ -1264,6 +1354,7 @@ testcases:
       - "2. Mở trang Bộ chỉ số và API danh sách bộ chỉ số"
     ket_qua_mong_doi:
       - "Danh sách Bộ chỉ số không có bản sao dạng X_xxxxxxxx; tổng bản ghi không tăng"
+    ket_qua_chay: "Không chạy"
   - id: CMP-C41
     title: "Số kỳ sử dụng của bộ chỉ số gốc tăng khi tạo kỳ"
     uc: "B.III.1-UC9"
@@ -1280,6 +1371,7 @@ testcases:
     ket_qua_mong_doi:
       - "campaignCount tăng 1"
     ghi_chu: "Khảo sát: bộ BA-TEST/MBCS_QC01 có campaignCount = 0 dù đã có hơn 20 kỳ dùng → nghi lỗi hoặc Cần BA xác nhận quy tắc cách tính"
+    ket_qua_chay: "Không chạy"
   - id: CMP-C42
     title: "Cán bộ và Quản trị hệ thống đều tạo được kỳ"
     uc: "B.III.1-UC2"
@@ -1294,6 +1386,7 @@ testcases:
       - "2. Đăng nhập Cán bộ, tạo kỳ"
     ket_qua_mong_doi:
       - "Cả hai tạo thành công; người tạo đúng tài khoản"
+    ket_qua_chay: "Không chạy"
   - id: CMP-E01
     title: "Sửa tên kỳ ở trạng thái Nháp thành công"
     uc: "B.III.1-UC3"
@@ -1309,6 +1402,7 @@ testcases:
       - "3. Lưu"
     ket_qua_mong_doi:
       - "Thông báo \"Cập nhật kỳ tự đánh giá thành công\"; tên mới hiển thị ở danh sách và chi tiết"
+    ket_qua_chay: "Không chạy"
   - id: CMP-E02
     title: "Sửa kỳ ở trạng thái Bị từ chối được phép"
     uc: "B.III.1-UC4"
@@ -1323,6 +1417,7 @@ testcases:
       - "2. Cán bộ mở Cập nhật, đổi tên → Lưu"
     ket_qua_mong_doi:
       - "Lưu thành công; trạng thái vẫn Bị từ chối đến khi trình lại"
+    ket_qua_chay: "Không chạy"
   - id: CMP-E03
     title: "Form Cập nhật điền sẵn dữ liệu hiện tại và khóa trường Bộ chỉ số"
     uc: "B.III.1-UC3"
@@ -1337,6 +1432,7 @@ testcases:
     ket_qua_mong_doi:
       - "Tên, Phân loại, Kỳ/ngày, Nhắc trước hạn, Thang xếp loại điền sẵn đúng; Bộ chỉ số không đổi được (vô hiệu)"
     ghi_chu: "Khảo sát: Bộ chỉ số bị vô hiệu khi cập nhật"
+    ket_qua_chay: "Không chạy"
   - id: CMP-E04
     title: "Xóa trắng Tên khi sửa bị chặn"
     uc: "B.III.1-UC3"
@@ -1351,6 +1447,7 @@ testcases:
       - "2. Lưu"
     ket_qua_mong_doi:
       - "Báo lỗi bắt buộc; dữ liệu giữ nguyên; [API] PUT name rỗng → 400"
+    ket_qua_chay: "Không chạy"
   - id: CMP-E05
     title: "Tên sửa thành chuỗi 301 ký tự bị chặn"
     uc: "B.III.1-UC3"
@@ -1364,6 +1461,7 @@ testcases:
       - "1. [API] PUT tên 301 ký tự"
     ket_qua_mong_doi:
       - "400 \"Không được nhập vượt quá 300 ký tự\"; tên cũ giữ nguyên"
+    ket_qua_chay: "Không chạy"
   - id: CMP-E06
     title: "Tên sửa chứa thẻ HTML/script bị chặn như khi thêm mới"
     uc: "B.III.1-UC3"
@@ -1378,6 +1476,7 @@ testcases:
     ket_qua_mong_doi:
       - "HTTP 400 \"Dữ liệu không được chứa thẻ HTML hoặc script\""
     ghi_chu: "Khảo sát: POST chặn HTML nhưng PUT nhận tên \"<b>x</b>\" (200) → nghi lỗi, nguy cơ XSS lưu trữ"
+    ket_qua_chay: "Không chạy"
   - id: CMP-E07
     title: "Hủy chỉnh sửa không đổi dữ liệu"
     uc: "B.III.1-UC3"
@@ -1392,6 +1491,7 @@ testcases:
       - "2. Huỷ"
     ket_qua_mong_doi:
       - "Dữ liệu giữ nguyên"
+    ket_qua_chay: "Không chạy"
   - id: CMP-E08
     title: "Không thay đổi gì thì nút Lưu không tạo thay đổi (hiển thị \"Chưa có thay đổi\")"
     uc: "B.III.1-UC3"
@@ -1406,6 +1506,7 @@ testcases:
       - "2. Không sửa gì"
     ket_qua_mong_doi:
       - "Hiển thị \"Chưa có thay đổi\"; bấm Lưu không làm đổi \"Cập nhật lần cuối\""
+    ket_qua_chay: "Không chạy"
   - id: CMP-E09
     title: "Đổi Phân loại kỳ Nháp từ Đột xuất sang Định kỳ"
     uc: "B.III.1-UC5"
@@ -1422,6 +1523,7 @@ testcases:
     ket_qua_mong_doi:
       - "Kỳ chuyển sang tab Định kỳ, ngày tính theo tháng"
     ghi_chu: "Khảo sát: API cho đổi loại khi Nháp (200). Cần BA xác nhận quy tắc có cho đổi loại sau khi tạo"
+    ket_qua_chay: "Không chạy"
   - id: CMP-E10
     title: "Đổi Kỳ (Tháng/Quý/Năm) của kỳ Định kỳ Nháp"
     uc: "B.III.1-UC5"
@@ -1436,6 +1538,7 @@ testcases:
       - "2. Lưu"
     ket_qua_mong_doi:
       - "periodValue và ngày được tính lại theo Tháng"
+    ket_qua_chay: "Không chạy"
   - id: CMP-E11
     title: "Đổi Thang xếp loại của kỳ Nháp"
     uc: "B.III.1-UC3"
@@ -1450,6 +1553,7 @@ testcases:
       - "2. Lưu"
     ket_qua_mong_doi:
       - "Chi tiết hiển thị thang TXL-002 và số mức tương ứng"
+    ket_qua_chay: "Không chạy"
   - id: CMP-E12
     title: "Sửa ngày kết thúc nhỏ hơn ngày bắt đầu bị chặn"
     uc: "B.III.1-UC3"
@@ -1464,6 +1568,7 @@ testcases:
       - "2. Lưu"
     ket_qua_mong_doi:
       - "400 \"Ngày kết thúc phải sau ngày bắt đầu\"; ngày cũ giữ nguyên"
+    ket_qua_chay: "Không chạy"
   - id: CMP-E13
     title: "[API] Sửa kỳ Đột xuất để trống ngày bị chặn"
     uc: "B.III.1-UC3"
@@ -1477,6 +1582,7 @@ testcases:
       - "1. [API] PUT kỳ Đột xuất với startDate/endDate null"
     ket_qua_mong_doi:
       - "400 \"Vui lòng chọn ngày bắt đầu và ngày kết thúc\""
+    ket_qua_chay: "Không chạy"
   - id: CMP-E14
     title: "[API] Thang xếp loại không tồn tại khi sửa bị từ chối"
     uc: "B.III.1-UC3"
@@ -1490,6 +1596,7 @@ testcases:
       - "1. [API] PUT scaleId lạ"
     ket_qua_mong_doi:
       - "400 \"Thang xếp loại không hợp lệ\""
+    ket_qua_chay: "Không chạy"
   - id: CMP-E15
     title: "[API] Loại kỳ không hợp lệ khi sửa bị từ chối"
     uc: "B.III.1-UC3"
@@ -1503,6 +1610,7 @@ testcases:
       - "1. [API] PUT type=\"Foo\""
     ket_qua_mong_doi:
       - "400 \"Loại kỳ tự đánh giá không hợp lệ\""
+    ket_qua_chay: "Không chạy"
   - id: CMP-E16
     title: "Kỳ Chờ phê duyệt: ẩn Cập nhật và API sửa bị từ chối"
     uc: "B.III.1-UC4"
@@ -1519,6 +1627,7 @@ testcases:
     ket_qua_mong_doi:
       - "Menu không có Cập nhật; API từ chối, tên giữ nguyên"
     ghi_chu: "Khảo sát: API trả 403 \"Bạn không có quyền truy cập chức năng này\" thay vì thông báo sai trạng thái (xem CMP-G18)"
+    ket_qua_chay: "Không chạy"
   - id: CMP-E17
     title: "Kỳ Đã phê duyệt: ẩn Cập nhật và API sửa bị từ chối"
     uc: "B.III.1-UC4"
@@ -1533,6 +1642,7 @@ testcases:
       - "2. [API] PUT đổi tên"
     ket_qua_mong_doi:
       - "Menu không có Cập nhật (cả Quản trị hệ thống); API từ chối; dữ liệu giữ nguyên"
+    ket_qua_chay: "Không chạy"
   - id: CMP-E18
     title: "Kỳ Nháp và Bị từ chối đều có menu Cập nhật"
     uc: "B.III.1-UC4"
@@ -1547,6 +1657,7 @@ testcases:
       - "2. Mở menu kỳ Bị từ chối"
     ket_qua_mong_doi:
       - "Cả hai có \"Cập nhật\" (allowedActions chứa UPDATE)"
+    ket_qua_chay: "Không chạy"
   - id: CMP-E19
     title: "[API] Sửa kỳ không tồn tại trả 404"
     uc: "B.III.1-UC3"
@@ -1560,6 +1671,7 @@ testcases:
       - "1. [API] PUT /dti/self-assessment-campaigns/<GUID lạ>"
     ket_qua_mong_doi:
       - "404 \"Không tìm thấy kỳ tự đánh giá\""
+    ket_qua_chay: "Không chạy"
   - id: CMP-E20
     title: "Sửa tên rồi tải lại vẫn giữ giá trị mới và \"Cập nhật lần cuối\" đổi"
     uc: "B.III.1-UC3"
@@ -1574,6 +1686,7 @@ testcases:
       - "2. F5 trang chi tiết"
     ket_qua_mong_doi:
       - "Tên mới còn; \"Cập nhật lần cuối\" là thời điểm và người sửa"
+    ket_qua_chay: "Không chạy"
   - id: CMP-E21
     title: "Bấm Lưu 2 lần liên tiếp khi sửa không gây lỗi"
     uc: "B.III.1-UC3"
@@ -1588,6 +1701,7 @@ testcases:
       - "2. Bấm Lưu 2 lần nhanh"
     ket_qua_mong_doi:
       - "Chỉ lưu 1 lần, không báo lỗi"
+    ket_qua_chay: "Không chạy"
   - id: CMP-E22
     title: "Sửa kỳ Nháp chọn thang xếp loại khác không ảnh hưởng bộ chỉ số bản sao"
     uc: "B.III.1-UC3"
@@ -1602,6 +1716,7 @@ testcases:
       - "2. Mở cấu hình điểm"
     ket_qua_mong_doi:
       - "Bộ chỉ số bản sao giữ nguyên (nhóm, điểm)"
+    ket_qua_chay: "Không chạy"
   - id: CMP-D01
     title: "Xóa kỳ ở trạng thái Nháp thành công"
     uc: "B.III.1-UC11"
@@ -1616,6 +1731,7 @@ testcases:
       - "2. Bấm \"Có\""
     ket_qua_mong_doi:
       - "Thông báo \"Xóa kỳ tự đánh giá thành công\"; kỳ biến mất khỏi danh sách và API trả 404; tổng bản ghi giảm 1"
+    ket_qua_chay: "Không chạy"
   - id: CMP-D02
     title: "Chọn \"Không\" ở hộp xác nhận xóa thì giữ nguyên"
     uc: "B.III.1-UC11"
@@ -1630,6 +1746,7 @@ testcases:
       - "2. Bấm \"Không\""
     ket_qua_mong_doi:
       - "Hộp thoại \"Bạn có chắc chắn muốn xóa bản ghi này không?\" đóng; kỳ còn"
+    ket_qua_chay: "Không chạy"
   - id: CMP-D03
     title: "Xóa kỳ kéo theo xóa bản sao bộ chỉ số của kỳ"
     uc: "B.III.1-UC11"
@@ -1645,6 +1762,7 @@ testcases:
       - "3. [API] GET bộ chỉ số bản sao"
     ket_qua_mong_doi:
       - "Bản sao trả 404 \"Không tìm thấy bộ chỉ số\"; bộ chỉ số gốc còn nguyên"
+    ket_qua_chay: "Không chạy"
   - id: CMP-D04
     title: "Xóa kỳ Nháp đã phân công đơn vị"
     uc: "B.III.1-UC11"
@@ -1660,6 +1778,7 @@ testcases:
     ket_qua_mong_doi:
       - "Xóa thành công, phân công đi theo kỳ"
     ghi_chu: "Khảo sát: API cho xóa (200). Cần BA xác nhận quy tắc xóa kỳ đã có phân công"
+    ket_qua_chay: "Không chạy"
   - id: CMP-D05
     title: "Menu chỉ có Xoá ở kỳ Nháp; kỳ Chờ phê duyệt/Đã phê duyệt/Bị từ chối không có Xoá"
     uc: "B.III.1-UC11"
@@ -1674,6 +1793,7 @@ testcases:
     ket_qua_mong_doi:
       - "Nháp: Cấu hình bộ chỉ số, Phân công đơn vị, Trình phê duyệt, Cập nhật, Xoá; Bị từ chối: như Nháp nhưng không có Xoá; Chờ phê duyệt, Đã phê duyệt: không có thao tác"
     ghi_chu: "UC 165 không nêu điều kiện trạng thái; Cần BA xác nhận quy tắc xóa kỳ Bị từ chối"
+    ket_qua_chay: "Không chạy"
   - id: CMP-D06
     title: "[API] Xóa kỳ Chờ phê duyệt bị từ chối"
     uc: "B.III.1-UC11"
@@ -1688,6 +1808,7 @@ testcases:
       - "2. [API] DELETE bằng Cán bộ"
     ket_qua_mong_doi:
       - "403 (Cán bộ không có quyền DELETE ở trạng thái này); kỳ còn"
+    ket_qua_chay: "Không chạy"
   - id: CMP-D07
     title: "[API] Xóa kỳ Đã phê duyệt bị từ chối kể cả Quản trị hệ thống"
     uc: "B.III.1-UC11"
@@ -1701,6 +1822,7 @@ testcases:
       - "1. [API] DELETE kỳ Đã phê duyệt bằng superadmin"
     ket_qua_mong_doi:
       - "400 \"Chỉ có thể xóa kỳ tự đánh giá đang ở trạng thái Nháp\"; kỳ còn"
+    ket_qua_chay: "Không chạy"
   - id: CMP-D08
     title: "[API] Xóa kỳ Bị từ chối bị từ chối"
     uc: "B.III.1-UC11"
@@ -1714,6 +1836,7 @@ testcases:
       - "1. [API] DELETE kỳ Bị từ chối"
     ket_qua_mong_doi:
       - "Bị từ chối (403/400); kỳ còn"
+    ket_qua_chay: "Không chạy"
   - id: CMP-D09
     title: "Xóa kỳ không tồn tại / xóa lần 2 trả 404"
     uc: "B.III.1-UC11"
@@ -1729,6 +1852,7 @@ testcases:
     ket_qua_mong_doi:
       - "Cả hai trả 404 \"Không tìm thấy kỳ tự đánh giá\", không 500"
     ghi_chu: "Khảo sát: thông báo 404 của DELETE có tiền tố tiếng Anh \"The requested resource doesn't exist.\" khác định dạng GET"
+    ket_qua_chay: "Không chạy"
   - id: CMP-D10
     title: "[API] Role không có quyền không xóa được kỳ"
     uc: "B.III.1-UC11"
@@ -1742,6 +1866,7 @@ testcases:
       - "1. [API] DELETE kỳ Nháp bằng lanhdaobo, xemonly, ldd, cbdp, ldp"
     ket_qua_mong_doi:
       - "Cả 5 trả HTTP 403 \"Bạn không có quyền truy cập chức năng này\"; kỳ còn"
+    ket_qua_chay: "Không chạy"
   - id: CMP-D11
     title: "Bấm Có 2 lần ở hộp xác nhận xóa không gây lỗi"
     uc: "B.III.1-UC11"
@@ -1756,6 +1881,7 @@ testcases:
       - "2. Bấm \"Có\" 2 lần nhanh"
     ket_qua_mong_doi:
       - "Xóa 1 lần, không hiển thị lỗi 404 cho người dùng"
+    ket_qua_chay: "Không chạy"
   - id: CMP-D12
     title: "Quản trị hệ thống xóa được kỳ Nháp do Cán bộ tạo"
     uc: "B.III.1-UC11"
@@ -1770,6 +1896,7 @@ testcases:
       - "2. Quản trị hệ thống xóa"
     ket_qua_mong_doi:
       - "Xóa thành công"
+    ket_qua_chay: "Không chạy"
   - id: CMP-K01
     title: "Mở \"Cấu hình bộ chỉ số\" từ menu kỳ Nháp hiển thị thống kê và danh sách nhóm"
     uc: "B.III.1-UC10"
@@ -1783,6 +1910,7 @@ testcases:
       - "1. Menu kỳ Nháp → Cấu hình bộ chỉ số"
     ket_qua_mong_doi:
       - "Trang Cấu hình bộ chỉ số: Nhóm chỉ số, Chỉ số, Tổng điểm tối đa (tính điểm), Cần kiểm tra; danh sách nhóm bên trái, bảng chỉ số bên phải"
+    ket_qua_chay: "Không chạy"
   - id: CMP-K02
     title: "Nút \"Xem cấu hình điểm\" ở chi tiết mở cùng bộ chỉ số bản sao của kỳ"
     uc: "B.III.1-UC10"
@@ -1796,6 +1924,7 @@ testcases:
       - "1. Ở chi tiết bấm Xem cấu hình điểm"
     ket_qua_mong_doi:
       - "Mở trang builder/<indicatorSetId bản sao>, đúng bộ của kỳ (mã dạng X_xxxxxxxx)"
+    ket_qua_chay: "Không chạy"
   - id: CMP-K03
     title: "Sửa điểm tối đa của chỉ số con và lưu thành công"
     uc: "B.III.1-UC10"
@@ -1810,6 +1939,7 @@ testcases:
       - "2. Bấm \"Lưu chỉ số\""
     ket_qua_mong_doi:
       - "Thông báo \"Cập nhật nội dung bộ chỉ số thành công\"; tải lại vẫn 3; điểm chỉ số cha và tổng điểm tối đa tăng 1"
+    ket_qua_chay: "Không chạy"
   - id: CMP-K04
     title: "Sửa điểm tối thiểu của chỉ số con và lưu"
     uc: "B.III.1-UC10"
@@ -1824,6 +1954,7 @@ testcases:
       - "2. Lưu chỉ số"
     ket_qua_mong_doi:
       - "Lưu thành công; giá trị còn sau khi tải lại"
+    ket_qua_chay: "Không chạy"
   - id: CMP-K05
     title: "Điểm tối thiểu lớn hơn điểm tối đa bị từ chối"
     uc: "B.III.1-UC10"
@@ -1837,6 +1968,7 @@ testcases:
       - "1. [API] PUT indicators với minScore 5, maxScore 3"
     ket_qua_mong_doi:
       - "400 \"Điểm tối thiểu không được lớn hơn điểm tối đa (chỉ số …)\"; dữ liệu giữ nguyên; UI hiển thị ở ô \"Cần kiểm tra\""
+    ket_qua_chay: "Không chạy"
   - id: CMP-K06
     title: "Điểm âm bị từ chối"
     uc: "B.III.1-UC10"
@@ -1850,6 +1982,7 @@ testcases:
       - "1. [API] PUT minScore = -1 / maxScore = -1"
     ket_qua_mong_doi:
       - "400 \"Điểm của chỉ số … phải nằm trong khoảng từ 0 đến 1000\""
+    ket_qua_chay: "Không chạy"
   - id: CMP-K07
     title: "Điểm vượt biên 1000 bị từ chối, 1000 được nhận"
     uc: "B.III.1-UC10"
@@ -1864,6 +1997,7 @@ testcases:
       - "2. [API] PUT maxScore = 1001"
     ket_qua_mong_doi:
       - "1000: 200; 1001 (và 1e9): 400 \"phải nằm trong khoảng từ 0 đến 1000\""
+    ket_qua_chay: "Không chạy"
   - id: CMP-K08
     title: "Điểm thập phân (2.5)"
     uc: "B.III.1-UC10"
@@ -1878,6 +2012,7 @@ testcases:
     ket_qua_mong_doi:
       - "Lưu 2.5 hoặc làm tròn theo quy tắc, hiển thị đúng"
     ghi_chu: "Khảo sát: API nhận (200). Cần BA xác nhận quy tắc số lẻ của điểm"
+    ket_qua_chay: "Không chạy"
   - id: CMP-K09
     title: "Điểm sai kiểu (chuỗi/null) bị từ chối"
     uc: "B.III.1-UC10"
@@ -1893,6 +2028,7 @@ testcases:
     ket_qua_mong_doi:
       - "HTTP 400 báo dữ liệu không hợp lệ"
     ghi_chu: "Khảo sát: API trả 200 với \"abc\" và null → nghi lỗi (không validate kiểu)"
+    ket_qua_chay: "Không chạy"
   - id: CMP-K10
     title: "Trọng số âm bị từ chối"
     uc: "B.III.1-UC10"
@@ -1907,6 +2043,7 @@ testcases:
     ket_qua_mong_doi:
       - "HTTP 400"
     ghi_chu: "Khảo sát: API nhận trọng số -1 (200) → nghi lỗi. Cần BA xác nhận quy tắc miền trọng số"
+    ket_qua_chay: "Không chạy"
   - id: CMP-K11
     title: "Tắt \"Tính điểm\" ở chỉ số thì không cộng vào tổng điểm"
     uc: "B.III.1-UC10"
@@ -1921,6 +2058,7 @@ testcases:
       - "2. Lưu chỉ số"
     ket_qua_mong_doi:
       - "Tổng điểm tối đa giảm 2; \"chỉ số không tính điểm\" tăng 1; chỉ số cha cộng lại theo con còn tính"
+    ket_qua_chay: "Không chạy"
   - id: CMP-K12
     title: "Tắt \"Tính điểm cho nhóm\" thì điểm nhóm không cộng vào tổng bộ"
     uc: "B.III.1-UC10"
@@ -1935,6 +2073,7 @@ testcases:
       - "2. Lưu nhóm"
     ket_qua_mong_doi:
       - "Tổng điểm tối đa giảm bằng điểm của nhóm (50); \"nhóm không tính điểm\" = 1; tải lại vẫn tắt"
+    ket_qua_chay: "Không chạy"
   - id: CMP-K13
     title: "Chỉ số cha tự cộng điểm từ các chỉ số con"
     uc: "B.III.1-UC10"
@@ -1949,6 +2088,7 @@ testcases:
       - "2. Xem điểm chỉ số cha và nhóm"
     ket_qua_mong_doi:
       - "Điểm chỉ số cha = tổng điểm con tính điểm; điểm nhóm = tổng các chỉ số cha"
+    ket_qua_chay: "Không chạy"
   - id: CMP-K14
     title: "Khối \"Cần kiểm tra\" đếm chỉ số có điểm min > max hoặc chưa có điểm"
     uc: "B.III.1-UC10"
@@ -1962,6 +2102,7 @@ testcases:
       - "1. Nhập min > max trên UI cho 1 chỉ số"
     ket_qua_mong_doi:
       - "Ô \"Cần kiểm tra\" = 1; không cho lưu hoặc báo lỗi rõ chỉ số lỗi"
+    ket_qua_chay: "Không chạy"
   - id: CMP-K15
     title: "Sửa thứ tự hiển thị (kéo thả) nhóm chỉ số và lưu"
     uc: "B.III.1-UC6"
@@ -1976,6 +2117,7 @@ testcases:
       - "2. Lưu nhóm"
     ket_qua_mong_doi:
       - "Thông báo \"Cập nhật cấu trúc bộ chỉ số thành công\"; thứ tự mới còn sau tải lại"
+    ket_qua_chay: "Không chạy"
   - id: CMP-K16
     title: "Thêm nhóm chỉ số vào bộ chỉ số của kỳ"
     uc: "B.III.1-UC7"
@@ -1991,6 +2133,7 @@ testcases:
       - "3. Lưu nhóm"
     ket_qua_mong_doi:
       - "Nhóm xuất hiện ở danh sách nhóm; số nhóm và tổng điểm cập nhật"
+    ket_qua_chay: "Không chạy"
   - id: CMP-K17
     title: "Xóa nhóm chỉ số khỏi bộ của kỳ kéo theo xóa các chỉ số thuộc nhóm"
     uc: "B.III.1-UC8"
@@ -2005,6 +2148,7 @@ testcases:
       - "2. Lưu nhóm"
     ket_qua_mong_doi:
       - "Số nhóm 4→3, số chỉ số 120→90; tổng điểm giảm 50; bộ gốc giữ nguyên"
+    ket_qua_chay: "Không chạy"
   - id: CMP-K18
     title: "Thêm mới chỉ số vào nhóm bằng ô \"Chọn chỉ số cần Thêm mới\""
     uc: "B.III.1-UC7"
@@ -2020,6 +2164,7 @@ testcases:
       - "3. Lưu chỉ số"
     ket_qua_mong_doi:
       - "Chỉ số xuất hiện lại trong bảng; tổng điểm cập nhật; lưu thành công"
+    ket_qua_chay: "Không chạy"
   - id: CMP-K19
     title: "Xóa chỉ số khỏi nhóm của bộ chỉ số kỳ"
     uc: "B.III.1-UC8"
@@ -2034,6 +2179,7 @@ testcases:
       - "2. Lưu chỉ số"
     ket_qua_mong_doi:
       - "Số chỉ số giảm 1 (120→119); tổng điểm giảm đúng điểm chỉ số; bộ gốc không đổi"
+    ket_qua_chay: "Không chạy"
   - id: CMP-K20
     title: "[API] Thêm trùng nhóm / chỉ số bị từ chối"
     uc: "B.III.1-UC6"
@@ -2048,6 +2194,7 @@ testcases:
       - "2. [API] PUT indicators có 2 phần tử cùng id"
     ket_qua_mong_doi:
       - "400 \"Danh sách nhóm chỉ số bị trùng lặp\"; 400 \"Danh sách chỉ số bị trùng lặp\""
+    ket_qua_chay: "Không chạy"
   - id: CMP-K21
     title: "[API] Nhóm/chỉ số không tồn tại bị từ chối"
     uc: "B.III.1-UC7"
@@ -2062,6 +2209,7 @@ testcases:
       - "2. [API] PUT indicators với id lạ"
     ket_qua_mong_doi:
       - "400 \"Có nhóm chỉ số không hợp lệ trong danh sách\"; 400 \"Có chỉ số không hợp lệ trong danh sách\""
+    ket_qua_chay: "Không chạy"
   - id: CMP-K22
     title: "Xóa hết nhóm chỉ số của bộ chỉ số kỳ"
     uc: "B.III.1-UC8"
@@ -2076,6 +2224,7 @@ testcases:
     ket_qua_mong_doi:
       - "Bị chặn (bộ chỉ số phải có ít nhất 1 nhóm) hoặc cảnh báo"
     ghi_chu: "Khảo sát: API nhận, bộ chỉ số rỗng 0 nhóm 0 chỉ số. Cần BA xác nhận quy tắc"
+    ket_qua_chay: "Không chạy"
   - id: CMP-K23
     title: "Sửa bản sao không làm thay đổi bộ chỉ số gốc"
     uc: "B.III.1-UC9"
@@ -2091,6 +2240,7 @@ testcases:
       - "3. Xem lại bộ gốc X"
     ket_qua_mong_doi:
       - "Bộ gốc X giữ nguyên (4 nhóm, 120 chỉ số, điểm cũ, trạng thái Đã khóa)"
+    ket_qua_chay: "Không chạy"
   - id: CMP-K24
     title: "Sửa bản sao của kỳ A không ảnh hưởng bản sao của kỳ B cùng bộ gốc"
     uc: "B.III.1-UC9"
@@ -2105,6 +2255,7 @@ testcases:
       - "2. Sửa điểm ở bản sao A"
     ket_qua_mong_doi:
       - "Bản sao B giữ nguyên điểm cũ"
+    ket_qua_chay: "Không chạy"
   - id: CMP-K25
     title: "Bản sao tạo sau khi bộ gốc thay đổi phản ánh bộ gốc mới, bản sao cũ không đổi"
     uc: "B.III.1-UC9"
@@ -2120,6 +2271,7 @@ testcases:
       - "3. Tạo kỳ B"
     ket_qua_mong_doi:
       - "A giữ nguyên nội dung lúc tạo; B theo nội dung gốc mới"
+    ket_qua_chay: "Không chạy"
   - id: CMP-K26
     title: "Kỳ Chờ phê duyệt: không sửa được cấu hình điểm, chỉ số, nhóm"
     uc: "B.III.1-UC4"
@@ -2136,6 +2288,7 @@ testcases:
     ket_qua_mong_doi:
       - "API từ chối (403); UI không có nút Lưu chỉ số/Lưu nhóm hoặc chỉ ở chế độ xem; dữ liệu giữ nguyên"
     ghi_chu: "Khảo sát: menu kỳ Chờ phê duyệt không có \"Cấu hình bộ chỉ số\"; nút \"Xem cấu hình điểm\" vẫn hiện — cần khảo sát UI trang builder khi Chờ phê duyệt"
+    ket_qua_chay: "Không chạy"
   - id: CMP-K27
     title: "Kỳ Đã phê duyệt: không sửa được cấu hình điểm"
     uc: "B.III.1-UC4"
@@ -2149,6 +2302,7 @@ testcases:
       - "1. [API] PUT indicators bản sao của kỳ Đã phê duyệt"
     ket_qua_mong_doi:
       - "403; dữ liệu giữ nguyên"
+    ket_qua_chay: "Không chạy"
   - id: CMP-K28
     title: "Kỳ Bị từ chối: sửa được cấu hình bộ chỉ số"
     uc: "B.III.1-UC4"
@@ -2163,6 +2317,7 @@ testcases:
       - "2. Menu → Cấu hình bộ chỉ số, đổi điểm, Lưu"
     ket_qua_mong_doi:
       - "Lưu thành công"
+    ket_qua_chay: "Không chạy"
   - id: CMP-K29
     title: "Role không có quyền không sửa được cấu hình điểm"
     uc: "B.III.1-UC10"
@@ -2176,6 +2331,7 @@ testcases:
       - "1. [API] PUT indicators / groups bản sao bằng lanhdaobo, xemonly, ldd"
     ket_qua_mong_doi:
       - "Cả ba trả HTTP 403 \"Bạn không có quyền truy cập chức năng này\""
+    ket_qua_chay: "Không chạy"
   - id: CMP-K30
     title: "Bấm Lưu chỉ số 2 lần liên tiếp không gây lỗi"
     uc: "B.III.1-UC10"
@@ -2190,6 +2346,7 @@ testcases:
       - "2. Bấm Lưu chỉ số 2 lần nhanh"
     ket_qua_mong_doi:
       - "Dữ liệu nhất quán, không báo lỗi"
+    ket_qua_chay: "Không chạy"
   - id: CMP-K31
     title: "Tải lại trang builder giữ nguyên dữ liệu đã lưu"
     uc: "B.III.1-UC10"
@@ -2204,6 +2361,7 @@ testcases:
       - "2. F5"
     ket_qua_mong_doi:
       - "Giá trị đã lưu hiển thị lại, các số thống kê khớp"
+    ket_qua_chay: "Không chạy"
   - id: CMP-K32
     title: "Mở builder với id bộ chỉ số không tồn tại không gây lỗi hệ thống"
     uc: "B.III.1-UC10"
@@ -2217,6 +2375,7 @@ testcases:
       - "1. Mở URL builder/<GUID lạ>"
     ket_qua_mong_doi:
       - "Báo không tìm thấy, không trắng trang"
+    ket_qua_chay: "Không chạy"
   - id: CMP-K33
     title: "Thiết lập thời gian cảnh báo đến hạn khi tạo kỳ"
     uc: "B.III.1-UC12"
@@ -2231,6 +2390,7 @@ testcases:
       - "2. Mở Cập nhật"
     ket_qua_mong_doi:
       - "Kỳ lưu reminderDaysBeforeDue = 3; form Cập nhật hiển thị lại 3"
+    ket_qua_chay: "Không chạy"
   - id: CMP-K34
     title: "Thay đổi thời gian cảnh báo đến hạn khi cập nhật kỳ Nháp"
     uc: "B.III.1-UC12"
@@ -2245,6 +2405,7 @@ testcases:
       - "2. Lưu"
     ket_qua_mong_doi:
       - "Giá trị 5 được lưu, hiển thị khi tải lại"
+    ket_qua_chay: "Không chạy"
   - id: CMP-K35
     title: "Để trống \"Nhắc trước hạn\" vẫn tạo được kỳ (trường tùy chọn)"
     uc: "B.III.1-UC12"
@@ -2258,6 +2419,7 @@ testcases:
       - "1. Tạo kỳ không nhập Nhắc trước hạn"
     ket_qua_mong_doi:
       - "Tạo thành công; reminderDaysBeforeDue = null (không nhắc)"
+    ket_qua_chay: "Không chạy"
   - id: CMP-K36
     title: "Ô Nhắc trước hạn trên UI giới hạn biên 1 và 365 ngày"
     uc: "B.III.1-UC12"
@@ -2272,6 +2434,7 @@ testcases:
     ket_qua_mong_doi:
       - "Giá trị được điều chỉnh về miền 1-365 (-1/0 → 1; 1000 → 365); chữ không nhận"
     ghi_chu: "Khảo sát: ô số trên UI tự chặn 1-365 và chữ"
+    ket_qua_chay: "Không chạy"
   - id: CMP-K37
     title: "[API] Nhắc trước hạn âm hoặc 0 bị từ chối"
     uc: "B.III.1-UC12"
@@ -2286,6 +2449,7 @@ testcases:
     ket_qua_mong_doi:
       - "HTTP 400 báo giá trị không hợp lệ"
     ghi_chu: "Khảo sát: API nhận -1 và 0 (200), UI giới hạn 1-365 → nghi lỗi lệch UI/API"
+    ket_qua_chay: "Không chạy"
   - id: CMP-K38
     title: "[API] Nhắc trước hạn lớn hơn 365 ngày bị từ chối"
     uc: "B.III.1-UC12"
@@ -2300,6 +2464,7 @@ testcases:
     ket_qua_mong_doi:
       - "HTTP 400"
     ghi_chu: "Khảo sát: API nhận 1000 (200) → nghi lỗi lệch UI (tối đa 365)"
+    ket_qua_chay: "Không chạy"
   - id: CMP-K39
     title: "[API] Nhắc trước hạn thập phân hoặc chuỗi bị từ chối"
     uc: "B.III.1-UC12"
@@ -2313,6 +2478,7 @@ testcases:
       - "1. [API] POST reminderDaysBeforeDue = 1.5; = \"abc\""
     ket_qua_mong_doi:
       - "HTTP 400 \"Dữ liệu không hợp lệ\""
+    ket_qua_chay: "Không chạy"
   - id: CMP-K40
     title: "Số ngày nhắc lớn hơn độ dài kỳ"
     uc: "B.III.1-UC12"
@@ -2327,6 +2493,7 @@ testcases:
     ket_qua_mong_doi:
       - "Bị từ chối hoặc cảnh báo (nhắc trước thời điểm bắt đầu kỳ)"
     ghi_chu: "Khảo sát: API nhận. Cần BA xác nhận quy tắc"
+    ket_qua_chay: "Không chạy"
   - id: CMP-K41
     title: "Kỳ Chờ phê duyệt/Đã phê duyệt không sửa được thời gian cảnh báo"
     uc: "B.III.1-UC12"
@@ -2341,6 +2508,7 @@ testcases:
     ket_qua_mong_doi:
       - "403; giá trị giữ nguyên"
     ghi_chu: "Cần BA xác nhận quy tắc có cho sửa riêng nhắc hạn sau khi phê duyệt"
+    ket_qua_chay: "Không chạy"
   - id: CMP-K42
     title: "Đơn vị nhận cảnh báo khi còn N ngày đến hạn nộp"
     uc: "B.III.1-UC12"
@@ -2356,6 +2524,7 @@ testcases:
       - "3. Đăng nhập tài khoản đơn vị xem thông báo"
     ket_qua_mong_doi:
       - "Đơn vị nhận thông báo/cảnh báo đến hạn đúng thời điểm, đúng nội dung"
+    ket_qua_chay: "Manual"
   - id: CMP-U01
     title: "Modal Phân công đơn vị (kỳ Định kỳ) liệt kê đơn vị có đủ cột"
     uc: "B.III.2-UC1"
@@ -2370,6 +2539,7 @@ testcases:
       - "2. Bấm Phân công đơn vị"
     ket_qua_mong_doi:
       - "Modal \"Phân công đơn vị – <tên kỳ>\" có ô tìm kiếm, 2 bộ lọc, bảng cột STT, Mã đơn vị, Tên đơn vị, Loại đơn vị, Tỉnh/thành tham chiếu, phân trang, \"Chưa chọn đơn vị nào\""
+    ket_qua_chay: "Không chạy"
   - id: CMP-U02
     title: "Modal Phân công đơn vị (kỳ Đột xuất) liệt kê đơn vị có đủ cột"
     uc: "B.III.2-UC2"
@@ -2384,6 +2554,7 @@ testcases:
       - "2. Bấm Phân công đơn vị"
     ket_qua_mong_doi:
       - "Modal hiển thị danh sách đơn vị giống kỳ Định kỳ, đủ cột"
+    ket_qua_chay: "Không chạy"
   - id: CMP-U03
     title: "Danh sách đơn vị gồm cả đơn vị trực thuộc Bộ và Sở/Ban/Ngành địa phương"
     uc: "B.III.2-UC1"
@@ -2398,6 +2569,7 @@ testcases:
       - "2. Xem cột Loại đơn vị"
     ket_qua_mong_doi:
       - "Có \"Đơn vị thuộc Bộ\" và \"Cấp Sở/Ban/Ngành\" (và các loại đơn vị khác nếu có); tổng khớp trang Đơn vị"
+    ket_qua_chay: "Không chạy"
   - id: CMP-U04
     title: "Tìm đơn vị trong modal theo mã/tên"
     uc: "B.III.2-UC1"
@@ -2411,6 +2583,7 @@ testcases:
       - "1. Nhập \"QA\" vào ô Tìm theo mã, tên đơn vị"
     ket_qua_mong_doi:
       - "Chỉ còn đơn vị có mã/tên chứa \"QA\""
+    ket_qua_chay: "Không chạy"
   - id: CMP-U05
     title: "Tìm đơn vị không có kết quả hiển thị trạng thái rỗng"
     uc: "B.III.2-UC1"
@@ -2424,6 +2597,7 @@ testcases:
       - "1. Nhập \"zzzz\" vào ô tìm"
     ket_qua_mong_doi:
       - "Hiển thị \"Trống\", không lỗi"
+    ket_qua_chay: "Không chạy"
   - id: CMP-U06
     title: "Lọc đơn vị theo Loại đơn vị"
     uc: "B.III.2-UC1"
@@ -2439,6 +2613,7 @@ testcases:
     ket_qua_mong_doi:
       - "Danh sách có các lựa chọn loại đơn vị; chọn thì chỉ còn đơn vị loại đó"
     ghi_chu: "Khảo sát: Cán bộ gọi GET /unit-types → 403 nên danh sách lựa chọn rỗng, không lọc được → nghi lỗi"
+    ket_qua_chay: "Không chạy"
   - id: CMP-U07
     title: "Lọc đơn vị theo Tỉnh/thành"
     uc: "B.III.2-UC1"
@@ -2454,6 +2629,7 @@ testcases:
     ket_qua_mong_doi:
       - "Có danh sách tỉnh/thành; chọn thì chỉ còn đơn vị thuộc tỉnh đó"
     ghi_chu: "Khảo sát: Cán bộ gọi GET /provinces → 403 nên không có lựa chọn → nghi lỗi (Quản trị hệ thống thì 200)"
+    ket_qua_chay: "Không chạy"
   - id: CMP-U08
     title: "Chọn thủ công 1 đơn vị và Lưu"
     uc: "B.III.2-UC4"
@@ -2468,6 +2644,7 @@ testcases:
       - "2. Bấm Lưu"
     ket_qua_mong_doi:
       - "Thông báo \"Cập nhật phân công đơn vị thành công\"; chi tiết \"Số đơn vị\" = 1 và bảng có đơn vị đó"
+    ket_qua_chay: "Không chạy"
   - id: CMP-U09
     title: "Chọn thủ công nhiều đơn vị và Lưu"
     uc: "B.III.2-UC4"
@@ -2482,6 +2659,7 @@ testcases:
       - "2. Lưu"
     ket_qua_mong_doi:
       - "Số đơn vị = 3; footer modal hiển thị \"Đã chọn 3 đơn vị\" trước khi lưu"
+    ket_qua_chay: "Không chạy"
   - id: CMP-U10
     title: "Chọn nhanh tất cả đơn vị bằng ô tích ở tiêu đề bảng"
     uc: "B.III.2-UC4"
@@ -2496,6 +2674,7 @@ testcases:
       - "2. Lưu"
     ket_qua_mong_doi:
       - "Footer \"Đã chọn N đơn vị\" (N = tổng đơn vị); sau lưu Số đơn vị = N; danh sách trong chi tiết đủ N"
+    ket_qua_chay: "Không chạy"
   - id: CMP-U11
     title: "Chọn tất cả rồi bỏ chọn 1 đơn vị"
     uc: "B.III.2-UC4"
@@ -2511,6 +2690,7 @@ testcases:
       - "3. Lưu"
     ket_qua_mong_doi:
       - "Số đơn vị = N-1; đơn vị bỏ chọn không có trong danh sách"
+    ket_qua_chay: "Không chạy"
   - id: CMP-U12
     title: "Chọn tất cả khi đang tìm/lọc chỉ chọn các đơn vị trong kết quả lọc"
     uc: "B.III.2-UC4"
@@ -2527,6 +2707,7 @@ testcases:
     ket_qua_mong_doi:
       - "Chỉ 5 đơn vị khớp được phân công (không phải toàn bộ)"
     ghi_chu: "Cần BA xác nhận quy tắc phạm vi \"chọn tất cả\" khi đang lọc"
+    ket_qua_chay: "Không chạy"
   - id: CMP-U13
     title: "Chưa chọn đơn vị nào thì nút Lưu bị vô hiệu"
     uc: "B.III.2-UC4"
@@ -2540,6 +2721,7 @@ testcases:
       - "1. Mở modal, không tích gì"
     ket_qua_mong_doi:
       - "Hiển thị \"Chưa chọn đơn vị nào\"; nút Lưu vô hiệu"
+    ket_qua_chay: "Không chạy"
   - id: CMP-U14
     title: "Hủy modal không lưu thay đổi"
     uc: "B.III.2-UC4"
@@ -2554,6 +2736,7 @@ testcases:
       - "2. Bấm Huỷ"
     ket_qua_mong_doi:
       - "Modal đóng; Số đơn vị không đổi"
+    ket_qua_chay: "Không chạy"
   - id: CMP-U15
     title: "Mở lại modal các đơn vị đã phân công được tích sẵn"
     uc: "B.III.2-UC4"
@@ -2568,6 +2751,7 @@ testcases:
       - "2. Mở lại modal"
     ket_qua_mong_doi:
       - "Footer \"Đã chọn 3 đơn vị\"; 3 dòng được tích"
+    ket_qua_chay: "Không chạy"
   - id: CMP-U16
     title: "Xóa đơn vị đã phân công bằng cách bỏ tích rồi Lưu"
     uc: "B.III.2-UC5"
@@ -2583,6 +2767,7 @@ testcases:
       - "3. Lưu"
     ket_qua_mong_doi:
       - "Số đơn vị = 2; đơn vị bị bỏ không còn trong bảng chi tiết"
+    ket_qua_chay: "Không chạy"
   - id: CMP-U17
     title: "[API] Bỏ phân công toàn bộ (danh sách rỗng)"
     uc: "B.III.2-UC5"
@@ -2597,6 +2782,7 @@ testcases:
     ket_qua_mong_doi:
       - "Theo quy tắc: xóa toàn bộ đơn vị hoặc bị chặn"
     ghi_chu: "Khảo sát: API nhận, kỳ về 0 đơn vị (UI chặn Lưu khi chưa chọn). Cần BA xác nhận quy tắc"
+    ket_qua_chay: "Không chạy"
   - id: CMP-U18
     title: "[API] Danh sách đơn vị trùng lặp bị từ chối"
     uc: "B.III.2-UC4"
@@ -2610,6 +2796,7 @@ testcases:
       - "1. [API] PUT organizations với 1 id lặp 2 lần"
     ket_qua_mong_doi:
       - "400 \"Danh sách đơn vị bị trùng lặp\"; phân công cũ giữ nguyên"
+    ket_qua_chay: "Không chạy"
   - id: CMP-U19
     title: "[API] Đơn vị không tồn tại bị từ chối"
     uc: "B.III.2-UC4"
@@ -2623,6 +2810,7 @@ testcases:
       - "1. [API] PUT organizations với GUID lạ"
     ket_qua_mong_doi:
       - "400 \"Có đơn vị không hợp lệ trong danh sách\""
+    ket_qua_chay: "Không chạy"
   - id: CMP-U20
     title: "[API] Body không phải mảng bị từ chối"
     uc: "B.III.2-UC4"
@@ -2637,6 +2825,7 @@ testcases:
     ket_qua_mong_doi:
       - "400, phân công cũ giữ nguyên"
     ghi_chu: "Khảo sát: API trả 200 và xóa sạch phân công → nghi lỗi"
+    ket_qua_chay: "Không chạy"
   - id: CMP-U21
     title: "Lưu lại cùng danh sách đơn vị không nhân đôi bản ghi"
     uc: "B.III.2-UC4"
@@ -2651,6 +2840,7 @@ testcases:
       - "2. Phân công lại đúng X"
     ket_qua_mong_doi:
       - "Số đơn vị vẫn 1; không trùng dòng"
+    ket_qua_chay: "Không chạy"
   - id: CMP-U22
     title: "Kỳ Chờ phê duyệt/Đã phê duyệt không phân công/sửa phân công được"
     uc: "B.III.2-UC4"
@@ -2666,6 +2856,7 @@ testcases:
       - "3. [API] PUT organizations"
     ket_qua_mong_doi:
       - "Không có nút Phân công đơn vị; API 403; danh sách đơn vị giữ nguyên"
+    ket_qua_chay: "Không chạy"
   - id: CMP-U23
     title: "Kỳ Bị từ chối phân công lại được"
     uc: "B.III.2-UC4"
@@ -2680,6 +2871,7 @@ testcases:
       - "2. Phân công thêm/bỏ đơn vị"
     ket_qua_mong_doi:
       - "Lưu thành công, thay đổi hiển thị ở chi tiết"
+    ket_qua_chay: "Không chạy"
   - id: CMP-U24
     title: "Role không có quyền không phân công được"
     uc: "B.III.2-UC4"
@@ -2693,6 +2885,7 @@ testcases:
       - "1. [API] PUT organizations bằng lanhdaobo, xemonly, ldd"
     ket_qua_mong_doi:
       - "Cả ba trả HTTP 403 \"Bạn không có quyền truy cập chức năng này\"; phân công không đổi"
+    ket_qua_chay: "Không chạy"
   - id: CMP-U25
     title: "[API] Phân công cho kỳ không tồn tại trả 404"
     uc: "B.III.2-UC4"
@@ -2707,6 +2900,7 @@ testcases:
     ket_qua_mong_doi:
       - "404 \"Không tìm thấy kỳ tự đánh giá\""
     ghi_chu: "Khảo sát: tiền tố tiếng Anh \"The requested resource doesn't exist.\" trong thông báo"
+    ket_qua_chay: "Không chạy"
   - id: CMP-U26
     title: "Xuất danh sách đơn vị được phân công ra Excel"
     uc: "B.III.2-UC3"
@@ -2723,6 +2917,7 @@ testcases:
     ket_qua_mong_doi:
       - "Tải về file .xlsx chứa đúng danh sách đơn vị (mã, tên, loại, trạng thái…)"
     ghi_chu: "Khảo sát: chi tiết kỳ không có nút Xuất Excel cho danh sách đơn vị; UC 170 ghi \"Chưa làm\" → nghi thiếu chức năng"
+    ket_qua_chay: "Không chạy"
   - id: CMP-U27
     title: "Xuất Excel danh sách đơn vị theo bộ lọc/từ khóa đang chọn"
     uc: "B.III.2-UC3"
@@ -2738,6 +2933,7 @@ testcases:
     ket_qua_mong_doi:
       - "File chỉ có các đơn vị đang hiển thị"
     ghi_chu: "Phụ thuộc CMP-U26. Cần BA xác nhận quy tắc"
+    ket_qua_chay: "Không chạy"
   - id: CMP-U28
     title: "Xuất Excel khi kỳ chưa có đơn vị"
     uc: "B.III.2-UC3"
@@ -2753,6 +2949,7 @@ testcases:
     ket_qua_mong_doi:
       - "Báo không có dữ liệu để xuất; không tải file rỗng"
     ghi_chu: "Phụ thuộc CMP-U26. Cần BA xác nhận quy tắc"
+    ket_qua_chay: "Không chạy"
   - id: CMP-U29
     title: "Số đơn vị ở danh sách cập nhật sau khi phân công/bỏ phân công"
     uc: "B.III.2-UC4"
@@ -2767,6 +2964,7 @@ testcases:
       - "2. Xem cột Số đơn vị ở danh sách"
     ket_qua_mong_doi:
       - "Số đơn vị = 2; sau khi bỏ 1 đơn vị còn 1"
+    ket_qua_chay: "Không chạy"
   - id: CMP-U30
     title: "Phân công dùng cho cả kỳ Định kỳ và Đột xuất lưu được"
     uc: "B.III.2-UC4"
@@ -2781,6 +2979,7 @@ testcases:
       - "2. Phân công kỳ Đột xuất"
     ket_qua_mong_doi:
       - "Cả hai lưu thành công, đúng đơn vị cho từng kỳ"
+    ket_qua_chay: "Không chạy"
   - id: CMP-T01
     title: "Trình phê duyệt kỳ Định kỳ Nháp đã phân công đơn vị thành công"
     uc: "B.III.3-UC1"
@@ -2795,6 +2994,7 @@ testcases:
       - "2. Chi tiết → Trình phê duyệt → Có"
     ket_qua_mong_doi:
       - "Thông báo \"Trình phê duyệt thành công\"; trạng thái Chờ phê duyệt; submittedBy/submittedDate được ghi"
+    ket_qua_chay: "Không chạy"
   - id: CMP-T02
     title: "Trình phê duyệt kỳ Đột xuất Nháp đã phân công đơn vị thành công"
     uc: "B.III.3-UC2"
@@ -2809,6 +3009,7 @@ testcases:
       - "2. Trình phê duyệt → Có"
     ket_qua_mong_doi:
       - "Trạng thái Chờ phê duyệt"
+    ket_qua_chay: "Không chạy"
   - id: CMP-T03
     title: "Chọn \"Không\" ở hộp xác nhận trình thì giữ nguyên Nháp"
     uc: "B.III.3-UC1"
@@ -2823,6 +3024,7 @@ testcases:
       - "2. Bấm \"Không\" ở hộp \"Bạn có chắc chắn muốn trình phê duyệt bản ghi này không?\""
     ket_qua_mong_doi:
       - "Kỳ vẫn Nháp, không có mốc trình trong lịch sử"
+    ket_qua_chay: "Không chạy"
   - id: CMP-T04
     title: "Trình khi chưa phân công đơn vị nào bị chặn"
     uc: "B.III.3-UC1"
@@ -2838,6 +3040,7 @@ testcases:
     ket_qua_mong_doi:
       - "Báo \"Cần phân công ít nhất 1 đơn vị trước khi trình phê duyệt\"; vẫn Nháp"
     ghi_chu: "Khảo sát: API trả 400 đúng; UI vẫn hiện hộp xác nhận trước khi báo lỗi"
+    ket_qua_chay: "Không chạy"
   - id: CMP-T05
     title: "Kỳ có bộ chỉ số rỗng (0 nhóm) bị chặn khi trình"
     uc: "B.III.3-UC1"
@@ -2853,6 +3056,7 @@ testcases:
     ket_qua_mong_doi:
       - "Bị chặn: bộ chỉ số phải có chỉ số để đơn vị chấm"
     ghi_chu: "Khảo sát: API cho trình kỳ có 0 chỉ số (200) → nghi lỗi. Cần BA xác nhận quy tắc"
+    ket_qua_chay: "Không chạy"
   - id: CMP-T06
     title: "Sau khi trình, kỳ ẩn Cập nhật/Xoá/Phân công/Cấu hình với Cán bộ"
     uc: "B.III.3-UC1"
@@ -2867,6 +3071,7 @@ testcases:
       - "2. Xem menu thao tác và chi tiết bằng Cán bộ"
     ket_qua_mong_doi:
       - "Không còn Cập nhật, Xoá, Phân công đơn vị, Trình phê duyệt, Cấu hình bộ chỉ số"
+    ket_qua_chay: "Không chạy"
   - id: CMP-T07
     title: "Lịch sử xử lý ghi người trình và thời gian trình"
     uc: "B.III.3-UC1"
@@ -2881,6 +3086,7 @@ testcases:
       - "2. Xem Lịch sử xử lý"
     ket_qua_mong_doi:
       - "Mốc \"Trình phê duyệt\" kèm tên Cán bộ và thời gian đúng"
+    ket_qua_chay: "Không chạy"
   - id: CMP-T08
     title: "[API] Trình lại kỳ đã Chờ phê duyệt bị từ chối"
     uc: "B.III.3-UC1"
@@ -2895,6 +3101,7 @@ testcases:
     ket_qua_mong_doi:
       - "Bị từ chối, trạng thái không đổi, không thêm mốc lịch sử"
     ghi_chu: "Khảo sát: API trả 403 \"Bạn không có quyền truy cập chức năng này\" (xem CMP-G18)"
+    ket_qua_chay: "Không chạy"
   - id: CMP-T09
     title: "[API] Trình kỳ Đã phê duyệt bị từ chối"
     uc: "B.III.3-UC1"
@@ -2908,6 +3115,7 @@ testcases:
       - "1. [API] POST submit kỳ Đã phê duyệt"
     ket_qua_mong_doi:
       - "Bị từ chối, trạng thái giữ Đã phê duyệt"
+    ket_qua_chay: "Không chạy"
   - id: CMP-T10
     title: "[API] Trình kỳ không tồn tại trả 404"
     uc: "B.III.3-UC1"
@@ -2921,6 +3129,7 @@ testcases:
       - "1. [API] POST /dti/self-assessment-campaigns/<GUID lạ>/submit"
     ket_qua_mong_doi:
       - "404 \"Không tìm thấy kỳ tự đánh giá\""
+    ket_qua_chay: "Không chạy"
   - id: CMP-T11
     title: "Role không có quyền không trình được"
     uc: "B.III.3-UC1"
@@ -2934,6 +3143,7 @@ testcases:
       - "1. [API] POST submit kỳ Nháp bằng lanhdaobo, xemonly, ldd, cbdp, ldp"
     ket_qua_mong_doi:
       - "Cả 5 trả HTTP 403 \"Bạn không có quyền truy cập chức năng này\"; kỳ vẫn Nháp"
+    ket_qua_chay: "Không chạy"
   - id: CMP-T12
     title: "Lãnh đạo Bộ không thấy nút Trình phê duyệt"
     uc: "B.III.3-UC1"
@@ -2948,6 +3158,7 @@ testcases:
       - "2. Mở chi tiết kỳ Nháp"
     ket_qua_mong_doi:
       - "Không có nút Trình phê duyệt / Phân công đơn vị / menu Cập nhật"
+    ket_qua_chay: "Không chạy"
   - id: CMP-T13
     title: "Trình phê duyệt lại kỳ Bị từ chối sau khi cập nhật"
     uc: "B.III.3-UC5"
@@ -2963,6 +3174,7 @@ testcases:
       - "3. Trình phê duyệt → Có"
     ket_qua_mong_doi:
       - "Trạng thái về Chờ phê duyệt; thông báo thành công"
+    ket_qua_chay: "Không chạy"
   - id: CMP-T14
     title: "Sau khi trình lại lý do từ chối cũ được xóa khỏi kỳ"
     uc: "B.III.3-UC5"
@@ -2978,6 +3190,7 @@ testcases:
       - "3. Xem chi tiết"
     ket_qua_mong_doi:
       - "rejectReason = null ở thông tin hiện hành; lịch sử vẫn ghi lần từ chối và lý do L"
+    ket_qua_chay: "Không chạy"
   - id: CMP-T15
     title: "Lịch sử xử lý giữ cả lần từ chối và lần trình lại"
     uc: "B.III.3-UC5"
@@ -2991,6 +3204,7 @@ testcases:
       - "1. Tạo → trình → từ chối → trình lại"
     ket_qua_mong_doi:
       - "Lịch sử có 4 mốc đúng thứ tự: Tạo kỳ, Trình, Từ chối (lý do), Trình lại"
+    ket_qua_chay: "Không chạy"
   - id: CMP-T16
     title: "Kỳ Bị từ chối có đủ nút Trình phê duyệt và menu Trình phê duyệt"
     uc: "B.III.3-UC5"
@@ -3004,6 +3218,7 @@ testcases:
       - "1. Mở chi tiết và menu kỳ Bị từ chối bằng Cán bộ"
     ket_qua_mong_doi:
       - "Có Trình phê duyệt (menu và nút)"
+    ket_qua_chay: "Không chạy"
   - id: CMP-T17
     title: "Trình lại khi kỳ Bị từ chối đã bỏ hết đơn vị bị chặn"
     uc: "B.III.3-UC5"
@@ -3018,6 +3233,7 @@ testcases:
       - "2. Trình phê duyệt"
     ket_qua_mong_doi:
       - "400 \"Cần phân công ít nhất 1 đơn vị trước khi trình phê duyệt\""
+    ket_qua_chay: "Không chạy"
   - id: CMP-T18
     title: "Trình lại kỳ Bị từ chối mà chưa chỉnh sửa gì"
     uc: "B.III.3-UC5"
@@ -3033,6 +3249,7 @@ testcases:
     ket_qua_mong_doi:
       - "Cho phép hoặc yêu cầu phải cập nhật trước (theo quy tắc)"
     ghi_chu: "Khảo sát: hệ thống cho trình lại ngay không sửa (200). Cần BA xác nhận quy tắc bắt buộc cập nhật trước khi trình lại"
+    ket_qua_chay: "Không chạy"
   - id: CMP-T19
     title: "Quản trị hệ thống trình được kỳ Nháp"
     uc: "B.III.3-UC1"
@@ -3047,6 +3264,7 @@ testcases:
       - "2. Trình kỳ Nháp có đơn vị"
     ket_qua_mong_doi:
       - "Trình thành công; mốc lịch sử ghi tên quản trị"
+    ket_qua_chay: "Không chạy"
   - id: CMP-T20
     title: "Bấm Có 2 lần ở hộp xác nhận trình chỉ ghi 1 lần"
     uc: "B.III.3-UC1"
@@ -3061,6 +3279,7 @@ testcases:
       - "2. Bấm Có 2 lần nhanh"
     ket_qua_mong_doi:
       - "Chỉ 1 mốc \"Trình phê duyệt\" trong lịch sử; không lỗi"
+    ket_qua_chay: "Không chạy"
   - id: CMP-A01
     title: "Lãnh đạo Bộ phê duyệt kỳ Đột xuất Chờ phê duyệt"
     uc: "B.III.4-UC3"
@@ -3075,6 +3294,7 @@ testcases:
       - "2. Menu kỳ Đột xuất Chờ phê duyệt → Phê duyệt → Có"
     ket_qua_mong_doi:
       - "Trạng thái Đã phê duyệt; approvedBy = Lãnh đạo, approvedDate có giá trị; menu thao tác biến mất"
+    ket_qua_chay: "Không chạy"
   - id: CMP-A02
     title: "Lãnh đạo Bộ phê duyệt kỳ Định kỳ Chờ phê duyệt"
     uc: "B.III.4-UC3"
@@ -3088,6 +3308,7 @@ testcases:
       - "1. Lãnh đạo Bộ phê duyệt kỳ Định kỳ"
     ket_qua_mong_doi:
       - "Trạng thái Đã phê duyệt; ngày duyệt được ghi"
+    ket_qua_chay: "Không chạy"
   - id: CMP-A03
     title: "Phê duyệt kỳ Đột xuất tạo kết quả đánh giá \"Chưa thực hiện\" cho từng đơn vị được phân công"
     uc: "B.III.4-UC3"
@@ -3103,6 +3324,7 @@ testcases:
       - "3. Xem chi tiết kỳ và trang Kết quả tự đánh giá"
     ket_qua_mong_doi:
       - "Mỗi đơn vị có 1 kết quả trạng thái \"Chưa thực hiện\"; chi tiết kỳ \"Chưa bắt đầu\" = 3"
+    ket_qua_chay: "Không chạy"
   - id: CMP-A04
     title: "Phê duyệt kỳ Định kỳ tự động tạo đánh giá cho đơn vị theo kỳ đã thiết lập"
     uc: "B.III.4-UC3"
@@ -3119,6 +3341,7 @@ testcases:
     ket_qua_mong_doi:
       - "Hệ thống tạo kết quả đánh giá cho kỳ hiện tại cho từng đơn vị (trạng thái Chưa thực hiện)"
     ghi_chu: "Khảo sát: sau khi duyệt kỳ Định kỳ, assessmentStatus của đơn vị = null (khác kỳ Đột xuất = NotStarted) → nghi chưa tạo ngay. Cần BA xác nhận quy tắc thời điểm tự tạo"
+    ket_qua_chay: "Không chạy"
   - id: CMP-A05
     title: "Kỳ Định kỳ được phê duyệt tự tạo đánh giá cho chu kỳ kế tiếp khi đến hạn"
     uc: "B.III.4-UC3"
@@ -3134,6 +3357,7 @@ testcases:
       - "3. Kiểm tra đánh giá mới của đơn vị"
     ket_qua_mong_doi:
       - "Đến chu kỳ mới hệ thống tạo đánh giá mới cho đơn vị đã phân công"
+    ket_qua_chay: "Manual"
   - id: CMP-A06
     title: "Chọn \"Không\" ở hộp xác nhận phê duyệt thì giữ Chờ phê duyệt"
     uc: "B.III.4-UC3"
@@ -3148,6 +3372,7 @@ testcases:
       - "2. Bấm Không"
     ket_qua_mong_doi:
       - "Kỳ vẫn Chờ phê duyệt"
+    ket_qua_chay: "Không chạy"
   - id: CMP-A07
     title: "Lịch sử xử lý ghi mốc phê duyệt kèm người duyệt"
     uc: "B.III.4-UC3"
@@ -3162,6 +3387,7 @@ testcases:
       - "2. Xem Lịch sử xử lý"
     ket_qua_mong_doi:
       - "Có mốc \"Phê duyệt\" kèm tên Lãnh đạo và thời gian"
+    ket_qua_chay: "Không chạy"
   - id: CMP-A08
     title: "[API] Phê duyệt lần 2 kỳ đã phê duyệt bị từ chối"
     uc: "B.III.4-UC3"
@@ -3176,6 +3402,7 @@ testcases:
     ket_qua_mong_doi:
       - "Bị từ chối; không tạo thêm kết quả/thông báo"
     ghi_chu: "Khảo sát: API trả 403 \"Bạn không có quyền truy cập chức năng này\" (xem CMP-G18)"
+    ket_qua_chay: "Không chạy"
   - id: CMP-A09
     title: "[API] Phê duyệt kỳ Nháp hoặc Bị từ chối bị từ chối"
     uc: "B.III.4-UC3"
@@ -3190,6 +3417,7 @@ testcases:
       - "2. POST approve kỳ Bị từ chối"
     ket_qua_mong_doi:
       - "Cả hai bị từ chối; trạng thái không đổi"
+    ket_qua_chay: "Không chạy"
   - id: CMP-A10
     title: "[API] Phê duyệt kỳ không tồn tại trả 404"
     uc: "B.III.4-UC3"
@@ -3203,6 +3431,7 @@ testcases:
       - "1. [API] POST approve <GUID lạ>"
     ket_qua_mong_doi:
       - "404 \"Không tìm thấy kỳ tự đánh giá\""
+    ket_qua_chay: "Không chạy"
   - id: CMP-A11
     title: "Cán bộ không thấy và không phê duyệt được"
     uc: "B.III.4-UC3"
@@ -3217,6 +3446,7 @@ testcases:
       - "2. [API] POST approve bằng Cán bộ"
     ket_qua_mong_doi:
       - "Không có Phê duyệt/Từ chối; API HTTP 403 \"Bạn không có quyền truy cập chức năng này\""
+    ket_qua_chay: "Không chạy"
   - id: CMP-A12
     title: "Role khác (xemonly, ldd, cbdp, ldp) không phê duyệt được"
     uc: "B.III.4-UC3"
@@ -3230,6 +3460,7 @@ testcases:
       - "1. [API] POST approve kỳ Chờ phê duyệt bằng xemonly, ldd, cbdp, ldp"
     ket_qua_mong_doi:
       - "Cả 4 trả HTTP 403 \"Bạn không có quyền truy cập chức năng này\"; kỳ vẫn Chờ phê duyệt"
+    ket_qua_chay: "Không chạy"
   - id: CMP-A13
     title: "Quản trị hệ thống có thấy/thực hiện được Phê duyệt"
     uc: "B.III.4-UC3"
@@ -3245,6 +3476,7 @@ testcases:
     ket_qua_mong_doi:
       - "Theo UC chỉ Lãnh đạo phê duyệt"
     ghi_chu: "Khảo sát: Quản trị hệ thống (superadmin) thấy Phê duyệt/Từ chối và thao tác được. Cần BA xác nhận quy tắc Quản trị có duyệt không"
+    ket_qua_chay: "Không chạy"
   - id: CMP-A14
     title: "Sau phê duyệt, kỳ Đã phê duyệt không còn Cập nhật/Phân công/Cấu hình với mọi role"
     uc: "B.III.4-UC3"
@@ -3259,6 +3491,7 @@ testcases:
       - "2. Xem menu bằng Cán bộ, Lãnh đạo, Quản trị"
     ket_qua_mong_doi:
       - "Không có thao tác sửa; allowedActions không còn UPDATE/DELETE/APPROVE"
+    ket_qua_chay: "Không chạy"
   - id: CMP-A15
     title: "Đơn vị được phân công nhận thông báo khi kỳ được phê duyệt"
     uc: "B.III.4-UC3"
@@ -3273,6 +3506,7 @@ testcases:
       - "2. Đăng nhập tài khoản đơn vị, xem chuông thông báo/email"
     ket_qua_mong_doi:
       - "Có thông báo mới về kỳ đã phê duyệt và hạn nộp"
+    ket_qua_chay: "Manual"
   - id: CMP-A16
     title: "Lãnh đạo từ chối kỳ kèm lý do thành công"
     uc: "B.III.4-UC4"
@@ -3288,6 +3522,7 @@ testcases:
       - "3. Đồng ý"
     ket_qua_mong_doi:
       - "Thông báo \"Từ chối thành công\"; trạng thái Bị từ chối; chi tiết/lịch sử hiển thị lý do"
+    ket_qua_chay: "Không chạy"
   - id: CMP-A17
     title: "Từ chối khi để trống lý do bị chặn"
     uc: "B.III.4-UC4"
@@ -3302,6 +3537,7 @@ testcases:
       - "2. Đồng ý"
     ket_qua_mong_doi:
       - "UI báo \"Lý do từ chối\" bắt buộc; [API] 400 \"Vui lòng nhập lý do từ chối\"; kỳ vẫn Chờ phê duyệt"
+    ket_qua_chay: "Không chạy"
   - id: CMP-A18
     title: "Lý do chỉ có khoảng trắng bị chặn"
     uc: "B.III.4-UC4"
@@ -3315,6 +3551,7 @@ testcases:
       - "1. [API] POST reject với reason \"   \""
     ket_qua_mong_doi:
       - "400 \"Vui lòng nhập lý do từ chối\""
+    ket_qua_chay: "Không chạy"
   - id: CMP-A19
     title: "Lý do dài 1000 ký tự được nhận, 1001 ký tự bị chặn"
     uc: "B.III.4-UC4"
@@ -3329,6 +3566,7 @@ testcases:
       - "2. [API] reason 1001 ký tự"
     ket_qua_mong_doi:
       - "1000: 200 (lưu đủ); 1001: 400 \"Không được nhập vượt quá 1000 ký tự\""
+    ket_qua_chay: "Không chạy"
   - id: CMP-A20
     title: "Lý do chứa thẻ HTML/script không bị thực thi khi hiển thị"
     uc: "B.III.4-UC4"
@@ -3344,6 +3582,7 @@ testcases:
     ket_qua_mong_doi:
       - "Bị chặn khi nhập hoặc hiển thị dạng văn bản, không thực thi script"
     ghi_chu: "Chưa khảo sát API reject với HTML"
+    ket_qua_chay: "Không chạy"
   - id: CMP-A21
     title: "Hủy hộp từ chối giữ kỳ Chờ phê duyệt"
     uc: "B.III.4-UC4"
@@ -3358,6 +3597,7 @@ testcases:
       - "2. Bấm Hủy"
     ket_qua_mong_doi:
       - "Kỳ vẫn Chờ phê duyệt, không có mốc từ chối"
+    ket_qua_chay: "Không chạy"
   - id: CMP-A22
     title: "[API] Từ chối kỳ đã phê duyệt/đã từ chối/Nháp bị từ chối"
     uc: "B.III.4-UC4"
@@ -3371,6 +3611,7 @@ testcases:
       - "1. [API] POST reject kỳ Đã phê duyệt, Bị từ chối, Nháp"
     ket_qua_mong_doi:
       - "Cả 3 bị từ chối; trạng thái không đổi"
+    ket_qua_chay: "Không chạy"
   - id: CMP-A23
     title: "[API] Từ chối kỳ không tồn tại trả 404"
     uc: "B.III.4-UC4"
@@ -3384,6 +3625,7 @@ testcases:
       - "1. [API] POST reject <GUID lạ>"
     ket_qua_mong_doi:
       - "404 \"Không tìm thấy kỳ tự đánh giá\""
+    ket_qua_chay: "Không chạy"
   - id: CMP-A24
     title: "Role không có quyền không từ chối được"
     uc: "B.III.4-UC4"
@@ -3397,6 +3639,7 @@ testcases:
       - "1. [API] POST reject bằng canbo, xemonly, ldd, cbdp, ldp"
     ket_qua_mong_doi:
       - "Cả 5 trả HTTP 403 \"Bạn không có quyền truy cập chức năng này\""
+    ket_qua_chay: "Không chạy"
   - id: CMP-A25
     title: "Sau khi từ chối kỳ cho phép Cán bộ cập nhật và trình lại, Lãnh đạo không còn thao tác"
     uc: "B.III.4-UC4"
@@ -3411,6 +3654,7 @@ testcases:
       - "2. Xem menu Cán bộ và Lãnh đạo"
     ket_qua_mong_doi:
       - "Cán bộ: Cấu hình bộ chỉ số, Phân công đơn vị, Trình phê duyệt, Cập nhật; Lãnh đạo: không có thao tác"
+    ket_qua_chay: "Không chạy"
   - id: CMP-A26
     title: "Đơn vị không có kết quả/thông báo khi kỳ bị từ chối"
     uc: "B.III.4-UC4"
@@ -3425,6 +3669,7 @@ testcases:
       - "2. Xem trang Kết quả tự đánh giá của đơn vị"
     ket_qua_mong_doi:
       - "Đơn vị không thấy kỳ bị từ chối"
+    ket_qua_chay: "Không chạy"
   - id: CMP-A27
     title: "Cán bộ trình nhận thông báo khi bị từ chối"
     uc: "B.III.4-UC4"
@@ -3439,6 +3684,7 @@ testcases:
       - "2. Cán bộ xem chuông thông báo"
     ket_qua_mong_doi:
       - "Cán bộ nhận thông báo có nêu lý do từ chối"
+    ket_qua_chay: "Manual"
   - id: CMP-A28
     title: "Hai Lãnh đạo cùng phê duyệt/từ chối một kỳ đồng thời chỉ một thao tác thắng"
     uc: "B.III.4-UC3"
@@ -3452,6 +3698,7 @@ testcases:
       - "1. [API] 2 request approve và reject cùng lúc cho một kỳ"
     ket_qua_mong_doi:
       - "Một request thành công; request còn lại bị từ chối; trạng thái cuối nhất quán"
+    ket_qua_chay: "Không chạy"
   - id: CMP-G01
     title: "Server lỗi 500 khi tạo kỳ: giữ form, báo lỗi, không lộ lỗi nội bộ"
     uc: "B.III.1-UC2"
@@ -3466,6 +3713,7 @@ testcases:
       - "2. Nhập đủ dữ liệu → Thêm mới"
     ket_qua_mong_doi:
       - "Hiển thị thông báo lỗi chung; form giữ dữ liệu; không lộ stacktrace"
+    ket_qua_chay: "Không chạy"
   - id: CMP-G02
     title: "Mất kết nối khi tạo kỳ: giữ form, không treo"
     uc: "B.III.1-UC2"
@@ -3480,6 +3728,7 @@ testcases:
       - "2. Thêm mới"
     ket_qua_mong_doi:
       - "Thông báo lỗi kết nối; form giữ dữ liệu; nút Thêm mới dùng lại được"
+    ket_qua_chay: "Không chạy"
   - id: CMP-G03
     title: "Server lỗi 500 / mất mạng khi cập nhật kỳ: giữ form, không mất dữ liệu"
     uc: "B.III.1-UC3"
@@ -3494,6 +3743,7 @@ testcases:
       - "2. Cập nhật → Lưu"
     ket_qua_mong_doi:
       - "Thông báo lỗi; form giữ dữ liệu đã nhập; dữ liệu server không đổi"
+    ket_qua_chay: "Không chạy"
   - id: CMP-G04
     title: "Server lỗi 500 / mất mạng khi xóa kỳ: kỳ còn, thông báo lỗi"
     uc: "B.III.1-UC11"
@@ -3508,6 +3758,7 @@ testcases:
       - "2. Xoá → Có"
     ket_qua_mong_doi:
       - "Báo lỗi; kỳ vẫn trong danh sách"
+    ket_qua_chay: "Không chạy"
   - id: CMP-G05
     title: "Server lỗi 500 / mất mạng khi lưu phân công: giữ lựa chọn trong modal"
     uc: "B.III.2-UC4"
@@ -3522,6 +3773,7 @@ testcases:
       - "2. Chặn PUT organizations 500 / offline → Lưu"
     ket_qua_mong_doi:
       - "Báo lỗi; modal và lựa chọn giữ nguyên"
+    ket_qua_chay: "Không chạy"
   - id: CMP-G06
     title: "Server lỗi 500 / mất mạng khi trình: kỳ vẫn Nháp"
     uc: "B.III.3-UC1"
@@ -3536,6 +3788,7 @@ testcases:
       - "2. Trình → Có"
     ket_qua_mong_doi:
       - "Báo lỗi; kỳ vẫn Nháp, các nút còn nguyên"
+    ket_qua_chay: "Không chạy"
   - id: CMP-G07
     title: "Server lỗi 500 / mất mạng khi phê duyệt hoặc từ chối: trạng thái giữ Chờ phê duyệt"
     uc: "B.III.4-UC3"
@@ -3550,6 +3803,7 @@ testcases:
       - "2. Phê duyệt hoặc Từ chối"
     ket_qua_mong_doi:
       - "Báo lỗi; kỳ vẫn Chờ phê duyệt; hộp từ chối giữ lý do đã nhập"
+    ket_qua_chay: "Không chạy"
   - id: CMP-G08
     title: "Server lỗi 500 / mất mạng khi lưu chỉ số/nhóm: giữ dữ liệu đã nhập"
     uc: "B.III.1-UC10"
@@ -3564,6 +3818,7 @@ testcases:
       - "2. Chặn PUT indicators 500 / offline → Lưu chỉ số"
     ket_qua_mong_doi:
       - "Báo lỗi; giá trị trên màn hình không bị mất"
+    ket_qua_chay: "Không chạy"
   - id: CMP-G09
     title: "Tải danh sách khi API lỗi 500: hiển thị thông báo, không trắng trang"
     uc: "B.III.1-UC1"
@@ -3578,6 +3833,7 @@ testcases:
       - "2. Mở trang"
     ket_qua_mong_doi:
       - "Thông báo lỗi/trạng thái rỗng, menu vẫn dùng được"
+    ket_qua_chay: "Không chạy"
   - id: CMP-G10
     title: "[API] page = 0 hoặc âm không gây lỗi 500 lộ nội bộ"
     uc: "B.III.1-UC1"
@@ -3593,6 +3849,7 @@ testcases:
     ket_qua_mong_doi:
       - "HTTP 400 hoặc xử lý như trang 1; không lộ stacktrace"
     ghi_chu: "Khảo sát: trả HTTP 500 kèm \"Error: 2201X: OFFSET must not be negative … Npgsql\" (lộ nội bộ) → nghi lỗi"
+    ket_qua_chay: "Không chạy"
   - id: CMP-G11
     title: "[API] filter JSON sai định dạng không gây 500"
     uc: "B.III.1-UC1"
@@ -3607,6 +3864,7 @@ testcases:
     ket_qua_mong_doi:
       - "HTTP 400 có thông báo"
     ghi_chu: "Khảo sát: trả HTTP 500 (body rỗng) → nghi lỗi"
+    ket_qua_chay: "Không chạy"
   - id: CMP-G12
     title: "[API] page vượt tổng trang / size = 0 / size = abc"
     uc: "B.III.1-UC1"
@@ -3622,6 +3880,7 @@ testcases:
       - "3. size=abc"
     ket_qua_mong_doi:
       - "page=9999 và size=0: danh sách rỗng, tổng không đổi; size=abc: dùng size mặc định; không 500"
+    ket_qua_chay: "Không chạy"
   - id: CMP-G13
     title: "[API] size rất lớn trả toàn bộ bản ghi không giới hạn"
     uc: "B.III.1-UC1"
@@ -3636,6 +3895,7 @@ testcases:
     ket_qua_mong_doi:
       - "Giới hạn size tối đa theo quy tắc"
     ghi_chu: "Khảo sát: size=100000 trả toàn bộ (94 bản ghi), không giới hạn tối đa. Cần BA xác nhận quy tắc size tối đa"
+    ket_qua_chay: "Không chạy"
   - id: CMP-G14
     title: "Tên có HTML/Unicode hiển thị nguyên văn ở danh sách và chi tiết sau tải lại"
     uc: "B.III.1-UC1"
@@ -3650,6 +3910,7 @@ testcases:
       - "2. F5 và xem danh sách/chi tiết/hộp xác nhận"
     ket_qua_mong_doi:
       - "Hiển thị nguyên văn ở mọi nơi, không thực thi script"
+    ket_qua_chay: "Không chạy"
   - id: CMP-G15
     title: "Phiên hết hạn khi thao tác thì chuyển về trang đăng nhập"
     uc: "B.III.1-UC1"
@@ -3664,6 +3925,7 @@ testcases:
       - "2. Bấm một thao tác (Trình phê duyệt)"
     ket_qua_mong_doi:
       - "Chuyển về đăng nhập hoặc báo hết phiên; không treo, không mất dữ liệu form"
+    ket_qua_chay: "Không chạy"
   - id: CMP-G16
     title: "Mở trực tiếp URL chi tiết khi chưa đăng nhập bị chuyển về đăng nhập"
     uc: "B.III.1-UC1"
@@ -3677,6 +3939,7 @@ testcases:
       - "1. Mở URL #/vi/self-assessment-campaigns/<id> khi chưa đăng nhập"
     ket_qua_mong_doi:
       - "Chuyển về trang đăng nhập; sau đăng nhập về lại đúng trang hoặc trang chủ"
+    ket_qua_chay: "Không chạy"
   - id: CMP-G17
     title: "Tải lại (F5) trang chi tiết giữ nguyên nội dung"
     uc: "B.III.1-UC1"
@@ -3691,6 +3954,7 @@ testcases:
       - "2. F5"
     ket_qua_mong_doi:
       - "Trang chi tiết hiển thị lại đúng kỳ, không về danh sách"
+    ket_qua_chay: "Không chạy"
   - id: CMP-G18
     title: "Thao tác sai trạng thái trả thông báo rõ nghĩa (không phải \"không có quyền\")"
     uc: "B.III.1-UC4"
@@ -3706,6 +3970,7 @@ testcases:
     ket_qua_mong_doi:
       - "Mã 400/409 kèm thông báo nêu rõ trạng thái hiện tại không cho phép"
     ghi_chu: "Khảo sát: sai trạng thái trả 403 \"Bạn không có quyền truy cập chức năng này\" (trong khi DELETE bằng superadmin trả 400 \"Chỉ có thể xóa kỳ … Nháp\") → thông báo gây hiểu nhầm, nghi lỗi UX"
+    ket_qua_chay: "Không chạy"
   - id: CMP-G19
     title: "Hai phiên cùng sửa một kỳ: phiên lưu sau không âm thầm ghi đè"
     uc: "B.III.1-UC3"
@@ -3721,6 +3986,7 @@ testcases:
       - "3. Phiên B lưu tên B"
     ket_qua_mong_doi:
       - "Phiên B được cảnh báo xung đột hoặc quy tắc ghi đè rõ ràng"
+    ket_qua_chay: "Manual"
   - id: CMP-G20
     title: "Kỳ vừa bị người khác trình/duyệt: thao tác của phiên cũ không phá trạng thái"
     uc: "B.III.3-UC1"
@@ -3736,6 +4002,7 @@ testcases:
       - "3. Phiên A bấm Cập nhật/Xóa"
     ket_qua_mong_doi:
       - "Phiên A bị từ chối (không xóa/sửa được kỳ đã trình); danh sách làm mới đúng"
+    ket_qua_chay: "Không chạy"
   - id: CMP-G21
     title: "Kỳ đã xóa ở phiên khác: mở chi tiết/liên kết cũ báo không tìm thấy"
     uc: "B.III.1-UC1"
@@ -3751,6 +4018,7 @@ testcases:
       - "3. Phiên A bấm Trình phê duyệt"
     ket_qua_mong_doi:
       - "Báo \"Không tìm thấy kỳ tự đánh giá\", không lỗi trắng trang"
+    ket_qua_chay: "Không chạy"
   - id: CMP-G22
     title: "Thêm kỳ khi bộ chỉ số vừa bị mở khóa/xóa ở phiên khác"
     uc: "B.III.1-UC2"
@@ -3767,6 +4035,7 @@ testcases:
     ket_qua_mong_doi:
       - "Bị từ chối kèm thông báo rõ hoặc tạo theo quy tắc"
     ghi_chu: "Cần BA xác nhận quy tắc sau khi bộ gốc đổi trạng thái"
+    ket_qua_chay: "Không chạy"
   - id: CMP-S01
     title: "Gọi API danh sách không có token trả 401"
     uc: "B.III.1-UC1"
@@ -3780,6 +4049,7 @@ testcases:
       - "1. [API] GET /dti/self-assessment-campaigns không Authorization"
     ket_qua_mong_doi:
       - "HTTP 401"
+    ket_qua_chay: "Không chạy"
   - id: CMP-S02
     title: "Gọi API với token giả trả 401"
     uc: "B.III.1-UC1"
@@ -3793,6 +4063,7 @@ testcases:
       - "1. [API] GET danh sách với Bearer abc.def.ghi"
     ket_qua_mong_doi:
       - "HTTP 401"
+    ket_qua_chay: "Không chạy"
   - id: CMP-S03
     title: "Gọi API thêm mới không token/token giả trả 401"
     uc: "B.III.1-UC2"
@@ -3806,6 +4077,7 @@ testcases:
       - "1. [API] POST tạo kỳ không token / token giả"
     ket_qua_mong_doi:
       - "HTTP 401; không tạo"
+    ket_qua_chay: "Không chạy"
   - id: CMP-S04
     title: "Chưa đăng nhập vào trang bị chuyển về đăng nhập"
     uc: "B.III.1-UC1"
@@ -3819,6 +4091,7 @@ testcases:
       - "1. Chưa đăng nhập, mở #/vi/self-assessment-campaigns"
     ket_qua_mong_doi:
       - "Chuyển về trang đăng nhập"
+    ket_qua_chay: "Không chạy"
   - id: CMP-S05
     title: "Tài khoản \"Chỉ xem\" không truy cập được page và API danh sách"
     uc: "B.III.1-UC1"
@@ -3834,6 +4107,7 @@ testcases:
       - "3. [API] GET danh sách"
     ket_qua_mong_doi:
       - "Trang \"403 Forbidden – Truy cập bị từ chối\"; API trả 403; menu không có mục Quản lý tự đánh giá"
+    ket_qua_chay: "Không chạy"
   - id: CMP-S06
     title: "Lãnh đạo đơn vị/Cán bộ địa phương/Lãnh đạo địa phương không có menu và không vào được page"
     uc: "B.III.1-UC1"
@@ -3849,6 +4123,7 @@ testcases:
       - "3. Mở URL trực tiếp"
     ket_qua_mong_doi:
       - "Menu không có \"Bộ chỉ số DTI > Quản lý tự đánh giá\"; mở URL ra trang 403"
+    ket_qua_chay: "Không chạy"
   - id: CMP-S07
     title: "API danh sách/chi tiết kỳ không lộ kỳ Nháp cho role đơn vị"
     uc: "B.III.1-UC1"
@@ -3863,6 +4138,7 @@ testcases:
     ket_qua_mong_doi:
       - "Chỉ trả các kỳ thuộc phạm vi đơn vị (đã phê duyệt có đơn vị), không có kỳ Nháp; kỳ Nháp trả 403/404"
     ghi_chu: "Khảo sát: ldd, cbdp xem được toàn bộ 94 kỳ gồm Nháp và chi tiết kỳ Nháp (200) dù UI chặn page; ldp chỉ thấy 12 kỳ, chi tiết Nháp trả 404 → lệch giữa các role, nghi lỗi lộ dữ liệu. Cần BA xác nhận quy tắc"
+    ket_qua_chay: "Không chạy"
   - id: CMP-S08
     title: "Lãnh đạo Bộ: không có nút Thêm mới và Xuất Excel"
     uc: "B.III.1-UC1"
@@ -3878,6 +4154,7 @@ testcases:
     ket_qua_mong_doi:
       - "Không có \"Thêm mới tự đánh giá\"; theo ma trận quyền không tạo/sửa/xóa"
     ghi_chu: "Khảo sát: không hiện cả nút Xuất Excel của danh sách"
+    ket_qua_chay: "Không chạy"
   - id: CMP-S09
     title: "Ma trận quyền tạo kỳ theo vai trò"
     uc: "B.III.1-UC2"
@@ -3891,6 +4168,7 @@ testcases:
       - "1. [API] POST tạo kỳ bằng canbo, superadmin, lanhdaobo, xemonly, ldd, cbdp, ldp"
     ket_qua_mong_doi:
       - "canbo, superadmin: 200; lanhdaobo, xemonly, ldd, cbdp, ldp: HTTP 403 \"Bạn không có quyền truy cập chức năng này\""
+    ket_qua_chay: "Không chạy"
   - id: CMP-S10
     title: "Ma trận quyền sửa kỳ theo vai trò"
     uc: "B.III.1-UC3"
@@ -3904,6 +4182,7 @@ testcases:
       - "1. [API] PUT kỳ Nháp bằng lanhdaobo, xemonly, ldd, cbdp, ldp"
     ket_qua_mong_doi:
       - "Cả 5 trả HTTP 403 \"Bạn không có quyền truy cập chức năng này\"; dữ liệu không đổi"
+    ket_qua_chay: "Không chạy"
   - id: CMP-S11
     title: "Lãnh đạo Bộ: menu kỳ Chờ phê duyệt chỉ có Phê duyệt và Từ chối"
     uc: "B.III.4-UC3"
@@ -3918,6 +4197,7 @@ testcases:
       - "2. Mở menu kỳ Chờ phê duyệt"
     ket_qua_mong_doi:
       - "Chỉ 2 mục Phê duyệt, Từ chối (không Cập nhật/Xoá/Phân công)"
+    ket_qua_chay: "Không chạy"
   - id: CMP-S12
     title: "Tên kỳ chứa XSS không thực thi khi hiển thị"
     uc: "B.III.1-UC2"
@@ -3932,6 +4212,7 @@ testcases:
       - "2. Xem danh sách, chi tiết, lịch sử"
     ket_qua_mong_doi:
       - "Bị chặn khi nhập (400) hoặc hiển thị như văn bản; không có hộp thoại alert"
+    ket_qua_chay: "Không chạy"
   - id: CMP-S13
     title: "xemonly mở URL builder / chi tiết trực tiếp bị chặn"
     uc: "B.III.1-UC10"
@@ -3946,6 +4227,7 @@ testcases:
       - "2. Mở URL chi tiết kỳ và builder"
     ket_qua_mong_doi:
       - "Trang 403 hoặc báo không có quyền; không hiển thị dữ liệu kỳ"
+    ket_qua_chay: "Không chạy"
   - id: CMP-S14
     title: "Quản trị hệ thống thấy đủ menu thao tác và nút Thêm mới/Xuất Excel"
     uc: "B.III.1-UC1"
@@ -3960,6 +4242,7 @@ testcases:
       - "2. Xem các nút và menu thao tác theo trạng thái"
     ket_qua_mong_doi:
       - "Có Thêm mới, Xuất Excel; menu thao tác theo trạng thái giống Cán bộ + Phê duyệt/Từ chối ở kỳ Chờ phê duyệt"
+    ket_qua_chay: "Không chạy"
   - id: CMP-S15
     title: "Sau đăng xuất, nút Back không vào lại được trang quản lý kỳ"
     uc: "B.III.1-UC1"
@@ -3975,6 +4258,7 @@ testcases:
       - "3. Nhấn Back trình duyệt"
     ket_qua_mong_doi:
       - "Không hiển thị dữ liệu kỳ; chuyển về đăng nhập"
+    ket_qua_chay: "Không chạy"
   - id: CMP-S16
     title: "Cán bộ này xem/sửa kỳ do Cán bộ khác tạo"
     uc: "B.III.1-UC1"
@@ -3990,6 +4274,7 @@ testcases:
     ket_qua_mong_doi:
       - "Theo quy tắc phạm vi dữ liệu"
     ghi_chu: "Khảo sát: danh sách cho thấy mọi Cán bộ xem toàn bộ kỳ. Cần BA xác nhận quy tắc phạm vi sửa/xóa theo người tạo"
+    ket_qua_chay: "Không chạy"
   - id: CMP-P01
     title: "Tải danh sách quản lý tự đánh giá dưới 3 giây"
     uc: "B.III.1-UC1"
@@ -4004,6 +4289,7 @@ testcases:
       - "2. Đo thời gian đến khi bảng hiển thị dữ liệu"
     ket_qua_mong_doi:
       - "Bảng hiển thị dữ liệu trong ≤ 3 giây"
+    ket_qua_chay: "Không chạy"
   - id: CMP-P02
     title: "Mở chi tiết kỳ có 21 đơn vị dưới 3 giây"
     uc: "B.III.1-UC1"
@@ -4017,6 +4303,7 @@ testcases:
       - "1. Mở chi tiết kỳ có nhiều đơn vị"
     ket_qua_mong_doi:
       - "Trang hiển thị đủ trong ≤ 3 giây"
+    ket_qua_chay: "Không chạy"
   - id: CMP-P03
     title: "Mở và lưu cấu hình bộ chỉ số 120 chỉ số dưới 5 giây"
     uc: "B.III.1-UC10"
@@ -4031,6 +4318,7 @@ testcases:
       - "2. Đổi 1 điểm → Lưu chỉ số"
     ket_qua_mong_doi:
       - "Mở ≤ 5 giây; lưu ≤ 5 giây"
+    ket_qua_chay: "Không chạy"
   - id: CMP-P04
     title: "Tạo kỳ (nhân bản bộ 120 chỉ số) dưới 5 giây"
     uc: "B.III.1-UC2"
@@ -4044,6 +4332,7 @@ testcases:
       - "1. Tạo kỳ chọn bộ 120 chỉ số"
     ket_qua_mong_doi:
       - "Kỳ được tạo trong ≤ 5 giây; bản sao đủ 120 chỉ số"
+    ket_qua_chay: "Không chạy"
   - id: CMP-P05
     title: "Phân công tất cả đơn vị và lưu dưới 3 giây"
     uc: "B.III.2-UC4"
@@ -4057,3 +4346,4 @@ testcases:
       - "1. Chọn tất cả đơn vị → Lưu"
     ket_qua_mong_doi:
       - "Lưu ≤ 3 giây; Số đơn vị cập nhật"
+    ket_qua_chay: "Không chạy"

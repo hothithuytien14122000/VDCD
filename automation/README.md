@@ -29,5 +29,6 @@ Thời gian 1 worker: Người dùng ~4m30 · Nhóm ~4m · Tỉnh ~2m40 · Xã ~
 
 ## Phạm vi
 - A (6 page, 269 testcase): `scripts/A`. Script B/C/D sẽ thêm theo từng page khi có testcase.
-- Bỏ qua theo yêu cầu: Ma trận phân quyền, Tham số hệ thống. Thang xếp loại (B.5) chỉ phủ cấu trúc; kỳ tự đánh giá (C.1) xác minh bằng API.
+- Ma trận phân quyền (A.II.3, 73 testcase PRM-*, 68 Auto): `scripts/A/ma-tran-phan-quyen.spec.ts`; chỉ ghi dữ liệu trên nhóm `QCA…` tự tạo (gỡ hết quyền rồi xóa nhóm sau mỗi test).
+- Bỏ qua theo yêu cầu: Tham số hệ thống. Thang xếp loại (B.5) chỉ phủ cấu trúc; kỳ tự đánh giá (C.1) xác minh bằng API.
 - Test ghi dữ liệu dùng tiền tố `QCA`/`qc.automation` và tự dọn qua API.

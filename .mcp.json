@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "gitlab-bug": {
+      "command": "node",
+      "args": ["/data/workspace/hothithuytien14122000/mtc/gitlab-bug-mcp/gitlab-bug-mcp/src/server.js"]
+    }
+  }
+}

@@ -16,7 +16,7 @@ testcases:
       - "2. Mở menu người dùng (góc dưới sidebar) → Thông tin cá nhân"
     ket_qua_mong_doi:
       - "Mở trang /profile; có khối \"Mật khẩu\" kèm mô tả \"Đổi mật khẩu định kỳ…\" và nút \"Đổi mật khẩu\""
-    ket_qua_chay: "Pass"
+    ket_qua_chay: "Không chạy"
   - id: CPW-L02
     title: "Mọi vai trò đăng nhập đều có nút \"Đổi mật khẩu\" (kể cả vai trò chỉ xem)"
     uc: "AUTH.3-UC1"
@@ -31,7 +31,7 @@ testcases:
       - "2. Mở Thông tin cá nhân"
     ket_qua_mong_doi:
       - "Cả ba vai trò đều thấy nút \"Đổi mật khẩu\" và mở được hộp thoại"
-    ket_qua_chay: "Pass"
+    ket_qua_chay: "Không chạy"
   - id: CPW-L03
     title: "Hộp thoại Đổi mật khẩu hiển thị đủ thành phần"
     uc: "AUTH.3-UC1"
@@ -47,7 +47,7 @@ testcases:
       - "3. Bấm \"Đổi mật khẩu\""
     ket_qua_mong_doi:
       - "Tiêu đề \"Đổi mật khẩu\"; ba ô có dấu * (Mật khẩu hiện tại, Mật khẩu mới, Xác nhận mật khẩu mới) đều rỗng; khối \"Độ mạnh mật khẩu\" với 5 tiêu chí; ghi chú \"Sau khi đổi, các phiên đăng xuất trên thiết bị khác sẽ bị đăng xuất.\"; nút Huỷ, Cập nhật mật khẩu, nút đóng (X)"
-    ket_qua_chay: "Pass"
+    ket_qua_chay: "Không chạy"
   - id: CPW-L04
     title: "Ba ô mật khẩu mặc định ẩn, bấm biểu tượng mắt hiện/ẩn từng ô"
     uc: "AUTH.3-UC1"
@@ -65,7 +65,7 @@ testcases:
       - "5. Bấm biểu tượng mắt của từng ô, rồi bấm lại"
     ket_qua_mong_doi:
       - "Mặc định type=password; bấm mắt ô nào thì chỉ ô đó hiện rõ (type=text); bấm lại thì ẩn"
-    ket_qua_chay: "Pass"
+    ket_qua_chay: "Không chạy"
   - id: CPW-L05
     title: "Đóng hộp thoại bằng Huỷ, nút X hoặc phím Esc không gọi API"
     uc: "AUTH.3-UC1"
@@ -83,7 +83,7 @@ testcases:
       - "5. Đóng lần lượt bằng Huỷ, X, Esc (mở lại hộp thoại giữa các lần)"
     ket_qua_mong_doi:
       - "Mỗi lần hộp thoại đóng, vẫn ở trang Thông tin cá nhân, không có request PUT …/password nào được gửi"
-    ket_qua_chay: "Pass"
+    ket_qua_chay: "Không chạy"
   - id: CPW-L06
     title: "Mở lại hộp thoại sau khi Huỷ thì các ô mật khẩu đã nhập được xóa sạch"
     uc: "AUTH.3-UC1"
@@ -103,7 +103,7 @@ testcases:
     ket_qua_mong_doi:
       - "Cả ba ô đều rỗng (không lưu mật khẩu đã gõ)"
     ghi_chu: "Khảo sát: sau Huỷ mở lại, ô Mật khẩu hiện tại vẫn còn \"abc\" → nghi lỗi (mật khẩu còn lưu trên form)"
-    ket_qua_chay: "Fail"
+    ket_qua_chay: "Không chạy"
   - id: CPW-V01
     title: "Bỏ trống cả ba ô thì báo lỗi bắt buộc ở từng ô và không gọi API"
     uc: "AUTH.3-UC2"
@@ -120,7 +120,7 @@ testcases:
       - "4. Để trống cả ba ô, bấm \"Cập nhật mật khẩu\""
     ket_qua_mong_doi:
       - "Hiện \"Nhập mật khẩu hiện tại\", \"Nhập mật khẩu mới\", \"Xác nhận mật khẩu mới\" dưới đúng từng ô; hộp thoại vẫn mở; không có request PUT"
-    ket_qua_chay: "Pass"
+    ket_qua_chay: "Không chạy"
   - id: CPW-V02
     title: "Chỉ thiếu Mật khẩu hiện tại thì báo lỗi đúng ô đó"
     uc: "AUTH.3-UC2"
@@ -138,7 +138,7 @@ testcases:
       - "5. Bấm \"Cập nhật mật khẩu\""
     ket_qua_mong_doi:
       - "Chỉ ô Mật khẩu hiện tại báo \"Nhập mật khẩu hiện tại\"; không có request PUT"
-    ket_qua_chay: "Pass"
+    ket_qua_chay: "Không chạy"
   - id: CPW-V03
     title: "Chỉ thiếu Mật khẩu mới thì báo lỗi đúng ô đó"
     uc: "AUTH.3-UC2"
@@ -156,7 +156,7 @@ testcases:
       - "5. Bấm \"Cập nhật mật khẩu\""
     ket_qua_mong_doi:
       - "Ô Mật khẩu mới báo \"Nhập mật khẩu mới\"; không có request PUT"
-    ket_qua_chay: "Pass"
+    ket_qua_chay: "Không chạy"
   - id: CPW-V04
     title: "Chỉ thiếu Xác nhận mật khẩu mới thì báo lỗi đúng ô đó"
     uc: "AUTH.3-UC2"
@@ -174,7 +174,7 @@ testcases:
       - "5. Bấm \"Cập nhật mật khẩu\""
     ket_qua_mong_doi:
       - "Ô xác nhận báo \"Xác nhận mật khẩu mới\"; không có request PUT"
-    ket_qua_chay: "Pass"
+    ket_qua_chay: "Không chạy"
   - id: CPW-V05
     title: "Mật khẩu xác nhận không khớp thì báo lỗi và không gọi API"
     uc: "AUTH.3-UC2"
@@ -192,7 +192,7 @@ testcases:
       - "5. Bấm \"Cập nhật mật khẩu\""
     ket_qua_mong_doi:
       - "Dưới ô xác nhận hiện \"Mật khẩu xác nhận không khớp!\"; không có request PUT"
-    ket_qua_chay: "Pass"
+    ket_qua_chay: "Không chạy"
   - id: CPW-V06
     title: "Mật khẩu mới dưới 6 ký tự (\"Ab1!\") bị chặn"
     uc: "AUTH.3-UC2"
@@ -210,7 +210,7 @@ testcases:
       - "5. Bấm \"Cập nhật mật khẩu\""
     ket_qua_mong_doi:
       - "Báo \"Mật khẩu chưa đáp ứng đủ các yêu cầu bảo mật!\"; tiêu chí \"Tối thiểu 6 ký tự\" không đạt; không có request PUT"
-    ket_qua_chay: "Pass"
+    ket_qua_chay: "Không chạy"
   - id: CPW-V07
     title: "Mật khẩu mới thiếu chữ hoa hoặc chữ thường (\"abcdef1!\") bị chặn"
     uc: "AUTH.3-UC2"
@@ -228,7 +228,7 @@ testcases:
       - "5. Bấm \"Cập nhật mật khẩu\" sau mỗi lần"
     ket_qua_mong_doi:
       - "Cả hai lần đều báo chưa đáp ứng yêu cầu; tiêu chí \"Chữ hoa và chữ thường\" không đạt; không có request PUT"
-    ket_qua_chay: "Pass"
+    ket_qua_chay: "Không chạy"
   - id: CPW-V08
     title: "Mật khẩu mới không có chữ số (\"Abcdef!!\") bị chặn"
     uc: "AUTH.3-UC2"
@@ -246,7 +246,7 @@ testcases:
       - "5. Bấm \"Cập nhật mật khẩu\""
     ket_qua_mong_doi:
       - "Báo chưa đáp ứng yêu cầu; tiêu chí \"Có chữ số\" không đạt; không có request PUT"
-    ket_qua_chay: "Pass"
+    ket_qua_chay: "Không chạy"
   - id: CPW-V09
     title: "Mật khẩu mới không có ký tự đặc biệt (\"Abcdef12\") bị chặn"
     uc: "AUTH.3-UC2"
@@ -264,7 +264,7 @@ testcases:
       - "5. Bấm \"Cập nhật mật khẩu\""
     ket_qua_mong_doi:
       - "Báo chưa đáp ứng yêu cầu; tiêu chí \"Có ký tự đặc biệt\" không đạt; không có request PUT"
-    ket_qua_chay: "Pass"
+    ket_qua_chay: "Không chạy"
   - id: CPW-V10
     title: "Mật khẩu mới chứa tên đăng nhập (\"qc.canbo!A1\") bị chặn"
     uc: "AUTH.3-UC2"
@@ -282,7 +282,7 @@ testcases:
       - "5. Bấm \"Cập nhật mật khẩu\""
     ket_qua_mong_doi:
       - "Báo chưa đáp ứng yêu cầu; tiêu chí \"Không chứa tên đăng nhập\" không đạt; không có request PUT"
-    ket_qua_chay: "Pass"
+    ket_qua_chay: "Không chạy"
   - id: CPW-V11
     title: "Thanh độ mạnh và 5 tiêu chí cập nhật theo giá trị đang gõ"
     uc: "AUTH.3-UC2"
@@ -299,7 +299,7 @@ testcases:
       - "4. Lần lượt gõ vào ô Mật khẩu mới: \"abc\", \"Abcdef1\", \"Abcdef1!\", \"qc.canboA1!\""
     ket_qua_mong_doi:
       - "Nhãn độ mạnh lần lượt: Yếu · Trung bình · Mạnh · Trung bình (chứa tên đăng nhập thì tiêu chí cuối không đạt); các tiêu chí đạt/không đạt đổi ngay khi gõ"
-    ket_qua_chay: "Pass"
+    ket_qua_chay: "Không chạy"
   - id: CPW-V12
     title: "Mật khẩu mới quá 128 ký tự bị giao diện chặn trước khi gọi API"
     uc: "AUTH.3-UC2"
@@ -318,7 +318,7 @@ testcases:
     ket_qua_mong_doi:
       - "Giao diện giới hạn ô nhập tối đa 128 ký tự hoặc báo \"vượt quá 128 ký tự\" và không gửi request PUT (nhất quán với giới hạn của server)"
     ghi_chu: "Khảo sát: ô nhập cho gõ tới 255 ký tự, UI không chặn và vẫn gửi request; server mới trả 400 \"Không được nhập vượt quá 128 ký tự\" (chỉ khi mật khẩu cũ qua kiểm tra) → UI lệch quy tắc server"
-    ket_qua_chay: "Fail"
+    ket_qua_chay: "Không chạy"
   - id: CPW-A01
     title: "Mật khẩu hiện tại sai bị từ chối ngay trên giao diện, hộp thoại vẫn mở"
     uc: "AUTH.3-UC3"
@@ -336,7 +336,7 @@ testcases:
       - "5. Bấm \"Cập nhật mật khẩu\""
     ket_qua_mong_doi:
       - "Hiện thông báo \"Mật khẩu cũ không chính xác\"; hộp thoại vẫn mở, không đóng; không báo thành công"
-    ket_qua_chay: "Pass"
+    ket_qua_chay: "Không chạy"
   - id: CPW-A02
     title: "[API] Mật khẩu hiện tại sai trả HTTP 400 và không đổi mật khẩu"
     uc: "AUTH.3-UC3"
@@ -351,7 +351,7 @@ testcases:
       - "2. PUT /idm/users/{id}/password với passwordOld=\"Sai!Matkhau1\", passwordNew=\"Moi!123456a\""
     ket_qua_mong_doi:
       - "HTTP 400, message \"Mật khẩu cũ không chính xác\", isSuccess=false"
-    ket_qua_chay: "Pass"
+    ket_qua_chay: "Không chạy"
   - id: CPW-A03
     title: "[API] Mật khẩu hiện tại để trống bị từ chối"
     uc: "AUTH.3-UC3"
@@ -367,7 +367,7 @@ testcases:
     ket_qua_mong_doi:
       - "HTTP 400, báo thiếu/sai mật khẩu hiện tại; mật khẩu không bị đổi"
     ghi_chu: "Khảo sát: HTTP 200 \"Đổi mật khẩu thành công\" → nghi lỗi nghiêm trọng (đổi được mật khẩu mà không cần biết mật khẩu cũ; kẻ giữ token có thể chiếm tài khoản). Case tự khôi phục mật khẩu"
-    ket_qua_chay: "Fail"
+    ket_qua_chay: "Không chạy"
   - id: CPW-A04
     title: "[API] Mật khẩu hiện tại là null / không gửi trường passwordOld bị từ chối"
     uc: "AUTH.3-UC3"
@@ -384,7 +384,7 @@ testcases:
     ket_qua_mong_doi:
       - "Cả hai lần HTTP 400; mật khẩu không bị đổi"
     ghi_chu: "Khảo sát: passwordOld=null → HTTP 200 đã đổi mật khẩu → nghi lỗi. Case tự khôi phục mật khẩu"
-    ket_qua_chay: "Fail"
+    ket_qua_chay: "Không chạy"
   - id: CPW-A05
     title: "[API] Mật khẩu hiện tại chỉ gồm khoảng trắng bị từ chối"
     uc: "AUTH.3-UC3"
@@ -398,7 +398,7 @@ testcases:
       - "1. PUT với passwordOld=\"   \", passwordNew hợp lệ"
     ket_qua_mong_doi:
       - "HTTP 400 \"Mật khẩu cũ không chính xác\"; mật khẩu không đổi"
-    ket_qua_chay: "Pass"
+    ket_qua_chay: "Không chạy"
   - id: CPW-A06
     title: "[API] Mật khẩu mới rỗng hoặc thiếu bị từ chối"
     uc: "AUTH.3-UC3"
@@ -413,7 +413,7 @@ testcases:
       - "2. PUT với body rỗng {}"
     ket_qua_mong_doi:
       - "Cả hai lần HTTP 400 \"Vui lòng nhập mật khẩu mới\"; không lỗi 500"
-    ket_qua_chay: "Pass"
+    ket_qua_chay: "Không chạy"
   - id: CPW-A07
     title: "[API] Mật khẩu mới quá ngắn (\"abc\") bị từ chối"
     uc: "AUTH.3-UC3"
@@ -429,7 +429,7 @@ testcases:
     ket_qua_mong_doi:
       - "HTTP 400, báo mật khẩu chưa đáp ứng yêu cầu; mật khẩu không đổi"
     ghi_chu: "Khảo sát: HTTP 200 → server KHÔNG kiểm chính sách mật khẩu, chỉ UI chặn → nghi lỗi (gọi API trực tiếp qua mặt được chính sách). Case tự khôi phục mật khẩu"
-    ket_qua_chay: "Fail"
+    ket_qua_chay: "Không chạy"
   - id: CPW-A08
     title: "[API] Mật khẩu mới chỉ gồm số (\"12345678\") bị từ chối theo độ phức tạp"
     uc: "AUTH.3-UC3"
@@ -445,7 +445,7 @@ testcases:
     ket_qua_mong_doi:
       - "HTTP 400, báo mật khẩu chưa đáp ứng yêu cầu; mật khẩu không đổi"
     ghi_chu: "Khảo sát: HTTP 200 → nghi lỗi (cùng nguyên nhân CPW-A07). Case tự khôi phục mật khẩu"
-    ket_qua_chay: "Fail"
+    ket_qua_chay: "Không chạy"
   - id: CPW-A09
     title: "[API] Mật khẩu mới chứa tên đăng nhập bị từ chối"
     uc: "AUTH.3-UC3"
@@ -461,7 +461,7 @@ testcases:
     ket_qua_mong_doi:
       - "HTTP 400, báo mật khẩu chưa đáp ứng yêu cầu; mật khẩu không đổi"
     ghi_chu: "Khảo sát: HTTP 200 → nghi lỗi (cùng nguyên nhân CPW-A07). Case tự khôi phục mật khẩu"
-    ket_qua_chay: "Fail"
+    ket_qua_chay: "Không chạy"
   - id: CPW-A10
     title: "[API] Mật khẩu mới 129 ký tự bị từ chối"
     uc: "AUTH.3-UC3"
@@ -477,7 +477,7 @@ testcases:
     ket_qua_mong_doi:
       - "HTTP 400 \"Không được nhập vượt quá 128 ký tự\"; mật khẩu không đổi"
     ghi_chu: "Khảo sát: server kiểm tra mật khẩu cũ TRƯỚC độ dài mật khẩu mới; với mật khẩu cũ sai chỉ thấy lỗi mật khẩu cũ. Case tự khôi phục mật khẩu"
-    ket_qua_chay: "Pass"
+    ket_qua_chay: "Không chạy"
   - id: CPW-S01
     title: "[API] Đổi mật khẩu không có token bị từ chối 401"
     uc: "AUTH.3-UC4"
@@ -491,7 +491,7 @@ testcases:
       - "1. PUT /idm/users/{id}/password không gửi header Authorization (body passwordOld=\"Sai!Matkhau1\")"
     ket_qua_mong_doi:
       - "HTTP 401; không đổi mật khẩu"
-    ket_qua_chay: "Pass"
+    ket_qua_chay: "Không chạy"
   - id: CPW-S02
     title: "[API] Đổi mật khẩu với token giả bị từ chối 401"
     uc: "AUTH.3-UC4"
@@ -505,7 +505,7 @@ testcases:
       - "1. PUT với Authorization: Bearer abc.def.ghi"
     ket_qua_mong_doi:
       - "HTTP 401; không đổi mật khẩu"
-    ket_qua_chay: "Pass"
+    ket_qua_chay: "Không chạy"
   - id: CPW-S03
     title: "[API] Không đổi được mật khẩu của người dùng khác bằng token của mình"
     uc: "AUTH.3-UC4"
@@ -520,7 +520,7 @@ testcases:
     ket_qua_mong_doi:
       - "Bị từ chối 403/404 (không phải 400 \"Mật khẩu cũ không chính xác\"); mật khẩu người khác không đổi"
     ghi_chu: "Khảo sát: với id người dùng KHÁC đang tồn tại (qc.ldd) API trả 400 \"Mật khẩu cũ không chính xác\" — tức không chặn quyền, chỉ kiểm mật khẩu cũ của chính người đó → nghi lỗi nghiêm trọng (IDOR); kết hợp lỗi CPW-A03 (mật khẩu cũ rỗng được chấp nhận) có thể đổi mật khẩu của bất kỳ ai. Chỉ dùng mật khẩu cũ sai, KHÔNG khai thác thật; id đã xóa/không tồn tại thì 404"
-    ket_qua_chay: "Fail"
+    ket_qua_chay: "Không chạy"
   - id: CPW-S04
     title: "[API] Id người dùng không tồn tại hoặc sai định dạng trả lỗi có kiểm soát"
     uc: "AUTH.3-UC4"
@@ -535,7 +535,7 @@ testcases:
       - "2. PUT /idm/users/abc/password (passwordOld=\"Sai!Matkhau1\")"
     ket_qua_mong_doi:
       - "HTTP 404 \"Không tìm thấy người dùng\" hoặc 400; không lỗi 500, không lộ stack trace"
-    ket_qua_chay: "Pass"
+    ket_qua_chay: "Không chạy"
   - id: CPW-S05
     title: "Ký tự đặc biệt / SQL / script trong mật khẩu hiện tại không gây lỗi hệ thống"
     uc: "AUTH.3-UC4"
@@ -550,7 +550,7 @@ testcases:
       - "2. Bấm \"Cập nhật mật khẩu\" sau mỗi lần"
     ket_qua_mong_doi:
       - "Cả hai lần báo \"Mật khẩu cũ không chính xác\"; không lỗi 500, không thực thi script, không đổi mật khẩu"
-    ket_qua_chay: "Pass"
+    ket_qua_chay: "Không chạy"
   - id: CPW-S06
     title: "Mật khẩu chỉ gửi trong body, không nằm trên URL và không xuất hiện trong phản hồi"
     uc: "AUTH.3-UC4"
@@ -568,7 +568,7 @@ testcases:
       - "5. Quan sát request/response"
     ket_qua_mong_doi:
       - "Request là PUT, URL không chứa mật khẩu, mật khẩu nằm trong body; phản hồi không chứa mật khẩu hay hash"
-    ket_qua_chay: "Pass"
+    ket_qua_chay: "Không chạy"
   - id: CPW-S07
     title: "Nhập sai mật khẩu hiện tại nhiều lần liên tiếp bị giới hạn"
     uc: "AUTH.3-UC4"
@@ -602,7 +602,7 @@ testcases:
       - "5. Nhập mật khẩu hiện tại sai, mới và xác nhận hợp lệ; bấm \"Cập nhật mật khẩu\""
     ket_qua_mong_doi:
       - "Có thông báo lỗi; hộp thoại không đóng; không hiện \"Đổi mật khẩu thành công\"; không lộ chi tiết nội bộ"
-    ket_qua_chay: "Pass"
+    ket_qua_chay: "Không chạy"
   - id: CPW-G02
     title: "Mất kết nối mạng khi cập nhật: hiển thị lỗi, người dùng thao tác lại được"
     uc: "AUTH.3-UC5"
@@ -622,7 +622,7 @@ testcases:
     ket_qua_mong_doi:
       - "Có thông báo lỗi kết nối, hộp thoại không treo; sau khi có mạng bấm lại gửi được request"
     ghi_chu: "Khảo sát: mất mạng thì bấm Cập nhật không có thông báo nào (im lặng), hộp thoại vẫn mở → nghi lỗi (người dùng không biết thao tác thất bại)"
-    ket_qua_chay: "Fail"
+    ket_qua_chay: "Không chạy"
   - id: CPW-G03
     title: "Bấm \"Cập nhật mật khẩu\" nhiều lần liên tiếp chỉ gửi một request"
     uc: "AUTH.3-UC5"
@@ -640,7 +640,7 @@ testcases:
       - "5. Bấm \"Cập nhật mật khẩu\" 3 lần liên tiếp"
     ket_qua_mong_doi:
       - "Chỉ có 1 request PUT được gửi; nút bị khóa/hiện trạng thái đang xử lý trong lúc chờ"
-    ket_qua_chay: "Pass"
+    ket_qua_chay: "Không chạy"
   - id: CPW-M01
     title: "Đổi mật khẩu thành công trọn luồng trên giao diện"
     uc: "AUTH.3-UC6"

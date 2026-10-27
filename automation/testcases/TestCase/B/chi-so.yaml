@@ -16,6 +16,7 @@ testcases:
       - "2. Mở trang Chỉ số"
     ket_qua_mong_doi:
       - "Bảng có đủ cột: STT, Mã chỉ số, Tên chỉ số, Trụ cột, Nhóm chỉ số, Chỉ số con, Điểm tối thiểu, Điểm tối đa, Trạng thái, Thao tác; có dữ liệu"
+    ket_qua_chay: "Không chạy"
   - id: IND-L02
     title: "Phân trang mặc định 10 bản ghi/trang và hiển thị tổng số bản ghi"
     uc: "B.I.3-UC1"
@@ -29,6 +30,7 @@ testcases:
       - "1. Mở trang Chỉ số"
     ket_qua_mong_doi:
       - "Hiển thị \"Hiển thị 1-10 trong N bản ghi\"; tối đa 10 dòng dữ liệu; thanh phân trang xuất hiện khi N>10"
+    ket_qua_chay: "Không chạy"
   - id: IND-L03
     title: "Tìm theo mã chỉ số trả về đúng bản ghi"
     uc: "B.I.3-UC1"
@@ -43,6 +45,7 @@ testcases:
       - "2. Nhập một mã chỉ số có sẵn vào ô tìm kiếm"
     ket_qua_mong_doi:
       - "Chỉ hiển thị các dòng chứa từ khóa; có ít nhất 1 dòng"
+    ket_qua_chay: "Không chạy"
   - id: IND-L04
     title: "Tìm theo tên chỉ số trả về đúng bản ghi"
     uc: "B.I.3-UC1"
@@ -56,6 +59,7 @@ testcases:
       - "1. Nhập một tên chỉ số có sẵn vào ô tìm kiếm"
     ket_qua_mong_doi:
       - "Chỉ hiển thị các dòng chứa từ khóa"
+    ket_qua_chay: "Không chạy"
   - id: IND-L05
     title: "Từ khóa không tồn tại → không có dữ liệu"
     uc: "B.I.3-UC1"
@@ -69,6 +73,7 @@ testcases:
       - "1. Nhập \"zzqcxx_khongtontai_999\""
     ket_qua_mong_doi:
       - "Bảng rỗng / hiển thị trạng thái không có dữ liệu, không lỗi"
+    ket_qua_chay: "Không chạy"
   - id: IND-L06
     title: "Tìm kiếm không phân biệt chữ hoa/chữ thường"
     uc: "B.I.3-UC1"
@@ -82,6 +87,7 @@ testcases:
       - "1. Nhập từ khóa viết HOA rồi viết thường của cùng một giá trị"
     ket_qua_mong_doi:
       - "Hai lần tìm trả về cùng số bản ghi"
+    ket_qua_chay: "Không chạy"
   - id: IND-L07
     title: "Ký tự đặc biệt / chuỗi SQL trong ô tìm kiếm không gây lỗi hệ thống"
     uc: "B.I.3-UC1"
@@ -95,6 +101,7 @@ testcases:
       - "1. Nhập  ' OR 1=1 --  và  <script>alert(1)</script>"
     ket_qua_mong_doi:
       - "Không hiện lỗi 500/trắng trang, không thực thi script, không trả về toàn bộ dữ liệu bất thường"
+    ket_qua_chay: "Không chạy"
   - id: IND-L08
     title: "Chuyển sang trang 2 hiển thị dữ liệu khác trang 1"
     uc: "B.I.3-UC1"
@@ -108,6 +115,7 @@ testcases:
       - "1. Bấm trang 2 trên thanh phân trang"
     ket_qua_mong_doi:
       - "Trang 2 được đánh dấu active; nội dung bảng khác trang 1"
+    ket_qua_chay: "Không chạy"
   - id: IND-L09
     title: "Đổi số bản ghi/trang sang 20 thì số dòng thay đổi theo"
     uc: "B.I.3-UC1"
@@ -121,6 +129,7 @@ testcases:
       - "1. Chọn \"20 / trang\" ở thanh phân trang"
     ket_qua_mong_doi:
       - "Số dòng tối đa mỗi trang = 20; tổng số bản ghi không đổi"
+    ket_qua_chay: "Không chạy"
   - id: IND-L10
     title: "Xóa từ khóa thì danh sách trở về đầy đủ"
     uc: "B.I.3-UC1"
@@ -135,6 +144,7 @@ testcases:
       - "2. Xóa trắng ô tìm kiếm"
     ket_qua_mong_doi:
       - "Danh sách hiển thị lại như ban đầu (tổng số bản ghi bằng lúc đầu)"
+    ket_qua_chay: "Không chạy"
   - id: IND-L12
     title: "Lọc theo trụ cột / nhóm chỉ số"
     uc: "B.I.3-UC1"
@@ -148,6 +158,7 @@ testcases:
       - "1. Chọn một trụ cột rồi một nhóm ở bộ lọc"
     ket_qua_mong_doi:
       - "Mọi dòng thuộc trụ cột/nhóm đã chọn"
+    ket_qua_chay: "Không chạy"
   - id: IND-L13
     title: "Lọc theo trạng thái khóa"
     uc: "B.I.3-UC1"
@@ -161,6 +172,7 @@ testcases:
       - "1. Chọn Đã khóa / Chưa khóa"
     ket_qua_mong_doi:
       - "Mọi dòng khớp trạng thái"
+    ket_qua_chay: "Không chạy"
   - id: IND-L14
     title: "Kết hợp từ khóa và bộ lọc"
     uc: "B.I.3-UC1"
@@ -175,6 +187,7 @@ testcases:
       - "2. Chọn bộ lọc"
     ket_qua_mong_doi:
       - "Kết quả thỏa mãn đồng thời cả hai"
+    ket_qua_chay: "Không chạy"
   - id: IND-L15
     title: "Cấu trúc cha/con: cột \"Chỉ số con\" khớp số chỉ số con trong chi tiết"
     uc: "B.I.3-UC1"
@@ -190,6 +203,7 @@ testcases:
     ket_qua_mong_doi:
       - "Số chỉ số con ở danh sách = số dòng bảng \"Chỉ số con\""
     ghi_chu: "UC nêu \"danh sách, dạng cây…\""
+    ket_qua_chay: "Không chạy"
   - id: IND-V01
     title: "Chi tiết chỉ số hiển thị mã, vị trí (trụ cột>nhóm), loại, điểm tối thiểu–tối đa, thứ tự, mô tả, chỉ số con, bộ chỉ số đang sử dụng"
     uc: "B.I.3-UC1"
@@ -203,6 +217,7 @@ testcases:
       - "1. Bấm \"Xem chi tiết\" một chỉ số"
     ket_qua_mong_doi:
       - "Hiển thị đủ; có nút Khóa chỉ số, Cập nhật, Thêm chỉ số con; chưa có mô tả → \"Chưa có mô tả\""
+    ket_qua_chay: "Không chạy"
   - id: IND-V02
     title: "Mở chi tiết chỉ số với id không tồn tại không gây lỗi hệ thống"
     uc: "B.I.3-UC1"
@@ -217,6 +232,7 @@ testcases:
       - "2. Mở URL id lạ"
     ket_qua_mong_doi:
       - "API 4xx (không 500); không lộ lỗi"
+    ket_qua_chay: "Không chạy"
   - id: IND-V03
     title: "Bảng \"Bộ chỉ số đang sử dụng\" liệt kê đúng bộ chỉ số chứa chỉ số"
     uc: "B.I.3-UC1"
@@ -231,6 +247,7 @@ testcases:
       - "2. Mở chi tiết"
     ket_qua_mong_doi:
       - "Bộ chỉ số đó xuất hiện trong bảng"
+    ket_qua_chay: "Không chạy"
   - id: IND-C01
     title: "Thêm chỉ số đầy đủ (trụ cột, nhóm, mã, tên, mô tả, điểm min/max) thành công"
     uc: "B.I.3-UC2"
@@ -246,6 +263,7 @@ testcases:
       - "3. Lưu"
     ket_qua_mong_doi:
       - "Thành công; chỉ số hiện ở danh sách với đúng trụ cột, nhóm, điểm; trạng thái Chưa khóa"
+    ket_qua_chay: "Không chạy"
   - id: IND-C02
     title: "Bỏ trống Trụ cột/Nhóm/Mã/Tên thì báo lỗi bắt buộc"
     uc: "B.I.3-UC2"
@@ -259,6 +277,7 @@ testcases:
       - "1. Bấm Lưu khi chưa nhập"
     ket_qua_mong_doi:
       - "Báo lỗi bắt buộc từng trường; không tạo"
+    ket_qua_chay: "Không chạy"
   - id: IND-C03
     title: "Trùng mã chỉ số bị từ chối"
     uc: "B.I.3-UC2"
@@ -273,6 +292,7 @@ testcases:
       - "2. Tạo chỉ số B cùng mã"
     ket_qua_mong_doi:
       - "Báo mã đã tồn tại; chỉ 1 bản ghi"
+    ket_qua_chay: "Không chạy"
   - id: IND-C04
     title: "Danh sách Nhóm chỉ số phụ thuộc Trụ cột đã chọn; Chỉ số cha phụ thuộc Nhóm"
     uc: "B.I.3-UC2"
@@ -288,6 +308,7 @@ testcases:
       - "3. Mở select Chỉ số cha"
     ket_qua_mong_doi:
       - "Select Nhóm bị vô hiệu cho đến khi chọn trụ cột; Chỉ số cha hiện \"Chọn nhóm chỉ số trước\"; sau khi chọn chỉ liệt kê mục thuộc trụ cột/nhóm đó"
+    ket_qua_chay: "Không chạy"
   - id: IND-C05
     title: "Thêm chỉ số con (chọn Chỉ số cha) thành công"
     uc: "B.I.3-UC2"
@@ -302,6 +323,7 @@ testcases:
       - "2. Lưu"
     ket_qua_mong_doi:
       - "Chỉ số con được tạo; cột \"Chỉ số con\" của cha tăng 1; chi tiết cha liệt kê con"
+    ket_qua_chay: "Không chạy"
   - id: IND-C06
     title: "Điểm tối thiểu lớn hơn điểm tối đa bị chặn"
     uc: "B.I.3-UC2"
@@ -316,6 +338,7 @@ testcases:
       - "2. Lưu"
     ket_qua_mong_doi:
       - "Báo \"Điểm tối thiểu không được lớn hơn điểm tối đa\" (UI và API 400); không tạo"
+    ket_qua_chay: "Không chạy"
   - id: IND-C07
     title: "Điểm âm hoặc vượt 1000 bị chặn"
     uc: "B.I.3-UC2"
@@ -329,6 +352,7 @@ testcases:
       - "1. Nhập -5 rồi 1001"
     ket_qua_mong_doi:
       - "Báo \"Điểm phải nằm trong khoảng từ 0 đến 1000\""
+    ket_qua_chay: "Không chạy"
   - id: IND-C08
     title: "Biên điểm: 0 và 1000 hợp lệ; min = max hợp lệ"
     uc: "B.I.3-UC2"
@@ -343,6 +367,7 @@ testcases:
       - "2. Tạo chỉ số min=max=5"
     ket_qua_mong_doi:
       - "Lưu thành công, hiển thị đúng điểm"
+    ket_qua_chay: "Không chạy"
   - id: IND-C09
     title: "Điểm nhập không phải số / có phần thập phân"
     uc: "B.I.3-UC2"
@@ -357,6 +382,7 @@ testcases:
     ket_qua_mong_doi:
       - "Chữ bị chặn; số thập phân được lưu/hiển thị đúng hoặc báo rõ ràng"
     ghi_chu: "Cần BA xác nhận quy tắc số thập phân"
+    ket_qua_chay: "Không chạy"
   - id: IND-C10
     title: "Chỉ số không nhập điểm tối thiểu/tối đa"
     uc: "B.I.3-UC2"
@@ -372,6 +398,7 @@ testcases:
     ket_qua_mong_doi:
       - "Theo quy tắc: bắt buộc nhập điểm hoặc mặc định 0 và hiển thị rõ"
     ghi_chu: "Khảo sát: API nhận chỉ số không có điểm. Cần BA xác nhận quy tắc"
+    ket_qua_chay: "Không chạy"
   - id: IND-C11
     title: "Điểm tối đa của chỉ số con không được vượt điểm tối đa chỉ số cha"
     uc: "B.I.3-UC2"
@@ -387,6 +414,7 @@ testcases:
     ket_qua_mong_doi:
       - "Bị chặn / điểm cha tự = tổng điểm các con (SRS BR-12)"
     ghi_chu: "Khảo sát: API nhận con max 50 dưới cha max 10 → nghi lỗi. Cần BA xác nhận quy tắc"
+    ket_qua_chay: "Không chạy"
   - id: IND-C12
     title: "Hủy form thêm mới không tạo bản ghi"
     uc: "B.I.3-UC2"
@@ -401,6 +429,7 @@ testcases:
       - "2. Huỷ"
     ket_qua_mong_doi:
       - "Không có chỉ số mới"
+    ket_qua_chay: "Không chạy"
   - id: IND-C13
     title: "Mã chỉ số 50 ký tự được nhận, 51 ký tự bị chặn"
     uc: "B.I.3-UC2"
@@ -414,6 +443,7 @@ testcases:
       - "1. Nhập mã 50 rồi 51 ký tự"
     ket_qua_mong_doi:
       - "51 ký tự báo vượt giới hạn"
+    ket_qua_chay: "Không chạy"
   - id: IND-C14
     title: "[API] Thiếu trường bắt buộc / nhóm không thuộc trụ cột bị từ chối 4xx"
     uc: "B.I.3-UC2"
@@ -428,6 +458,7 @@ testcases:
       - "2. [API] POST nhóm của trụ cột khác"
     ket_qua_mong_doi:
       - "HTTP 400 có thông báo; không 500"
+    ket_qua_chay: "Không chạy"
   - id: IND-E01
     title: "Sửa tên và mô tả chỉ số chưa khóa thành công"
     uc: "B.I.3-UC5"
@@ -443,6 +474,7 @@ testcases:
       - "3. Lưu"
     ket_qua_mong_doi:
       - "Dữ liệu mới hiển thị ở danh sách và chi tiết"
+    ket_qua_chay: "Không chạy"
   - id: IND-E02
     title: "Xóa trắng tên khi sửa bị chặn"
     uc: "B.I.3-UC5"
@@ -457,6 +489,7 @@ testcases:
       - "2. Lưu"
     ket_qua_mong_doi:
       - "Báo lỗi bắt buộc"
+    ket_qua_chay: "Không chạy"
   - id: IND-E03
     title: "Hủy chỉnh sửa không đổi dữ liệu"
     uc: "B.I.3-UC5"
@@ -471,6 +504,7 @@ testcases:
       - "2. Huỷ"
     ket_qua_mong_doi:
       - "Dữ liệu giữ nguyên"
+    ket_qua_chay: "Không chạy"
   - id: IND-E04
     title: "[API] Sửa chỉ số đã khóa bị từ chối"
     uc: "B.I.3-UC5"
@@ -485,6 +519,7 @@ testcases:
       - "2. [API] PUT đổi tên"
     ket_qua_mong_doi:
       - "HTTP 400 \"Chỉ số đã bị khoá, không thể chỉnh sửa\""
+    ket_qua_chay: "Không chạy"
   - id: IND-E05
     title: "Đổi chỉ số cha của một chỉ số thành công"
     uc: "B.I.3-UC6"
@@ -499,6 +534,7 @@ testcases:
       - "2. Lưu"
     ket_qua_mong_doi:
       - "Chỉ số chuyển sang cha mới; \"Chỉ số con\" của cha cũ giảm 1, cha mới tăng 1"
+    ket_qua_chay: "Không chạy"
   - id: IND-E06
     title: "Bỏ chỉ số cha → trở thành chỉ số gốc"
     uc: "B.I.3-UC6"
@@ -512,6 +548,7 @@ testcases:
       - "1. Cập nhật chỉ số con → để trống Chỉ số cha"
     ket_qua_mong_doi:
       - "Chỉ số thành chỉ số gốc của nhóm"
+    ket_qua_chay: "Không chạy"
   - id: IND-E07
     title: "Không chọn chính nó hoặc chỉ số con của nó làm cha (vòng lặp)"
     uc: "B.I.3-UC6"
@@ -525,6 +562,7 @@ testcases:
       - "1. Cập nhật chỉ số A → chọn Cha = chính A hoặc con của A"
     ket_qua_mong_doi:
       - "Không có trong danh sách chọn / bị từ chối; không tạo vòng lặp"
+    ket_qua_chay: "Không chạy"
   - id: IND-E08
     title: "Sửa điểm tối đa của chỉ số"
     uc: "B.I.4-UC1"
@@ -539,6 +577,7 @@ testcases:
       - "2. Lưu"
     ket_qua_mong_doi:
       - "Điểm tối đa mới ở danh sách/chi tiết; tổng điểm nhóm/trụ cột cập nhật theo"
+    ket_qua_chay: "Không chạy"
   - id: IND-E09
     title: "Sửa điểm tối thiểu của chỉ số"
     uc: "B.I.4-UC2"
@@ -553,6 +592,7 @@ testcases:
       - "2. Lưu"
     ket_qua_mong_doi:
       - "Điểm tối thiểu mới được lưu"
+    ket_qua_chay: "Không chạy"
   - id: IND-E10
     title: "Sửa điểm làm min > max bị chặn"
     uc: "B.I.4-UC2"
@@ -566,6 +606,7 @@ testcases:
       - "1. Cập nhật → đặt min lớn hơn max"
     ket_qua_mong_doi:
       - "Báo lỗi; dữ liệu giữ nguyên"
+    ket_qua_chay: "Không chạy"
   - id: IND-E11
     title: "Giảm điểm tối đa của cha thấp hơn tổng điểm con"
     uc: "B.I.4-UC1"
@@ -581,6 +622,7 @@ testcases:
     ket_qua_mong_doi:
       - "Bị chặn hoặc cảnh báo theo quy tắc điểm"
     ghi_chu: "Cần BA xác nhận quy tắc"
+    ket_qua_chay: "Không chạy"
   - id: IND-K01
     title: "Khóa chỉ số (menu và nút \"Khóa chỉ số\" ở chi tiết)"
     uc: "B.I.3-UC3"
@@ -595,6 +637,7 @@ testcases:
       - "2. Xác nhận"
     ket_qua_mong_doi:
       - "Đã khóa; menu còn Mở khoá, Nhân bản (không Cập nhật/Xoá)"
+    ket_qua_chay: "Không chạy"
   - id: IND-K02
     title: "Mở khóa chỉ số → sửa/xóa lại được"
     uc: "B.I.3-UC3"
@@ -608,6 +651,7 @@ testcases:
       - "1. Menu → Mở khoá"
     ket_qua_mong_doi:
       - "Chưa khóa; menu có Khoá, Nhân bản, Cập nhật, Xoá"
+    ket_qua_chay: "Không chạy"
   - id: IND-K03
     title: "Chỉ chỉ số đã khóa mới đưa được vào bộ chỉ số"
     uc: "B.I.3-UC3"
@@ -622,6 +666,7 @@ testcases:
     ket_qua_mong_doi:
       - "Chỉ liệt kê chỉ số Đã khóa"
     ghi_chu: "Suy từ quy tắc khóa — xác minh khi viết script"
+    ket_qua_chay: "Không chạy"
   - id: IND-D01
     title: "Xóa chỉ số chưa khóa, không có con thành công"
     uc: "B.I.3-UC4"
@@ -636,6 +681,7 @@ testcases:
       - "2. Xác nhận"
     ket_qua_mong_doi:
       - "Chỉ số biến mất"
+    ket_qua_chay: "Không chạy"
   - id: IND-D02
     title: "Chọn \"Không\" ở hộp xác nhận thì giữ nguyên"
     uc: "B.I.3-UC4"
@@ -650,6 +696,7 @@ testcases:
       - "2. Không"
     ket_qua_mong_doi:
       - "Chỉ số còn nguyên"
+    ket_qua_chay: "Không chạy"
   - id: IND-D03
     title: "Chỉ số đã khóa không xóa được (UI ẩn Xoá, API 400)"
     uc: "B.I.3-UC4"
@@ -664,6 +711,7 @@ testcases:
       - "2. [API] DELETE"
     ket_qua_mong_doi:
       - "API 400 \"Chỉ số đã bị khoá, không thể xóa\""
+    ket_qua_chay: "Không chạy"
   - id: IND-D04
     title: "Xóa chỉ số đang có chỉ số con trả lỗi nghiệp vụ, không phải 500"
     uc: "B.I.3-UC4"
@@ -679,6 +727,7 @@ testcases:
     ket_qua_mong_doi:
       - "Bị chặn với thông báo rõ ràng (4xx); không lộ lỗi nội bộ"
     ghi_chu: "Khảo sát: API trả HTTP 500 lộ \"An error occurred while saving the entity changes…\" → nghi lỗi"
+    ket_qua_chay: "Không chạy"
   - id: IND-D05
     title: "Chỉ số đang được bộ chỉ số sử dụng không xóa được"
     uc: "B.I.3-UC4"
@@ -694,6 +743,7 @@ testcases:
     ket_qua_mong_doi:
       - "Bị chặn; chỉ số và bộ chỉ số còn nguyên"
     ghi_chu: "Cần BA xác nhận quy tắc"
+    ket_qua_chay: "Không chạy"
   - id: IND-N01
     title: "Nhân bản chỉ số tạo bản sao tên \"(Bản sao)\", mã mới, trạng thái Chưa khóa"
     uc: "B.I.5-UC1"
@@ -707,6 +757,7 @@ testcases:
       - "1. Menu → Nhân bản"
     ket_qua_mong_doi:
       - "Xuất hiện chỉ số mới có hậu tố \"(Bản sao)\", mã không trùng, Chưa khóa, điểm/nhóm giống bản gốc"
+    ket_qua_chay: "Không chạy"
   - id: IND-N02
     title: "Nhân bản chỉ số đã khóa vẫn được và bản sao Chưa khóa"
     uc: "B.I.5-UC1"
@@ -721,6 +772,7 @@ testcases:
       - "2. Menu → Nhân bản"
     ket_qua_mong_doi:
       - "Bản sao tạo được, Chưa khóa; bản gốc vẫn Đã khóa"
+    ket_qua_chay: "Không chạy"
   - id: IND-N03
     title: "Nhân bản nhiều lần cho mã duy nhất, không trùng"
     uc: "B.I.5-UC1"
@@ -734,6 +786,7 @@ testcases:
       - "1. Nhân bản cùng một chỉ số 3 lần"
     ket_qua_mong_doi:
       - "3 bản sao mã khác nhau"
+    ket_qua_chay: "Không chạy"
   - id: IND-N04
     title: "Nhân bản chỉ số có chỉ số con"
     uc: "B.I.5-UC1"
@@ -748,6 +801,7 @@ testcases:
     ket_qua_mong_doi:
       - "Bản sao có/không có chỉ số con theo quy tắc; không làm đổi chỉ số con của bản gốc"
     ghi_chu: "Cần BA xác nhận quy tắc có nhân bản cả chỉ số con"
+    ket_qua_chay: "Không chạy"
   - id: IND-N05
     title: "Xem và sửa chỉ số vừa nhân bản; sửa không ảnh hưởng bản gốc"
     uc: "B.I.5-UC2"
@@ -763,6 +817,7 @@ testcases:
       - "3. Xem bản gốc"
     ket_qua_mong_doi:
       - "Bản sao đổi; bản gốc không đổi"
+    ket_qua_chay: "Không chạy"
   - id: IND-N06
     title: "Nhân bản id không tồn tại không gây lỗi"
     uc: "B.I.5-UC1"
@@ -776,6 +831,7 @@ testcases:
       - "1. [API] POST nhân bản id lạ"
     ket_qua_mong_doi:
       - "HTTP 4xx, không 500"
+    ket_qua_chay: "Không chạy"
   - id: IND-G01
     title: "Trường bắt buộc chỉ nhập khoảng trắng bị chặn (chỉ số)"
     uc: "B.I.3-UC2"
@@ -791,6 +847,7 @@ testcases:
       - "3. Lưu"
     ket_qua_mong_doi:
       - "Báo lỗi bắt buộc (chuỗi rỗng sau trim); không tạo bản ghi"
+    ket_qua_chay: "Không chạy"
   - id: IND-G02
     title: "Tên chứa tiếng Việt có dấu, HTML, dấu nháy, & được lưu và hiển thị đúng sau khi tải lại trang (chỉ số)"
     uc: "B.I.3-UC2"
@@ -805,6 +862,7 @@ testcases:
       - "2. Tải lại trang (F5), tìm theo mã/tên"
     ket_qua_mong_doi:
       - "Tên hiển thị nguyên văn dạng chữ; thẻ HTML không bị render"
+    ket_qua_chay: "Không chạy"
   - id: IND-G03
     title: "Server lỗi 500 khi lưu: giữ form và dữ liệu đã nhập, không lộ lỗi nội bộ (chỉ số)"
     uc: "B.I.3-UC2"
@@ -820,6 +878,7 @@ testcases:
       - "3. Lưu"
     ket_qua_mong_doi:
       - "Form còn mở và giữ dữ liệu; không lộ stacktrace; không tạo bản ghi"
+    ket_qua_chay: "Không chạy"
   - id: IND-G04
     title: "Mất kết nối khi lưu: không treo giao diện, giữ form (chỉ số)"
     uc: "B.I.3-UC2"
@@ -835,6 +894,7 @@ testcases:
       - "3. Lưu"
     ket_qua_mong_doi:
       - "Form còn mở và giữ dữ liệu; trang không trắng; không tạo bản ghi"
+    ket_qua_chay: "Không chạy"
   - id: IND-G05
     title: "Bấm Lưu 2 lần liên tiếp chỉ tạo 1 bản ghi (chỉ số)"
     uc: "B.I.3-UC2"
@@ -849,6 +909,7 @@ testcases:
       - "2. Bấm Lưu 2 lần rất nhanh"
     ket_qua_mong_doi:
       - "Chỉ có đúng 1 bản ghi"
+    ket_qua_chay: "Không chạy"
   - id: IND-A01
     title: "API chỉ số: không token / token giả → 401"
     uc: "B.I.3-UC1"
@@ -863,6 +924,7 @@ testcases:
       - "2. GET với token giả"
     ket_qua_mong_doi:
       - "HTTP 401"
+    ket_qua_chay: "Không chạy"
   - id: IND-A02
     title: "Quyền API chỉ số đúng theo ma trận quyền Cán bộ"
     uc: "B.I.3-UC1"
@@ -877,6 +939,7 @@ testcases:
       - "2. GET/POST/PUT/DELETE theo quyền Xem/Thêm/Sửa/Xóa/Khóa"
     ket_qua_mong_doi:
       - "Có quyền → được; không có → 403"
+    ket_qua_chay: "Không chạy"
   - id: IND-A03
     title: "Chưa đăng nhập vào trang chỉ số bị chuyển về màn đăng nhập, không lộ dữ liệu"
     uc: "B.I.3-UC1"
@@ -891,6 +954,7 @@ testcases:
       - "2. Mở URL trang"
     ket_qua_mong_doi:
       - "Hiện màn đăng nhập; không có dữ liệu"
+    ket_qua_chay: "Không chạy"
   - id: IND-P01
     title: "Danh sách chỉ số tải < 3 giây"
     uc: "B.I.3-UC1"
@@ -904,3 +968,4 @@ testcases:
       - "1. Mở trang và đo"
     ket_qua_mong_doi:
       - "API < 3000ms, hiển thị < 6000ms"
+    ket_qua_chay: "Không chạy"

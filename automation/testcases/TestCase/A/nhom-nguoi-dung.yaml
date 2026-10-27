@@ -16,6 +16,7 @@ testcases:
       - "2. Mở trang Nhóm người dùng"
     ket_qua_mong_doi:
       - "Bảng có đủ cột: STT, Mã nhóm người dùng, Tên nhóm người dùng, Mô tả, Thành viên, Thao tác; có dữ liệu"
+    ket_qua_chay: "Pass"
   - id: GRP-L02
     title: "Phân trang mặc định 10 bản ghi/trang và hiển thị tổng số bản ghi"
     uc: "A.II.2-UC1"
@@ -29,6 +30,7 @@ testcases:
       - "1. Mở trang Nhóm người dùng"
     ket_qua_mong_doi:
       - "Hiển thị \"Hiển thị 1-10 trong N bản ghi\"; tối đa 10 dòng dữ liệu; thanh phân trang xuất hiện khi N>10"
+    ket_qua_chay: "Pass"
   - id: GRP-L03
     title: "Tìm theo mã nhóm trả về đúng bản ghi"
     uc: "A.II.2-UC1"
@@ -43,6 +45,7 @@ testcases:
       - "2. Nhập một mã nhóm có sẵn vào ô tìm kiếm"
     ket_qua_mong_doi:
       - "Chỉ hiển thị các dòng chứa từ khóa; có ít nhất 1 dòng"
+    ket_qua_chay: "Pass"
   - id: GRP-L04
     title: "Tìm theo tên nhóm trả về đúng bản ghi"
     uc: "A.II.2-UC1"
@@ -56,6 +59,7 @@ testcases:
       - "1. Nhập một tên nhóm có sẵn vào ô tìm kiếm"
     ket_qua_mong_doi:
       - "Chỉ hiển thị các dòng chứa từ khóa"
+    ket_qua_chay: "Pass"
   - id: GRP-L05
     title: "Từ khóa không tồn tại → không có dữ liệu"
     uc: "A.II.2-UC1"
@@ -69,6 +73,7 @@ testcases:
       - "1. Nhập \"zzqcxx_khongtontai_999\""
     ket_qua_mong_doi:
       - "Bảng rỗng / hiển thị trạng thái không có dữ liệu, không lỗi"
+    ket_qua_chay: "Pass"
   - id: GRP-L06
     title: "Tìm kiếm không phân biệt chữ hoa/chữ thường"
     uc: "A.II.2-UC1"
@@ -82,6 +87,7 @@ testcases:
       - "1. Nhập từ khóa viết HOA rồi viết thường của cùng một giá trị"
     ket_qua_mong_doi:
       - "Hai lần tìm trả về cùng số bản ghi"
+    ket_qua_chay: "Pass"
   - id: GRP-L07
     title: "Ký tự đặc biệt / chuỗi SQL trong ô tìm kiếm không gây lỗi hệ thống"
     uc: "A.II.2-UC1"
@@ -95,6 +101,7 @@ testcases:
       - "1. Nhập  ' OR 1=1 --  và  <script>alert(1)</script>"
     ket_qua_mong_doi:
       - "Không hiện lỗi 500/trắng trang, không thực thi script, không trả về toàn bộ dữ liệu bất thường"
+    ket_qua_chay: "Pass"
   - id: GRP-L08
     title: "Chuyển sang trang 2 hiển thị dữ liệu khác trang 1"
     uc: "A.II.2-UC1"
@@ -108,6 +115,7 @@ testcases:
       - "1. Bấm trang 2 trên thanh phân trang"
     ket_qua_mong_doi:
       - "Trang 2 được đánh dấu active; nội dung bảng khác trang 1"
+    ket_qua_chay: "Pass"
   - id: GRP-L09
     title: "Đổi số bản ghi/trang sang 20 thì số dòng thay đổi theo"
     uc: "A.II.2-UC1"
@@ -121,6 +129,7 @@ testcases:
       - "1. Chọn \"20 / trang\" ở thanh phân trang"
     ket_qua_mong_doi:
       - "Số dòng tối đa mỗi trang = 20; tổng số bản ghi không đổi"
+    ket_qua_chay: "Pass"
   - id: GRP-L10
     title: "Xóa từ khóa thì danh sách trở về đầy đủ"
     uc: "A.II.2-UC1"
@@ -135,6 +144,7 @@ testcases:
       - "2. Xóa trắng ô tìm kiếm"
     ket_qua_mong_doi:
       - "Danh sách hiển thị lại như ban đầu (tổng số bản ghi bằng lúc đầu)"
+    ket_qua_chay: "Pass"
   - id: GRP-L11
     title: "Xuất Excel danh sách Nhóm người dùng"
     uc: "A.II.2-UC2"
@@ -149,6 +159,7 @@ testcases:
     ket_qua_mong_doi:
       - "Trình duyệt tải về file .xlsx chứa dữ liệu danh sách (UC: Xuất danh sách ra Excel)"
     ghi_chu: "Trang danh sách không có nút Xuất Excel (chỉ có ở màn chi tiết nhóm); UC_1409 ghi FE \"Chưa làm\""
+    ket_qua_chay: "Fail"
   - id: GRP-L12
     title: "Cột Thành viên hiển thị số lượng khớp với danh sách thành viên trong chi tiết"
     uc: "A.II.2-UC1"
@@ -163,6 +174,7 @@ testcases:
       - "2. Mở chi tiết nhóm"
     ket_qua_mong_doi:
       - "Số trên danh sách = số bản ghi ở bảng Thành viên"
+    ket_qua_chay: "Pass"
   - id: GRP-V01
     title: "Chi tiết nhóm hiển thị Mã, Tên, Mô tả và bảng Thành viên"
     uc: "A.II.2-UC3"
@@ -176,6 +188,7 @@ testcases:
       - "1. Bấm \"Xem chi tiết\" ở một nhóm"
     ket_qua_mong_doi:
       - "Hiển thị mã, tên, mô tả; bảng thành viên có cột Tên đăng nhập, Họ tên, Email, Ngày thêm, Trạng thái"
+    ket_qua_chay: "Pass"
   - id: GRP-V02
     title: "Lọc thành viên theo trạng thái trong chi tiết nhóm"
     uc: "A.II.2-UC7"
@@ -190,6 +203,7 @@ testcases:
       - "2. Đổi bộ lọc trạng thái"
     ket_qua_mong_doi:
       - "Bảng thành viên chỉ còn trạng thái đã chọn"
+    ket_qua_chay: "Pass"
   - id: GRP-V03
     title: "Xuất Excel thành viên ở chi tiết nhóm"
     uc: "A.II.2-UC2"
@@ -205,6 +219,7 @@ testcases:
     ket_qua_mong_doi:
       - "Tải về file .xlsx"
     ghi_chu: "UC_1409 ghi FE \"Chưa làm\""
+    ket_qua_chay: "Fail"
   - id: GRP-C01
     title: "Thêm nhóm đầy đủ Mã, Tên, Mô tả thành công"
     uc: "A.II.2-UC4"
@@ -220,6 +235,7 @@ testcases:
       - "3. Lưu"
     ket_qua_mong_doi:
       - "Thông báo thành công; nhóm xuất hiện trong danh sách"
+    ket_qua_chay: "Pass"
   - id: GRP-C02
     title: "Thêm nhóm chỉ với Mã và Tên"
     uc: "A.II.2-UC4"
@@ -234,6 +250,7 @@ testcases:
       - "2. Lưu"
     ket_qua_mong_doi:
       - "Tạo thành công, mô tả để trống"
+    ket_qua_chay: "Pass"
   - id: GRP-C03
     title: "Bỏ trống Mã/Tên thì báo lỗi bắt buộc"
     uc: "A.II.2-UC4"
@@ -247,6 +264,7 @@ testcases:
       - "1. Bấm Lưu khi chưa nhập"
     ket_qua_mong_doi:
       - "Báo lỗi bắt buộc ở Mã nhóm và Tên nhóm; không tạo"
+    ket_qua_chay: "Pass"
   - id: GRP-C04
     title: "Trùng mã nhóm bị từ chối"
     uc: "A.II.2-UC4"
@@ -261,6 +279,7 @@ testcases:
       - "2. Tạo nhóm B cùng mã"
     ket_qua_mong_doi:
       - "Báo \"Code ... đã tồn tại\"; chỉ có 1 bản ghi"
+    ket_qua_chay: "Pass"
   - id: GRP-C05
     title: "Hủy form thêm mới không tạo nhóm"
     uc: "A.II.2-UC4"
@@ -275,6 +294,7 @@ testcases:
       - "2. Hủy"
     ket_qua_mong_doi:
       - "Không có nhóm mới"
+    ket_qua_chay: "Pass"
   - id: GRP-C06
     title: "[API] Server từ chối tên nhóm rỗng"
     uc: "A.II.2-UC4"
@@ -289,6 +309,7 @@ testcases:
     ket_qua_mong_doi:
       - "HTTP 400 – không tạo nhóm"
     ghi_chu: "Khảo sát: API hiện trả 200 → nghi lỗi thiếu validate server"
+    ket_qua_chay: "Fail"
   - id: GRP-E01
     title: "Sửa tên nhóm thành công"
     uc: "A.II.2-UC5"
@@ -304,6 +325,7 @@ testcases:
       - "3. Lưu"
     ket_qua_mong_doi:
       - "Thông báo thành công; tên mới hiển thị"
+    ket_qua_chay: "Pass"
   - id: GRP-E02
     title: "Sửa mô tả nhóm thành công"
     uc: "A.II.2-UC5"
@@ -318,6 +340,7 @@ testcases:
       - "2. Lưu"
     ket_qua_mong_doi:
       - "Mô tả mới được lưu và hiển thị ở chi tiết"
+    ket_qua_chay: "Pass"
   - id: GRP-E03
     title: "Xóa trắng tên nhóm khi sửa bị chặn"
     uc: "A.II.2-UC5"
@@ -332,6 +355,7 @@ testcases:
       - "2. Lưu"
     ket_qua_mong_doi:
       - "Báo lỗi bắt buộc; không lưu"
+    ket_qua_chay: "Pass"
   - id: GRP-E04
     title: "Hủy chỉnh sửa không thay đổi dữ liệu"
     uc: "A.II.2-UC5"
@@ -346,6 +370,7 @@ testcases:
       - "2. Hủy"
     ket_qua_mong_doi:
       - "Dữ liệu giữ nguyên"
+    ket_qua_chay: "Pass"
   - id: GRP-D01
     title: "Xóa nhóm không có thành viên thành công"
     uc: "A.II.2-UC6"
@@ -360,6 +385,7 @@ testcases:
       - "2. Xác nhận"
     ket_qua_mong_doi:
       - "Nhóm biến mất khỏi danh sách"
+    ket_qua_chay: "Pass"
   - id: GRP-D02
     title: "Chọn \"Không\" ở hộp xác nhận thì giữ nguyên nhóm"
     uc: "A.II.2-UC6"
@@ -374,6 +400,7 @@ testcases:
       - "2. Bấm Không"
     ket_qua_mong_doi:
       - "Nhóm vẫn còn"
+    ket_qua_chay: "Pass"
   - id: GRP-D03
     title: "Xóa nhóm đang có thành viên"
     uc: "A.II.2-UC6"
@@ -389,6 +416,7 @@ testcases:
     ket_qua_mong_doi:
       - "Hệ thống chặn xóa (hoặc cảnh báo) để không làm người dùng mất nhóm"
     ghi_chu: "Khảo sát: API hiện cho xóa (200) → nghi lỗi nghiệp vụ, cần BA xác nhận"
+    ket_qua_chay: "Fail"
   - id: GRP-M01
     title: "Thêm người dùng vào nhóm qua màn chi tiết nhóm"
     uc: "A.II.2-UC9"
@@ -404,6 +432,7 @@ testcases:
       - "3. Lưu"
     ket_qua_mong_doi:
       - "User xuất hiện trong bảng thành viên; cột Thành viên tăng 1"
+    ket_qua_chay: "Pass"
   - id: GRP-M02
     title: "Mỗi người dùng chỉ thuộc 1 nhóm: chuyển user từ nhóm A sang nhóm B"
     uc: "A.II.2-UC9"
@@ -418,6 +447,7 @@ testcases:
       - "2. Thêm user vào nhóm B"
     ket_qua_mong_doi:
       - "User chỉ còn thuộc nhóm B (bị chặn hoặc chuyển nhóm), không thuộc đồng thời 2 nhóm"
+    ket_qua_chay: "Pass"
   - id: GRP-M03
     title: "Người dùng đã trong nhóm không thể chọn lại ở màn thêm"
     uc: "A.II.2-UC9"
@@ -431,6 +461,7 @@ testcases:
       - "1. Mở màn thêm người dùng vào nhóm có sẵn thành viên"
     ket_qua_mong_doi:
       - "User đã trong nhóm bị vô hiệu / ẩn, không tích chọn được"
+    ket_qua_chay: "Pass"
   - id: GRP-M04
     title: "Tìm người dùng trong màn thêm theo tên đăng nhập / họ tên"
     uc: "A.II.2-UC9"
@@ -444,6 +475,7 @@ testcases:
       - "1. Nhập từ khóa vào ô tìm ở màn thêm"
     ket_qua_mong_doi:
       - "Danh sách ứng viên lọc theo từ khóa"
+    ket_qua_chay: "Pass"
   - id: GRP-M05
     title: "Thêm nhiều người dùng cùng lúc"
     uc: "A.II.2-UC9"
@@ -458,6 +490,7 @@ testcases:
       - "2. Lưu"
     ket_qua_mong_doi:
       - "Cả 2 user vào nhóm; số thành viên tăng 2"
+    ket_qua_chay: "Pass"
   - id: GRP-M06
     title: "Bấm Lưu khi chưa chọn user nào"
     uc: "A.II.2-UC9"
@@ -472,6 +505,7 @@ testcases:
       - "2. Bấm Lưu ngay"
     ket_qua_mong_doi:
       - "Không thêm; có thông báo/nút không hoạt động, không lỗi hệ thống"
+    ket_qua_chay: "Pass"
   - id: GRP-M07
     title: "Xóa người dùng khỏi nhóm"
     uc: "A.II.2-UC8"
@@ -486,6 +520,7 @@ testcases:
       - "2. Xóa khỏi nhóm"
     ket_qua_mong_doi:
       - "Thành viên biến mất; số thành viên giảm; user vẫn tồn tại ở trang Người dùng"
+    ket_qua_chay: "Pass"
   - id: GRP-S01
     title: "API nhóm người dùng: không token / token giả → 401"
     uc: "A.II.2-UC1"
@@ -499,6 +534,7 @@ testcases:
       - "1. GET /idm/roles không token"
     ket_qua_mong_doi:
       - "HTTP 401"
+    ket_qua_chay: "Pass"
   - id: GRP-S02
     title: "Quyền thực thi API nhóm đúng theo ma trận quyền Cán bộ"
     uc: "A.II.2-UC4"
@@ -513,6 +549,7 @@ testcases:
       - "2. Gọi GET/POST /idm/roles"
     ket_qua_mong_doi:
       - "Có quyền ROLE.* → được; không có → 403"
+    ket_qua_chay: "Fail"
   - id: GRP-P01
     title: "Danh sách nhóm tải < 3 giây"
     uc: "A.II.2-UC1"
@@ -526,6 +563,7 @@ testcases:
       - "1. Mở trang và đo"
     ket_qua_mong_doi:
       - "API < 3000ms, hiển thị < 6000ms"
+    ket_qua_chay: "Pass"
   - id: GRP-G01
     title: "Trường bắt buộc chỉ nhập khoảng trắng bị chặn (nhóm người dùng)"
     uc: "A.II.2-UC4"
@@ -541,6 +579,7 @@ testcases:
       - "3. Lưu"
     ket_qua_mong_doi:
       - "Báo lỗi bắt buộc (chuỗi rỗng sau khi trim); form còn mở; không tạo bản ghi"
+    ket_qua_chay: "Pass"
   - id: GRP-G02
     title: "Tên chứa tiếng Việt có dấu, HTML, dấu nháy, & được lưu và hiển thị đúng sau khi tải lại trang (nhóm người dùng)"
     uc: "A.II.2-UC4"
@@ -555,6 +594,7 @@ testcases:
       - "2. Tải lại trang (F5), tìm theo mã"
     ket_qua_mong_doi:
       - "Tên hiển thị nguyên văn dạng chữ; thẻ HTML không bị render (chống XSS)"
+    ket_qua_chay: "Pass"
   - id: GRP-G04
     title: "Server lỗi 500 khi lưu: hiển thị lỗi, giữ form và dữ liệu đã nhập (nhóm người dùng)"
     uc: "A.II.2-UC4"
@@ -570,6 +610,7 @@ testcases:
       - "3. Lưu"
     ket_qua_mong_doi:
       - "Form còn mở và giữ dữ liệu; không lộ stacktrace; không tạo bản ghi"
+    ket_qua_chay: "Pass"
   - id: GRP-G05
     title: "Mất kết nối khi lưu: không treo giao diện, giữ form (nhóm người dùng)"
     uc: "A.II.2-UC4"
@@ -585,6 +626,7 @@ testcases:
       - "3. Lưu"
     ket_qua_mong_doi:
       - "Form còn mở và giữ dữ liệu; trang không trắng/lỗi; không tạo bản ghi"
+    ket_qua_chay: "Pass"
   - id: GRP-V04
     title: "Mở chi tiết nhóm với id không tồn tại không gây lỗi hệ thống"
     uc: "A.II.2-UC3"
@@ -599,6 +641,7 @@ testcases:
       - "2. Mở URL chi tiết với id lạ"
     ket_qua_mong_doi:
       - "API trả 4xx (không 500); trang không trắng, không lộ lỗi nội bộ"
+    ket_qua_chay: "Pass"
   - id: GRP-G06
     title: "Bấm Lưu 2 lần liên tiếp chỉ tạo 1 bản ghi (nhóm người dùng)"
     uc: "A.II.2-UC4"
@@ -613,6 +656,7 @@ testcases:
       - "2. Bấm Lưu 2 lần liên tiếp rất nhanh"
     ket_qua_mong_doi:
       - "Chỉ có đúng 1 bản ghi theo mã; không báo lỗi trùng gây hiểu nhầm"
+    ket_qua_chay: "Pass"
   - id: GRP-C07
     title: "Mã nhóm chỉ khác hoa/thường so với nhóm có sẵn bị coi là trùng"
     uc: "A.II.2-UC4"
@@ -628,6 +672,7 @@ testcases:
     ket_qua_mong_doi:
       - "Bị từ chối (4xx)"
     ghi_chu: "Cần BA xác nhận quy tắc hoa/thường"
+    ket_qua_chay: "Fail"
   - id: GRP-E05
     title: "Mã nhóm không sửa được ở form cập nhật"
     uc: "A.II.2-UC5"
@@ -641,6 +686,7 @@ testcases:
       - "1. Menu → Cập nhật"
     ket_qua_mong_doi:
       - "Ô Mã nhóm ở trạng thái chỉ-đọc"
+    ket_qua_chay: "Pass"
   - id: GRP-V05
     title: "Tìm thành viên trong chi tiết nhóm"
     uc: "A.II.2-UC7"
@@ -655,6 +701,7 @@ testcases:
       - "2. Nhập tên đăng nhập 1 thành viên"
     ket_qua_mong_doi:
       - "Chỉ còn đúng thành viên đó; từ khóa lạ → rỗng"
+    ket_qua_chay: "Pass"
   - id: GRP-M08
     title: "Chọn Hủy ở hộp xác nhận xóa khỏi nhóm thì giữ nguyên thành viên"
     uc: "A.II.2-UC8"
@@ -669,3 +716,4 @@ testcases:
       - "2. Bấm Huỷ"
     ket_qua_mong_doi:
       - "Thành viên vẫn trong nhóm"
+    ket_qua_chay: "Pass"

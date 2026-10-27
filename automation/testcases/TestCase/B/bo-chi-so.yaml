@@ -16,6 +16,7 @@ testcases:
       - "2. Mở trang Bộ chỉ số"
     ket_qua_mong_doi:
       - "Bảng có đủ cột: STT, Mã bộ chỉ số, Tên bộ chỉ số, Phiên bản, Năm áp dụng, Nhóm chỉ số, Chỉ số, Trạng thái, Thao tác; có dữ liệu"
+    ket_qua_chay: "Không chạy"
   - id: SET-L02
     title: "Phân trang mặc định 10 bản ghi/trang và hiển thị tổng số bản ghi"
     uc: "B.II.1-UC1"
@@ -29,6 +30,7 @@ testcases:
       - "1. Mở trang Bộ chỉ số"
     ket_qua_mong_doi:
       - "Hiển thị \"Hiển thị 1-10 trong N bản ghi\"; tối đa 10 dòng dữ liệu; thanh phân trang xuất hiện khi N>10"
+    ket_qua_chay: "Không chạy"
   - id: SET-L03
     title: "Tìm theo mã bộ chỉ số trả về đúng bản ghi"
     uc: "B.II.1-UC1"
@@ -43,6 +45,7 @@ testcases:
       - "2. Nhập một mã bộ chỉ số có sẵn vào ô tìm kiếm"
     ket_qua_mong_doi:
       - "Chỉ hiển thị các dòng chứa từ khóa; có ít nhất 1 dòng"
+    ket_qua_chay: "Không chạy"
   - id: SET-L04
     title: "Tìm theo tên bộ chỉ số trả về đúng bản ghi"
     uc: "B.II.1-UC1"
@@ -56,6 +59,7 @@ testcases:
       - "1. Nhập một tên bộ chỉ số có sẵn vào ô tìm kiếm"
     ket_qua_mong_doi:
       - "Chỉ hiển thị các dòng chứa từ khóa"
+    ket_qua_chay: "Không chạy"
   - id: SET-L05
     title: "Từ khóa không tồn tại → không có dữ liệu"
     uc: "B.II.1-UC1"
@@ -69,6 +73,7 @@ testcases:
       - "1. Nhập \"zzqcxx_khongtontai_999\""
     ket_qua_mong_doi:
       - "Bảng rỗng / hiển thị trạng thái không có dữ liệu, không lỗi"
+    ket_qua_chay: "Không chạy"
   - id: SET-L06
     title: "Tìm kiếm không phân biệt chữ hoa/chữ thường"
     uc: "B.II.1-UC1"
@@ -82,6 +87,7 @@ testcases:
       - "1. Nhập từ khóa viết HOA rồi viết thường của cùng một giá trị"
     ket_qua_mong_doi:
       - "Hai lần tìm trả về cùng số bản ghi"
+    ket_qua_chay: "Không chạy"
   - id: SET-L07
     title: "Ký tự đặc biệt / chuỗi SQL trong ô tìm kiếm không gây lỗi hệ thống"
     uc: "B.II.1-UC1"
@@ -95,6 +101,7 @@ testcases:
       - "1. Nhập  ' OR 1=1 --  và  <script>alert(1)</script>"
     ket_qua_mong_doi:
       - "Không hiện lỗi 500/trắng trang, không thực thi script, không trả về toàn bộ dữ liệu bất thường"
+    ket_qua_chay: "Không chạy"
   - id: SET-L08
     title: "Chuyển sang trang 2 hiển thị dữ liệu khác trang 1"
     uc: "B.II.1-UC1"
@@ -108,6 +115,7 @@ testcases:
       - "1. Bấm trang 2 trên thanh phân trang"
     ket_qua_mong_doi:
       - "Trang 2 được đánh dấu active; nội dung bảng khác trang 1"
+    ket_qua_chay: "Không chạy"
   - id: SET-L09
     title: "Đổi số bản ghi/trang sang 20 thì số dòng thay đổi theo"
     uc: "B.II.1-UC1"
@@ -121,6 +129,7 @@ testcases:
       - "1. Chọn \"20 / trang\" ở thanh phân trang"
     ket_qua_mong_doi:
       - "Số dòng tối đa mỗi trang = 20; tổng số bản ghi không đổi"
+    ket_qua_chay: "Không chạy"
   - id: SET-L10
     title: "Xóa từ khóa thì danh sách trở về đầy đủ"
     uc: "B.II.1-UC1"
@@ -135,6 +144,7 @@ testcases:
       - "2. Xóa trắng ô tìm kiếm"
     ket_qua_mong_doi:
       - "Danh sách hiển thị lại như ban đầu (tổng số bản ghi bằng lúc đầu)"
+    ket_qua_chay: "Không chạy"
   - id: SET-L11
     title: "Xuất Excel danh sách Bộ chỉ số"
     uc: "B.II.1-UC2"
@@ -149,6 +159,7 @@ testcases:
     ket_qua_mong_doi:
       - "Trình duyệt tải về file .xlsx chứa dữ liệu danh sách (UC: Xuất danh sách ra Excel)"
     ghi_chu: "UC_1409 yêu cầu export danh mục; khảo sát: trang danh sách chưa có nút Xuất Excel → nghi chưa làm"
+    ket_qua_chay: "Không chạy"
   - id: SET-L12
     title: "Lọc theo trạng thái / năm áp dụng"
     uc: "B.II.1-UC1"
@@ -162,6 +173,7 @@ testcases:
       - "1. Chọn bộ lọc trên trang"
     ket_qua_mong_doi:
       - "Mọi dòng khớp bộ lọc"
+    ket_qua_chay: "Không chạy"
   - id: SET-L13
     title: "Trạng thái ở danh sách và ở chi tiết nhất quán"
     uc: "B.II.1-UC1"
@@ -177,6 +189,7 @@ testcases:
     ket_qua_mong_doi:
       - "Cùng một nhãn trạng thái"
     ghi_chu: "Khảo sát: danh sách \"Đã khóa\" nhưng chi tiết hiện \"Đang áp dụng\" → cần BA làm rõ hai trạng thái"
+    ket_qua_chay: "Không chạy"
   - id: SET-V01
     title: "Chi tiết bộ chỉ số hiển thị mã, phiên bản, năm áp dụng, cấu trúc (trụ cột·nhóm·chỉ số), tổng điểm tối đa, mô tả"
     uc: "B.II.1-UC3"
@@ -191,6 +204,7 @@ testcases:
     ket_qua_mong_doi:
       - "Hiển thị đủ; có nút Xuất Excel, Cập nhật thông tin, Cấu hình bộ chỉ số"
     ghi_chu: "UC_1409 ghi \"chưa update UI mới\""
+    ket_qua_chay: "Không chạy"
   - id: SET-V02
     title: "Cấu trúc bộ chỉ số hiển thị trụ cột → nhóm → chỉ số với điểm tối đa, có Mở rộng tất cả / Thu gọn"
     uc: "B.II.1-UC4"
@@ -205,6 +219,7 @@ testcases:
       - "2. Bấm \"Mở rộng tất cả\" rồi \"Thu gọn\""
     ket_qua_mong_doi:
       - "Cây hiển thị đủ các cấp, mở/đóng đúng; điểm tối đa từng cấp"
+    ket_qua_chay: "Không chạy"
   - id: SET-V03
     title: "Tổng điểm tối đa bộ chỉ số bằng tổng điểm các chỉ số tính điểm"
     uc: "B.II.1-UC4"
@@ -218,6 +233,7 @@ testcases:
       - "1. Mở chi tiết bộ có nhiều chỉ số"
     ket_qua_mong_doi:
       - "Tổng điểm = tổng điểm tối đa của các trụ cột; số trụ cột·nhóm·chỉ số khớp danh sách"
+    ket_qua_chay: "Không chạy"
   - id: SET-V04
     title: "Xuất Excel dữ liệu bộ chỉ số ở chi tiết tải được file"
     uc: "B.II.1-UC5"
@@ -233,6 +249,7 @@ testcases:
     ket_qua_mong_doi:
       - "Tải về file .xlsx chứa cấu trúc bộ chỉ số"
     ghi_chu: "UC_1409 dòng 128"
+    ket_qua_chay: "Không chạy"
   - id: SET-V05
     title: "Mở chi tiết bộ chỉ số với id không tồn tại không gây lỗi hệ thống"
     uc: "B.II.1-UC3"
@@ -247,6 +264,7 @@ testcases:
       - "2. Mở URL id lạ"
     ket_qua_mong_doi:
       - "API 4xx; không 500"
+    ket_qua_chay: "Không chạy"
   - id: SET-V06
     title: "Bảng kỳ tự đánh giá đang sử dụng bộ chỉ số"
     uc: "B.II.1-UC3"
@@ -260,6 +278,7 @@ testcases:
       - "1. Mở chi tiết bộ chỉ số đã gán kỳ"
     ket_qua_mong_doi:
       - "Hiển thị đúng kỳ đang dùng; số kỳ khớp cột campaignCount"
+    ket_qua_chay: "Không chạy"
   - id: SET-C01
     title: "Thêm bộ chỉ số (mã, tên, năm áp dụng, mô tả) thành công"
     uc: "B.II.1-UC6"
@@ -275,6 +294,7 @@ testcases:
       - "3. Lưu"
     ket_qua_mong_doi:
       - "Thành công; bộ chỉ số hiện, phiên bản mặc định v1, chưa có nhóm/chỉ số"
+    ket_qua_chay: "Không chạy"
   - id: SET-C02
     title: "Bỏ trống Mã/Tên thì báo lỗi bắt buộc"
     uc: "B.II.1-UC6"
@@ -288,6 +308,7 @@ testcases:
       - "1. Bấm Lưu khi chưa nhập"
     ket_qua_mong_doi:
       - "Báo lỗi bắt buộc; không tạo"
+    ket_qua_chay: "Không chạy"
   - id: SET-C03
     title: "Trùng mã bộ chỉ số bị từ chối"
     uc: "B.II.1-UC6"
@@ -302,6 +323,7 @@ testcases:
       - "2. Tạo bộ B cùng mã"
     ket_qua_mong_doi:
       - "Báo \"Mã bộ chỉ số đã tồn tại\""
+    ket_qua_chay: "Không chạy"
   - id: SET-C04
     title: "Năm áp dụng ngoài khoảng hợp lý hoặc để trống"
     uc: "B.II.1-UC6"
@@ -316,6 +338,7 @@ testcases:
     ket_qua_mong_doi:
       - "Bị chặn hoặc báo bắt buộc theo quy tắc"
     ghi_chu: "Khảo sát: API nhận cả 1999, 3000 và không năm → nghi thiếu validate. Cần BA xác nhận quy tắc khoảng năm"
+    ket_qua_chay: "Không chạy"
   - id: SET-C05
     title: "Hủy form thêm mới không tạo bản ghi"
     uc: "B.II.1-UC6"
@@ -330,6 +353,7 @@ testcases:
       - "2. Huỷ"
     ket_qua_mong_doi:
       - "Không có bộ mới"
+    ket_qua_chay: "Không chạy"
   - id: SET-C06
     title: "Mã bộ chỉ số 50 ký tự được nhận, 51 ký tự bị chặn"
     uc: "B.II.1-UC6"
@@ -343,6 +367,7 @@ testcases:
       - "1. Nhập mã 50 rồi 51 ký tự"
     ket_qua_mong_doi:
       - "51 ký tự báo vượt giới hạn"
+    ket_qua_chay: "Không chạy"
   - id: SET-C07
     title: "[API] Mã hoặc tên rỗng bị từ chối bằng HTTP 400"
     uc: "B.II.1-UC6"
@@ -356,6 +381,7 @@ testcases:
       - "1. [API] POST name rỗng / code rỗng"
     ket_qua_mong_doi:
       - "HTTP 400 có thông báo"
+    ket_qua_chay: "Không chạy"
   - id: SET-E01
     title: "Cập nhật thông tin bộ chỉ số (tên, mô tả) thành công"
     uc: "B.II.1-UC9"
@@ -371,6 +397,7 @@ testcases:
       - "3. Lưu"
     ket_qua_mong_doi:
       - "Dữ liệu mới hiển thị ở chi tiết và danh sách"
+    ket_qua_chay: "Không chạy"
   - id: SET-E02
     title: "Cập nhật thời gian sử dụng (năm áp dụng)"
     uc: "B.II.1-UC9"
@@ -385,6 +412,7 @@ testcases:
       - "2. Lưu"
     ket_qua_mong_doi:
       - "Năm áp dụng mới hiển thị; cột danh sách cập nhật"
+    ket_qua_chay: "Không chạy"
   - id: SET-E03
     title: "Xóa trắng tên khi sửa bị chặn"
     uc: "B.II.1-UC9"
@@ -399,6 +427,7 @@ testcases:
       - "2. Lưu"
     ket_qua_mong_doi:
       - "Báo lỗi bắt buộc"
+    ket_qua_chay: "Không chạy"
   - id: SET-E04
     title: "Hủy chỉnh sửa không đổi dữ liệu"
     uc: "B.II.1-UC9"
@@ -413,6 +442,7 @@ testcases:
       - "2. Huỷ"
     ket_qua_mong_doi:
       - "Dữ liệu giữ nguyên"
+    ket_qua_chay: "Không chạy"
   - id: SET-E05
     title: "Bộ chỉ số đã khóa không sửa được thông tin / cấu trúc"
     uc: "B.II.1-UC9"
@@ -428,6 +458,7 @@ testcases:
     ket_qua_mong_doi:
       - "Thao tác bị ẩn/từ chối; dữ liệu giữ nguyên"
     ghi_chu: "Khảo sát: API PUT bộ chỉ số (chưa khóa trạng thái đã kiểm) — xác minh khi viết script"
+    ket_qua_chay: "Không chạy"
   - id: SET-D01
     title: "Xóa bộ chỉ số chưa khóa, chưa dùng thành công"
     uc: "B.II.1-UC7"
@@ -442,6 +473,7 @@ testcases:
       - "2. Xác nhận"
     ket_qua_mong_doi:
       - "Bộ chỉ số biến mất"
+    ket_qua_chay: "Không chạy"
   - id: SET-D02
     title: "Chọn \"Không\" ở hộp xác nhận thì giữ nguyên"
     uc: "B.II.1-UC7"
@@ -456,6 +488,7 @@ testcases:
       - "2. Không"
     ket_qua_mong_doi:
       - "Còn nguyên"
+    ket_qua_chay: "Không chạy"
   - id: SET-D03
     title: "Bộ chỉ số đã khóa không xóa được (UI ẩn Xoá)"
     uc: "B.II.1-UC7"
@@ -470,6 +503,7 @@ testcases:
       - "2. Xem menu"
     ket_qua_mong_doi:
       - "Menu không có Xoá (chỉ Mở khoá, Nhân bản)"
+    ket_qua_chay: "Không chạy"
   - id: SET-D04
     title: "Bộ chỉ số đang được kỳ tự đánh giá sử dụng không xóa được"
     uc: "B.II.1-UC7"
@@ -485,6 +519,7 @@ testcases:
     ket_qua_mong_doi:
       - "Bị chặn với thông báo; bộ còn nguyên"
     ghi_chu: "Cần BA xác nhận quy tắc"
+    ket_qua_chay: "Không chạy"
   - id: SET-K01
     title: "Khóa bộ chỉ số → Đã khóa (cập nhật trạng thái)"
     uc: "B.II.1-UC8"
@@ -499,6 +534,7 @@ testcases:
       - "2. Xác nhận"
     ket_qua_mong_doi:
       - "Trạng thái \"Đã khóa\" ở danh sách và chi tiết"
+    ket_qua_chay: "Không chạy"
   - id: SET-K02
     title: "Mở khóa bộ chỉ số → Chưa khóa"
     uc: "B.II.1-UC8"
@@ -512,6 +548,7 @@ testcases:
       - "1. Menu → Mở khoá"
     ket_qua_mong_doi:
       - "Trạng thái Chưa khóa; cho sửa lại"
+    ket_qua_chay: "Không chạy"
   - id: SET-K03
     title: "Bộ chỉ số đã khóa mới chọn được khi tạo kỳ tự đánh giá"
     uc: "B.II.4-UC1"
@@ -525,6 +562,7 @@ testcases:
       - "1. Mở form tạo kỳ tự đánh giá → select Bộ chỉ số"
     ket_qua_mong_doi:
       - "Chỉ liệt kê bộ chỉ số Đã khóa (đưa vào sử dụng)"
+    ket_qua_chay: "Không chạy"
   - id: SET-K04
     title: "Mở khóa bộ chỉ số đang được kỳ sử dụng"
     uc: "B.II.4-UC2"
@@ -540,6 +578,7 @@ testcases:
     ket_qua_mong_doi:
       - "Bị chặn hoặc cảnh báo theo quy tắc"
     ghi_chu: "Cần BA xác nhận quy tắc"
+    ket_qua_chay: "Không chạy"
   - id: SET-S01
     title: "Xem danh sách nhóm chỉ số của bộ chỉ số"
     uc: "B.II.2-UC1"
@@ -553,6 +592,7 @@ testcases:
       - "1. Chi tiết bộ → Cấu hình bộ chỉ số"
     ket_qua_mong_doi:
       - "Hiển thị đúng các nhóm chỉ số của bộ, theo trụ cột"
+    ket_qua_chay: "Không chạy"
   - id: SET-S02
     title: "Thêm nhóm chỉ số vào bộ chỉ số"
     uc: "B.II.2-UC2"
@@ -566,6 +606,7 @@ testcases:
       - "1. Cấu hình → chọn nhóm chỉ số → Lưu"
     ket_qua_mong_doi:
       - "Nhóm xuất hiện trong cấu trúc; số nhóm bộ chỉ số tăng"
+    ket_qua_chay: "Không chạy"
   - id: SET-S03
     title: "Không thêm trùng một nhóm chỉ số hai lần vào cùng bộ"
     uc: "B.II.2-UC2"
@@ -579,6 +620,7 @@ testcases:
       - "1. Thêm nhóm đã có trong bộ"
     ket_qua_mong_doi:
       - "Nhóm đã có không chọn lại được / bị từ chối"
+    ket_qua_chay: "Không chạy"
   - id: SET-S04
     title: "Chỉ nhóm chỉ số đã khóa mới thêm vào bộ chỉ số được"
     uc: "B.II.2-UC2"
@@ -592,6 +634,7 @@ testcases:
       - "1. Mở danh sách chọn nhóm"
     ket_qua_mong_doi:
       - "Chỉ liệt kê nhóm Đã khóa"
+    ket_qua_chay: "Không chạy"
   - id: SET-S05
     title: "Chỉnh sửa thông tin nhóm chỉ số trong bộ chỉ số"
     uc: "B.II.2-UC3"
@@ -606,6 +649,7 @@ testcases:
       - "2. Lưu"
     ket_qua_mong_doi:
       - "Thay đổi chỉ áp dụng trong bộ chỉ số; nhóm gốc không đổi"
+    ket_qua_chay: "Không chạy"
   - id: SET-S06
     title: "Xóa nhóm chỉ số khỏi bộ chỉ số"
     uc: "B.II.2-UC4"
@@ -621,6 +665,7 @@ testcases:
     ket_qua_mong_doi:
       - "Nhóm (và chỉ số của nhóm) rời khỏi bộ; nhóm gốc còn nguyên"
     ghi_chu: "UC_1409 ghi \"Chưa có thao tác xóa\" → có thể FAIL"
+    ket_qua_chay: "Không chạy"
   - id: SET-S07
     title: "Thiết lập Tính điểm / Không tính điểm cho nhóm chỉ số trong bộ"
     uc: "B.II.2-UC5"
@@ -635,6 +680,7 @@ testcases:
       - "2. Lưu"
     ket_qua_mong_doi:
       - "Tổng điểm bộ chỉ số tính lại: nhóm không tính điểm bị loại khỏi tổng"
+    ket_qua_chay: "Không chạy"
   - id: SET-I01
     title: "Xem danh sách chỉ số của bộ chỉ số"
     uc: "B.II.3-UC1"
@@ -648,6 +694,7 @@ testcases:
       - "1. Cấu hình bộ → xem chỉ số"
     ket_qua_mong_doi:
       - "Hiển thị đúng chỉ số theo nhóm, kèm điểm"
+    ket_qua_chay: "Không chạy"
   - id: SET-I02
     title: "Thêm chỉ số vào bộ chỉ số"
     uc: "B.II.3-UC2"
@@ -661,6 +708,7 @@ testcases:
       - "1. Chọn chỉ số (đã khóa) → Lưu"
     ket_qua_mong_doi:
       - "Chỉ số hiện trong bộ; tổng điểm cập nhật; cột \"Bộ chỉ số đang sử dụng\" của chỉ số có bộ này"
+    ket_qua_chay: "Không chạy"
   - id: SET-I03
     title: "Chỉ số phải thuộc nhóm đã có trong bộ; không thêm trùng"
     uc: "B.II.3-UC2"
@@ -676,6 +724,7 @@ testcases:
     ket_qua_mong_doi:
       - "Bị chặn hoặc tự thêm nhóm theo quy tắc; chỉ số đã có không chọn lại"
     ghi_chu: "Cần BA xác nhận quy tắc"
+    ket_qua_chay: "Không chạy"
   - id: SET-I04
     title: "Chỉnh sửa thông tin chỉ số trong bộ chỉ số"
     uc: "B.II.3-UC3"
@@ -690,6 +739,7 @@ testcases:
       - "2. Lưu"
     ket_qua_mong_doi:
       - "Chỉ áp dụng trong bộ; chỉ số gốc không đổi"
+    ket_qua_chay: "Không chạy"
   - id: SET-I05
     title: "Xóa chỉ số khỏi bộ chỉ số"
     uc: "B.II.3-UC4"
@@ -704,6 +754,7 @@ testcases:
       - "2. Xác nhận"
     ket_qua_mong_doi:
       - "Chỉ số rời bộ; chỉ số gốc còn; tổng điểm cập nhật"
+    ket_qua_chay: "Không chạy"
   - id: SET-I06
     title: "Thiết lập Tính điểm / Không tính điểm cho chỉ số trong bộ"
     uc: "B.II.3-UC5"
@@ -718,6 +769,7 @@ testcases:
       - "2. Lưu"
     ket_qua_mong_doi:
       - "Chỉ số không tính điểm bị loại khỏi tổng điểm tối đa"
+    ket_qua_chay: "Không chạy"
   - id: SET-I07
     title: "Chỉnh sửa điểm của chỉ số trong bộ chỉ số"
     uc: "B.II.3-UC6"
@@ -732,6 +784,7 @@ testcases:
       - "2. Lưu"
     ket_qua_mong_doi:
       - "Điểm mới áp dụng trong bộ; tổng điểm tính lại; chỉ số gốc không đổi"
+    ket_qua_chay: "Không chạy"
   - id: SET-I08
     title: "Điểm chỉnh sửa trong bộ phải hợp lệ (min ≤ max, 0–1000)"
     uc: "B.II.3-UC6"
@@ -745,6 +798,7 @@ testcases:
       - "1. Nhập điểm min>max hoặc âm"
     ket_qua_mong_doi:
       - "Báo lỗi; không lưu"
+    ket_qua_chay: "Không chạy"
   - id: SET-N01
     title: "Nhân bản bộ chỉ số tạo bộ mới, giữ nguyên cấu trúc"
     uc: "B.II.5-UC1"
@@ -758,6 +812,7 @@ testcases:
       - "1. Menu → Nhân bản"
     ket_qua_mong_doi:
       - "Bộ mới có mã mới, Chưa khóa, cùng số nhóm/chỉ số và tổng điểm với bản gốc"
+    ket_qua_chay: "Không chạy"
   - id: SET-N02
     title: "Nhân bản bộ chỉ số đã khóa vẫn được, bản sao Chưa khóa"
     uc: "B.II.5-UC1"
@@ -772,6 +827,7 @@ testcases:
       - "2. Nhân bản"
     ket_qua_mong_doi:
       - "Menu Nhân bản có ở bộ đã khóa; bản sao Chưa khóa"
+    ket_qua_chay: "Không chạy"
   - id: SET-N03
     title: "Nhân bản nhiều lần cho mã duy nhất"
     uc: "B.II.5-UC1"
@@ -785,6 +841,7 @@ testcases:
       - "1. Nhân bản cùng bộ 3 lần"
     ket_qua_mong_doi:
       - "Mã/tên không trùng"
+    ket_qua_chay: "Không chạy"
   - id: SET-N04
     title: "Xem và sửa chỉ số của bộ vừa nhân bản; không ảnh hưởng bản gốc"
     uc: "B.II.5-UC2"
@@ -800,6 +857,7 @@ testcases:
       - "3. Xem bản gốc"
     ket_qua_mong_doi:
       - "Bản gốc không đổi"
+    ket_qua_chay: "Không chạy"
   - id: SET-N05
     title: "Nhân bản id không tồn tại không gây lỗi"
     uc: "B.II.5-UC1"
@@ -813,6 +871,7 @@ testcases:
       - "1. [API] POST nhân bản id lạ"
     ket_qua_mong_doi:
       - "4xx, không 500"
+    ket_qua_chay: "Không chạy"
   - id: SET-G01
     title: "Trường bắt buộc chỉ nhập khoảng trắng bị chặn (bộ chỉ số)"
     uc: "B.II.1-UC6"
@@ -828,6 +887,7 @@ testcases:
       - "3. Lưu"
     ket_qua_mong_doi:
       - "Báo lỗi bắt buộc (chuỗi rỗng sau trim); không tạo bản ghi"
+    ket_qua_chay: "Không chạy"
   - id: SET-G02
     title: "Tên chứa tiếng Việt có dấu, HTML, dấu nháy, & được lưu và hiển thị đúng sau khi tải lại trang (bộ chỉ số)"
     uc: "B.II.1-UC6"
@@ -842,6 +902,7 @@ testcases:
       - "2. Tải lại trang (F5), tìm theo mã/tên"
     ket_qua_mong_doi:
       - "Tên hiển thị nguyên văn dạng chữ; thẻ HTML không bị render"
+    ket_qua_chay: "Không chạy"
   - id: SET-G03
     title: "Server lỗi 500 khi lưu: giữ form và dữ liệu đã nhập, không lộ lỗi nội bộ (bộ chỉ số)"
     uc: "B.II.1-UC6"
@@ -857,6 +918,7 @@ testcases:
       - "3. Lưu"
     ket_qua_mong_doi:
       - "Form còn mở và giữ dữ liệu; không lộ stacktrace; không tạo bản ghi"
+    ket_qua_chay: "Không chạy"
   - id: SET-G04
     title: "Mất kết nối khi lưu: không treo giao diện, giữ form (bộ chỉ số)"
     uc: "B.II.1-UC6"
@@ -872,6 +934,7 @@ testcases:
       - "3. Lưu"
     ket_qua_mong_doi:
       - "Form còn mở và giữ dữ liệu; trang không trắng; không tạo bản ghi"
+    ket_qua_chay: "Không chạy"
   - id: SET-G05
     title: "Bấm Lưu 2 lần liên tiếp chỉ tạo 1 bản ghi (bộ chỉ số)"
     uc: "B.II.1-UC6"
@@ -886,6 +949,7 @@ testcases:
       - "2. Bấm Lưu 2 lần rất nhanh"
     ket_qua_mong_doi:
       - "Chỉ có đúng 1 bản ghi"
+    ket_qua_chay: "Không chạy"
   - id: SET-A01
     title: "API bộ chỉ số: không token / token giả → 401"
     uc: "B.II.1-UC1"
@@ -900,6 +964,7 @@ testcases:
       - "2. GET với token giả"
     ket_qua_mong_doi:
       - "HTTP 401"
+    ket_qua_chay: "Không chạy"
   - id: SET-A02
     title: "Quyền API bộ chỉ số đúng theo ma trận quyền Cán bộ"
     uc: "B.II.1-UC1"
@@ -914,6 +979,7 @@ testcases:
       - "2. GET/POST/PUT/DELETE theo quyền Xem/Thêm/Sửa/Xóa/Khóa"
     ket_qua_mong_doi:
       - "Có quyền → được; không có → 403"
+    ket_qua_chay: "Không chạy"
   - id: SET-A03
     title: "Chưa đăng nhập vào trang bộ chỉ số bị chuyển về màn đăng nhập, không lộ dữ liệu"
     uc: "B.II.1-UC1"
@@ -928,6 +994,7 @@ testcases:
       - "2. Mở URL trang"
     ket_qua_mong_doi:
       - "Hiện màn đăng nhập; không có dữ liệu"
+    ket_qua_chay: "Không chạy"
   - id: SET-P01
     title: "Danh sách bộ chỉ số tải < 3 giây"
     uc: "B.II.1-UC1"
@@ -941,3 +1008,4 @@ testcases:
       - "1. Mở trang và đo"
     ket_qua_mong_doi:
       - "API < 3000ms, hiển thị < 6000ms"
+    ket_qua_chay: "Không chạy"

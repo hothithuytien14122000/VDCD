@@ -16,6 +16,7 @@ testcases:
       - "2. Mở trang Nhóm chỉ số"
     ket_qua_mong_doi:
       - "Bảng có đủ cột: STT, Mã nhóm chỉ số, Tên nhóm chỉ số, Trụ cột, Chỉ số, Trạng thái, Thao tác; có dữ liệu"
+    ket_qua_chay: "Không chạy"
   - id: IGR-L02
     title: "Phân trang mặc định 10 bản ghi/trang và hiển thị tổng số bản ghi"
     uc: "B.I.2-UC1"
@@ -29,6 +30,7 @@ testcases:
       - "1. Mở trang Nhóm chỉ số"
     ket_qua_mong_doi:
       - "Hiển thị \"Hiển thị 1-10 trong N bản ghi\"; tối đa 10 dòng dữ liệu; thanh phân trang xuất hiện khi N>10"
+    ket_qua_chay: "Không chạy"
   - id: IGR-L03
     title: "Tìm theo mã nhóm chỉ số trả về đúng bản ghi"
     uc: "B.I.2-UC1"
@@ -43,6 +45,7 @@ testcases:
       - "2. Nhập một mã nhóm chỉ số có sẵn vào ô tìm kiếm"
     ket_qua_mong_doi:
       - "Chỉ hiển thị các dòng chứa từ khóa; có ít nhất 1 dòng"
+    ket_qua_chay: "Không chạy"
   - id: IGR-L04
     title: "Tìm theo tên nhóm chỉ số trả về đúng bản ghi"
     uc: "B.I.2-UC1"
@@ -56,6 +59,7 @@ testcases:
       - "1. Nhập một tên nhóm chỉ số có sẵn vào ô tìm kiếm"
     ket_qua_mong_doi:
       - "Chỉ hiển thị các dòng chứa từ khóa"
+    ket_qua_chay: "Không chạy"
   - id: IGR-L05
     title: "Từ khóa không tồn tại → không có dữ liệu"
     uc: "B.I.2-UC1"
@@ -69,6 +73,7 @@ testcases:
       - "1. Nhập \"zzqcxx_khongtontai_999\""
     ket_qua_mong_doi:
       - "Bảng rỗng / hiển thị trạng thái không có dữ liệu, không lỗi"
+    ket_qua_chay: "Không chạy"
   - id: IGR-L06
     title: "Tìm kiếm không phân biệt chữ hoa/chữ thường"
     uc: "B.I.2-UC1"
@@ -82,6 +87,7 @@ testcases:
       - "1. Nhập từ khóa viết HOA rồi viết thường của cùng một giá trị"
     ket_qua_mong_doi:
       - "Hai lần tìm trả về cùng số bản ghi"
+    ket_qua_chay: "Không chạy"
   - id: IGR-L07
     title: "Ký tự đặc biệt / chuỗi SQL trong ô tìm kiếm không gây lỗi hệ thống"
     uc: "B.I.2-UC1"
@@ -95,6 +101,7 @@ testcases:
       - "1. Nhập  ' OR 1=1 --  và  <script>alert(1)</script>"
     ket_qua_mong_doi:
       - "Không hiện lỗi 500/trắng trang, không thực thi script, không trả về toàn bộ dữ liệu bất thường"
+    ket_qua_chay: "Không chạy"
   - id: IGR-L08
     title: "Chuyển sang trang 2 hiển thị dữ liệu khác trang 1"
     uc: "B.I.2-UC1"
@@ -108,6 +115,7 @@ testcases:
       - "1. Bấm trang 2 trên thanh phân trang"
     ket_qua_mong_doi:
       - "Trang 2 được đánh dấu active; nội dung bảng khác trang 1"
+    ket_qua_chay: "Không chạy"
   - id: IGR-L09
     title: "Đổi số bản ghi/trang sang 20 thì số dòng thay đổi theo"
     uc: "B.I.2-UC1"
@@ -121,6 +129,7 @@ testcases:
       - "1. Chọn \"20 / trang\" ở thanh phân trang"
     ket_qua_mong_doi:
       - "Số dòng tối đa mỗi trang = 20; tổng số bản ghi không đổi"
+    ket_qua_chay: "Không chạy"
   - id: IGR-L10
     title: "Xóa từ khóa thì danh sách trở về đầy đủ"
     uc: "B.I.2-UC1"
@@ -135,6 +144,7 @@ testcases:
       - "2. Xóa trắng ô tìm kiếm"
     ket_qua_mong_doi:
       - "Danh sách hiển thị lại như ban đầu (tổng số bản ghi bằng lúc đầu)"
+    ket_qua_chay: "Không chạy"
   - id: IGR-L12
     title: "Lọc theo trạng thái khóa / trụ cột"
     uc: "B.I.2-UC1"
@@ -148,6 +158,7 @@ testcases:
       - "1. Chọn bộ lọc trên trang"
     ket_qua_mong_doi:
       - "Mọi dòng khớp bộ lọc đã chọn"
+    ket_qua_chay: "Không chạy"
   - id: IGR-L13
     title: "Cột Chỉ số khớp số chỉ số trong chi tiết nhóm"
     uc: "B.I.2-UC1"
@@ -162,6 +173,7 @@ testcases:
       - "2. Mở chi tiết"
     ket_qua_mong_doi:
       - "Bằng số dòng bảng chỉ số thuộc nhóm (tính cả chỉ số con theo hiển thị)"
+    ket_qua_chay: "Không chạy"
   - id: IGR-V01
     title: "Chi tiết nhóm hiển thị mã, trụ cột, thứ tự, số chỉ số, tổng điểm tối đa và bảng chỉ số thuộc nhóm"
     uc: "B.I.2-UC1"
@@ -175,6 +187,7 @@ testcases:
       - "1. Bấm \"Xem chi tiết\" một nhóm"
     ket_qua_mong_doi:
       - "Hiển thị đủ thông tin; bảng có cột Mã chỉ số, Tên, Điểm tối thiểu, Điểm tối đa, Trạng thái, Thao tác; có nút Xuất Excel, Cập nhật, Thêm chỉ số"
+    ket_qua_chay: "Không chạy"
   - id: IGR-V02
     title: "Mở chi tiết nhóm với id không tồn tại không gây lỗi hệ thống"
     uc: "B.I.2-UC1"
@@ -189,6 +202,7 @@ testcases:
       - "2. Mở URL chi tiết id lạ"
     ket_qua_mong_doi:
       - "API 4xx (không 500); trang không trắng, không lộ lỗi"
+    ket_qua_chay: "Không chạy"
   - id: IGR-V03
     title: "Nhóm đã khóa: chi tiết không cho Cập nhật / Thêm chỉ số"
     uc: "B.I.2-UC1"
@@ -203,6 +217,7 @@ testcases:
     ket_qua_mong_doi:
       - "Thao tác sửa bị ẩn/vô hiệu, nhất quán với menu danh sách"
     ghi_chu: "Tương tự PIL-V05 — cần khảo sát khi viết script"
+    ket_qua_chay: "Không chạy"
   - id: IGR-C01
     title: "Thêm nhóm chỉ số dưới một trụ cột đã khóa thành công"
     uc: "B.I.2-UC2"
@@ -218,6 +233,7 @@ testcases:
       - "3. Lưu"
     ket_qua_mong_doi:
       - "Thành công; nhóm hiện ở danh sách với đúng trụ cột, trạng thái Chưa khóa"
+    ket_qua_chay: "Không chạy"
   - id: IGR-C02
     title: "Bỏ trống Trụ cột/Mã/Tên thì báo lỗi bắt buộc"
     uc: "B.I.2-UC2"
@@ -231,6 +247,7 @@ testcases:
       - "1. Bấm Lưu khi chưa nhập"
     ket_qua_mong_doi:
       - "Báo lỗi bắt buộc ở 3 trường; không tạo"
+    ket_qua_chay: "Không chạy"
   - id: IGR-C03
     title: "Trùng mã nhóm chỉ số bị từ chối"
     uc: "B.I.2-UC2"
@@ -245,6 +262,7 @@ testcases:
       - "2. Tạo nhóm B cùng mã"
     ket_qua_mong_doi:
       - "Báo \"Mã nhóm chỉ số đã tồn tại\"; chỉ 1 bản ghi"
+    ket_qua_chay: "Không chạy"
   - id: IGR-C04
     title: "[API] Tạo nhóm với trụ cột chưa khóa / không hợp lệ bị từ chối"
     uc: "B.I.2-UC2"
@@ -259,6 +277,7 @@ testcases:
       - "2. [API] POST không có pillarId"
     ket_qua_mong_doi:
       - "400 \"Chỉ có thể chọn trụ cột đã được khóa\"; 400 \"Trụ cột không hợp lệ\""
+    ket_qua_chay: "Không chạy"
   - id: IGR-C05
     title: "Mã nhóm chỉ khác hoa/thường bị coi là trùng"
     uc: "B.I.2-UC2"
@@ -273,6 +292,7 @@ testcases:
     ket_qua_mong_doi:
       - "Bị từ chối"
     ghi_chu: "Cần BA xác nhận quy tắc hoa/thường"
+    ket_qua_chay: "Không chạy"
   - id: IGR-C06
     title: "Hủy form thêm mới không tạo bản ghi"
     uc: "B.I.2-UC2"
@@ -287,6 +307,7 @@ testcases:
       - "2. Huỷ"
     ket_qua_mong_doi:
       - "Không có nhóm mới"
+    ket_qua_chay: "Không chạy"
   - id: IGR-C07
     title: "Mã nhóm 50 ký tự được nhận, 51 ký tự bị chặn"
     uc: "B.I.2-UC2"
@@ -300,6 +321,7 @@ testcases:
       - "1. Nhập mã 50 rồi 51 ký tự"
     ket_qua_mong_doi:
       - "50: tạo được; 51: báo vượt quá 50 ký tự"
+    ket_qua_chay: "Không chạy"
   - id: IGR-C08
     title: "[API] Mã hoặc tên rỗng bị từ chối bằng HTTP 400"
     uc: "B.I.2-UC2"
@@ -313,6 +335,7 @@ testcases:
       - "1. [API] POST name rỗng / code rỗng"
     ket_qua_mong_doi:
       - "HTTP 400 có thông báo"
+    ket_qua_chay: "Không chạy"
   - id: IGR-E01
     title: "Sửa tên nhóm chưa khóa thành công"
     uc: "B.I.2-UC5"
@@ -328,6 +351,7 @@ testcases:
       - "3. Lưu"
     ket_qua_mong_doi:
       - "Tên mới hiển thị"
+    ket_qua_chay: "Không chạy"
   - id: IGR-E02
     title: "Xóa trắng tên khi sửa bị chặn"
     uc: "B.I.2-UC5"
@@ -342,6 +366,7 @@ testcases:
       - "2. Lưu"
     ket_qua_mong_doi:
       - "Báo lỗi bắt buộc"
+    ket_qua_chay: "Không chạy"
   - id: IGR-E03
     title: "Hủy chỉnh sửa không đổi dữ liệu"
     uc: "B.I.2-UC5"
@@ -356,6 +381,7 @@ testcases:
       - "2. Huỷ"
     ket_qua_mong_doi:
       - "Dữ liệu giữ nguyên"
+    ket_qua_chay: "Không chạy"
   - id: IGR-E04
     title: "[API] Sửa nhóm đã khóa bị từ chối"
     uc: "B.I.2-UC5"
@@ -370,6 +396,7 @@ testcases:
       - "2. [API] PUT đổi tên"
     ket_qua_mong_doi:
       - "HTTP 400 báo đã khóa; tên giữ nguyên"
+    ket_qua_chay: "Không chạy"
   - id: IGR-E05
     title: "Đổi trụ cột của nhóm cập nhật số liệu trụ cột"
     uc: "B.I.2-UC5"
@@ -386,6 +413,7 @@ testcases:
     ket_qua_mong_doi:
       - "Nhóm chuyển sang trụ cột mới; số nhóm/điểm của 2 trụ cột đổi theo"
     ghi_chu: "Khảo sát khi viết script xem form sửa có cho đổi trụ cột không"
+    ket_qua_chay: "Không chạy"
   - id: IGR-K01
     title: "Khóa nhóm chỉ số → Đã khóa, menu chỉ còn \"Mở khoá\""
     uc: "B.I.2-UC3"
@@ -400,6 +428,7 @@ testcases:
       - "2. Xác nhận"
     ket_qua_mong_doi:
       - "Đã khóa; không còn Cập nhật/Xoá"
+    ket_qua_chay: "Không chạy"
   - id: IGR-K02
     title: "Mở khóa nhóm chỉ số → sửa/xóa lại được"
     uc: "B.I.2-UC3"
@@ -413,6 +442,7 @@ testcases:
       - "1. Menu → Mở khoá"
     ket_qua_mong_doi:
       - "Chưa khóa; menu có lại Cập nhật/Xoá"
+    ket_qua_chay: "Không chạy"
   - id: IGR-K03
     title: "Chỉ nhóm đã khóa mới chọn được khi tạo chỉ số"
     uc: "B.I.2-UC3"
@@ -428,6 +458,7 @@ testcases:
     ket_qua_mong_doi:
       - "Chỉ liệt kê nhóm Đã khóa"
     ghi_chu: "Suy từ quy tắc \"khóa = đưa vào sử dụng\" — xác minh khi viết script"
+    ket_qua_chay: "Không chạy"
   - id: IGR-D01
     title: "Xóa nhóm chưa khóa, chưa có chỉ số thành công"
     uc: "B.I.2-UC4"
@@ -442,6 +473,7 @@ testcases:
       - "2. Xác nhận"
     ket_qua_mong_doi:
       - "Nhóm biến mất"
+    ket_qua_chay: "Không chạy"
   - id: IGR-D02
     title: "Chọn \"Không\" ở hộp xác nhận thì giữ nguyên"
     uc: "B.I.2-UC4"
@@ -456,6 +488,7 @@ testcases:
       - "2. Không"
     ket_qua_mong_doi:
       - "Nhóm còn nguyên"
+    ket_qua_chay: "Không chạy"
   - id: IGR-D03
     title: "Nhóm đã khóa không xóa được (UI ẩn Xoá, API 400)"
     uc: "B.I.2-UC4"
@@ -470,6 +503,7 @@ testcases:
       - "2. Xem menu, [API] DELETE"
     ket_qua_mong_doi:
       - "Không có Xoá; API 400"
+    ket_qua_chay: "Không chạy"
   - id: IGR-D04
     title: "Nhóm đang có chỉ số không xóa được"
     uc: "B.I.2-UC4"
@@ -484,6 +518,7 @@ testcases:
       - "2. Xóa"
     ket_qua_mong_doi:
       - "Báo không thể xóa; nhóm và chỉ số còn nguyên"
+    ket_qua_chay: "Không chạy"
   - id: IGR-G01
     title: "Trường bắt buộc chỉ nhập khoảng trắng bị chặn (nhóm chỉ số)"
     uc: "B.I.2-UC2"
@@ -499,6 +534,7 @@ testcases:
       - "3. Lưu"
     ket_qua_mong_doi:
       - "Báo lỗi bắt buộc (chuỗi rỗng sau trim); không tạo bản ghi"
+    ket_qua_chay: "Không chạy"
   - id: IGR-G02
     title: "Tên chứa tiếng Việt có dấu, HTML, dấu nháy, & được lưu và hiển thị đúng sau khi tải lại trang (nhóm chỉ số)"
     uc: "B.I.2-UC2"
@@ -513,6 +549,7 @@ testcases:
       - "2. Tải lại trang (F5), tìm theo mã/tên"
     ket_qua_mong_doi:
       - "Tên hiển thị nguyên văn dạng chữ; thẻ HTML không bị render"
+    ket_qua_chay: "Không chạy"
   - id: IGR-G03
     title: "Server lỗi 500 khi lưu: giữ form và dữ liệu đã nhập, không lộ lỗi nội bộ (nhóm chỉ số)"
     uc: "B.I.2-UC2"
@@ -528,6 +565,7 @@ testcases:
       - "3. Lưu"
     ket_qua_mong_doi:
       - "Form còn mở và giữ dữ liệu; không lộ stacktrace; không tạo bản ghi"
+    ket_qua_chay: "Không chạy"
   - id: IGR-G04
     title: "Mất kết nối khi lưu: không treo giao diện, giữ form (nhóm chỉ số)"
     uc: "B.I.2-UC2"
@@ -543,6 +581,7 @@ testcases:
       - "3. Lưu"
     ket_qua_mong_doi:
       - "Form còn mở và giữ dữ liệu; trang không trắng; không tạo bản ghi"
+    ket_qua_chay: "Không chạy"
   - id: IGR-G05
     title: "Bấm Lưu 2 lần liên tiếp chỉ tạo 1 bản ghi (nhóm chỉ số)"
     uc: "B.I.2-UC2"
@@ -557,6 +596,7 @@ testcases:
       - "2. Bấm Lưu 2 lần rất nhanh"
     ket_qua_mong_doi:
       - "Chỉ có đúng 1 bản ghi"
+    ket_qua_chay: "Không chạy"
   - id: IGR-A01
     title: "API nhóm chỉ số: không token / token giả → 401"
     uc: "B.I.2-UC1"
@@ -571,6 +611,7 @@ testcases:
       - "2. GET với token giả"
     ket_qua_mong_doi:
       - "HTTP 401"
+    ket_qua_chay: "Không chạy"
   - id: IGR-A02
     title: "Quyền API nhóm chỉ số đúng theo ma trận quyền Cán bộ"
     uc: "B.I.2-UC1"
@@ -585,6 +626,7 @@ testcases:
       - "2. GET/POST/PUT/DELETE theo quyền Xem/Thêm/Sửa/Xóa/Khóa"
     ket_qua_mong_doi:
       - "Có quyền → được; không có → 403"
+    ket_qua_chay: "Không chạy"
   - id: IGR-A03
     title: "Chưa đăng nhập vào trang nhóm chỉ số bị chuyển về màn đăng nhập, không lộ dữ liệu"
     uc: "B.I.2-UC1"
@@ -599,6 +641,7 @@ testcases:
       - "2. Mở URL trang"
     ket_qua_mong_doi:
       - "Hiện màn đăng nhập; không có dữ liệu"
+    ket_qua_chay: "Không chạy"
   - id: IGR-P01
     title: "Danh sách nhóm chỉ số tải < 3 giây"
     uc: "B.I.2-UC1"
@@ -612,3 +655,4 @@ testcases:
       - "1. Mở trang và đo"
     ket_qua_mong_doi:
       - "API < 3000ms, hiển thị < 6000ms"
+    ket_qua_chay: "Không chạy"

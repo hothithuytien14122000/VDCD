@@ -15,6 +15,7 @@ testcases:
       - "1. Chưa đăng nhập, mở trang /#/vi/auth/login"
     ket_qua_mong_doi:
       - "Có ô Tên đăng nhập, ô Mật khẩu, ô Mã xác nhận kèm ảnh captcha và nút Đổi mã, checkbox Ghi nhớ đăng nhập, nút Đăng nhập, liên kết Quên mật khẩu?"
+    ket_qua_chay: "Không chạy"
   - id: LGN-L02
     title: "Mật khẩu mặc định ẩn, bấm biểu tượng mắt để hiện/ẩn"
     uc: "AUTH.1-UC1"
@@ -30,6 +31,7 @@ testcases:
       - "3. Bấm lần nữa"
     ket_qua_mong_doi:
       - "Mặc định ô là type=password; bấm mắt hiện rõ (text); bấm lại thì ẩn"
+    ket_qua_chay: "Không chạy"
   - id: LGN-L03
     title: "Bỏ trống cả ba ô thì báo lỗi bắt buộc ở từng ô và không gọi API"
     uc: "AUTH.1-UC1"
@@ -44,6 +46,7 @@ testcases:
       - "2. Bấm Đăng nhập"
     ket_qua_mong_doi:
       - "Báo \"Vui lòng nhập tên đăng nhập!\", \"Vui lòng nhập mật khẩu!\", \"Vui lòng nhập mã xác nhận!\"; không có request jwt/login"
+    ket_qua_chay: "Không chạy"
   - id: LGN-L04
     title: "Chỉ thiếu Tên đăng nhập thì báo lỗi đúng ô đó"
     uc: "AUTH.1-UC1"
@@ -58,6 +61,7 @@ testcases:
       - "2. Bấm Đăng nhập"
     ket_qua_mong_doi:
       - "Chỉ báo \"Vui lòng nhập tên đăng nhập!\"; không gọi API"
+    ket_qua_chay: "Không chạy"
   - id: LGN-L05
     title: "Chỉ thiếu Mật khẩu thì báo lỗi đúng ô đó"
     uc: "AUTH.1-UC1"
@@ -72,6 +76,7 @@ testcases:
       - "2. Bấm Đăng nhập"
     ket_qua_mong_doi:
       - "Chỉ báo \"Vui lòng nhập mật khẩu!\"; không gọi API"
+    ket_qua_chay: "Không chạy"
   - id: LGN-L06
     title: "Chỉ thiếu Mã xác nhận thì báo lỗi đúng ô đó"
     uc: "AUTH.1-UC1"
@@ -86,6 +91,7 @@ testcases:
       - "2. Bấm Đăng nhập"
     ket_qua_mong_doi:
       - "Chỉ báo \"Vui lòng nhập mã xác nhận!\"; không gọi API"
+    ket_qua_chay: "Không chạy"
   - id: LGN-L07
     title: "Nhấn Enter ở ô Mã xác nhận gửi form đăng nhập"
     uc: "AUTH.1-UC1"
@@ -100,6 +106,7 @@ testcases:
       - "2. Nhấn Enter"
     ket_qua_mong_doi:
       - "Form được gửi (có request jwt/login)"
+    ket_qua_chay: "Không chạy"
   - id: LGN-L08
     title: "Liên kết \"Quên mật khẩu?\" chuyển sang màn Quên mật khẩu"
     uc: "AUTH.1-UC1"
@@ -113,6 +120,7 @@ testcases:
       - "1. Bấm \"Quên mật khẩu?\""
     ket_qua_mong_doi:
       - "Hiển thị màn \"Quên mật khẩu\" có ô Email đăng ký và nút Lấy mã OTP"
+    ket_qua_chay: "Không chạy"
   - id: LGN-C01
     title: "Nhập sai mã captcha thì báo lỗi và ở lại trang đăng nhập"
     uc: "AUTH.1-UC3"
@@ -127,6 +135,7 @@ testcases:
       - "2. Bấm Đăng nhập"
     ket_qua_mong_doi:
       - "Báo \"Mã captcha không hợp lệ hoặc đã hết hạn, vui lòng thử lại\"; vẫn ở trang đăng nhập; không lưu token"
+    ket_qua_chay: "Không chạy"
   - id: LGN-C02
     title: "Nút \"Đổi mã xác nhận\" tải ảnh captcha mới và xóa mã đã nhập"
     uc: "AUTH.1-UC3"
@@ -141,6 +150,7 @@ testcases:
       - "2. Bấm nút Đổi mã xác nhận"
     ket_qua_mong_doi:
       - "Ảnh captcha thay đổi; ô Mã xác nhận được xóa trắng"
+    ket_qua_chay: "Không chạy"
   - id: LGN-C03
     title: "Sau khi đăng nhập thất bại do sai captcha, ảnh captcha được làm mới"
     uc: "AUTH.1-UC3"
@@ -157,6 +167,7 @@ testcases:
     ket_qua_mong_doi:
       - "Ảnh captcha (và captchaId) được làm mới để lần thử sau dùng mã mới"
     ghi_chu: "Khảo sát: ảnh captcha giữ nguyên sau lỗi, ô mã vẫn còn \"zzzzz\" → nghi lỗi. Cần BA xác nhận quy tắc (captcha dùng một lần)"
+    ket_qua_chay: "Không chạy"
   - id: LGN-C10
     title: "Sau khi đăng nhập thất bại, nhập mã captcha mới vào ô và bấm Đăng nhập lại thì mã mới được gửi đi"
     uc: "AUTH.1-UC3"
@@ -173,6 +184,7 @@ testcases:
     ket_qua_mong_doi:
       - "Request thứ hai gửi đúng mã vừa gõ (không báo \"Vui lòng nhập mã xác nhận!\" khi ô đang có mã)"
     ghi_chu: "Khảo sát: ô hiện mã mới gõ nhưng bấm Đăng nhập báo \"Vui lòng nhập mã xác nhận!\" và không gửi request; chỉ sau khi bấm \"Đổi mã xác nhận\" mới đăng nhập lại được → nghi lỗi nghiêm trọng (người dùng sai mật khẩu một lần phải làm mới captcha thủ công)"
+    ket_qua_chay: "Không chạy"
   - id: LGN-C04
     title: "[API] Lấy captcha trả captchaId và ảnh PNG, mỗi lần một mã khác nhau"
     uc: "AUTH.1-UC3"
@@ -186,6 +198,7 @@ testcases:
       - "1. [API] GET /authentication/captcha 2 lần"
     ket_qua_mong_doi:
       - "HTTP 200; có captchaId (khác nhau giữa hai lần) và captchaImage dạng data:image/png;base64"
+    ket_qua_chay: "Không chạy"
   - id: LGN-C05
     title: "[API] Phản hồi captcha không chứa dữ liệu cho phép suy ra đáp án"
     uc: "AUTH.1-UC3"
@@ -201,6 +214,7 @@ testcases:
     ket_qua_mong_doi:
       - "Chỉ có captchaId và captchaImage; không có băm/đáp án của mã"
     ghi_chu: "Khảo sát: phản hồi có thêm captchaHash (64 hex, dạng SHA-256) → mã captcha ngắn có thể bị suy ngược bằng vét cạn → nghi lỗi bảo mật. Cần dev xác nhận mục đích trường này"
+    ket_qua_chay: "Không chạy"
   - id: LGN-C06
     title: "[API] Đăng nhập với captcha sai bị từ chối HTTP 400, không trả token"
     uc: "AUTH.1-UC3"
@@ -214,6 +228,7 @@ testcases:
       - "1. [API] POST /authentication/jwt/login với captchaCode sai"
     ket_qua_mong_doi:
       - "HTTP 400 \"Mã captcha không hợp lệ hoặc đã hết hạn...\"; không có tokenString"
+    ket_qua_chay: "Không chạy"
   - id: LGN-C07
     title: "[API] Đăng nhập không gửi captcha bị từ chối"
     uc: "AUTH.1-UC3"
@@ -227,6 +242,7 @@ testcases:
       - "1. [API] POST jwt/login chỉ có email, password"
     ket_qua_mong_doi:
       - "HTTP 400 báo captcha không hợp lệ; không trả token"
+    ket_qua_chay: "Không chạy"
   - id: LGN-C08
     title: "[API] Đăng nhập với captchaId không tồn tại bị từ chối"
     uc: "AUTH.1-UC3"
@@ -240,6 +256,7 @@ testcases:
       - "1. [API] POST jwt/login với captchaId \"không-tồn-tại\""
     ket_qua_mong_doi:
       - "HTTP 400 báo captcha không hợp lệ; không trả token"
+    ket_qua_chay: "Không chạy"
   - id: LGN-C09
     title: "Ký tự đặc biệt / SQL / script trong tên đăng nhập không gây lỗi hệ thống"
     uc: "AUTH.1-UC3"
@@ -254,6 +271,7 @@ testcases:
       - "2. Nhập chuỗi trên vào form đăng nhập"
     ket_qua_mong_doi:
       - "HTTP 4xx (không 500); trang không trắng, không thực thi script, không đăng nhập được"
+    ket_qua_chay: "Không chạy"
   - id: LGN-S01
     title: "Chưa đăng nhập vào trang quản trị thì bị chuyển về trang đăng nhập"
     uc: "AUTH.1-UC5"
@@ -267,6 +285,7 @@ testcases:
       - "1. Xóa phiên, mở trực tiếp /#/vi/users"
     ket_qua_mong_doi:
       - "Chuyển về /#/vi/auth/login; không hiển thị dữ liệu quản trị"
+    ket_qua_chay: "Không chạy"
   - id: LGN-S02
     title: "Token giả trong bộ nhớ trình duyệt bị đẩy về trang đăng nhập, không lặp chuyển hướng"
     uc: "AUTH.1-UC5"
@@ -283,6 +302,7 @@ testcases:
     ket_qua_mong_doi:
       - "Chuyển về trang đăng nhập đúng một lần và đứng yên tại đó (không quá 5 lần chuyển trang)"
     ghi_chu: "Khảo sát: ứng dụng chuyển qua lại /auth/login ↔ /dashboard-demo hàng trăm lần mỗi giây (vòng lặp chuyển hướng) → nghi lỗi nghiêm trọng, treo trình duyệt"
+    ket_qua_chay: "Không chạy"
   - id: LGN-S03
     title: "[API] Gọi API nghiệp vụ với token giả bị từ chối 401"
     uc: "AUTH.1-UC5"
@@ -296,6 +316,7 @@ testcases:
       - "1. [API] GET /idm/users với Authorization: Bearer a.b.c"
     ket_qua_mong_doi:
       - "HTTP 401 (không trả dữ liệu)"
+    ket_qua_chay: "Không chạy"
   - id: LGN-M01
     title: "Đăng nhập đúng tài khoản/mật khẩu/captcha vào được hệ thống"
     uc: "AUTH.1-UC2"
@@ -310,6 +331,7 @@ testcases:
       - "2. Bấm Đăng nhập"
     ket_qua_mong_doi:
       - "Vào Dashboard; hiển thị đúng họ tên, đơn vị; menu theo quyền của nhóm"
+    ket_qua_chay: "Manual"
   - id: LGN-M02
     title: "Sai mật khẩu bị từ chối với thông báo lỗi"
     uc: "AUTH.1-UC2"
@@ -324,6 +346,7 @@ testcases:
       - "2. Bấm Đăng nhập"
     ket_qua_mong_doi:
       - "Báo lỗi sai thông tin đăng nhập; ở lại trang đăng nhập; không có token"
+    ket_qua_chay: "Manual"
   - id: LGN-M03
     title: "Tên đăng nhập không tồn tại bị từ chối"
     uc: "AUTH.1-UC2"
@@ -338,6 +361,7 @@ testcases:
       - "2. Bấm Đăng nhập"
     ket_qua_mong_doi:
       - "Báo lỗi; ở lại trang đăng nhập"
+    ket_qua_chay: "Manual"
   - id: LGN-M04
     title: "Thông báo lỗi không cho biết tên đăng nhập có tồn tại hay không"
     uc: "AUTH.1-UC2"
@@ -354,6 +378,7 @@ testcases:
     ket_qua_mong_doi:
       - "Hai thông báo giống nhau (chống dò tài khoản)"
     ghi_chu: "Khảo sát: thông báo \"Tài khoản … không tồn tại trong hệ thống. Vui lòng đăng ký mới.\" → lộ tài khoản tồn tại. Cần BA xác nhận quy tắc"
+    ket_qua_chay: "Manual"
   - id: LGN-M05
     title: "Tài khoản bị khóa không đăng nhập được"
     uc: "AUTH.1-UC2"
@@ -367,6 +392,7 @@ testcases:
       - "1. Đăng nhập bằng qc.locked, mật khẩu và captcha đúng"
     ket_qua_mong_doi:
       - "Bị từ chối kèm thông báo tài khoản bị khóa; không có token"
+    ket_qua_chay: "Manual"
   - id: LGN-M06
     title: "Đăng nhập bằng tên đăng nhập (không cần gõ email)"
     uc: "AUTH.1-UC2"
@@ -381,6 +407,7 @@ testcases:
     ket_qua_mong_doi:
       - "Đăng nhập thành công vì nhãn ô là \"Tên đăng nhập\""
     ghi_chu: "API nhận trường \"email\"; cần xác nhận hệ thống có chấp nhận tên đăng nhập thuần hay chỉ email. Cần BA xác nhận quy tắc"
+    ket_qua_chay: "Manual"
   - id: LGN-M07
     title: "Đăng nhập bằng tên đăng nhập viết HOA/thường lẫn lộn"
     uc: "AUTH.1-UC2"
@@ -395,6 +422,7 @@ testcases:
     ket_qua_mong_doi:
       - "Đăng nhập thành công hoặc từ chối nhất quán theo quy ước"
     ghi_chu: "Cần BA xác nhận quy tắc phân biệt hoa/thường"
+    ket_qua_chay: "Manual"
   - id: LGN-M08
     title: "Tài khoản chưa gán nhóm đăng nhập được nhưng không có quyền nghiệp vụ"
     uc: "AUTH.1-UC2"
@@ -409,6 +437,7 @@ testcases:
     ket_qua_mong_doi:
       - "Đăng nhập được; menu không có chức năng nào hoặc thông báo chưa phân quyền; không lỗi hệ thống"
     ghi_chu: "Cần BA xác nhận quy tắc"
+    ket_qua_chay: "Manual"
   - id: LGN-M09
     title: "Tài khoản bắt buộc đổi mật khẩu được chuyển sang màn đổi mật khẩu"
     uc: "AUTH.1-UC4"
@@ -422,6 +451,7 @@ testcases:
       - "1. Đăng nhập bằng qc.firstlogin (cờ bắt buộc đổi mật khẩu)"
     ket_qua_mong_doi:
       - "Chuyển sang màn \"Đổi mật khẩu lần đầu\"; chưa vào được các trang nghiệp vụ"
+    ket_qua_chay: "Manual"
   - id: LGN-M10
     title: "Đổi mật khẩu lần đầu thành công thì vào hệ thống và lần sau không bị hỏi lại"
     uc: "AUTH.1-UC4"
@@ -437,6 +467,7 @@ testcases:
     ket_qua_mong_doi:
       - "Đổi thành công, vào hệ thống; lần sau đăng nhập thẳng"
     ghi_chu: "Chạy trên tài khoản dùng một lần (tạo mới), không dùng qc.firstlogin vì sẽ mất mẫu"
+    ket_qua_chay: "Manual"
   - id: LGN-M11
     title: "Mật khẩu xác nhận không khớp ở màn đổi mật khẩu lần đầu bị chặn"
     uc: "AUTH.1-UC4"
@@ -450,6 +481,7 @@ testcases:
       - "1. Nhập mật khẩu mới và xác nhận khác nhau"
     ket_qua_mong_doi:
       - "Báo lỗi không khớp; không đổi mật khẩu"
+    ket_qua_chay: "Manual"
   - id: LGN-M12
     title: "Chọn \"Ghi nhớ đăng nhập\" giữ phiên sau khi đóng và mở lại trình duyệt"
     uc: "AUTH.1-UC5"
@@ -464,6 +496,7 @@ testcases:
       - "2. Đóng, mở lại trình duyệt"
     ket_qua_mong_doi:
       - "Vẫn đăng nhập; token còn hạn theo cấu hình"
+    ket_qua_chay: "Manual"
   - id: LGN-M13
     title: "Đăng xuất đưa về trang đăng nhập và nút Back không quay lại được hệ thống"
     uc: "AUTH.1-UC5"
@@ -479,6 +512,7 @@ testcases:
       - "3. Bấm Back trình duyệt"
     ket_qua_mong_doi:
       - "Về trang đăng nhập; Back không hiển thị lại trang nghiệp vụ; token bị xóa"
+    ket_qua_chay: "Manual"
   - id: LGN-M14
     title: "Mã captcha đã dùng một lần không dùng lại được"
     uc: "AUTH.1-UC3"
@@ -493,6 +527,7 @@ testcases:
       - "2. [API] Gọi lại jwt/login với cùng captchaId X và mã đã đúng"
     ket_qua_mong_doi:
       - "Lần hai bị từ chối \"captcha không hợp lệ hoặc đã hết hạn\""
+    ket_qua_chay: "Manual"
   - id: LGN-M15
     title: "Nhập sai mật khẩu nhiều lần liên tiếp bị khóa hoặc giới hạn"
     uc: "AUTH.1-UC2"
@@ -508,3 +543,4 @@ testcases:
     ket_qua_mong_doi:
       - "Tài khoản bị khóa tạm hoặc bị giới hạn tần suất; ghi nhận thông báo rõ ràng"
     ghi_chu: "Cần BA xác nhận quy tắc số lần và thời gian khóa"
+    ket_qua_chay: "Manual"

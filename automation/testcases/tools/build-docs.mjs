@@ -4,7 +4,7 @@ import { actorOf } from '../docs/actors.mjs';
 const ids = new Set(); for (const x of T) { if (ids.has(x.id)) throw new Error('Trùng ID ' + x.id); ids.add(x.id); }
 for (const x of T) { const a = actorOf(x); x.actor = a.label; x.account = a.key; }
 fs.writeFileSync('testcases/docs/catalog.json', JSON.stringify(T, null, 1));
-const PAGE = { USR: 'Người dùng', GRP: 'Nhóm người dùng', PRV: 'Đơn vị hành chính cấp tỉnh', COM: 'Đơn vị hành chính cấp xã', UTY: 'Loại đơn vị', ORG: 'Đơn vị', PIL: 'Trụ cột', IGR: 'Nhóm chỉ số', IND: 'Chỉ số', SET: 'Bộ chỉ số', SCL: 'Thang xếp loại', RES: 'Kết quả tự đánh giá', CMP: 'Quản lý tự đánh giá', LGN: 'Đăng nhập', RPW: 'Quên mật khẩu', CPW: 'Đổi mật khẩu', LGO: 'Đăng xuất' };
+const PAGE = { USR: 'Người dùng', GRP: 'Nhóm người dùng', PRM: 'Ma trận phân quyền', PRV: 'Đơn vị hành chính cấp tỉnh', COM: 'Đơn vị hành chính cấp xã', UTY: 'Loại đơn vị', ORG: 'Đơn vị', PIL: 'Trụ cột', IGR: 'Nhóm chỉ số', IND: 'Chỉ số', SET: 'Bộ chỉ số', SCL: 'Thang xếp loại', RES: 'Kết quả tự đánh giá', CMP: 'Quản lý tự đánh giá', LGN: 'Đăng nhập', RPW: 'Quên mật khẩu', CPW: 'Đổi mật khẩu', LGO: 'Đăng xuất' };
 const esc = s => `"${String(s ?? '').replace(/"/g, '""')}"`;
 const head = ['ID', 'Page', 'UC (UC_1409)', 'Chức năng', 'Tiêu đề testcase', 'Loại', 'Ưu tiên', 'Các bước', 'Kết quả mong đợi', 'Automation', 'Ghi chú'];
 const rows = T.map(x => [x.id, PAGE[x.id.split('-')[0]], x.uc, x.fn, x.title, x.type, x.pri, x.steps, x.exp, x.auto, x.note]);

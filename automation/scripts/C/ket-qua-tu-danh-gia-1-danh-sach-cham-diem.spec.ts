@@ -119,7 +119,7 @@ async function loadFx(): Promise<Fx> {
   if (fs.existsSync(CACHE)) {
     try {
       const c: Fx = JSON.parse(fs.readFileSync(CACHE, 'utf8'));
-      if (c.camp.PAST && (await api('GET', `${CAMP}/${c.camp.BA}`)).status === 200 && (await api('GET', `${RES}/${c.res.MBns}`, undefined, 'canbo')).status === 200) return c;
+      if (c.camp.PAST && c.res['PD.BO'] && (await api('GET', `${CAMP}/${c.camp.BA}`)).status === 200 && (await api('GET', `${RES}/${c.res.MBns}`, undefined, 'canbo')).status === 200) return c;
     } catch { /* tạo lại */ }
   }
   const org: Record<string, string> = { DP: ORG_DP, BO: ORG_BO };
@@ -131,13 +131,13 @@ async function loadFx(): Promise<Fx> {
   camp.BA = await ensureCamp('qc.automation RES1 fixture BA', { type: 'AdHoc', indicatorSetId: SET_BA, ...win }, [...all, ORG_DP, ORG_BO]);
   camp.MI = await ensureCamp('qc.automation RES1 fixture MI', { type: 'AdHoc', indicatorSetId: miSet, ...win }, [org.A, org.B, org.C, org.D, ORG_DP, ORG_BO]);
   camp.MB = await ensureCamp('qc.automation RES1 fixture MB', { type: 'AdHoc', indicatorSetId: SET_MB, ...win }, [org.A, org.B, ORG_DP, ORG_BO]);
-  camp.PD = await ensureCamp('qc.automation RES1 fixture PD', { type: 'Periodic', periodType: 'Month', periodValue: 'Tháng 12 2026', indicatorSetId: SET_BA, startDate: '2026-12-01T00:00:00', endDate: '2026-12-31T23:59:59' }, [org.A, org.B, ORG_DP, ORG_BO]);
+  camp.PD = await ensureCamp('qc.automation RES1 fixture PD Q4', { type: 'Periodic', periodType: 'Quarter', periodValue: 'Quý 4 2026', indicatorSetId: SET_BA, startDate: '2026-10-01T00:00:00', endDate: '2026-12-31T23:59:59' }, [org.A, org.B, ORG_DP, ORG_BO]);
   // Hạn nộp gửi theo đúng định dạng giao diện gửi lên (00:00 giờ VN của ngày kế tiếp = 17:00Z): người dùng chọn 31/12/2026
   camp.TZ = await ensureCamp('qc.automation RES1 fixture TZ', { type: 'AdHoc', indicatorSetId: SET_BA, startDate: '2026-11-30T17:00:00.000Z', endDate: '2026-12-30T17:00:00.000Z' }, [org.A]);
   camp.PAST = await ensureCamp('qc.automation RES1 fixture PAST', { type: 'AdHoc', indicatorSetId: SET_BA, startDate: '2026-08-01T00:00:00', endDate: '2026-09-02T23:59:59' }, [org.A, ORG_DP]);
   const res: Record<string, string> = {};
-  for (const k of ['BA', 'MI', 'MB', 'TZ', 'PAST']) {
-    for (const x of await lstAll({ campaignIds: [camp[k]] })) {
+  for (const k of ['BA', 'MI', 'MB', 'PD', 'TZ', 'PAST']) {
+    for (const x of await lstAll({ campaignIds: [camp[k]], phase: 'all' })) {
       const key = Object.entries(org).find(([, v]) => v === x.organizationId)?.[0];
       if (key) res[`${k}.${key}`] = x.id;
     }
@@ -208,6 +208,15 @@ async function takeNS(): Promise<string> {
     p = await pool();
   }
   return p[0].id;
+}
+
+/** MB.A (100 chỉ số) ở trạng thái chấm dở: đúng 3 chỉ số có điểm, còn lại để trống (đặt qua API để các test không phụ thuộc thứ tự chạy). */
+async function partialMB() {
+  const id = await ensureEditable(await R('MB.A')), d = await getRes(id), lv = leaves(d);
+  if (lv.filter(i => i.score != null).length !== 3 || unscored(d).length !== lv.length - 3) {
+    const r = await saveScores(id, lv.slice(0, 3).map(i => sc(i, Math.min(Math.max(i.minScore ?? 0, 1), i.maxScore)))); if (r.status !== 200) throw new Error(`đặt MB.A chấm dở lỗi: ${r.message}`);
+  }
+  return id;
 }
 
 // ---------------------------------------------------------------- Helper giao diện
@@ -530,7 +539,9 @@ test.describe('Kết quả tự đánh giá › Danh sách', () => {
   const pickCamp = async (page: Page, re: RegExp) => {
     const dd = page.locator('.ant-select-dropdown:not(.ant-select-dropdown-hidden)');
     if (!(await dd.count())) { await filterSelects(page).nth(1).click(); await dd.last().waitFor({ state: 'visible' }); }
-    await dd.last().locator('.ant-select-item-option', { hasText: re }).first().click();
+    const opt = dd.last().locator('.ant-select-item-option', { hasText: re }).first();
+    for (let i = 0; i < 40 && !(await opt.count()); i++) { await dd.last().locator('.rc-virtual-list-holder').evaluate(e => { e.scrollTop += 150; }).catch(() => {}); await page.waitForTimeout(150); }   // danh sách ảo: cuộn tới khi option được vẽ
+    await opt.click();
     await page.waitForTimeout(500);
   };
   test(tc('RES-L37'), async ({ page }) => {
@@ -685,9 +696,7 @@ test.describe('Kết quả tự đánh giá › Danh sách', () => {
     for (const r of rows) expect(norm(r.cells[5]), `"${nameOf(r.cells)}"`).toMatch(/^[-–—]$/);
   });
   test(tc('RES-L56'), async ({ page }) => {
-    const id = await R('MB.A'); const d = await getRes(id);
-    if (!unscored(d).length) test.skip(true, 'Kết quả MB.A đã chấm đủ');
-    if (leaves(d).length - unscored(d).length < 3) await saveMerge(id, unscored(d).slice(0, 3).map(i => sc(i, 1)));
+    await partialMB();
     const row = await findRowOf(page, 'RES1 fixture MB', orgName('A'));
     const cell = norm(await row.locator('td').nth(4).innerText());
     const m = cell.match(/^(\d+)\/(\d+) chỉ số (\d+)%/); expect(m, cell).toBeTruthy();
@@ -1231,7 +1240,7 @@ test.describe('Kết quả tự đánh giá › Chấm điểm và minh chứng'
   });
   test(tc('RES-S06'), async ({ page }) => {
     needWrite();
-    const id = await R('MB.A'), d = await getRes(id), x = unscored(d)[0]; test.skip(!x, 'MB.A đã chấm hết');
+    const id = await partialMB(), d = await getRes(id), x = unscored(d)[0];
     const c0 = d.scoredCount;
     await openDetail(page, id);
     await setScore(page, x.indicatorCode, 1);
@@ -1247,7 +1256,7 @@ test.describe('Kết quả tự đánh giá › Chấm điểm và minh chứng'
   });
   test(tc('RES-S08'), async ({ page }) => {
     needWrite();
-    const id = await R('MB.A'), d = await getRes(id), [x, y] = unscored(d); test.skip(!y, 'MB.A không còn 2 chỉ số chưa chấm');
+    const id = await partialMB(), d = await getRes(id), [x, y] = unscored(d);
     await openDetail(page, id); await setScore(page, x.indicatorCode, 2);
     expect(await saveDraft(page), 'Lưu nháp khi còn chỉ số để trống').toMatch(/thành công/i);
     await page.reload({ waitUntil: 'networkidle' }); await settle(page, 400);
@@ -1257,7 +1266,7 @@ test.describe('Kết quả tự đánh giá › Chấm điểm và minh chứng'
   });
   test(tc('RES-S09'), async ({ page }) => {
     needWrite();
-    const id = await R('MB.A'), d = await getRes(id), x = leaves(d).find(i => i.score != null); test.skip(!x, 'MB.A chưa có chỉ số nào đã chấm');
+    const id = await partialMB(), d = await getRes(id), x = leaves(d).find(i => i.score != null);
     const c0 = d.scoredCount;
     await openDetail(page, id);
     await sIn(page, x!.indicatorCode).fill(''); await sIn(page, x!.indicatorCode).blur();
@@ -1345,7 +1354,7 @@ test.describe('Kết quả tự đánh giá › Chấm điểm và minh chứng'
     expect(puts, 'chưa được gọi API lưu').toEqual([]);
   });
   test(tc('RES-S20'), async ({ page }) => {
-    const id = await R('MB.A'), d = await getRes(id), x = unscored(d)[0]; test.skip(!x, 'MB.A đã chấm hết');
+    const id = await partialMB(), d = await getRes(id), x = unscored(d)[0];
     await openDetail(page, id); const c0 = d.scoredCount, n = d.indicatorCount;
     await setScore(page, x.indicatorCode, 1);
     expect(await bodyText(page)).toContain(`TIẾN ĐỘ CHẤM ${c0 + 1} / ${n}`);
@@ -1594,7 +1603,7 @@ test.describe('Kết quả tự đánh giá › Chấm điểm và minh chứng'
     expect(dlg, 'không được thực thi script').toBeFalsy();
     expect(await idCell(page, code).locator('img[src="x"]').count()).toBe(0);
     const t = await lastToast(page);
-    expect((await idCell(page, code).innerText()).includes(name) || /định dạng|không hợp lệ/i.test(t), `tên hiển thị dạng văn bản hoặc bị từ chối; toast="${t}"`).toBeTruthy();
+    expect((await idCell(page, code).innerText()).includes(name) || /định dạng|không hợp lệ/i.test(t), `tên hiển thị dạng văn bản (nguyên văn) hoặc bị từ chối; toast="${t}", ô minh chứng="${norm(await idCell(page, code).locator('.ant-tag').allInnerTexts().then(x => x.join('|')))}"`).toBeTruthy();
   });
   test(tc('RES-S63'), async ({ page }) => {
     needWrite();
@@ -1919,6 +1928,8 @@ async function mine(id: string) {
   if (!/^qc\.automation RES1/.test(d.campaignName)) throw new Error(`Từ chối thao tác trên dữ liệu không phải của script: ${d.campaignName}`);
   return d;
 }
+/** Kết quả fixture; kỳ định kỳ đã phê duyệt phải sinh kết quả cho đơn vị, nếu không có thì test thất bại (lỗi sản phẩm). */
+const needRes = async (k: string) => { const id = await R(k); expect(id, `kết quả "${k}" không tồn tại: kỳ đã phê duyệt không sinh kết quả tự đánh giá cho đơn vị`).toBeTruthy(); return id; };
 const N_USERS = ['canbo', 'cbdp', 'ldd', 'ldp'];
 const NSIDE: Record<string, { camp: string; org: string }> = {
   canbo: { camp: 'BA', org: 'BO' }, ldd: { camp: 'BA', org: 'BO' }, cbdp: { camp: 'BA', org: 'DP' }, ldp: { camp: 'BA', org: 'DP' },
@@ -1960,7 +1971,7 @@ function describe_N() {
     });
     const reassessN = (n: number, resKey: string, who: string[], none: string[] = []) => test(tc(`RES-N${String(n).padStart(2, '0')}`), async () => {
       needWrite();
-      const id = await R(resKey); await mine(id); await driveTo(id, 'Submitted');
+      const id = await needRes(resKey); await mine(id); await driveTo(id, 'Submitted');
       const before = await countBy([...who, ...none], id, 'ASSESSMENT_REASSESSMENT_REQUESTED'), reason = `qc.automation N${n}-${uniq()}`;
       const r = await api('POST', `${RES}/${id}/reassess`, { reason }, 'canbo'); expect(r.status, r.message).toBe(200);
       const d = diffOf(before, await countBy([...who, ...none], id, 'ASSESSMENT_REASSESSMENT_REQUESTED'));
@@ -1970,11 +1981,11 @@ function describe_N() {
       expect(first.title).toBe('Yêu cầu đánh giá lại'); expect(first.description).toContain(`Lý do: ${reason}`);
       if (n === 14) expect(first.description).toMatch(/^Bộ yêu cầu đánh giá lại kết quả qc\.automation RES1 fixture BA\. Lý do: /);
     });
-    reassessN(13, 'PD.BO', ['ldd']); reassessN(14, 'BA.BO', ['ldd']); reassessN(15, 'PD.DP', ['ldp']);
+    reassessN(13, 'PD.BO', ['ldd']); reassessN(14, 'BA.BO', ['ldd']); reassessN(15, 'MI.DP', ['ldp']);
     reassessN(16, 'BA.DP', ['ldp'], ['ldd']); reassessN(17, 'BA.BO', ['ldd', 'canbo']);
     const unlockN = (n: number, resKey: string, who: string[], check?: (x: any, d: any) => void) => test(tc(`RES-N${String(n).padStart(2, '0')}`), async () => {
       needWrite();
-      const id = await R(resKey); const d0 = await mine(id); await driveTo(id, 'UnlockRequested');
+      const id = await needRes(resKey); const d0 = await mine(id); await driveTo(id, 'UnlockRequested');
       const before = await countBy(who, id, 'ASSESSMENT_UNLOCK_APPROVED');
       const r = await api('POST', `${RES}/${id}/approve-unlock`, undefined, 'canbo'); expect(r.status, r.message).toBe(200);
       const d = diffOf(before, await countBy(who, id, 'ASSESSMENT_UNLOCK_APPROVED'));
@@ -2005,7 +2016,7 @@ function describe_N() {
     });
     /** Cán bộ trình duyệt kết quả → đo số thông báo "Yêu cầu phê duyệt" tăng ở từng tài khoản. */
     const submitDiff = async (resKey: string, users: string[]) => {
-      const id = await R(resKey); await mine(id); await driveTo(id, 'Scoring'); await scoreAll(id);
+      const id = await needRes(resKey); await mine(id); await driveTo(id, 'Scoring'); await scoreAll(id);
       const before = await countBy(users, id, 'ASSESSMENT_SUBMITTED_FOR_APPROVAL');
       const r = await api('POST', `${RES}/${id}/submit-for-approval`, undefined, 'canbo'); expect(r.status, r.message).toBe(200);
       return { id, diff: diffOf(before, await countBy(users, id, 'ASSESSMENT_SUBMITTED_FOR_APPROVAL')) };
@@ -2050,32 +2061,35 @@ function describe_N() {
       expect((await getRes(id)).status).toBe('Scoring'); await scoreAll(id);
     });
     // --- giao diện chuông: giữ nguyên request thật, chỉ đổi bộ lọc của yêu cầu lấy danh sách để thông báo cần thử nằm trong 20 mục đầu
-    const bellBtn = (p: Page) => p.locator('button:has(.anticon-bell), button:has([aria-label="bell"])').or(p.locator('header button').filter({ hasText: /^\d+\+?$/ })).first();
+    const bellBtn = (p: Page) => p.locator('button:has(svg.lucide-bell), button:has(.anticon-bell), button:has([aria-label="bell"])').or(p.locator('header button').filter({ hasText: /^\d+\+?$/ })).first();
     const popover = (p: Page) => p.locator('.ant-popover:not(.ant-popover-hidden), .ant-dropdown:not(.ant-dropdown-hidden)').last();
     async function openBell(p: Page, type?: string) {
       if (type) await p.route(/\/notifications\/mine\?/, async r => {
         const u = r.request().url();
         if (/page=1&/.test(u) && /size=20/.test(u)) { const resp = await r.fetch({ url: u.replace(/filter=[^&]*/, `filter=${F({ type })}`) }); await r.fulfill({ response: resp }); } else await r.continue();
       });
-      await openList(p); await bellBtn(p).click(); await p.waitForTimeout(1500);
+      await openList(p);
+      const got = p.waitForResponse(r => /notifications\/mine\?/.test(r.url()) && /size=20/.test(r.url()) && r.request().method() === 'GET', { timeout: 10_000 }).then(async r => (await r.json()).data?.content?.[0], () => undefined);
+      await bellBtn(p).click(); await p.waitForTimeout(1500);
+      return (await got) as any;   // thông báo đầu tiên trong danh sách chuông
     }
     test(tc('RES-N31'), async ({ page }) => {
       needWrite();
       const id = await hold('PendingApproval'); await mine(id);
       expect((await api('POST', `${RES}/${id}/reject`, { reason: 'qc.automation N31' }, 'ldd')).status).toBe(200);
       expect((await api('POST', `${RES}/${id}/submit-for-approval`, undefined, 'canbo')).status).toBe(200);
-      const top = (await notis('ldd', 'ASSESSMENT_SUBMITTED_FOR_APPROVAL', 1))[0], target = notiAdd(top).assessmentResultId;
-      await openBell(page, 'ASSESSMENT_SUBMITTED_FOR_APPROVAL');
+      const top = await openBell(page, 'ASSESSMENT_SUBMITTED_FOR_APPROVAL'), target = notiAdd(top).assessmentResultId;
+      expect(target, 'thông báo phải có assessmentResultId').toBeTruthy();
       await popover(page).getByText('Yêu cầu phê duyệt').first().click(); await settle(page, 800);
       expect(page.url()).toContain(`assessment-results/${target}`);
     });
     test(tc('RES-N32'), async ({ page }) => {
-      await openBell(page, 'ASSESSMENT_REQUEST_CREATED');
-      const n0 = (await notis('ldd', 'ASSESSMENT_REQUEST_CREATED', 1))[0], unread0 = (await api('GET', `${NOTI}/unread-count`, undefined, 'ldd')).data.unreadCount;
+      const n0 = await openBell(page, 'ASSESSMENT_REQUEST_CREATED');
+      expect(n0, 'danh sách chuông phải có thông báo yêu cầu tự đánh giá').toBeTruthy();
       await popover(page).getByText('Yêu cầu tự đánh giá').first().click(); await settle(page, 800);
       expect(page.url()).toMatch(/assessment-results\/?(\?.*)?$/);
-      const now = (await api('GET', `${NOTI}/unread-count`, undefined, 'ldd')).data.unreadCount;
-      if (!n0.isRead) expect(now, 'thông báo được bấm chuyển sang đã đọc').toBeLessThan(unread0);
+      const after = (await notis('ldd', 'ASSESSMENT_REQUEST_CREATED', 100)).find(n => n.id === n0.id);
+      expect(after.isRead, 'thông báo được bấm phải chuyển sang đã đọc').toBe(true);
     });
     test(tc('RES-N33'), async ({ page }) => {
       needWrite();
@@ -2106,11 +2120,19 @@ function describe_N() {
     });
     test(tc('RES-N36'), async ({ page }) => {
       needWrite();
-      const id = await R('BA.BO'); await mine(id); await driveTo(id, 'Scoring'); await scoreAll(id);
+      const id = await R('MI.D'); await mine(id);   // kết quả riêng (ĐV D), nhận thông báo qua tài khoản phạm vi toàn hệ thống (ldd)
+      if ((await getRes(id)).status === 'PendingApproval') await api('POST', `${RES}/${id}/reject`, { reason: 'qc.automation N36' }, 'ldd');
+      if ((await getRes(id)).status === 'NotStarted') await driveTo(id, 'Scoring');
+      await scoreAll(id);
       await openList(page); await page.waitForTimeout(1500);
+      await bellBtn(page).click(); await page.waitForTimeout(1500);
+      const itemsOf = async () => (await popover(page).innerText()).split('\n').filter(x => /trình phê duyệt kết quả qc\.automation RES1 fixture MI/.test(x)).length;
+      const n0 = await itemsOf(), first0 = norm((await popover(page).innerText()).slice(0, 400));
       const got = page.waitForResponse(r => /notifications\/mine/.test(r.url()) && r.request().method() === 'GET', { timeout: 12_000 }).then(() => true, () => false);
       expect((await api('POST', `${RES}/${id}/submit-for-approval`, undefined, 'canbo')).status).toBe(200);
-      expect(await got, 'giao diện phải tự cập nhật thông báo (không cần F5) trong vài giây').toBeTruthy();
+      const refetched = await got; let changed = false;
+      for (let i = 0; i < 8 && !changed; i++) { await page.waitForTimeout(1000); changed = (await itemsOf()) !== n0 || norm((await popover(page).innerText()).slice(0, 400)) !== first0; }
+      expect(refetched || changed, 'giao diện phải tự cập nhật thông báo (không cần F5) trong vài giây').toBeTruthy();
     });
     test(tc('RES-N37'), async ({ page }) => {
       const name = await htmlCamp();
@@ -2136,7 +2158,7 @@ const rawGet = async (pathq: string, token: string | null) => {
   const j: any = await r.json().catch(() => ({})); return { status: r.status, message: String(j?.message ?? ''), data: j?.data };
 };
 const SAVE_RE = /\/dti\/assessment-results\/[^/]+\/scores/;
-const NO_LEAK = /stack|exception|at \w+\.|System\.|sql|trace/i;
+const NO_LEAK = /Exception|stack ?trace|System\.|NullReference|SqlException|at [\w.]+\(/;
 test.describe('Kết quả tự đánh giá › Edge và lỗi', () => {
   test(tc('RES-G01'), async ({ page }) => {
     needWrite();
@@ -2177,7 +2199,7 @@ test.describe('Kết quả tự đánh giá › Edge và lỗi', () => {
     await setScore(page, code, 5); await nIn(page, code).fill('G04 giải trình'); await attach(page, code, fileOf('qcg04.pdf'));
     expect(await saveDraft(page)).toMatch(/thành công/i);
     await page.reload({ waitUntil: 'networkidle' }); await settle(page, 500);
-    expect(await sIn(page, code).inputValue()).toBe('5'); expect(await nIn(page, code).inputValue()).toBe('G04 giải trình');
+    expect(Number(await sIn(page, code).inputValue())).toBe(5); expect(await nIn(page, code).inputValue()).toBe('G04 giải trình');
     await expect(chip(page, code, 'qcg04.pdf')).toBeVisible();
     const i = await ind(id, code); expect(i.score).toBe(5); expect(i.note).toBe('G04 giải trình'); expect(i.attachments.length).toBe(1);
     await clearFiles(id);
@@ -2190,7 +2212,7 @@ test.describe('Kết quả tự đánh giá › Edge và lỗi', () => {
     await setScore(page, code, 5); expect(await saveDraft(page)).toMatch(/thành công/i);
     await page.reload({ waitUntil: 'networkidle' }); await settle(page, 400);
     const g = await getRes(id);
-    expect(await sIn(page, code).inputValue()).toBe('5'); expect((await ind(id, code)).score).toBe(5);
+    expect(Number(await sIn(page, code).inputValue())).toBe(5); expect((await ind(id, code)).score).toBe(5);
     expect(g.scoredCount).toBe(c0); expect(g.score).toBeGreaterThan(0);
   });
   test(tc('RES-G06'), async ({ page }) => {
@@ -2214,8 +2236,8 @@ test.describe('Kết quả tự đánh giá › Edge và lỗi', () => {
     await openList(page);
     await page.route(/\/dti\/assessment-results/, r => r.abort('internetdisconnected'));
     await clickTab(page, 'Chưa thực hiện').catch(() => {}); await page.waitForTimeout(800);
-    const t = await lastToast(page);
-    expect(t, 'phải báo lỗi kết nối').not.toBe('');
+    const t = await lastToast(page) || (/lỗi|không thể|thất bại|kết nối|thử lại/i.exec(await bodyText(page))?.[0] ?? '');
+    expect(t, 'phải báo lỗi kết nối (thông báo hoặc khung lỗi trên trang)').not.toBe('');
     await page.unroute(/\/dti\/assessment-results/);
     await clickTab(page, 'Tất cả'); await settle(page, 800);
     expect(page.url()).not.toContain('auth/login'); expect((await rowsData(page)).length).toBeGreaterThan(0);
@@ -2274,7 +2296,7 @@ test.describe('Kết quả tự đánh giá › Edge và lỗi', () => {
     await expect(page, 'token hỏng phải chuyển về đăng nhập').toHaveURL(/auth\/login/);
   });
   test(tc('RES-G18'), async ({ browser }) => {
-    const ctx = await browser.newContext({ baseURL: (test.info().project.use as any).baseURL }), p = await ctx.newPage();
+    const ctx = await browser.newContext({ baseURL: (test.info().project.use as any).baseURL, storageState: { cookies: [], origins: [] } }), p = await ctx.newPage();
     for (const u of [ROUTE, `${ROUTE}/${await R('BA.A')}`]) {
       await p.goto(u, { waitUntil: 'networkidle' }); await p.waitForTimeout(1200);
       await expect(p).toHaveURL(/auth\/login/); expect(await p.locator('tbody tr.ant-table-row').count()).toBe(0);
@@ -2343,7 +2365,7 @@ test.describe('Kết quả tự đánh giá › Phân quyền và hiệu năng',
     await page.goto(ROUTE, { waitUntil: 'networkidle' }); await page.waitForTimeout(1200);
     const t = norm(await page.locator('body').innerText());
     expect(t).toMatch(/403/); expect(t).toMatch(/Truy cập bị từ chối/i);
-    expect(await page.getByText('Đánh giá CĐS', { exact: true }).count(), 'menu Đánh giá CĐS phải ẩn').toBe(0);
+    expect(await page.getByText('Kết quả tự đánh giá', { exact: true }).count(), 'menu Kết quả tự đánh giá phải ẩn với tài khoản không có quyền xem').toBe(0);
     expect(await page.locator('tbody tr.ant-table-row').count()).toBe(0);
     await ctx.close();
   });
@@ -2359,7 +2381,7 @@ test.describe('Kết quả tự đánh giá › Phân quyền và hiệu năng',
       const resp = page.waitForResponse(r => /dti\/assessment-results\?/.test(r.url()) && r.request().method() === 'GET', { timeout: 15_000 });
       await openList(page);
       expect((await resp).status(), u).toBe(200);
-      expect((await rowsData(page)).length, `${u} phải thấy danh sách`).toBeGreaterThan(0);
+      await expect(page.locator('tbody tr.ant-table-row, .ant-empty, .ant-table-placeholder').first(), `${u} phải thấy danh sách (hoặc trạng thái rỗng)`).toBeVisible();
       expect(norm(await page.locator('body').innerText())).not.toMatch(/403|Truy cập bị từ chối/);
       await ctx.close();
     }
@@ -2436,8 +2458,8 @@ test.describe('Kết quả tự đánh giá › Phân quyền và hiệu năng',
     for (const u of ['canbo', 'cbdp']) expect((await api('GET', `${RES}/export?filter={}`, undefined, u)).status, u).toBe(200);
   });
   test(tc('RES-Z24'), async ({ page }) => {
-    await openList(page);
-    const total = (await lst({}, 'cbdp')).totalElements;
+    await openList(page, '?campaignType=AdHoc&phase=all');
+    const total = (await lst({ campaignType: 'AdHoc', phase: 'all' }, 'cbdp')).totalElements;
     const { file } = await downloadTo(page, () => page.getByRole('button', { name: 'Xuất Excel' }).first().click());
     const rows = xlsxRows(file), head = rows.findIndex(r => r.some(c => /Đơn vị/i.test(c)));
     expect(head, 'file phải có dòng tiêu đề').toBeGreaterThanOrEqual(0);

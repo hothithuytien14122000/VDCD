@@ -16,7 +16,7 @@ testcases:
       - "2. Bấm vào tên người dùng ở góc dưới sidebar"
     ket_qua_mong_doi:
       - "Menu bật lên có hai mục: \"Thông tin cá nhân\" và \"Đăng xuất\" (màu đỏ, có biểu tượng); sidebar hiển thị tên và tên đăng nhập của người đang dùng"
-    ket_qua_chay: "Pass"
+    ket_qua_chay: "Không chạy"
   - id: LGO-L02
     title: "Chọn \"Đăng xuất\" hiện hộp thoại xác nhận, chưa đăng xuất ngay"
     uc: "AUTH.4-UC1"
@@ -32,7 +32,7 @@ testcases:
       - "3. Chọn \"Đăng xuất\""
     ket_qua_mong_doi:
       - "Hiện hộp thoại \"Đăng xuất khỏi hệ thống?\" – \"Phiên làm việc của bạn sẽ kết thúc.\" với hai nút Không và Có; vẫn ở trang hiện tại, phiên còn nguyên"
-    ket_qua_chay: "Pass"
+    ket_qua_chay: "Không chạy"
   - id: LGO-L03
     title: "Bấm \"Không\" đóng hộp thoại và giữ nguyên phiên làm việc"
     uc: "AUTH.4-UC1"
@@ -50,7 +50,7 @@ testcases:
       - "5. Thao tác tiếp (mở một trang khác)"
     ket_qua_mong_doi:
       - "Hộp thoại đóng; không chuyển trang; token vẫn còn trong localStorage; vẫn dùng được hệ thống"
-    ket_qua_chay: "Pass"
+    ket_qua_chay: "Không chạy"
   - id: LGO-L04
     title: "Nhấn Esc đóng hộp thoại và không đăng xuất"
     uc: "AUTH.4-UC1"
@@ -67,7 +67,7 @@ testcases:
       - "4. Nhấn phím Esc"
     ket_qua_mong_doi:
       - "Hộp thoại đóng; phiên còn nguyên; không chuyển trang"
-    ket_qua_chay: "Pass"
+    ket_qua_chay: "Không chạy"
   - id: LGO-L05
     title: "Mở hộp thoại đăng xuất nhiều lần liên tiếp không lỗi"
     uc: "AUTH.4-UC1"
@@ -83,7 +83,7 @@ testcases:
       - "3. Chọn \"Đăng xuất\" → \"Không\"; lặp lại 3 lần"
     ket_qua_mong_doi:
       - "Mỗi lần hộp thoại mở/đóng đúng; không xuất hiện nhiều hộp thoại chồng nhau; không lỗi console"
-    ket_qua_chay: "Pass"
+    ket_qua_chay: "Không chạy"
   - id: LGO-D01
     title: "Bấm \"Có\" đưa về trang đăng nhập và xóa phiên"
     uc: "AUTH.4-UC2"
@@ -100,7 +100,7 @@ testcases:
       - "4. Bấm \"Có\""
     ket_qua_mong_doi:
       - "Chuyển sang /#/vi/auth/login hiển thị form đăng nhập; localStorage chỉ còn khóa ngôn ngữ (i18nextLng), mọi khóa phiên/token bị xóa"
-    ket_qua_chay: "Pass"
+    ket_qua_chay: "Không chạy"
   - id: LGO-D02
     title: "Sau khi đăng xuất, nút Back không quay lại được trang nghiệp vụ"
     uc: "AUTH.4-UC2"
@@ -119,7 +119,7 @@ testcases:
     ket_qua_mong_doi:
       - "Vẫn ở trang đăng nhập; không hiển thị lại dữ liệu trang nghiệp vụ"
     ghi_chu: "Bản Auto của LGN-M13 (không cần captcha vì dùng session đã lưu)"
-    ket_qua_chay: "Pass"
+    ket_qua_chay: "Không chạy"
   - id: LGO-D03
     title: "Sau khi đăng xuất, mở thẳng URL trang nghiệp vụ bị chuyển về đăng nhập"
     uc: "AUTH.4-UC2"
@@ -138,7 +138,7 @@ testcases:
     ket_qua_mong_doi:
       - "Cả hai URL đều chuyển về trang đăng nhập; không thấy dữ liệu"
     ghi_chu: "Khảo sát: nếu điều hướng NGAY (<1 giây) sau khi đăng xuất thì trang trắng và URL kẹt ở /profile (không về đăng nhập); chờ ~1,5 giây thì chuyển đúng → nghi lỗi nhẹ (race). Script chờ 1,5 giây như người dùng thật"
-    ket_qua_chay: "Pass"
+    ket_qua_chay: "Không chạy"
   - id: LGO-D04
     title: "Sau khi đăng xuất, tải lại trang (F5) vẫn ở trang đăng nhập"
     uc: "AUTH.4-UC2"
@@ -156,7 +156,7 @@ testcases:
       - "5. Tải lại trang"
     ket_qua_mong_doi:
       - "Vẫn ở trang đăng nhập; không tự đăng nhập lại"
-    ket_qua_chay: "Pass"
+    ket_qua_chay: "Không chạy"
   - id: LGO-D05
     title: "Có thể đăng xuất từ trang chức năng bất kỳ, không chỉ từ trang chủ"
     uc: "AUTH.4-UC2"
@@ -172,7 +172,7 @@ testcases:
       - "3. Đăng xuất qua menu người dùng → \"Có\""
     ket_qua_mong_doi:
       - "Về trang đăng nhập, phiên bị xóa như LGO-D01"
-    ket_qua_chay: "Pass"
+    ket_qua_chay: "Không chạy"
   - id: LGO-D06
     title: "Form đăng nhập sau đăng xuất sạch dữ liệu của phiên trước"
     uc: "AUTH.4-UC2"
@@ -190,7 +190,7 @@ testcases:
       - "5. Quan sát form đăng nhập"
     ket_qua_mong_doi:
       - "Ô Tên đăng nhập, Mật khẩu, Mã xác nhận đều rỗng; ảnh captcha mới được tải; không hiện tên người dùng cũ"
-    ket_qua_chay: "Pass"
+    ket_qua_chay: "Không chạy"
   - id: LGO-D07
     title: "Đăng xuất được với mọi vai trò (kể cả vai trò chỉ xem)"
     uc: "AUTH.4-UC2"
@@ -205,7 +205,7 @@ testcases:
       - "2. Đăng xuất qua menu người dùng → \"Có\""
     ket_qua_mong_doi:
       - "Cả ba vai trò đều về trang đăng nhập và xóa phiên"
-    ket_qua_chay: "Pass"
+    ket_qua_chay: "Không chạy"
   - id: LGO-S01
     title: "[API] Token cũ bị vô hiệu sau khi đăng xuất"
     uc: "AUTH.4-UC3"
@@ -224,7 +224,7 @@ testcases:
     ket_qua_mong_doi:
       - "HTTP 401 (token đã bị thu hồi phía máy chủ)"
     ghi_chu: "Khảo sát: UI chỉ xóa localStorage, không gọi API thu hồi → token cũ vẫn dùng được (HTTP 200) tới khi hết hạn → nghi lỗi (token bị lộ vẫn dùng được sau khi người dùng đăng xuất)"
-    ket_qua_chay: "Fail"
+    ket_qua_chay: "Không chạy"
   - id: LGO-S02
     title: "Đăng xuất không để lại token trong sessionStorage / cookie"
     uc: "AUTH.4-UC3"
@@ -242,7 +242,7 @@ testcases:
       - "5. Kiểm tra localStorage, sessionStorage, cookie"
     ket_qua_mong_doi:
       - "localStorage chỉ còn khóa ngôn ngữ (i18nextLng), mọi khóa phiên/token bị xóa; sessionStorage rỗng; không còn cookie phiên"
-    ket_qua_chay: "Pass"
+    ket_qua_chay: "Không chạy"
   - id: LGO-S03
     title: "Đăng xuất ở một tab thì tab khác đang mở bị đưa về đăng nhập khi thao tác"
     uc: "AUTH.4-UC3"
@@ -311,7 +311,7 @@ testcases:
     ket_qua_mong_doi:
       - "Về trang đăng nhập và xóa phiên; không treo, không lỗi trắng trang"
     ghi_chu: "Khảo sát: đăng xuất không gọi API nên không phụ thuộc mạng; nếu sau này gọi API thu hồi token (xem LGO-S01) vẫn phải đăng xuất được khi API lỗi"
-    ket_qua_chay: "Pass"
+    ket_qua_chay: "Không chạy"
   - id: LGO-G02
     title: "Bấm \"Có\" nhiều lần liên tiếp không gây lỗi"
     uc: "AUTH.4-UC4"
@@ -328,4 +328,4 @@ testcases:
       - "4. Bấm \"Có\" liên tiếp 3 lần thật nhanh"
     ket_qua_mong_doi:
       - "Chỉ đăng xuất một lần, về trang đăng nhập; không lỗi console, không lặp chuyển hướng"
-    ket_qua_chay: "Pass"
+    ket_qua_chay: "Không chạy"

@@ -187,8 +187,13 @@ async function as<T>(browser: Browser, key: string, fn: (p: Page) => Promise<T>)
 }
 /** Số thông báo của người dùng gắn (loại, kết quả) — dùng so trước/sau để tránh phụ thuộc đồng hồ. */
 async function notifs(key: string, type: RegExp | null, id: string) {
-  const r = await api('GET', 'notifications/mine?page=1&size=100', undefined, key);
-  return (r.data?.content ?? []).filter((n: any) => (!type || type.test(n.type)) && String(n.additionalData ?? '').includes(id));
+  const out: any[] = [];
+  for (let p = 1; p <= 12; p++) {                      // phân trang vì người dùng QA nhận rất nhiều thông báo từ các kết quả khác
+    const r = await api('GET', `notifications/mine?page=${p}&size=100`, undefined, key);
+    out.push(...(r.data?.content ?? []).filter((n: any) => (!type || type.test(n.type)) && String(n.additionalData ?? '').includes(id)));
+    if (p >= (r.data?.totalPages ?? 1)) break;
+  }
+  return out;
 }
 const text = (n: any) => `${n.title} ${n.description}`;
 const HEADS = ['Chấm điểm', 'Lưu nháp', 'Trình duyệt'];
@@ -1876,12 +1881,12 @@ test.describe('Xem chi tiết', () => {
     const cells = xlsxCells(f.file).join('|'); expect(cells, 'có mã chỉ số').toContain(leaves(await D(r.id))[0].indicatorCode);
   });
   test(tc('RES-D46'), async ({ page }) => {
-    await goto(page, 'assessment-results'); await page.waitForTimeout(2500); const f = await download(page, () => bt(page, /^\s*Xuất Excel/).click());
+    await listFilter(page, 'AdHoc', 'qc.automation RES c2 probe'); const f = await download(page, () => bt(page, /Xuất Excel/).click());
     expect(f.name).toMatch(/\.xlsx$/); expect(f.pk).toBeTruthy(); expect(xlsxCells(f.file).length, 'có dữ liệu').toBeGreaterThan(8);
   });
   test(tc('RES-D47'), async ({ browser }) => {
     for (const k of ['ldd', 'ldp']) await as(browser, k, async p => {
-      await goto(p, 'assessment-results'); await p.waitForTimeout(2500); const f = await download(p, () => bt(p, /^\s*Xuất Excel/).click());
+      await listFilter(p, 'AdHoc', 'qc.automation RES c2 probe'); const f = await download(p, () => bt(p, /Xuất Excel/).click());
       expect(f.pk, `${k} xuất được .xlsx`).toBeTruthy(); expect(xlsxCells(f.file).length, `${k}: có dữ liệu`).toBeGreaterThan(8);
     });
   });
@@ -2254,7 +2259,7 @@ test.describe('Edge case', () => {
     const dis = (await ok.isDisabled().catch(() => true)) || (await ok.getAttribute('class').catch(() => ''))?.includes('loading');
     await ok.click({ timeout: 1500, force: true }).catch(() => {}); await page.waitForTimeout(4500);
     expect(dis, 'nút xác nhận phải vô hiệu/loading khi đang gửi').toBeTruthy();
-    expect(calls, 'chỉ gửi 1 request').toBe(1); expect(await subCount(r)).toBe(n + 1);
+    expect(calls, 'chỉ gửi 1 request').toBe(1); await expect.poll(() => subCount(r), { timeout: 15_000 }).toBe(n + 1);
   });
   test(tc('RES-J16'), async () => {
     const r = await approved('B'); const name = 'q'.repeat(252) + '.pdf';

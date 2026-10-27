@@ -16,6 +16,7 @@ testcases:
       - "2. Mở trang Người dùng"
     ket_qua_mong_doi:
       - "Bảng có đủ cột: STT, Tên đăng nhập, Họ tên, Số điện thoại, Email, Đơn vị, Trạng thái, Thao tác; có dữ liệu"
+    ket_qua_chay: "Không chạy"
   - id: USR-L02
     title: "Phân trang mặc định 10 bản ghi/trang và hiển thị tổng số bản ghi"
     uc: "A.II.1-UC1"
@@ -29,6 +30,7 @@ testcases:
       - "1. Mở trang Người dùng"
     ket_qua_mong_doi:
       - "Hiển thị \"Hiển thị 1-10 trong N bản ghi\"; tối đa 10 dòng dữ liệu; thanh phân trang xuất hiện khi N>10"
+    ket_qua_chay: "Không chạy"
   - id: USR-L03
     title: "Tìm theo tên đăng nhập trả về đúng bản ghi"
     uc: "A.II.1-UC1"
@@ -43,6 +45,7 @@ testcases:
       - "2. Nhập một tên đăng nhập có sẵn vào ô tìm kiếm"
     ket_qua_mong_doi:
       - "Chỉ hiển thị các dòng chứa từ khóa; có ít nhất 1 dòng"
+    ket_qua_chay: "Không chạy"
   - id: USR-L04
     title: "Tìm theo họ tên trả về đúng bản ghi"
     uc: "A.II.1-UC1"
@@ -56,6 +59,7 @@ testcases:
       - "1. Nhập một họ tên có sẵn vào ô tìm kiếm"
     ket_qua_mong_doi:
       - "Chỉ hiển thị các dòng chứa từ khóa"
+    ket_qua_chay: "Không chạy"
   - id: USR-L05
     title: "Từ khóa không tồn tại → không có dữ liệu"
     uc: "A.II.1-UC1"
@@ -69,6 +73,7 @@ testcases:
       - "1. Nhập \"zzqcxx_khongtontai_999\""
     ket_qua_mong_doi:
       - "Bảng rỗng / hiển thị trạng thái không có dữ liệu, không lỗi"
+    ket_qua_chay: "Không chạy"
   - id: USR-L06
     title: "Tìm kiếm không phân biệt chữ hoa/chữ thường"
     uc: "A.II.1-UC1"
@@ -82,6 +87,7 @@ testcases:
       - "1. Nhập từ khóa viết HOA rồi viết thường của cùng một giá trị"
     ket_qua_mong_doi:
       - "Hai lần tìm trả về cùng số bản ghi"
+    ket_qua_chay: "Không chạy"
   - id: USR-L07
     title: "Ký tự đặc biệt / chuỗi SQL trong ô tìm kiếm không gây lỗi hệ thống"
     uc: "A.II.1-UC1"
@@ -95,6 +101,7 @@ testcases:
       - "1. Nhập  ' OR 1=1 --  và  <script>alert(1)</script>"
     ket_qua_mong_doi:
       - "Không hiện lỗi 500/trắng trang, không thực thi script, không trả về toàn bộ dữ liệu bất thường"
+    ket_qua_chay: "Không chạy"
   - id: USR-L08
     title: "Chuyển sang trang 2 hiển thị dữ liệu khác trang 1"
     uc: "A.II.1-UC1"
@@ -108,6 +115,7 @@ testcases:
       - "1. Bấm trang 2 trên thanh phân trang"
     ket_qua_mong_doi:
       - "Trang 2 được đánh dấu active; nội dung bảng khác trang 1"
+    ket_qua_chay: "Không chạy"
   - id: USR-L09
     title: "Đổi số bản ghi/trang sang 20 thì số dòng thay đổi theo"
     uc: "A.II.1-UC1"
@@ -121,6 +129,7 @@ testcases:
       - "1. Chọn \"20 / trang\" ở thanh phân trang"
     ket_qua_mong_doi:
       - "Số dòng tối đa mỗi trang = 20; tổng số bản ghi không đổi"
+    ket_qua_chay: "Không chạy"
   - id: USR-L10
     title: "Xóa từ khóa thì danh sách trở về đầy đủ"
     uc: "A.II.1-UC1"
@@ -135,6 +144,7 @@ testcases:
       - "2. Xóa trắng ô tìm kiếm"
     ket_qua_mong_doi:
       - "Danh sách hiển thị lại như ban đầu (tổng số bản ghi bằng lúc đầu)"
+    ket_qua_chay: "Không chạy"
   - id: USR-L11
     title: "Xuất Excel danh sách Người dùng"
     uc: "A.II.1-UC2"
@@ -149,6 +159,7 @@ testcases:
     ket_qua_mong_doi:
       - "Trình duyệt tải về file .xlsx chứa dữ liệu danh sách (UC: Xuất danh sách ra Excel)"
     ghi_chu: "UC_1409 ghi FE \"Chưa làm\" → có thể FAIL (chức năng chưa phát triển)"
+    ket_qua_chay: "Không chạy"
   - id: USR-L12
     title: "Tìm theo email"
     uc: "A.II.1-UC1"
@@ -162,6 +173,7 @@ testcases:
       - "1. Nhập email có sẵn vào ô tìm kiếm"
     ket_qua_mong_doi:
       - "Hiển thị đúng người dùng có email đó"
+    ket_qua_chay: "Không chạy"
   - id: USR-L13
     title: "Lọc theo nhóm người dùng"
     uc: "A.II.1-UC1"
@@ -175,6 +187,7 @@ testcases:
       - "1. Chọn một nhóm ở bộ lọc nhóm"
     ket_qua_mong_doi:
       - "Chỉ còn người dùng thuộc nhóm đã chọn (số bản ghi ≤ ban đầu)"
+    ket_qua_chay: "Không chạy"
   - id: USR-L14
     title: "Lọc theo trạng thái Đang hoạt động / Đã khóa"
     uc: "A.II.1-UC1"
@@ -188,6 +201,7 @@ testcases:
       - "1. Chọn trạng thái \"Đã khóa\" rồi \"Đang hoạt động\""
     ket_qua_mong_doi:
       - "Mọi dòng kết quả có cột Trạng thái khớp với bộ lọc"
+    ket_qua_chay: "Không chạy"
   - id: USR-L15
     title: "Kết hợp từ khóa và bộ lọc trạng thái"
     uc: "A.II.1-UC1"
@@ -202,6 +216,7 @@ testcases:
       - "2. Chọn trạng thái"
     ket_qua_mong_doi:
       - "Kết quả thỏa mãn đồng thời cả từ khóa và trạng thái"
+    ket_qua_chay: "Không chạy"
   - id: USR-V01
     title: "Xem chi tiết hiển thị đầy đủ thông tin tài khoản"
     uc: "A.II.1-UC3"
@@ -215,6 +230,7 @@ testcases:
       - "1. Bấm \"Xem chi tiết\" ở một người dùng"
     ket_qua_mong_doi:
       - "Hiển thị: tên đăng nhập, họ tên, email, SĐT, đơn vị, nhóm người dùng, trạng thái, ngày tạo"
+    ket_qua_chay: "Không chạy"
   - id: USR-V02
     title: "Nút Đóng thoát màn chi tiết"
     uc: "A.II.1-UC3"
@@ -229,6 +245,7 @@ testcases:
       - "2. Bấm Đóng"
     ket_qua_mong_doi:
       - "Màn chi tiết đóng, quay lại danh sách"
+    ket_qua_chay: "Không chạy"
   - id: USR-V03
     title: "Từ chi tiết bấm Cập nhật mở form sửa với dữ liệu hiện tại"
     uc: "A.II.1-UC3"
@@ -243,6 +260,7 @@ testcases:
       - "2. Bấm Cập nhật"
     ket_qua_mong_doi:
       - "Form cập nhật mở, ô Tên/Email đã điền sẵn đúng giá trị của người dùng"
+    ket_qua_chay: "Không chạy"
   - id: USR-C01
     title: "Thêm người dùng đầy đủ thông tin thành công"
     uc: "A.II.1-UC4"
@@ -259,6 +277,7 @@ testcases:
       - "4. Lưu"
     ket_qua_mong_doi:
       - "Thông báo thành công; người dùng xuất hiện khi tìm theo tên đăng nhập; trạng thái Đang hoạt động"
+    ket_qua_chay: "Không chạy"
   - id: USR-C02
     title: "Thêm người dùng chỉ với trường bắt buộc (Tên, Email, Tên đăng nhập, Mật khẩu)"
     uc: "A.II.1-UC4"
@@ -273,6 +292,7 @@ testcases:
       - "2. Lưu"
     ket_qua_mong_doi:
       - "Tạo thành công"
+    ket_qua_chay: "Không chạy"
   - id: USR-C03
     title: "Chọn Đơn vị và Nhóm người dùng khi tạo"
     uc: "A.II.1-UC4"
@@ -288,6 +308,7 @@ testcases:
       - "3. Lưu"
     ket_qua_mong_doi:
       - "Người dùng được tạo gắn đúng đơn vị và nhóm (kiểm chứng qua API/danh sách)"
+    ket_qua_chay: "Không chạy"
   - id: USR-C04
     title: "Bỏ trống toàn bộ trường bắt buộc thì báo lỗi từng trường"
     uc: "A.II.1-UC4"
@@ -302,6 +323,7 @@ testcases:
       - "2. Bấm Lưu khi chưa nhập"
     ket_qua_mong_doi:
       - "Hiện lỗi bắt buộc ở Tên, Email, Tên đăng nhập, Mật khẩu; không tạo bản ghi"
+    ket_qua_chay: "Không chạy"
   - id: USR-C05
     title: "Email sai định dạng bị chặn"
     uc: "A.II.1-UC4"
@@ -316,6 +338,7 @@ testcases:
       - "2. Lưu"
     ket_qua_mong_doi:
       - "Báo \"Email không đúng định dạng\"; không tạo"
+    ket_qua_chay: "Không chạy"
   - id: USR-C06
     title: "Số điện thoại sai định dạng bị chặn"
     uc: "A.II.1-UC4"
@@ -330,6 +353,7 @@ testcases:
       - "2. Lưu"
     ket_qua_mong_doi:
       - "Báo \"Số điện thoại không đúng định dạng\"; không tạo"
+    ket_qua_chay: "Không chạy"
   - id: USR-C07
     title: "Mật khẩu không đạt quy tắc bảo mật bị chặn"
     uc: "A.II.1-UC4"
@@ -344,6 +368,7 @@ testcases:
       - "2. Lưu"
     ket_qua_mong_doi:
       - "Báo \"Mật khẩu chưa đáp ứng đủ các yêu cầu bảo mật\"; không tạo"
+    ket_qua_chay: "Không chạy"
   - id: USR-C08
     title: "Trùng tên đăng nhập bị từ chối"
     uc: "A.II.1-UC4"
@@ -358,6 +383,7 @@ testcases:
       - "2. Tạo user B cùng tên đăng nhập, email khác"
     ket_qua_mong_doi:
       - "Báo lỗi tên đăng nhập đã được sử dụng; không tạo bản ghi thứ hai"
+    ket_qua_chay: "Không chạy"
   - id: USR-C09
     title: "Trùng email bị từ chối"
     uc: "A.II.1-UC4"
@@ -372,6 +398,7 @@ testcases:
       - "2. Tạo user B cùng email, tên đăng nhập khác"
     ket_qua_mong_doi:
       - "Báo lỗi email đã được sử dụng; không tạo bản ghi thứ hai"
+    ket_qua_chay: "Không chạy"
   - id: USR-C10
     title: "Hai checkbox \"Bắt buộc đổi mật khẩu\" và \"Gửi thông tin đăng nhập qua email\" mặc định được tích"
     uc: "A.II.1-UC4"
@@ -385,6 +412,7 @@ testcases:
       - "1. Mở form thêm mới"
     ket_qua_mong_doi:
       - "Cả hai checkbox ở trạng thái đã tích"
+    ket_qua_chay: "Không chạy"
   - id: USR-C11
     title: "Bỏ tích \"Bắt buộc đổi mật khẩu\" thì không bắt buộc đổi mật khẩu (bug UC)"
     uc: "A.II.1-UC4"
@@ -401,6 +429,7 @@ testcases:
     ket_qua_mong_doi:
       - "Request gửi isRequireChangePassword=false; bản ghi lưu không bắt buộc đổi mật khẩu"
     ghi_chu: "UC_1409 ghi bug: lỗi bắt buộc đổi mật khẩu dù không tích"
+    ket_qua_chay: "Không chạy"
   - id: USR-C12
     title: "Bỏ tích \"Gửi thông tin đăng nhập qua email\" thì không gửi mail"
     uc: "A.II.1-UC4"
@@ -415,6 +444,7 @@ testcases:
       - "2. Lưu"
     ket_qua_mong_doi:
       - "Request gửi isRequestMailInfo=false"
+    ket_qua_chay: "Không chạy"
   - id: USR-C13
     title: "Hủy form thêm mới không tạo bản ghi"
     uc: "A.II.1-UC4"
@@ -430,6 +460,7 @@ testcases:
       - "3. Tìm tên đăng nhập đã nhập"
     ket_qua_mong_doi:
       - "Form đóng; không có bản ghi mới"
+    ket_qua_chay: "Không chạy"
   - id: USR-C14
     title: "Giới hạn độ dài trường tối đa 255 ký tự"
     uc: "A.II.1-UC4"
@@ -443,6 +474,7 @@ testcases:
       - "1. Nhập 300 ký tự vào ô Tên"
     ket_qua_mong_doi:
       - "Ô chỉ nhận tối đa 255 ký tự"
+    ket_qua_chay: "Không chạy"
   - id: USR-C15
     title: "[API] Server từ chối email sai định dạng"
     uc: "A.II.1-UC4"
@@ -457,6 +489,7 @@ testcases:
     ket_qua_mong_doi:
       - "HTTP 400 – không tạo user (validate phía server)"
     ghi_chu: "Khảo sát: API hiện trả 200 → nghi lỗi thiếu validate server"
+    ket_qua_chay: "Không chạy"
   - id: USR-C16
     title: "[API] Server từ chối mật khẩu không đạt quy tắc"
     uc: "A.II.1-UC4"
@@ -471,6 +504,7 @@ testcases:
     ket_qua_mong_doi:
       - "HTTP 400 – không tạo user"
     ghi_chu: "Khảo sát: API hiện trả 200 → nghi lỗi thiếu validate server"
+    ket_qua_chay: "Không chạy"
   - id: USR-C17
     title: "[API] Tên rỗng trả lỗi 4xx có thông báo, không phải 500"
     uc: "A.II.1-UC4"
@@ -485,6 +519,7 @@ testcases:
     ket_qua_mong_doi:
       - "HTTP 400 có thông báo rõ ràng, không lộ stacktrace"
     ghi_chu: "Khảo sát: API hiện trả 500 + stacktrace → nghi lỗi"
+    ket_qua_chay: "Không chạy"
   - id: USR-C18
     title: "Đăng nhập bằng tài khoản vừa tạo"
     uc: "A.II.1-UC4"
@@ -500,6 +535,7 @@ testcases:
     ket_qua_mong_doi:
       - "Đăng nhập được; nếu bắt buộc đổi mật khẩu thì yêu cầu đổi"
     ghi_chu: "Đăng nhập có captcha – không tự động hóa được"
+    ket_qua_chay: "Manual"
   - id: USR-E01
     title: "Sửa họ tên thành công"
     uc: "A.II.1-UC5"
@@ -515,6 +551,7 @@ testcases:
       - "3. Lưu"
     ket_qua_mong_doi:
       - "Thông báo thành công; danh sách hiển thị họ tên mới"
+    ket_qua_chay: "Không chạy"
   - id: USR-E02
     title: "Sửa số điện thoại thành công"
     uc: "A.II.1-UC5"
@@ -529,6 +566,7 @@ testcases:
       - "2. Lưu"
     ket_qua_mong_doi:
       - "SĐT mới được lưu"
+    ket_qua_chay: "Không chạy"
   - id: USR-E03
     title: "Đổi nhóm người dùng (mỗi người chỉ thuộc 1 nhóm)"
     uc: "A.II.1-UC5"
@@ -543,6 +581,7 @@ testcases:
       - "2. Đổi sang nhóm Y"
     ket_qua_mong_doi:
       - "User chỉ thuộc nhóm Y; không còn ở nhóm X"
+    ket_qua_chay: "Không chạy"
   - id: USR-E04
     title: "Sửa email thành email của người khác bị từ chối"
     uc: "A.II.1-UC5"
@@ -557,6 +596,7 @@ testcases:
       - "2. Lưu"
     ket_qua_mong_doi:
       - "Báo lỗi email đã được sử dụng; dữ liệu không đổi"
+    ket_qua_chay: "Không chạy"
   - id: USR-E05
     title: "Sửa email sai định dạng bị chặn"
     uc: "A.II.1-UC5"
@@ -571,6 +611,7 @@ testcases:
       - "2. Lưu"
     ket_qua_mong_doi:
       - "Báo lỗi định dạng; không lưu"
+    ket_qua_chay: "Không chạy"
   - id: USR-E06
     title: "Bỏ trống Họ tên khi sửa bị chặn"
     uc: "A.II.1-UC5"
@@ -585,6 +626,7 @@ testcases:
       - "2. Lưu"
     ket_qua_mong_doi:
       - "Báo lỗi bắt buộc; không lưu"
+    ket_qua_chay: "Không chạy"
   - id: USR-E07
     title: "Hủy chỉnh sửa không thay đổi dữ liệu"
     uc: "A.II.1-UC5"
@@ -599,6 +641,7 @@ testcases:
       - "2. Bấm Hủy"
     ket_qua_mong_doi:
       - "Dữ liệu giữ nguyên"
+    ket_qua_chay: "Không chạy"
   - id: USR-E08
     title: "Để trống mật khẩu mới thì không đổi mật khẩu"
     uc: "A.II.1-UC5"
@@ -614,6 +657,7 @@ testcases:
     ket_qua_mong_doi:
       - "Lưu thành công; mật khẩu không bị thay đổi"
     ghi_chu: "Cần đăng nhập (captcha) để kiểm chứng mật khẩu"
+    ket_qua_chay: "Manual"
   - id: USR-E09
     title: "Tên đăng nhập không được sửa (khóa chỉ-đọc) ở form cập nhật"
     uc: "A.II.1-UC5"
@@ -627,6 +671,7 @@ testcases:
       - "1. Mở form Cập nhật người dùng"
     ket_qua_mong_doi:
       - "Ô Tên đăng nhập bị vô hiệu hóa, không nhập được"
+    ket_qua_chay: "Không chạy"
   - id: USR-X01
     title: "Khóa người dùng chuyển trạng thái Đã khóa"
     uc: "A.II.1 (bổ sung)"
@@ -641,6 +686,7 @@ testcases:
       - "2. Xác nhận"
     ket_qua_mong_doi:
       - "Trạng thái chuyển thành \"Đã khóa\""
+    ket_qua_chay: "Không chạy"
   - id: USR-X02
     title: "Mở khóa người dùng chuyển lại Đang hoạt động"
     uc: "A.II.1 (bổ sung)"
@@ -654,6 +700,7 @@ testcases:
       - "1. Với user đã khóa: Menu → Mở khoá"
     ket_qua_mong_doi:
       - "Trạng thái chuyển thành \"Đang hoạt động\""
+    ket_qua_chay: "Không chạy"
   - id: USR-X03
     title: "Người dùng đã khóa xuất hiện khi lọc \"Đã khóa\" và biến mất khi lọc \"Đang hoạt động\""
     uc: "A.II.1 (bổ sung)"
@@ -668,6 +715,7 @@ testcases:
       - "2. Lọc theo trạng thái"
     ket_qua_mong_doi:
       - "Hiển thị đúng theo bộ lọc"
+    ket_qua_chay: "Không chạy"
   - id: USR-X04
     title: "Xóa người dùng thành công"
     uc: "A.II.1 (bổ sung)"
@@ -682,6 +730,7 @@ testcases:
       - "2. Xác nhận \"Có\""
     ket_qua_mong_doi:
       - "Người dùng không còn trong danh sách"
+    ket_qua_chay: "Không chạy"
   - id: USR-X05
     title: "Chọn \"Không\" ở hộp xác nhận xóa thì giữ nguyên bản ghi"
     uc: "A.II.1 (bổ sung)"
@@ -696,6 +745,7 @@ testcases:
       - "2. Bấm \"Không\""
     ket_qua_mong_doi:
       - "Bản ghi vẫn còn"
+    ket_qua_chay: "Không chạy"
   - id: USR-S01
     title: "API danh sách người dùng: không token → 401, token giả → 401"
     uc: "A.II.1-UC1"
@@ -709,6 +759,7 @@ testcases:
       - "1. Gọi GET /idm/users không token / token giả"
     ket_qua_mong_doi:
       - "HTTP 401"
+    ket_qua_chay: "Không chạy"
   - id: USR-S02
     title: "Chưa đăng nhập vào trang Người dùng bị chuyển về màn đăng nhập"
     uc: "A.II.1-UC1"
@@ -722,6 +773,7 @@ testcases:
       - "1. Mở /#/vi/users khi chưa đăng nhập"
     ket_qua_mong_doi:
       - "Hiển thị màn đăng nhập, không lộ dữ liệu"
+    ket_qua_chay: "Không chạy"
   - id: USR-S03
     title: "Quyền thực thi API đúng theo ma trận quyền của vai trò Cán bộ"
     uc: "A.II.1-UC4"
@@ -736,6 +788,7 @@ testcases:
       - "2. Gọi GET/POST/DELETE /idm/users"
     ket_qua_mong_doi:
       - "Có quyền → không bị 401/403; không có quyền → 403"
+    ket_qua_chay: "Không chạy"
   - id: USR-P01
     title: "Danh sách người dùng tải < 3 giây"
     uc: "A.II.1-UC1"
@@ -749,6 +802,7 @@ testcases:
       - "1. Mở trang và đo thời gian API & hiển thị"
     ket_qua_mong_doi:
       - "API < 3000ms, hiển thị dữ liệu < 6000ms"
+    ket_qua_chay: "Không chạy"
   - id: USR-G01
     title: "Trường bắt buộc chỉ nhập khoảng trắng bị chặn (người dùng)"
     uc: "A.II.1-UC4"
@@ -764,6 +818,7 @@ testcases:
       - "3. Lưu"
     ket_qua_mong_doi:
       - "Báo lỗi bắt buộc (chuỗi rỗng sau khi trim); form còn mở; không tạo bản ghi"
+    ket_qua_chay: "Không chạy"
   - id: USR-G02
     title: "Tên chứa tiếng Việt có dấu, HTML, dấu nháy, & được lưu và hiển thị đúng sau khi tải lại trang (người dùng)"
     uc: "A.II.1-UC4"
@@ -778,6 +833,7 @@ testcases:
       - "2. Tải lại trang (F5), tìm theo mã"
     ket_qua_mong_doi:
       - "Tên hiển thị nguyên văn dạng chữ; thẻ HTML không bị render (chống XSS)"
+    ket_qua_chay: "Không chạy"
   - id: USR-G04
     title: "Server lỗi 500 khi lưu: hiển thị lỗi, giữ form và dữ liệu đã nhập (người dùng)"
     uc: "A.II.1-UC4"
@@ -793,6 +849,7 @@ testcases:
       - "3. Lưu"
     ket_qua_mong_doi:
       - "Form còn mở và giữ dữ liệu; không lộ stacktrace; không tạo bản ghi"
+    ket_qua_chay: "Không chạy"
   - id: USR-G05
     title: "Mất kết nối khi lưu: không treo giao diện, giữ form (người dùng)"
     uc: "A.II.1-UC4"
@@ -808,6 +865,7 @@ testcases:
       - "3. Lưu"
     ket_qua_mong_doi:
       - "Form còn mở và giữ dữ liệu; trang không trắng/lỗi; không tạo bản ghi"
+    ket_qua_chay: "Không chạy"
   - id: USR-V04
     title: "Mở chi tiết người dùng với id không tồn tại không gây lỗi hệ thống"
     uc: "A.II.1-UC3"
@@ -822,6 +880,7 @@ testcases:
       - "2. Mở URL chi tiết với id lạ"
     ket_qua_mong_doi:
       - "API trả 4xx (không 500); trang không trắng, không lộ lỗi nội bộ"
+    ket_qua_chay: "Không chạy"
   - id: USR-G06
     title: "Bấm Lưu 2 lần liên tiếp chỉ tạo 1 bản ghi (người dùng)"
     uc: "A.II.1-UC4"
@@ -836,6 +895,7 @@ testcases:
       - "2. Bấm Lưu 2 lần liên tiếp rất nhanh"
     ket_qua_mong_doi:
       - "Chỉ có đúng 1 bản ghi theo mã; không báo lỗi trùng gây hiểu nhầm"
+    ket_qua_chay: "Không chạy"
   - id: USR-C19
     title: "Tên đăng nhập chỉ khác hoa/thường so với tài khoản có sẵn bị coi là trùng"
     uc: "A.II.1-UC4"
@@ -851,3 +911,4 @@ testcases:
     ket_qua_mong_doi:
       - "Bị từ chối (4xx)"
     ghi_chu: "Chưa có đặc tả rõ về phân biệt hoa/thường — cần BA xác nhận"
+    ket_qua_chay: "Không chạy"

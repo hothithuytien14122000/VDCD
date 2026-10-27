@@ -1473,9 +1473,9 @@ test.describe('Kết quả tự đánh giá › Phía Bộ › Duyệt mở khó
     needWrite();
     await openUnlockAct(page, APPROVE, 'DP'); const id = await rid('DP');
     const subs = async () => ((await api('GET', `${RES}/${id}/submissions`, undefined, 'canbo')).data.submissions as any[]).length;
-    const n0 = await subs(), s0 = (await getRes(id)).score;
+    const n0 = await subs(), d0 = await getRes(id), s0 = d0.score, v = leavesOf(d0)[0].score === 3 ? 5 : 3;
     await yes(page).click(); await toastNow(page);
-    expect((await saveScores(id, 'all', 8)).status).toBe(200);
+    expect((await saveScores(id, 'all', v)).status).toBe(200);
     await toState('DP', 'Submitted');
     expect(await subs(), 'Hồ sơ gửi Bộ có thêm lần gửi').toBe(n0 + 1);
     expect((await getRes(id)).score, 'điểm mới được áp dụng').not.toBe(s0);
@@ -1784,10 +1784,10 @@ test.describe('Kết quả tự đánh giá › Phía Bộ › Chi tiết kết 
   test(tc('RES-H03'), async ({ page }) => {
     await toState('DP', 'Submitted'); const id = await rid('DP');
     await openDetail(page, id);
-    expect(await page.getByText(/mã chỉ số & yêu cầu/i).count(), 'nội dung Chấm điểm').toBeGreaterThan(0);
+    expect(await page.getByText(/điểm tự chấm/i).count(), 'nội dung Chấm điểm').toBeGreaterThan(0);
     await detailTab(page, /^Hồ sơ gửi Bộ/); expect(await bodyText(page)).toMatch(/Văn bản xác nhận/);
     await detailTab(page, /^Lịch sử/); expect(await bodyText(page)).toMatch(/Đã gửi|Gửi/);
-    await detailTab(page, /^Chấm điểm \(/); expect(await page.getByText(/mã chỉ số & yêu cầu/i).count()).toBeGreaterThan(0);
+    await detailTab(page, /^Chấm điểm \(/); expect(await page.getByText(/điểm tự chấm/i).count()).toBeGreaterThan(0);
   });
   test(tc('RES-H04'), async ({ page }) => {
     await toState('E2', 'NotStarted');
@@ -2035,7 +2035,7 @@ test.describe('Kết quả tự đánh giá › Phía Bộ › Chi tiết kết 
     test.skip(x.indicatorCount < 100, `Không có kết quả đủ lớn (lớn nhất ${x.indicatorCount} chỉ số)`);
     const t0 = Date.now();
     await page.goto(`${ROUTE}/${x.id}`, { waitUntil: 'commit' });
-    await page.getByText(/mã chỉ số & yêu cầu/i).first().waitFor({ timeout: 15_000 });
+    await page.getByText(/điểm tự chấm/i).first().waitFor({ timeout: 15_000 });
     const ms = Date.now() - t0;
     expect(ms, `mở chi tiết ${x.indicatorCount} chỉ số mất ${ms}ms`).toBeLessThanOrEqual(5000);
   });
@@ -2088,7 +2088,7 @@ async function openBell(p: Page, goto = true) {
   if (goto) await openList(p, { type: 'AdHoc', kw: KW });
   await bellBtn(p).click(); await popL(p).waitFor({ state: 'visible', timeout: 8000 }); await p.waitForTimeout(1000);
 }
-const badgeOf = async (p: Page) => { const t = norm(await bellBtn(p).locator('.ant-badge-count').first().innerText().catch(() => '0')); return t === '99+' ? 99 : Number(t || 0); };
+const badgeOf = async (p: Page) => { const el = bellBtn(p).locator('.ant-badge-count').first(); if (!(await el.count())) return 0; const t = norm(await el.innerText({ timeout: 3000 }).catch(() => '0')); return t === '99+' ? 99 : Number(t || 0); };
 const itemsL = (p: Page) => popL(p).locator('button.group');
 /** Xin mở khóa mới cho BO (Bộ nhận thông báo "Yêu cầu mở khóa" chưa đọc). */
 async function freshUnlockReq(reason = 'qc.automation xin mở khóa M', k: Key = 'BO') {

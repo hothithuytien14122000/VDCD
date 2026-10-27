@@ -235,6 +235,7 @@ import reqB3 from './requirements-B3.mjs';
 import reqC1 from './requirements-C1.mjs';
 import reqC2 from './requirements-C2.mjs';
 import reqC3 from './requirements-C3.mjs';
-T.push(...reqB3(R), ...reqC1(R), ...reqC2(R), ...reqC3(R));
+import reqPRM from './requirements-PRM.mjs';
+T.push(...reqB3(R), ...reqC1(R), ...reqC2(R), ...reqC3(R), ...reqPRM(R));
 
 export default T;

@@ -262,5 +262,7 @@ import defineAuth from './catalog-AUTH.mjs';
 defineAuth(t);
 import defineAcc from './catalog-ACC.mjs';
 defineAcc(t);
+import definePrm from './catalog-PRM.mjs';
+definePrm(t);
 
 export default T;
