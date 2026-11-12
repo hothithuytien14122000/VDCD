@@ -19,7 +19,7 @@ const workers = process.argv[3] || '1';
 const target = process.argv[4] ? `${p.dir}/${process.argv[4]}.spec.ts` : p.match ?? p.dir;
 const raw = `results/_raw-${k}.json`; const rawDir = 'results/raw'; fs.mkdirSync(`${rawDir}/screenshots`, { recursive: true });
 const t0 = Date.now();
-spawnSync('npx', ['playwright', 'test', '--project=superadmin', target, `--workers=${workers}`, '--reporter=list,json'], { stdio: 'inherit', env: { ...process.env, RUN_WRITE: '1', PLAYWRIGHT_JSON_OUTPUT_NAME: raw } });
+spawnSync('npx', ['playwright', 'test', '--project=admin', target, `--workers=${workers}`, '--reporter=list,json'], { stdio: 'inherit', env: { ...process.env, RUN_WRITE: '1', PLAYWRIGHT_JSON_OUTPUT_NAME: raw } });
 const giay = Math.round((Date.now() - t0) / 1000);
 if (fs.existsSync(raw)) {
   const R = JSON.parse(fs.readFileSync(raw, 'utf8'));

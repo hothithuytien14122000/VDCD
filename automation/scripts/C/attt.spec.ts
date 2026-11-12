@@ -12,7 +12,7 @@ async function upload(name: string, content: string, type: string, entityId: str
   return { status: r.status, message: String(j?.message ?? ''), data: j?.data };
 }
 /** Gỡ tệp chờ gửi do upload sinh ra (upload gắn tệp vào kết quả như "tệp chờ gửi"). */
-async function clearPending(id: string, as = 'superadmin') {   // canbo bị 403 khi xóa tệp chờ của chính mình → dọn bằng QTV
+async function clearPending(id: string, as = 'admin') {   // canbo bị 403 khi xóa tệp chờ của chính mình → dọn bằng QTV
   for (let i = 0; i < 40; i++) {
     const pf = (await call('GET', `${RES}/${id}/submissions`, { as })).data?.pendingFile; if (!pf) return;
     const d = await call('DELETE', `${RES}/${id}/pending-file/${pf.id}`, { as }); if (d.status >= 300) return;

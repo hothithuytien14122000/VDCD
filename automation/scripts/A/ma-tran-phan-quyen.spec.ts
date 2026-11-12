@@ -9,7 +9,7 @@ import { API_BASE } from '../api';
 const ROUTE = 'permission-matrix';
 /** Tổng số quyền hiện có = tổng quyền con trong danh mục ma trận (API idm/permission-matrix). Trước đây 104 → 106, hiện 105: đọc động để không lệch khi hệ thống thêm/bớt quyền. */
 const TOTAL: number = Number(execFileSync(process.execPath, ['-e', `
-  const fs=require('fs'); const s=JSON.parse(fs.readFileSync('auth/superadmin.json','utf8'));
+  const fs=require('fs'); const s=JSON.parse(fs.readFileSync('auth/admin.json','utf8'));
   const t=s.origins[0].localStorage.map(x=>x.value).find(v=>v.split('.').length===3);
   fetch('${API_BASE}/api/v1/idm/permission-matrix',{headers:{Authorization:'Bearer '+t}}).then(r=>r.json())
     .then(j=>console.log('TOTAL='+j.data.modules.flatMap(m=>m.functions).reduce((n,f)=>n+f.actions.length,0)));`],
@@ -537,7 +537,7 @@ test.describe('Ma trận phân quyền › Phân quyền', () => {
   test(tc('PRM-E19'), async () => {
     const r = await newRole([['USER.VIEW', 'all']]);
     const url = `${API_BASE}/api/v1/idm/permission-matrix/roles/${r.id}`;
-    const H = { Authorization: `Bearer ${tokenOf('superadmin')}`, 'Content-Type': 'application/json' };
+    const H = { Authorization: `Bearer ${tokenOf('admin')}`, 'Content-Type': 'application/json' };
     for (const body of [JSON.stringify({ permissions: null }), JSON.stringify([{ code: 'USER.VIEW', scope: 'all' }]), '{bad']) {
       const res = await fetch(url, { method: 'PUT', headers: H, body });
       const j: any = await res.json().catch(() => ({}));
@@ -581,7 +581,7 @@ test.describe('Ma trận phân quyền › Phân quyền', () => {
     const p = await api('PUT', `idm/permission-matrix/roles/${ZERO}`, { permissions: [] });
     expect(g.status).toBe(404); expect(p.status).toBe(404);
     expect(p.message).toMatch(/Nhóm người dùng không tồn tại/);
-    const bad = await fetch(`${API_BASE}/api/v1/idm/permission-matrix/roles/abc`, { headers: { Authorization: `Bearer ${tokenOf('superadmin')}` } });
+    const bad = await fetch(`${API_BASE}/api/v1/idm/permission-matrix/roles/abc`, { headers: { Authorization: `Bearer ${tokenOf('admin')}` } });
     expect(bad.status).toBeGreaterThanOrEqual(400); expect(bad.status).toBeLessThan(500);
   });
 });

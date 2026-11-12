@@ -1,5 +1,5 @@
 // Dùng chung cho Phân hệ E (Khảo sát hài lòng). Dựng trên scripts/A/common.ts; tên test = "[ID] tiêu đề" từ catalog.json.
-// Theo yêu cầu: các test cần đăng nhập chạy bằng tài khoản qa.superadmin@cds.local (auth/superadmin.json); test người dân (account=null) chạy ẩn danh.
+// Theo yêu cầu: các test cần đăng nhập chạy bằng tài khoản qa.superadmin@cds.local (auth/admin.json); test người dân (account=null) chạy ẩn danh.
 import { test as base, expect, Page } from '@playwright/test';
 import fs from 'node:fs';
 import { tc, dataRows, api } from '../A/common';
@@ -9,7 +9,7 @@ export { tc, expect, dataRows, api, API_BASE };
 
 type TC = { id: string; account?: string | null };
 const CATALOG: TC[] = JSON.parse(fs.readFileSync('testcases/docs/catalog.json', 'utf8'));
-const ACC = 'superadmin';
+const ACC = 'admin';
 export const test = base.extend({
   page: async ({ browser, baseURL, context }, use, testInfo) => {
     const id = testInfo.title.match(/^\[([A-Z]{3}-[A-Z]\d+)\]/)?.[1];
@@ -35,9 +35,9 @@ export async function raw(method: string, resource: string, body?: any, token?: 
   const text = await r.text(); let j: any = {}; try { j = JSON.parse(text); } catch { /* không phải JSON */ }
   return { status: r.status, message: String(j?.message ?? ''), data: j?.data, text };
 }
-export const surveys = async (filter: any = {}, as = 'superadmin', size = 100, page = 1) =>
+export const surveys = async (filter: any = {}, as = 'admin', size = 100, page = 1) =>
   (await api('GET', `survey/surveys?page=${page}&size=${size}&filter=${F(filter)}`, undefined, as)).data ?? { content: [], totalElements: 0 };
-export async function allSurveys(filter: any = {}, as = 'superadmin'): Promise<any[]> {
+export async function allSurveys(filter: any = {}, as = 'admin'): Promise<any[]> {
   const out: any[] = [];
   for (let p = 1; p <= 10; p++) { const d = await surveys(filter, as, 100, p); out.push(...(d.content ?? [])); if (p >= (d.totalPages ?? 1)) break; }
   return out;
@@ -93,18 +93,18 @@ export const dayStr = (n = 0) => { const d = new Date(Date.now() + 7 * 3600e3 + 
 export const dmy = (iso: string) => iso.slice(0, 10).split('-').reverse().join('/');
 export const NAME = 'qc.automation E';
 export const payload = (o: any = {}) => ({
-  name: `${NAME} ${Date.now().toString(36)}${Math.random().toString(36).slice(2, 5)}`, organizationId: ORG, startDate: dayStr(1), endDate: dayStr(30),
+  name: `${NAME} ${Date.now().toString(36)}${Math.random().toString(36).slice(2, 5)}`, organizationId: ORG, organizationIds: [ORG], startDate: dayStr(1), endDate: dayStr(30),
   methods: [1], voteTarget: 5, description: '', status: 1, groups: [{ name: 'Nhóm 1', questions: [{ content: 'Câu 1' }] }], ...o,
 });
 const MADE: string[] = [];
 /** Tạo đợt qua API (mặc định bằng superadmin) và nhớ id để dọn. */
-export async function mk(o: any = {}, as = 'superadmin') {
+export async function mk(o: any = {}, as = 'admin') {
   const r = await api('POST', 'survey/surveys', payload(o), as);
   if (r.data?.id) MADE.push(r.data.id);
   return r;
 }
-export const setStatus = (id: string, status: number, reason?: string, as = 'superadmin') => api('PUT', `survey/surveys/${id}/status`, { status, ...(reason ? { reason } : {}) }, as);
-export const getSurvey = async (id: string, as = 'superadmin') => (await api('GET', `survey/surveys/${id}`, undefined, as)).data;
+export const setStatus = (id: string, status: number, reason?: string, as = 'admin') => api('PUT', `survey/surveys/${id}/status`, { status, ...(reason ? { reason } : {}) }, as);
+export const getSurvey = async (id: string, as = 'admin') => (await api('GET', `survey/surveys/${id}`, undefined, as)).data;
 /** Xóa (Nháp/Bị từ chối xóa được; Chờ phê duyệt thì từ chối rồi xóa). Đợt đã duyệt không xóa được → bỏ qua. */
 export async function rmSurvey(id: string) {
   let r = await api('DELETE', `survey/surveys/${id}`);
@@ -143,11 +143,11 @@ export const toastText = async (page: Page) => { const t = page.locator('.ant-me
 /** answers theo thứ tự câu của đợt; v = chuỗi 'H'/'C' mỗi ký tự một câu. */
 export const qidsOf = (d: any): string[] => d.groups.flatMap((g: any) => g.questions.map((q: any) => q.id));
 export const ansOf = (d: any, v: string) => qidsOf(d).map((id, i) => ({ surveyQuestionId: id, result: v[i % v.length] === 'H' ? 1 : 2 }));
-export const addResult = (sid: string, d: any, method: 2 | 3, v: string, note = '', as = 'superadmin') =>
+export const addResult = (sid: string, d: any, method: 2 | 3, v: string, note = '', as = 'admin') =>
   api('POST', `survey/surveys/${sid}/results`, { method, collectedDate: dayStr(0), note, answers: ansOf(d, v) }, as);
-export const results = async (sid: string, filter: any = {}, page = 1, size = 100, as = 'superadmin') =>
+export const results = async (sid: string, filter: any = {}, page = 1, size = 100, as = 'admin') =>
   (await api('GET', `survey/surveys/${sid}/results?page=${page}&size=${size}&filter=${F(filter)}`, undefined, as)).data ?? { content: [], totalElements: 0 };
-export const stats = async (sid: string, as = 'superadmin') => (await api('GET', `survey/surveys/${sid}/statistics`, undefined, as)).data;
+export const stats = async (sid: string, as = 'admin') => (await api('GET', `survey/surveys/${sid}/statistics`, undefined, as)).data;
 /** Gửi phiếu trực tuyến (người dân) — có giới hạn tần suất nên chậm (~5/phút). */
 export const addOnline = async (sid: string, v: string, note = '') => {
   const d = (await raw('GET', `public/surveys/${sid}`)).data;
@@ -187,7 +187,7 @@ export function xlsxSheets(file: string): Sheets {
   return out;
 }
 /** Tải tệp từ API bằng token (trả tên tệp theo Content-Disposition). */
-export async function downloadApi(resource: string, as = 'superadmin') {
+export async function downloadApi(resource: string, as = 'admin') {
   const r = await fetch(`${API_BASE}/api/v1/${resource}`, { headers: { Authorization: `Bearer ${(await import('../api')).tokenOf(as)}` } });
   const cd = r.headers.get('content-disposition') ?? ''; const name = decodeURIComponent(/filename\*=UTF-8''([^;]+)/.exec(cd)?.[1] ?? /filename=([^;]+)/.exec(cd)?.[1] ?? '');
   const file = path.join(os.tmpdir(), `qc-e-${Date.now()}-${Math.random().toString(36).slice(2, 6)}-${name || 'x.bin'}`); const buf = Buffer.from(await r.arrayBuffer()); fs.writeFileSync(file, buf);

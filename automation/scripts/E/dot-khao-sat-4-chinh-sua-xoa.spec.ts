@@ -5,11 +5,12 @@ import { test, expect, tc, api, skipped, settle, mk, payload, rmSurvey, cleanMad
 
 test.afterEach(async () => { await cleanMade(); });
 const edit = (id: string) => `/${LIST}/${id}/edit`;
-const put = (id: string, o: any, as = 'superadmin') => api('PUT', `survey/surveys/${id}`, o, as);
+// API mới nhận organizationIds (mảng); body lấy từ GET chỉ có organizations → bổ sung
+const put = (id: string, o: any, as = 'admin') => api('PUT', `survey/surveys/${id}`, { ...o, organizationIds: o.organizationIds ?? o.organizations?.map((x: any) => x.organizationId) ?? (o.organizationId ? [o.organizationId] : undefined) }, as);
 const count = async () => (await allSurveys()).length;
 const body = async (page: Page) => (await page.locator('body').innerText()).replace(/\s+/g, ' ');
 /** Dựng body PUT từ đợt hiện tại (như UI) + chỉnh sửa. */
-async function putOf(id: string, mod: (o: any) => void, as = 'superadmin') {
+async function putOf(id: string, mod: (o: any) => void, as = 'admin') {
   const g = await getSurvey(id); const o: any = { ...g, status: 1, groups: g.groups.map((x: any) => ({ ...x, questions: x.questions.map((q: any) => ({ ...q })) })) }; mod(o); return put(id, o, as);
 }
 async function draft(o: any = {}) { const r = await mk(o); expect(r.status, r.message).toBe(200); return r.data as { id: string; code: string }; }

@@ -34,7 +34,7 @@ const test = OVR
   ? ctest.extend({ page: async ({ browser, baseURL }, use) => { const ctx = await browser.newContext({ storageState: `auth/${OVR}.json`, baseURL }); await use(await ctx.newPage()); await ctx.close(); } })
   : ctest;
 /** Khóa tài khoản tác nhân của test đang chạy (dùng cho các bước gọi API "bằng tác nhân"). */
-const actor = () => OVR || CAT.find(c => c.id === test.info().title.match(/^\[(RES-[A-Z]\d+)\]/)?.[1])?.account || 'superadmin';
+const actor = () => OVR || CAT.find(c => c.id === test.info().title.match(/^\[(RES-[A-Z]\d+)\]/)?.[1])?.account || 'admin';
 const ROLE_NAME: Record<string, string> = { lanhdaobo: 'Lãnh đạo Bộ', canbo: 'Cán bộ', ldd: 'Lãnh đạo đơn vị', cbdp: 'Cán bộ địa phương', ldp: 'Lãnh đạo địa phương', xemonly: 'Tài khoản chỉ xem', admin: 'Quản trị hệ thống' };
 const who = () => `${ROLE_NAME[actor()] ?? actor()} (${actor()})`;
 
@@ -1220,7 +1220,7 @@ test.describe('Kết quả tự đánh giá › Phía Bộ › Phân quyền & b
     }
   });
   test(tc('RES-K04'), async () => {
-    for (const t of ['Periodic', 'AdHoc']) expect(await totalAs('canbo', t), `tổng ${t}`).toBe(await totalAs('superadmin', t));
+    for (const t of ['Periodic', 'AdHoc']) expect(await totalAs('canbo', t), `tổng ${t}`).toBe(await totalAs('admin', t));
   });
   for (const [t, root] of [['K06', ORG_DP], ['K07', ORG_DP]] as const) test(tc(`RES-${t}`), async ({ page }) => {
     const rows = await lstAll({ campaignType: 'AdHoc', phase: 'all' }, actor());
@@ -1231,7 +1231,7 @@ test.describe('Kết quả tự đánh giá › Phía Bộ › Phân quyền & b
     await openList(page, { type: 'AdHoc' }); expect(await totalOf(page)).toBe(rows.length);
   });
   test(tc('RES-K08'), async () => {
-    for (const t of ['Periodic', 'AdHoc']) expect(await totalAs(actor(), t), `Lãnh đạo đơn vị: tổng ${t} (phạm vi all)`).toBe(await totalAs('superadmin', t));
+    for (const t of ['Periodic', 'AdHoc']) expect(await totalAs(actor(), t), `Lãnh đạo đơn vị: tổng ${t} (phạm vi all)`).toBe(await totalAs('admin', t));
   });
   test(tc('RES-K09'), async ({ browser }) => {
     const id = await rid('BO');

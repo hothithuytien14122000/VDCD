@@ -27,7 +27,7 @@ export function at(id: string, fn: (a: { page: Page; browser: any }) => Promise<
 export const FAKE = '00000000-0000-4000-8000-000000000000';
 export const HOST = new URL(API_BASE).host;
 export const ROLES = ['canbo', 'cbdp', 'ldd', 'ldp', 'lanhdaobo', 'xemonly'].filter(k => fs.existsSync(`auth/${k}.json`));
-const ADMIN = 'superadmin';
+const ADMIN = 'admin';
 
 // ---------- Gọi API thô ----------
 export interface Res { status: number; text: string; json: any; data: any; message: string; headers: Headers }

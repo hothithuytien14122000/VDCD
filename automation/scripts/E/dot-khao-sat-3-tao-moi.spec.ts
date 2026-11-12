@@ -8,7 +8,7 @@ const CREATE = `/${LIST}/create`;
 test.afterEach(async () => { await cleanMade(); });
 test.afterAll(async () => { await cleanByName(`${NAME} UI`); });
 
-const create = (o: any, as = 'superadmin') => api('POST', 'survey/surveys', payload(o), as);
+const create = (o: any, as = 'admin') => api('POST', 'survey/surveys', payload(o), as);
 const total = async () => (await allSurveys()).length;
 /** Gọi tạo với dữ liệu sai: kỳ vọng 400 + thông báo khớp, và không tạo thêm đợt nào. */
 async function bad(o: any, msg: RegExp) {

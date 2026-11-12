@@ -26,7 +26,7 @@ const sleep = (ms: number) => new Promise(r => setTimeout(r, ms));
 // ---------- Dữ liệu nền qua API ----------
 const _memo: Record<string, Promise<any>> = {};
 const memo = <T>(k: string, f: () => Promise<T>): Promise<T> => (_memo[k] ??= f());
-async function pages(res: string, size = 100, as = 'superadmin'): Promise<any[]> {
+async function pages(res: string, size = 100, as = 'admin'): Promise<any[]> {
   const out: any[] = [];
   for (let p = 1; p <= 30; p++) {
     const r = await api('GET', `${res}${res.includes('?') ? '&' : '?'}page=${p}&size=${size}`, undefined, as);
@@ -48,7 +48,7 @@ const orgDp = () => memo('org', async () => {
 });
 const allCamps = () => pages(R);
 const byName = async (name: string) => (await allCamps()).find(c => c.name === name);
-const getCamp = async (id: string, as = 'superadmin') => (await api('GET', `${R}/${id}`, undefined, as)).data;
+const getCamp = async (id: string, as = 'admin') => (await api('GET', `${R}/${id}`, undefined, as)).data;
 
 /** Kỳ Nháp tự tạo (xóa sau test nếu còn Nháp). */
 const draftIds: string[] = [];

@@ -5,8 +5,9 @@ import type { Page } from '@playwright/test';
 import { test, expect, tc, api, skipped, settle, mk, payload, rmSurvey, cleanMade, allSurveys, getSurvey, setStatus, dayStr, NAME, LIST, FAKE, rowMenu, confirmBtn, modal, toastText, publicList } from './common';
 
 test.afterEach(async () => { await cleanMade(); });
-const put = (id: string, o: any, as = 'superadmin') => api('PUT', `survey/surveys/${id}`, o, as);
-const submit = async (id: string, as = 'superadmin') => put(id, { ...(await getSurvey(id, as)), status: 2 }, as);
+// API mới nhận organizationIds (mảng); body lấy từ GET chỉ có organizations → bổ sung
+const put = (id: string, o: any, as = 'admin') => api('PUT', `survey/surveys/${id}`, { ...o, organizationIds: o.organizationIds ?? o.organizations?.map((x: any) => x.organizationId) ?? (o.organizationId ? [o.organizationId] : undefined) }, as);
+const submit = async (id: string, as = 'admin') => put(id, { ...(await getSurvey(id, as)), status: 2 }, as);
 async function draft(o: any = {}) { const r = await mk(o); expect(r.status, r.message).toBe(200); return r.data as { id: string; code: string }; }
 async function pending(o: any = {}) { const d = await draft(o); const s = await submit(d.id); expect(s.status, s.message).toBe(200); return d; }
 const approve = (id: string, as = 'admin') => setStatus(id, 3, undefined, as);
@@ -79,7 +80,7 @@ test.describe('Đợt khảo sát — phê duyệt', () => {
   });
   test(tc('SVY-A06'), async () => {
     const d = await pending(); await approve(d.id);
-    const n = await noti('superadmin', d.code); expect(n.length, 'người trình phải nhận TB-015').toBeGreaterThanOrEqual(1);
+    const n = await noti('admin', d.code); expect(n.length, 'người trình phải nhận TB-015').toBeGreaterThanOrEqual(1);
     for (const k of ['canbo', 'ldp']) expect(await noti(k, d.code)).toHaveLength(0);
   });
   skipped(['SVY-A10'], 'MANUAL: cần đợt Chờ phê duyệt đã quá ngày kết thúc khi tác vụ tự từ chối chưa chạy');
@@ -88,7 +89,7 @@ test.describe('Đợt khảo sát — phê duyệt', () => {
   });
   test(tc('SVY-A12'), async () => {
     const d = await pending(); expect((await approve(d.id)).status).toBe(200); expect((await approve(d.id)).status).toBeGreaterThanOrEqual(400);
-    expect((await hist(d.id)).filter(h => h === 'Đã phê duyệt')).toHaveLength(1); expect((await noti('superadmin', d.code)).length).toBeLessThanOrEqual(1);
+    expect((await hist(d.id)).filter(h => h === 'Đã phê duyệt')).toHaveLength(1); expect((await noti('admin', d.code)).length).toBeLessThanOrEqual(1);
   });
   test(tc('SVY-A13'), async () => {
     const d = await pending(); for (const k of ['canbo', 'xemonly']) { const r = await approve(d.id, k); expect([403, 404], k).toContain(r.status); }
@@ -154,7 +155,7 @@ test.describe('Đợt khảo sát — từ chối', () => {
     const g = await getSurvey(d.id); expect(g.statusName).toBe('Chờ phê duyệt'); expect(g.histories.map((h: any) => h.statusName)).not.toContain('Bị từ chối');
   });
   test(tc('SVY-J08'), async () => {
-    const d = await pending(); await reject(d.id, 'Không đạt'); const n = await noti('superadmin', d.code); expect(n.length, 'người trình phải nhận TB-016').toBeGreaterThanOrEqual(1);
+    const d = await pending(); await reject(d.id, 'Không đạt'); const n = await noti('admin', d.code); expect(n.length, 'người trình phải nhận TB-016').toBeGreaterThanOrEqual(1);
     expect(n.some((x: any) => /từ chối/i.test(x.title + x.description))).toBeTruthy();
   });
   test(tc('SVY-J10'), async () => {
@@ -176,7 +177,7 @@ test.describe('Đợt khảo sát — từ chối', () => {
   test(tc('SVY-J14'), async ({ page }) => {
     const d = await pending(); await openReject(page, d); await reason(page).fill('một lần'); const b = confirmBtn(page, 'reject');
     for (let i = 0; i < 3; i++) await b.click({ force: true, noWaitAfter: true, timeout: 1500 }).catch(() => {}); await settle(page);
-    expect((await hist(d.id)).filter(h => h.startsWith('Bị từ chối'))).toHaveLength(1); expect((await noti('superadmin', d.code)).length).toBeLessThanOrEqual(1);
+    expect((await hist(d.id)).filter(h => h.startsWith('Bị từ chối'))).toHaveLength(1); expect((await noti('admin', d.code)).length).toBeLessThanOrEqual(1);
   });
   test(tc('SVY-J15'), async () => {
     const dr = await draft(); expect((await reject(dr.id, 'x')).status).toBeGreaterThanOrEqual(400); expect((await getSurvey(dr.id)).statusName).toBe('Nháp');

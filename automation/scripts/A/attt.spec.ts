@@ -144,7 +144,7 @@ test.describe('ATTT ATA › Nhật ký truy cập', () => {
   /** Màn thật: ô tìm kiếm + nút "Bộ lọc" mở ngăn kéo "Bộ lọc nâng cao" (Sự kiện, Đơn vị, Kết quả, Khoảng thời gian). */
   const openFilter = async (page: any) => { await page.getByRole('button', { name: /Bộ lọc/ }).click(); await page.waitForTimeout(800); return page.locator('.ant-drawer-content, .ant-drawer').first().innerText(); };
   at('ATA-N12', async ({ browser }) => {
-    const ctx = await browser.newContext({ storageState: 'auth/superadmin.json' }); const page = await ctx.newPage();
+    const ctx = await browser.newContext({ storageState: 'auth/admin.json' }); const page = await ctx.newPage();
     try {
       await openLog(page);
       const miss: string[] = [];
@@ -171,7 +171,7 @@ test.describe('ATTT ATA › Nhật ký truy cập', () => {
   at('ATA-N20', async () => {
     const bad: string[] = [];
     for (const role of await liveRoles()) { const r = await call('GET', 'log-audit-resource', { as: role }); if (![401, 403].includes(r.status)) bad.push(`${role} → ${r.status}`); }
-    const pm = await perms('superadmin');
+    const pm = await perms('admin');
     for (const c of ['LOG_AUDIT_RESOURCE.VIEW', 'LOG_AUDIT_RESOURCE.EXPORT']) if (!pm.has(c)) bad.push(`thiếu mã quyền ${c}`);
     expect(bad).toEqual([]);
   });

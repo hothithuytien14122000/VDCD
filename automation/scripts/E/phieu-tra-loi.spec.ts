@@ -94,7 +94,7 @@ test.describe('Phiếu trả lời — chi tiết', () => {
 });
 
 test.describe('Phiếu trả lời — tải mẫu', () => {
-  const tpl = (id: string, as = 'superadmin') => fetch(`${API_BASE}/api/v1/survey/surveys/${id}/form-template`, { headers: { Authorization: `Bearer ${tokenOf(as)}` } });
+  const tpl = (id: string, as = 'admin') => fetch(`${API_BASE}/api/v1/survey/surveys/${id}/form-template`, { headers: { Authorization: `Bearer ${tokenOf(as)}` } });
   test(tc('ANS-T01'), async () => { const r = await tpl(RES.id); expect(r.status).toBe(200); const b = Buffer.from(await r.arrayBuffer()); expect(b.length).toBeGreaterThan(200); });
   test(tc('ANS-T03'), async () => { const t = Buffer.from(await (await tpl(RES.id)).arrayBuffer()).toString('utf8'); expect(t).not.toMatch(/Đánh giá chung|Ghi chú D1|online 1/); });
   skipped(['ANS-T04'], 'MANUAL: cần đợt đã kết thúc có hình thức không trực tuyến và quyền tải mẫu tách biệt');

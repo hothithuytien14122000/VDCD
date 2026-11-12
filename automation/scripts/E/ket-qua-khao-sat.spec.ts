@@ -87,7 +87,7 @@ test.describe('Kết quả — xem màn hình', () => {
     await page.locator('.ant-segmented-item').filter({ hasText: /^Thông tin/ }).click(); await settle(page); expect(await body(page)).toContain('Thông tin chung');
   });
   test(tc('SRT-V09'), async () => { for (const k of ['canbo', 'cbdp', 'xemonly']) { const r = await api('GET', `survey/surveys/${RES.id}/statistics`, undefined, k); expect([403, 404], k).toContain(r.status); expect(JSON.stringify(r.raw)).not.toContain('participants'); } });
-  test(tc('SRT-V10'), async () => { for (const k of ['superadmin', 'admin']) expect((await stats(RES.id, k)).summary.participants, k).toBe(RES.resultCount); const ldd = await api('GET', `survey/surveys/${RES.id}/statistics`, undefined, 'ldd'); expect([403, 404]).toContain(ldd.status); });
+  test(tc('SRT-V10'), async () => { for (const k of ['admin']) expect((await stats(RES.id, k)).summary.participants, k).toBe(RES.resultCount); const ldd = await api('GET', `survey/surveys/${RES.id}/statistics`, undefined, 'ldd'); expect([403, 404]).toContain(ldd.status); });
   test(tc('SRT-V11'), async ({ page }) => {
     const r = await api('GET', `survey/surveys/${FAKE}/statistics`); expect(r.status).toBe(404); await page.goto(`/#/vi/survey-campaigns/${FAKE}?tab=kq`); await settle(page); expect(await body(page)).toMatch(/không tồn tại|không tìm thấy|đã bị xóa/i);
   });
@@ -106,7 +106,7 @@ test.describe('Kết quả — tính chất số liệu', () => {
     const r = await api('GET', `survey/surveys/${d.id}/statistics`); expect(r.status === 200 ? r.data?.summary?.participants : 0, 'Nháp không có số liệu').toBeFalsy();
   });
   test(tc('SRT-T05'), async ({ browser, baseURL }) => {
-    const ctx = await browser.newContext({ storageState: 'auth/superadmin.json', baseURL, timezoneId: 'Pacific/Auckland' }); const p = await ctx.newPage(); await kq(p, RES.id);
+    const ctx = await browser.newContext({ storageState: 'auth/admin.json', baseURL, timezoneId: 'Pacific/Auckland' }); const p = await ctx.newPage(); await kq(p, RES.id);
     const shown = (await body(p)).match(/Tạm tính đến (\d{2}\/\d{2}\/\d{4} \d{2}:\d{2})/)?.[1]; const s = await stats(RES.id); const at = s.calculatedAt as string; const exp = `${at.slice(8, 10)}/${at.slice(5, 7)}/${at.slice(0, 4)} ${at.slice(11, 16)}`;
     expect(shown, 'Mốc hiển thị theo máy chủ (giờ Việt Nam), không đổi theo múi giờ máy khách').toBe(exp); await ctx.close();
   });
@@ -129,7 +129,7 @@ test.describe('Kết quả — góp ý', () => {
   });
 });
 
-const listXlsx = async (filter: any = {}, as = 'superadmin') => downloadApi(`survey/surveys/export?filter=${encodeURIComponent(JSON.stringify(filter))}&sort=-CreatedOnDate`, as);
+const listXlsx = async (filter: any = {}, as = 'admin') => downloadApi(`survey/surveys/export?filter=${encodeURIComponent(JSON.stringify(filter))}&sort=-CreatedOnDate`, as);
 test.describe('Kết quả — xuất Excel danh sách các đợt', () => {
   test(tc('SRT-X02'), async () => {
     const x = await listXlsx({ keyword: 'qc.automation' }); const s = xlsxSheets(x.file)['Danh sách kết quả']; const head = s.slice(0, 8).flat().join('|'); expect(head).toMatch(/Thời điểm xuất/); expect(head).toMatch(/qc\.automation/); expect(head).toMatch(/Mốc|Tạm tính|dữ liệu/i);
@@ -172,7 +172,7 @@ test.describe('Kết quả — xuất Excel danh sách các đợt', () => {
 import { execFileSync } from 'node:child_process';
 const execSheetXml = (file: string) => execFileSync('unzip', ['-p', file, 'xl/worksheets/sheet1.xml'], { maxBuffer: 64 << 20 }).toString('utf8');
 
-const statX = (id: string, as = 'superadmin') => downloadApi(`survey/surveys/${id}/statistics/export`, as);
+const statX = (id: string, as = 'admin') => downloadApi(`survey/surveys/${id}/statistics/export`, as);
 test.describe('Kết quả — xuất Excel một đợt', () => {
   test(tc('SRT-O02'), async () => { expect(Object.keys(xlsxSheets((await statX(RES.id)).file))).toEqual(['Tổng quan', 'Theo câu hỏi', 'Theo hình thức', 'Góp ý']); });
   test(tc('SRT-O03'), async () => {

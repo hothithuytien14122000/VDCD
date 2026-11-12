@@ -150,8 +150,8 @@ export async function confirmNo(page: Page) {
 }
 
 // ---------- API tiện ích ----------
-export const H = () => ({ Authorization: `Bearer ${tokenOf('superadmin')}`, 'Content-Type': 'application/json' });
-export async function api(method: string, resource: string, body?: any, as: string = 'superadmin') {
+export const H = () => ({ Authorization: `Bearer ${tokenOf('admin')}`, 'Content-Type': 'application/json' });
+export async function api(method: string, resource: string, body?: any, as: string = 'admin') {
   const r = await fetch(`${API_BASE}/api/v1/${resource}`, {
     method, headers: { Authorization: `Bearer ${tokenOf(as)}`, 'Content-Type': 'application/json' },
     body: body ? JSON.stringify(body) : undefined,

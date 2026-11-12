@@ -8,7 +8,7 @@ export function tokenOf(key: string): string {
   const ls = st.origins[0].localStorage as { name: string; value: string }[];
   return ls.map(x => x.value).find(v => v.split('.').length === 3)!;
 }
-function token(): string { return tokenOf('superadmin'); }
+function token(): string { return tokenOf('admin'); }
 const H = () => ({ Authorization: `Bearer ${token()}`, 'Content-Type': 'application/json' });
 
 // Gọi API thô với vai trò/không token (test phân quyền & auth). Trả HTTP status.

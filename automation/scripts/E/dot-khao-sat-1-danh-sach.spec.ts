@@ -170,7 +170,7 @@ test.describe('Đợt khảo sát — danh sách', () => {
     expect(s.length).toBeGreaterThanOrEqual((await allSurveys({}, 'canbo')).length);
   });
   test(tc('SVY-L49'), async () => {
-    const s = await allSurveys({}, 'superadmin'); expect(new Set(s.map(x => x.organizationName)).size).toBeGreaterThan(3);
+    const s = await allSurveys({}, 'admin'); expect(new Set(s.map(x => x.organizationName)).size).toBeGreaterThan(3);
   });
   test(tc('SVY-L50'), async () => {
     const a = (await allSurveys({}, 'canbo')).map(x => x.id).sort(), b = (await allSurveys({}, 'ldd')).map(x => x.id).sort();
@@ -220,5 +220,5 @@ test.describe('Đợt khảo sát — danh sách', () => {
   skipped(['SVY-L65'], 'MANUAL: thu hồi quyền khi phiên đang mở');
 });
 
-async function surveys10() { return (await (await import('./common')).surveys({}, 'superadmin', 10, 1)).content as any[]; }
+async function surveys10() { return (await (await import('./common')).surveys({}, 'admin', 10, 1)).content as any[]; }
 void F; void LIST; void NOT_YET;
