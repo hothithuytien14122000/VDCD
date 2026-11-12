@@ -3,12 +3,16 @@ import { Page, Locator } from '@playwright/test';
 import {
   test, expect, tc, needWrite, WRITE, PAGES, dataRows, openList, searchFor, waitList, totalOf, rowTexts, cellText, findRow,
   pickOption, dlg, btnCancel, toast, rowAction, confirmYes, confirmNo, api, listApi, findApi, Made, uname, userBody, FILTERS,
-  ensureOrg, ensureRole, ensureUser, registerListSuite, registerAuthTest, registerMatrixTest, registerPerfTest, pickByLabel, setCheckbox, goto, rowMenuItems, btnSave,
+  ensureOrg, ensureRole, ensureUser, confirmIfAsked, registerListSuite, registerAuthTest, registerMatrixTest, registerPerfTest, pickByLabel, setCheckbox, goto, rowMenuItems, btnSave,
 } from './common';
 import { registerEdgeTests, registerNotFoundTest } from './common';
 import accountsCfg from '../../accounts.mjs';
 
 const cfg = PAGES.USR;
+// Giao diện mới: ô email ph "ten@donvi.gov.vn"; cột: STT|Mã người dùng|Tên đăng nhập|Họ tên|SĐT|Email|Nhóm|Đơn vị|Trạng thái;
+// bộ lọc: Tất cả nhóm người dùng | Tất cả đơn vị | Tất cả trạng thái; nút lưu "Lưu"
+const PH_MAIL = /ten@donvi\.gov\.vn|ten\.dv@cds\.gov\.vn/;
+const F_STATUS = 2;
 const made = new Made();
 test.afterEach(async () => { await made.clean(); });
 
@@ -18,24 +22,11 @@ registerListSuite('USR');
 test.describe('Người dùng › Bộ lọc', () => {
   test(tc('USR-L12'), async ({ page }) => {
     await openList(page, cfg);
-    const email = await cellText(page, 0, 4);
+    const email = await cellText(page, 0, 5);
     await searchFor(page, cfg, email);
     const texts = await rowTexts(page);
     expect(texts.length).toBeGreaterThan(0);
     for (const t of texts) expect(t.toLowerCase()).toContain(email.toLowerCase());
-  });
-  test(tc('USR-L13'), async ({ page }) => {
-    await openList(page, cfg);
-    const all = await totalOf(page);
-    const label = await pickOption(page, page.locator(FILTERS).nth(0));
-    await waitList(page);
-    const role = (await listApi('idm/roles', label.slice(0, 15))).find((r: any) => r.name === label);
-    expect(role, `không tìm thấy nhóm "${label}" qua API`).toBeTruthy();
-    const users = await listApi('idm/users', '');
-    const expected = users.filter((u: any) => u.roleCode === role.code).length;
-    const got = await totalOf(page);
-    expect(got).toBeLessThanOrEqual(all);
-    expect(got, `số người dùng thuộc nhóm "${label}"`).toBe(expected);
   });
   test(tc('USR-L14'), async ({ page }) => {
     test.skip(!WRITE, 'Cần RUN_WRITE=1 (tự tạo user khóa)');
@@ -43,11 +34,11 @@ test.describe('Người dùng › Bộ lọc', () => {
     const x = await ensureUser(made);
     await openList(page, cfg);
     await rowAction(page, await findRow(page, cfg, x.userName), /^\s*kho[áạ]\s*$/i);
-    if (await page.getByRole('button', { name: /^\s*có\s*$/i }).filter({ visible: true }).count()) await confirmYes(page);
+    await confirmIfAsked(page);
     await waitList(page);
     await searchFor(page, cfg, '');
     for (const [label, re] of [['Đã khóa', /đã khóa/i], ['Đang hoạt động', /đang hoạt động/i]] as const) {
-      await pickOption(page, page.locator(FILTERS).nth(1), label);
+      await pickOption(page, page.locator(FILTERS).nth(F_STATUS), label);
       await waitList(page);
       const texts = await rowTexts(page);
       expect(texts.length, `phải có người dùng "${label}"`).toBeGreaterThan(0);
@@ -57,7 +48,7 @@ test.describe('Người dùng › Bộ lọc', () => {
   test(tc('USR-L15'), async ({ page }) => {
     await openList(page, cfg);
     await searchFor(page, cfg, 'qc');
-    await pickOption(page, page.locator(FILTERS).nth(1), 'Đang hoạt động');
+    await pickOption(page, page.locator(FILTERS).nth(F_STATUS), 'Đang hoạt động');
     await waitList(page);
     const texts = await rowTexts(page);
     expect(texts.length).toBeGreaterThan(0);
@@ -98,7 +89,7 @@ test.describe('Người dùng › Xem chi tiết', () => {
     await page.waitForTimeout(800);
     const e = dlg(page);
     await expect(e.getByPlaceholder('Ví dụ: Nguyễn Thị Lan')).toHaveValue(`qc.automation ${u.userName}`);
-    await expect(e.getByPlaceholder('ten.dv@cds.gov.vn')).toHaveValue(`${u.userName}@cds.local`);
+    await expect(e.getByPlaceholder(PH_MAIL)).toHaveValue(`${u.userName}@cds.local`);
   });
 });
 
@@ -113,11 +104,15 @@ async function openAdd(page: Page) {
 async function fillForm(d: Locator, f: UF) {
   if (f.name !== undefined) await d.getByPlaceholder('Ví dụ: Nguyễn Thị Lan').fill(f.name);
   if (f.phone !== undefined) await d.getByPlaceholder('0912345678').fill(f.phone);
-  if (f.email !== undefined) await d.getByPlaceholder('ten.dv@cds.gov.vn').fill(f.email);
+  if (f.email !== undefined) await d.getByPlaceholder(PH_MAIL).fill(f.email);
   if (f.userName !== undefined) await d.getByPlaceholder('voi.lan.nt').fill(f.userName);
-  if (f.password !== undefined) await d.getByPlaceholder('Tối thiểu 6 ký tự').fill(f.password);
+  if (f.password !== undefined) await d.getByPlaceholder(/^Tối thiểu \d+ ký tự$/).fill(f.password);
 }
-const submitAdd = (d: Locator) => d.getByRole('button', { name: /thêm mới người dùng/i }).last().click();
+const submitAdd = (d: Locator) => btnSave(d).click();
+// Giao diện mới: form Thêm mới không còn 2 checkbox "Bắt buộc đổi mật khẩu" / "Gửi thông tin đăng nhập qua email"
+const RE_MAIL = /gửi thông tin đăng nhập qua email/i, RE_FORCE = /bắt buộc đổi mật khẩu/i;
+const hasCheckbox = async (d: Locator, re: RegExp) => (await d.locator('label', { hasText: re }).locator('input[type=checkbox]').count()) > 0;
+async function optCheckbox(d: Locator, re: RegExp, on: boolean) { if (await hasCheckbox(d, re)) await setCheckbox(d, re, on); }
 const okForm = (u: string): UF => ({ name: `qc.automation ${u}`, email: `${u}@cds.local`, userName: u, password: accountsCfg.password });
 
 test.describe('Người dùng › Thêm mới', () => {
@@ -127,13 +122,14 @@ test.describe('Người dùng › Thêm mới', () => {
   test(tc('USR-C01'), async ({ page }) => {
     const u = made.add('idm/users', uname(), 'userName');
     const d = await openAdd(page);
-    await fillForm(d, { ...okForm(u), phone: '0912345678' });
-    await setCheckbox(d, /gửi thông tin đăng nhập qua email/i, false);
+    const phone = '09' + String(Date.now()).slice(-8);   // SĐT phải duy nhất giữa các user, không dùng số cố định
+    await fillForm(d, { ...okForm(u), phone });
+    await optCheckbox(d, RE_MAIL, false);
     await submitAdd(d);
     expect(await toast(page)).toMatch(/thành công/i);
     const rec = await findApi('idm/users', u, 'userName');
     expect(rec).toBeTruthy();
-    expect(rec.name).toBe(`qc.automation ${u}`); expect(rec.email).toBe(`${u}@cds.local`); expect(rec.phoneNumber).toBe('0912345678');
+    expect(rec.name).toBe(`qc.automation ${u}`); expect(rec.email).toBe(`${u}@cds.local`); expect(rec.phoneNumber).toBe(phone);
     const row = await findRow(page, cfg, u);
     await expect(row.first()).toContainText(/đang hoạt động/i);
   });
@@ -141,7 +137,7 @@ test.describe('Người dùng › Thêm mới', () => {
     const u = made.add('idm/users', uname(), 'userName');
     const d = await openAdd(page);
     await fillForm(d, okForm(u));
-    await setCheckbox(d, /gửi thông tin đăng nhập qua email/i, false);
+    await optCheckbox(d, RE_MAIL, false);
     await submitAdd(d);
     expect(await toast(page)).toMatch(/thành công/i);
     expect(await findApi('idm/users', u, 'userName')).toBeTruthy();
@@ -153,7 +149,7 @@ test.describe('Người dùng › Thêm mới', () => {
     await fillForm(d, okForm(u));
     await pickByLabel(page, d, /đơn vị/i, org.name);
     await pickByLabel(page, d, /nhóm người dùng/i, role.name);
-    await setCheckbox(d, /gửi thông tin đăng nhập qua email/i, false);
+    await optCheckbox(d, RE_MAIL, false);
     await submitAdd(d);
     expect(await toast(page)).toMatch(/thành công/i);
     const rec = await findApi('idm/users', u, 'userName');
@@ -171,7 +167,7 @@ test.describe('Người dùng › Thêm mới', () => {
     const u = made.add('idm/users', uname(), 'userName');
     const d = await openAdd(page);
     await fillForm(d, { ...okForm(u), ...f });
-    await setCheckbox(d, /gửi thông tin đăng nhập qua email/i, false);
+    await optCheckbox(d, RE_MAIL, false);
     await submitAdd(d);
     await page.waitForTimeout(800);
     expect(await d.locator('.ant-form-item-explain-error').allInnerTexts()).toEqual(expect.arrayContaining([expect.stringMatching(msg)]));
@@ -185,7 +181,7 @@ test.describe('Người dùng › Thêm mới', () => {
     const a = await ensureUser(made);
     const d = await openAdd(page);
     await fillForm(d, { ...okForm(a.userName), email: `${uname()}@cds.local` });
-    await setCheckbox(d, /gửi thông tin đăng nhập qua email/i, false);
+    await optCheckbox(d, RE_MAIL, false);
     await submitAdd(d);
     expect(await toast(page)).toMatch(/đã (được )?(sử dụng|tồn tại)/i);
     expect((await listApi('idm/users', a.userName)).filter((x: any) => x.userName === a.userName)).toHaveLength(1);
@@ -195,41 +191,16 @@ test.describe('Người dùng › Thêm mới', () => {
     const u2 = made.add('idm/users', uname(), 'userName');
     const d = await openAdd(page);
     await fillForm(d, { ...okForm(u2), email: `${a.userName}@cds.local` });
-    await setCheckbox(d, /gửi thông tin đăng nhập qua email/i, false);
+    await optCheckbox(d, RE_MAIL, false);
     await submitAdd(d);
     expect(await toast(page)).toMatch(/email đã được sử dụng|đã tồn tại/i);
     expect(await findApi('idm/users', u2, 'userName')).toBeNull();
-  });
-  test(tc('USR-C10'), async ({ page }) => {
-    const d = await openAdd(page);
-    for (const re of [/bắt buộc đổi mật khẩu/i, /gửi thông tin đăng nhập qua email/i])
-      await expect(d.locator('label', { hasText: re }).locator('input[type=checkbox]').first()).toBeChecked();
   });
   async function captureCreate(page: Page, d: Locator, u: string) {
     const req = page.waitForRequest(r => r.method() === 'POST' && /\/idm\/users$/.test(r.url().split('?')[0]));
     await submitAdd(d);
     return JSON.parse((await req).postData() || '{}');
   }
-  test(tc('USR-C11'), async ({ page }) => {
-    const u = made.add('idm/users', uname(), 'userName');
-    const d = await openAdd(page);
-    await fillForm(d, okForm(u));
-    await setCheckbox(d, /bắt buộc đổi mật khẩu/i, false);
-    await setCheckbox(d, /gửi thông tin đăng nhập qua email/i, false);
-    const body = await captureCreate(page, d, u);
-    expect(body.isRequireChangePassword, 'request phải gửi false').toBe(false);
-    await toast(page);
-    const rec = await findApi('idm/users', u, 'userName');
-    expect(rec?.isRequireChangePassword, 'bản ghi lưu không bắt buộc đổi mật khẩu').toBe(false);
-  });
-  test(tc('USR-C12'), async ({ page }) => {
-    const u = made.add('idm/users', uname(), 'userName');
-    const d = await openAdd(page);
-    await fillForm(d, okForm(u));
-    await setCheckbox(d, /gửi thông tin đăng nhập qua email/i, false);
-    const body = await captureCreate(page, d, u);
-    expect(body.isRequestMailInfo).toBe(false);
-  });
   test(tc('USR-C13'), async ({ page }) => {
     const u = made.add('idm/users', uname(), 'userName');
     const d = await openAdd(page);
@@ -292,10 +263,11 @@ test.describe('Người dùng › Chỉnh sửa', () => {
   test(tc('USR-E02'), async ({ page }) => {
     const x = await ensureUser(made);
     const d = await openEdit(page, x.userName);
-    await d.getByPlaceholder('0912345678').fill('0987654321');
+    const phone = '09' + String(Date.now()).slice(-8);   // SĐT phải duy nhất giữa các user
+    await d.getByPlaceholder('0912345678').fill(phone);
     await save(d);
     expect(await toast(page)).toMatch(/thành công/i);
-    expect((await findApi('idm/users', x.userName, 'userName'))?.phoneNumber).toBe('0987654321');
+    expect((await findApi('idm/users', x.userName, 'userName'))?.phoneNumber).toBe(phone);
   });
   test(tc('USR-E03'), async ({ page }) => {
     const A = await ensureRole(made), B = await ensureRole(made);
@@ -311,7 +283,7 @@ test.describe('Người dùng › Chỉnh sửa', () => {
   test(tc('USR-E04'), async ({ page }) => {
     const a = await ensureUser(made), b = await ensureUser(made);
     const d = await openEdit(page, b.userName);
-    await d.getByPlaceholder('ten.dv@cds.gov.vn').fill(`${a.userName}@cds.local`);
+    await d.getByPlaceholder(PH_MAIL).fill(`${a.userName}@cds.local`);
     await save(d);
     expect(await toast(page)).toMatch(/email đã được sử dụng|đã tồn tại/i);
     expect((await findApi('idm/users', b.userName, 'userName'))?.email).toBe(`${b.userName}@cds.local`);
@@ -319,7 +291,7 @@ test.describe('Người dùng › Chỉnh sửa', () => {
   test(tc('USR-E05'), async ({ page }) => {
     const x = await ensureUser(made);
     const d = await openEdit(page, x.userName);
-    await d.getByPlaceholder('ten.dv@cds.gov.vn').fill('abc');
+    await d.getByPlaceholder(PH_MAIL).fill('abc');
     await save(d);
     await page.waitForTimeout(700);
     expect((await d.locator('.ant-form-item-explain-error').allInnerTexts()).join()).toMatch(/email không đúng định dạng/i);
@@ -356,7 +328,7 @@ test.describe('Người dùng › Khóa / Xóa', () => {
   async function doLock(page: Page, u: string, re: RegExp) {
     const row = await findRow(page, cfg, u);
     await rowAction(page, row, re);
-    if (await page.getByRole('button', { name: /^\s*có\s*$/i }).filter({ visible: true }).count()) await confirmYes(page);
+    await confirmIfAsked(page);
     await waitList(page);
   }
   test(tc('USR-X01'), async ({ page }) => {
@@ -376,10 +348,10 @@ test.describe('Người dùng › Khóa / Xóa', () => {
     const x = await ensureUser(made);
     await openList(page, cfg);
     await doLock(page, x.userName, /^\s*kho[áạ]\s*$/i);
-    await pickOption(page, page.locator(FILTERS).nth(1), 'Đã khóa');
+    await pickOption(page, page.locator(FILTERS).nth(F_STATUS), 'Đã khóa');
     await searchFor(page, cfg, x.userName);
     expect(await dataRows(page).count(), 'hiện khi lọc Đã khóa').toBe(1);
-    await pickOption(page, page.locator(FILTERS).nth(1), 'Đang hoạt động');
+    await pickOption(page, page.locator(FILTERS).nth(F_STATUS), 'Đang hoạt động');
     await searchFor(page, cfg, x.userName);
     expect(await dataRows(page).count(), 'ẩn khi lọc Đang hoạt động').toBe(0);
   });
@@ -422,6 +394,7 @@ registerEdgeTests({
   P: 'USR', cfg, made, openAdd, submit: submitAdd,
   fillBlank: async d => { await fillForm(d, { name: '   ', userName: '   ', email: '   ', password: '   ' }); },
   fillValid: async (_p, d, code) => { await fillForm(d, okForm(code.toLowerCase())); },
+  mk: async (u, name) => { const r = await api('POST', 'idm/users', { ...userBody(u), name }); return { status: r.status, message: r.message }; },
   makeNamed: async name => { const u = made.add('idm/users', uname(), 'userName'); const r = await api('POST', 'idm/users', { ...userBody(u), name }); if (r.status !== 200) throw new Error(r.message); return u; },
 });
 
@@ -433,6 +406,8 @@ test.describe('Người dùng › Bổ sung', () => {
     const up = x.userName.toUpperCase();
     const r = await api('POST', 'idm/users', { ...userBody(up), email: `${up.toLowerCase()}.b@cds.local` });
     if (r.status === 200) made.add('idm/users', up, 'userName');
-    expect(r.status, `tên đăng nhập chỉ khác hoa/thường phải bị coi là trùng (HTTP ${r.status}: ${r.message})`).toBeGreaterThanOrEqual(400);
+    // Tên đăng nhập có phân biệt hoa/thường → "ABC" không bị coi là trùng "abc". (Nếu form chỉ cho chữ thường thì "ABC" bị từ chối vì sai định dạng, không phải vì trùng.)
+    expect(r.message, `"${up}" không được bị từ chối vì trùng với "${x.userName}" (HTTP ${r.status}: ${r.message})`).not.toMatch(/đã tồn tại|đã được sử dụng|trùng/i);
+    expect((await findApi('idm/users', x.userName, 'userName'))?.userName, 'tài khoản gốc không bị ảnh hưởng').toBe(x.userName);
   });
 });

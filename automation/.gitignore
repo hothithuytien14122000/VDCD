@@ -7,3 +7,6 @@ test-results/
 playwright-report/
 .tmp/
 results/
+
+# Đầu ra hướng dẫn sử dụng (docx + ảnh) — sinh lại bằng hdsd/tools
+hdsd/out/

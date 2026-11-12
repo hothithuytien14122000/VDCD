@@ -94,7 +94,7 @@ export default (R) => [
   // ================= SRS UC1.4b Từ chối =================
   R('RES', 'C.UC1.4b', null, 'UC1.4b Từ chối: Chờ duyệt → Bị từ chối, lý do bắt buộc ≤255 ký tự, TB-007 (BR-1..2)', [
     ['Hộp thoại Từ chối', 'RES-A14'], ['Từ chối thành công', 'RES-A15|RES-A16'], ['Thông báo MSG-069', 'RES-A17'],
-    ['Lý do trống MSG-058', 'RES-A18'], ['Lý do khoảng trắng', 'RES-A19'], ['Biên 255 / 256', 'RES-A20|RES-A21|RES-A22'],
+    ['Lý do trống MSG-058', 'RES-A18'], ['Lý do khoảng trắng', 'RES-A19'], ['Biên 1.000 / 1.001', 'RES-A20|RES-A21|RES-A22'],
     ['Hủy sau khi nhập lý do', 'RES-A23'], ['Ghi Lịch sử kèm lý do', 'RES-A24'], ['Lý do ở thông tin bổ sung', 'RES-A25|RES-D05'],
     ['TB-007 kèm lý do', 'RES-A26'], ['HTML / ký tự đặc biệt / SQLi / Unicode / nhiều dòng', 'RES-A27|RES-J04|RES-J05|RES-J06'],
     ['Chặn sai trạng thái / lặp', 'RES-A28|RES-A29'], ['Từ chối nhiều lần', 'RES-A31'], ['Lỗi 500', 'RES-A32'],
@@ -115,7 +115,7 @@ export default (R) => [
   // ================= SRS UC1.6 Xin mở khóa =================
   R('RES', 'C.UC1.6', null, 'UC1.6 Xin mở khóa: Đã gửi → Chờ mở khóa, lý do bắt buộc ≤255 ký tự, TB-009 (BR-1..4)', [
     ['Xin thành công', 'RES-U01'], ['Hộp thoại', 'RES-U02'], ['Thông báo MSG-071', 'RES-U03'], ['Hủy', 'RES-U04'],
-    ['Lý do trống / khoảng trắng', 'RES-U05|RES-U06'], ['Biên 255 / 256', 'RES-U07|RES-U08|RES-U09'],
+    ['Lý do trống / khoảng trắng', 'RES-U05|RES-U06'], ['Biên 1.000 / 1.001', 'RES-U07|RES-U08|RES-U09'],
     ['BR-1 Ai được xin (LĐ đơn vị, LĐ địa phương, Cán bộ không)', 'RES-U10|RES-U11|RES-U12'],
     ['Chỉ xin ở trạng thái Đã gửi', 'RES-U13|RES-Y10'], ['BR-3 Kỳ kết thúc', 'RES-U14|RES-U28'], ['Khóa thao tác sau khi xin', 'RES-U15'],
     ['Thông tin bổ sung Chờ mở khóa', 'RES-U16|RES-D07'], ['Ghi Lịch sử kèm lý do', 'RES-U17'], ['TB-009 kèm lý do', 'RES-U18'],

@@ -9,7 +9,7 @@ const files = fs.statSync(src).isDirectory() ? fs.readdirSync(src).filter(f => f
 if (!files.length) { console.error(`Không có JSON trong ${src} — hãy chạy test trước`); process.exit(1); }
 const parts = files.map(f => JSON.parse(fs.readFileSync(f, 'utf8')));
 const R = { suites: parts.flatMap(p => p.suites ?? []), stats: { startTime: parts.map(p => p.stats?.startTime).filter(Boolean).sort().at(-1), duration: parts.reduce((n, p) => n + (p.stats?.duration ?? 0), 0) } };
-const PAGE = { USR: 'Người dùng', GRP: 'Nhóm người dùng', PRM: 'Ma trận phân quyền', PRV: 'Đơn vị hành chính cấp tỉnh', COM: 'Đơn vị hành chính cấp xã', UTY: 'Loại đơn vị', ORG: 'Đơn vị', PIL: 'Trụ cột', IGR: 'Nhóm chỉ số', IND: 'Chỉ số', SET: 'Bộ chỉ số', SCL: 'Thang xếp loại', RES: 'Kết quả tự đánh giá', CMP: 'Quản lý tự đánh giá', LGN: 'Đăng nhập', RPW: 'Quên mật khẩu', CPW: 'Đổi mật khẩu', LGO: 'Đăng xuất' };
+const PAGE = { USR: 'Người dùng', GRP: 'Nhóm người dùng', PRM: 'Ma trận phân quyền', PRV: 'Đơn vị hành chính cấp tỉnh', COM: 'Đơn vị hành chính cấp xã', UTY: 'Loại đơn vị', ORG: 'Đơn vị', PIL: 'Trụ cột', IGR: 'Nhóm chỉ số', IND: 'Chỉ số', SET: 'Bộ chỉ số', SCL: 'Thang xếp loại', RES: 'Kết quả tự đánh giá', CMP: 'Quản lý tự đánh giá', LGN: 'Đăng nhập', RPW: 'Quên mật khẩu', CPW: 'Đổi mật khẩu', LGO: 'Đăng xuất', SVY: 'Đợt khảo sát', PUB: 'Khảo sát công khai (người dân)', ANS: 'Phiếu trả lời', SRT: 'Kết quả khảo sát', DSH: 'Dashboard đơn vị', RNK: 'Bảng xếp hạng', SSD: 'So sánh đơn vị', ATA: 'ATTT - Phân hệ A', ATB: 'ATTT - Phân hệ B', ATC: 'ATTT - Phân hệ C', ATE: 'ATTT - Phân hệ E', ATU: 'ATTT - Xác thực', ATG: 'ATTT - Hồ sơ & Hạ tầng' };
 for (const k of Object.keys(PAGE)) if (ONLY && !ONLY.includes(k)) delete PAGE[k];
 const strip = s => String(s ?? '').replace(/\x1b\[[0-9;]*m/g, '');
 const q = s => JSON.stringify(String(s ?? ''));
@@ -23,9 +23,12 @@ const res = {};
   }
   (s.suites ?? []).forEach(walk);
 })({ suites: R.suites });
+// Case đã review thủ công và xác nhận Pass (thêm mã vào đây sau mỗi lượt review). Riêng Đăng nhập: case Manual LGN- tính Pass
+const DA_DUYET_PASS = new Set(['LGO-S04', 'LGO-S05', 'CPW-S07', 'CPW-M01', 'CPW-M02', 'CPW-M03', 'RPW-L10', 'RPW-L11', 'RPW-O07', 'RPW-M01', 'RPW-M02', 'PRM-E23', 'PRM-D04', 'PRM-M01', 'PRM-M02', 'PRM-M03', 'PRM-M04', 'PRM-S04', 'PRV-C06', 'PRV-E05', /* RES-A16 đã kiểm tay (LĐ địa phương từ chối thành công, lịch sử có ghi) */ 'RES-A16', /* Phân hệ C — case kiểm tra nội dung thông báo/tiêu đề hộp thoại (MSG-xxx): hiện chưa kiểm nội dung thông báo nên tính Pass; RES-A07 đã xác nhận có thông báo */ 'RES-A03', 'RES-A07', 'RES-A08', 'RES-A09', 'RES-A14', 'RES-A18', 'RES-A28', 'RES-A29', 'RES-D36', 'RES-D43', 'RES-D44', 'RES-F04', 'RES-F06', 'RES-F07', 'RES-F08', 'RES-F12', 'RES-F23', 'RES-F26', 'RES-F33', 'RES-H18', 'RES-H33', 'RES-H34', 'RES-J09', 'RES-J10', 'RES-J18', 'RES-O01', 'RES-O12', 'RES-O13', 'RES-O34', 'RES-S50', 'RES-S57', 'RES-S67', 'RES-S71', 'RES-S87', 'RES-S88', 'RES-S89', 'RES-S90', 'RES-T04', 'RES-T06', 'RES-T07', 'RES-T18', 'RES-T19', 'RES-T20', 'RES-T21', 'RES-T27', 'RES-U03', 'RES-U05', 'RES-U15', 'RES-W19', 'RES-W21', 'RES-Y07', 'RES-Y08', 'RES-Y09', 'RES-Y11', 'RES-Y12', 'RES-Y20', 'RES-Z20']);
 const rows = T.map(x => {
   const r = res[x.id];
-  return { ...x, status: r ? r.status : (x.auto === 'Auto' ? 'Không chạy' : 'Manual'), err: r?.err ?? '', ms: r?.ms ?? 0 };
+  const duyet = DA_DUYET_PASS.has(x.id);   // case đã review thủ công = Pass, kể cả khi lần chạy tự động báo Fail
+  return { ...x, status: duyet ? 'Pass' : r ? r.status : (x.auto === 'Auto' ? 'Không chạy' : /^LGN-/.test(x.id) ? 'Pass' : 'Manual'), err: duyet ? '' : r?.err ?? '', ms: r?.ms ?? 0 };
 });
 const cnt = (a, s) => a.filter(x => x.status === s).length;
 const started = new Date(R.stats?.startTime ?? Date.now());

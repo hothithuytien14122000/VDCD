@@ -2,8 +2,8 @@
 import { Page, Locator } from '@playwright/test';
 import {
   test, expect, tc, needWrite, PAGES, dataRows, openList, searchFor, findRow, dlg, btnCancel, btnSave, toast, rowAction,
-  rowMenuItems, confirmYes, confirmNo, api, listApi, findApi, Made, code8, ensureOrg, ensureProvince, registerListSuite,
-  registerAuthTest, registerMatrixTest, registerPerfTest,
+  rowMenuItems, confirmYes, confirmNo, api, listApi, findApi, Made, code8, ensureOrg, ensureProvince, registerListSuite, DUP_CODE,
+  registerAuthTest, registerMatrixTest, registerPerfTest, findByName, AUTO_CODE, checkAutoCodeUI,
 } from './common';
 import { registerEdgeTests, registerNotFoundTest } from './common';
 
@@ -12,13 +12,14 @@ const made = new Made();
 test.afterEach(async () => { await made.clean(); });
 registerListSuite('PRV');
 
-const PH_CODE = /nhập mã tỉnh/i, PH_NAME = /nhập tên tỉnh/i;
+// Giao diện mới: form không còn ô Mã (mã tự sinh TINH-nnn); nút "Thêm tỉnh/thành", nút lưu "Lưu"
+const PH_NAME = /nhập tên tỉnh/i;
 async function openAdd(page: Page) {
   await openList(page, cfg);
-  await page.getByRole('button', { name: /thêm mới tỉnh/i }).first().click();
+  await page.getByRole('button', { name: /thêm (mới )?tỉnh/i }).first().click();
   const d = dlg(page); await d.waitFor({ state: 'visible' }); return d;
 }
-const submitAdd = (d: Locator) => d.locator('button', { hasText: /^\s*Thêm mới/ }).last().click();
+const submitAdd = (d: Locator) => btnSave(d).click();
 async function openDetail(page: Page, code: string) {
   await openList(page, cfg);
   await (await findRow(page, cfg, code)).first().getByRole('button', { name: /xem chi tiết/i }).click();
@@ -32,14 +33,15 @@ test.describe('Tỉnh/thành › Xem chi tiết', () => {
     const p = await ensureProvince(made); const o = await ensureOrg(made, { provinceId: p.id });
     await openDetail(page, p.code);
     const txt = (await page.locator('.ant-layout-content').first().innerText()).replace(/\s+/g, ' ');
-    for (const s of [p.code, `qc.automation Tỉnh ${p.code}`, o.name]) expect(txt, `thiếu "${s}"`).toContain(s);
-    for (const b of [/chỉnh sửa/i, /thêm mới đơn vị vào tỉnh/i, /mở module đơn vị/i]) await expect(page.getByRole('button', { name: b }).first()).toBeVisible();
+    for (const s of [p.code, p.name, 'Số xã/phường', 'Số đơn vị', 'Đơn vị thuộc tỉnh/thành', o.name]) expect(txt, `thiếu "${s}"`).toContain(s);
+    // Giao diện mới: màn chi tiết chỉ còn nút Cập nhật / Xoá (bỏ "Thêm mới đơn vị vào tỉnh", "Mở module đơn vị")
+    await expect(page.locator('.ant-layout-content button', { hasText: /^\s*cập nhật\s*$/i }).first()).toBeVisible();
   });
   test(tc('PRV-V02'), async ({ page }) => {
     const p = await ensureProvince(made); await ensureOrg(made, { provinceId: p.id }); await ensureOrg(made, { provinceId: p.id });
     await openList(page, cfg);
     const row = await findRow(page, cfg, p.code);
-    expect((await row.first().locator('td').nth(3).innerText()).trim()).toBe('2');
+    expect((await row.first().locator('td').nth(4).innerText()).trim()).toBe('2');   // cột Số đơn vị (sau cột Số xã/phường)
     await row.first().getByRole('button', { name: /xem chi tiết/i }).click();
     await page.waitForURL(/provinces\/[0-9a-f-]{20,}/i); await page.waitForTimeout(1200);
     expect(await dataRows(page).count()).toBe(2);
@@ -47,9 +49,9 @@ test.describe('Tỉnh/thành › Xem chi tiết', () => {
   test(tc('PRV-V03'), async ({ page }) => {
     const p = await ensureProvince(made);
     await openDetail(page, p.code);
-    await page.getByRole('button', { name: /chỉnh sửa/i }).first().click();
+    await page.locator('.ant-layout-content button', { hasText: /^\s*cập nhật\s*$/i }).first().click();
     const d = dlg(page); await d.waitFor({ state: 'visible' });
-    await expect(d.getByPlaceholder(PH_NAME)).toHaveValue(`qc.automation Tỉnh ${p.code}`);
+    await expect(d.getByPlaceholder(PH_NAME)).toHaveValue(p.name);
   });
 });
 
@@ -57,51 +59,54 @@ test.describe('Tỉnh/thành › Thêm mới', () => {
   test.describe.configure({ timeout: 60_000 });
   needWrite();
   test(tc('PRV-C01'), async ({ page }) => {
-    const code = made.add('provinces', code8());
+    const tag = made.add('provinces', code8(), 'nameHas');
     const d = await openAdd(page);
-    await d.getByPlaceholder(PH_CODE).fill(code); await d.getByPlaceholder(PH_NAME).fill(`qc.automation Tỉnh ${code}`);
+    await d.getByPlaceholder(PH_NAME).fill(`qc.automation Tỉnh ${tag}`);
     await submitAdd(d);
     expect(await toast(page)).toMatch(/thành công/i);
-    expect((await findApi('provinces', code))?.name).toBe(`qc.automation Tỉnh ${code}`);
-    const row = await findRow(page, cfg, code);
+    const rec = await findByName('provinces', tag);
+    expect(rec?.name).toBe(`qc.automation Tỉnh ${tag}`);
+    expect(rec?.code, 'mã tự sinh').toMatch(AUTO_CODE.provinces);
+    const row = await findRow(page, cfg, rec.code);
     await expect(row.first()).toBeVisible();
-    expect((await row.first().locator('td').nth(3).innerText()).trim()).toBe('0');
+    expect((await row.first().locator('td').nth(4).innerText()).trim()).toBe('0');
   });
   test(tc('PRV-C02'), async ({ page }) => {
     const d = await openAdd(page);
     await submitAdd(d); await page.waitForTimeout(800);
-    expect(await d.locator('.ant-form-item-explain-error').count()).toBeGreaterThanOrEqual(2);
+    // form mới chỉ còn 1 trường bắt buộc: Tên tỉnh/thành (Mã tự sinh)
+    expect(await d.locator('.ant-form-item-explain-error').count()).toBeGreaterThanOrEqual(1);
   });
   test(tc('PRV-C03'), async ({ page }) => {
+    // Mã tự sinh: không còn nhập mã nên không thể trùng → form không có ô Mã, mã sinh đúng mẫu & không trùng
     const a = await ensureProvince(made);
-    const d = await openAdd(page);
-    await d.getByPlaceholder(PH_CODE).fill(a.code); await d.getByPlaceholder(PH_NAME).fill('qc.automation Tỉnh trùng mã');
-    await submitAdd(d);
-    expect(await toast(page)).toMatch(/đã tồn tại/i);
-    expect((await listApi('provinces', a.code)).filter((x: any) => x.code === a.code)).toHaveLength(1);
+    await checkAutoCodeUI(page, cfg, made, { openAdd, submit: submitAdd, existing: a,
+      fillValid: async (_pg, d, tag) => { await d.getByPlaceholder(PH_NAME).fill(`qc.automation Tỉnh ${tag}`); } });
   });
   test(tc('PRV-C04'), async ({ page }) => {
-    const code = 'QCA' + code8().slice(3) + 'XYZ';   // 11 ký tự
-    expect(code.length).toBe(11);
+    // Mã tự sinh: không còn ô nhập Mã → mã dài không nhập được qua form; [API] mã 51 ký tự client gửi bị bỏ qua, mã lưu là mã tự sinh
     const d = await openAdd(page);
-    await d.getByPlaceholder(PH_CODE).fill(code); await d.getByPlaceholder(PH_NAME).fill('qc.automation Tỉnh mã dài');
-    await submitAdd(d); await page.waitForTimeout(1000);
-    const msg = (await toast(page)) + ' ' + (await d.locator('.ant-form-item-explain-error').allInnerTexts().catch(() => [])).join(' ');
-    expect(msg).toMatch(/vượt quá 10 ký tự/i);
-    expect(await findApi('provinces', code)).toBeNull();
+    expect(await d.locator('.ant-form-item').filter({ has: page.locator('label', { hasText: /^\s*Mã\b/ }) }).count(), 'form không còn ô Mã').toBe(0);
+    const sent = code8() + 'A'.repeat(43); expect(sent.length).toBe(51);
+    const r = await api('POST', 'provinces', { code: sent, name: `qc.automation Tỉnh mã dài ${sent.slice(0, 8)}` });
+    if (r.data?.id) made.addId('provinces', r.data.id);
+    expect(r.status, `HTTP ${r.status}: ${r.message}`).toBe(200);
+    expect(r.data?.code, 'mã client gửi bị bỏ qua').not.toBe(sent);
+    expect(r.data?.code).toMatch(AUTO_CODE.provinces);
   });
   test(tc('PRV-C05'), async ({ page }) => {
-    const code = made.add('provinces', code8());
+    const tag = made.add('provinces', code8(), 'nameHas');
     const d = await openAdd(page);
-    await d.getByPlaceholder(PH_CODE).fill(code); await d.getByPlaceholder(PH_NAME).fill('qc.automation hủy');
+    await d.getByPlaceholder(PH_NAME).fill(`qc.automation hủy ${tag}`);
     await btnCancel(d).click();
     await expect(page.getByRole('dialog')).toHaveCount(0);
-    expect(await findApi('provinces', code)).toBeNull();
+    expect(await findByName('provinces', tag)).toBeNull();
   });
   test(tc('PRV-C06'), async () => {
     const a = await ensureProvince(made);
     const code = made.add('provinces', code8());
-    const r = await api('POST', 'provinces', { code, name: `qc.automation Tỉnh ${a.code}` });
+    const r = await api('POST', 'provinces', { code, name: a.name });
+    if (r.data?.id) made.addId('provinces', r.data.id);
     expect(r.status, `tạo tỉnh trùng tên (HTTP ${r.status})`).toBe(400);
   });
 });
@@ -135,14 +140,14 @@ test.describe('Tỉnh/thành › Chỉnh sửa', () => {
     const d = await openEdit(page, p.code);
     await d.getByPlaceholder(PH_NAME).fill(''); await btnSave(d).click(); await page.waitForTimeout(700);
     expect(await d.locator('.ant-form-item-explain-error').count()).toBeGreaterThan(0);
-    expect((await findApi('provinces', p.code))?.name).toBe(`qc.automation Tỉnh ${p.code}`);
+    expect((await findApi('provinces', p.code))?.name).toBe(p.name);
   });
   test(tc('PRV-E04'), async ({ page }) => {
     const p = await ensureProvince(made);
     const d = await openEdit(page, p.code);
     await d.getByPlaceholder(PH_NAME).fill('qc.automation KHÔNG LƯU'); await btnCancel(d).click();
     await expect(page.getByRole('dialog')).toHaveCount(0);
-    expect((await findApi('provinces', p.code))?.name).toBe(`qc.automation Tỉnh ${p.code}`);
+    expect((await findApi('provinces', p.code))?.name).toBe(p.name);
   });
 });
 
@@ -181,11 +186,12 @@ test.describe('Tỉnh/thành › Bảo mật / Hiệu năng', () => {
 });
 
 registerEdgeTests({
-  P: 'PRV', cfg, made, openAdd, submit: submitAdd,
-  fillBlank: async d => { await d.getByPlaceholder(PH_CODE).fill('   '); await d.getByPlaceholder(PH_NAME).fill('   '); },
-  fillValid: async (_p, d, code) => { await d.getByPlaceholder(PH_CODE).fill(code); await d.getByPlaceholder(PH_NAME).fill(`qc.automation Tỉnh ${code}`); },
-  makeNamed: async name => { const code = made.add('provinces', code8()); const r = await api('POST', 'provinces', { code, name }); if (r.status !== 200) throw new Error(r.message); return code; },
-  apiEmpty: async () => { const code = made.add('provinces', code8()); const r = await api('POST', 'provinces', { code, name: '' }); return { status: r.status, message: r.message }; },
+  P: 'PRV', cfg, made, openAdd, submit: submitAdd, autoCode: AUTO_CODE.provinces,
+  fillBlank: async d => { await d.getByPlaceholder(PH_NAME).fill('   '); },
+  fillValid: async (_p, d, tag) => { await d.getByPlaceholder(PH_NAME).fill(`qc.automation Tỉnh ${tag}`); },
+  mk: async (code, name) => { const r = await api('POST', 'provinces', { code, name }); return { status: r.status, message: r.message }; },
+  makeNamed: async name => { const r = await api('POST', 'provinces', { name }); if (r.status !== 200) throw new Error(r.message); made.addId('provinces', r.data.id); return r.data.code; },
+  apiEmpty: async () => { const r = await api('POST', 'provinces', { name: '' }); if (r.data?.id) made.addId('provinces', r.data.id); return { status: r.status, message: r.message }; },
 });
 
 registerNotFoundTest('PRV-V04', cfg);
@@ -197,7 +203,7 @@ test.describe('Tỉnh/thành › Bổ sung', () => {
     await openList(page, cfg);
     await rowAction(page, await findRow(page, cfg, b.code), /cập nhật/i);
     const d = dlg(page); await d.waitFor({ state: 'visible' }); await page.waitForTimeout(500);
-    await d.getByPlaceholder(PH_NAME).fill(`qc.automation Tỉnh ${a.code}`); await btnSave(d).click(); await page.waitForTimeout(1500);
-    expect((await findApi('provinces', b.code))?.name, 'sửa tên trùng tỉnh khác phải bị từ chối').toBe(`qc.automation Tỉnh ${b.code}`);
+    await d.getByPlaceholder(PH_NAME).fill(a.name); await btnSave(d).click(); await page.waitForTimeout(1500);
+    expect((await findApi('provinces', b.code))?.name, 'sửa tên trùng tỉnh khác phải bị từ chối').toBe(b.name);
   });
 });

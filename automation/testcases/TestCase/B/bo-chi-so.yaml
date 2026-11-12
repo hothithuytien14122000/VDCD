@@ -1,6 +1,6 @@
 title: "Bộ chỉ số"
 phan_he: "B - Bộ chỉ số DTI"
-tong_so: 68
+tong_so: 98
 testcases:
   - id: SET-L01
     title: "Danh sách Bộ chỉ số hiển thị đúng các cột"
@@ -16,7 +16,7 @@ testcases:
       - "2. Mở trang Bộ chỉ số"
     ket_qua_mong_doi:
       - "Bảng có đủ cột: STT, Mã bộ chỉ số, Tên bộ chỉ số, Phiên bản, Năm áp dụng, Nhóm chỉ số, Chỉ số, Trạng thái, Thao tác; có dữ liệu"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: SET-L02
     title: "Phân trang mặc định 10 bản ghi/trang và hiển thị tổng số bản ghi"
     uc: "B.II.1-UC1"
@@ -30,7 +30,7 @@ testcases:
       - "1. Mở trang Bộ chỉ số"
     ket_qua_mong_doi:
       - "Hiển thị \"Hiển thị 1-10 trong N bản ghi\"; tối đa 10 dòng dữ liệu; thanh phân trang xuất hiện khi N>10"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: SET-L03
     title: "Tìm theo mã bộ chỉ số trả về đúng bản ghi"
     uc: "B.II.1-UC1"
@@ -45,7 +45,7 @@ testcases:
       - "2. Nhập một mã bộ chỉ số có sẵn vào ô tìm kiếm"
     ket_qua_mong_doi:
       - "Chỉ hiển thị các dòng chứa từ khóa; có ít nhất 1 dòng"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: SET-L04
     title: "Tìm theo tên bộ chỉ số trả về đúng bản ghi"
     uc: "B.II.1-UC1"
@@ -59,7 +59,7 @@ testcases:
       - "1. Nhập một tên bộ chỉ số có sẵn vào ô tìm kiếm"
     ket_qua_mong_doi:
       - "Chỉ hiển thị các dòng chứa từ khóa"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: SET-L05
     title: "Từ khóa không tồn tại → không có dữ liệu"
     uc: "B.II.1-UC1"
@@ -72,8 +72,8 @@ testcases:
     cac_buoc:
       - "1. Nhập \"zzqcxx_khongtontai_999\""
     ket_qua_mong_doi:
-      - "Bảng rỗng / hiển thị trạng thái không có dữ liệu, không lỗi"
-    ket_qua_chay: "Không chạy"
+      - "Bảng rỗng, hiện \"Không tìm thấy dữ liệu phù hợp\"; không lỗi"
+    ket_qua_chay: "Pass"
   - id: SET-L06
     title: "Tìm kiếm không phân biệt chữ hoa/chữ thường"
     uc: "B.II.1-UC1"
@@ -87,7 +87,7 @@ testcases:
       - "1. Nhập từ khóa viết HOA rồi viết thường của cùng một giá trị"
     ket_qua_mong_doi:
       - "Hai lần tìm trả về cùng số bản ghi"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: SET-L07
     title: "Ký tự đặc biệt / chuỗi SQL trong ô tìm kiếm không gây lỗi hệ thống"
     uc: "B.II.1-UC1"
@@ -101,7 +101,7 @@ testcases:
       - "1. Nhập  ' OR 1=1 --  và  <script>alert(1)</script>"
     ket_qua_mong_doi:
       - "Không hiện lỗi 500/trắng trang, không thực thi script, không trả về toàn bộ dữ liệu bất thường"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: SET-L08
     title: "Chuyển sang trang 2 hiển thị dữ liệu khác trang 1"
     uc: "B.II.1-UC1"
@@ -115,7 +115,7 @@ testcases:
       - "1. Bấm trang 2 trên thanh phân trang"
     ket_qua_mong_doi:
       - "Trang 2 được đánh dấu active; nội dung bảng khác trang 1"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: SET-L09
     title: "Đổi số bản ghi/trang sang 20 thì số dòng thay đổi theo"
     uc: "B.II.1-UC1"
@@ -129,7 +129,7 @@ testcases:
       - "1. Chọn \"20 / trang\" ở thanh phân trang"
     ket_qua_mong_doi:
       - "Số dòng tối đa mỗi trang = 20; tổng số bản ghi không đổi"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: SET-L10
     title: "Xóa từ khóa thì danh sách trở về đầy đủ"
     uc: "B.II.1-UC1"
@@ -144,7 +144,51 @@ testcases:
       - "2. Xóa trắng ô tìm kiếm"
     ket_qua_mong_doi:
       - "Danh sách hiển thị lại như ban đầu (tổng số bản ghi bằng lúc đầu)"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
+  - id: SET-L31
+    title: "Tìm kiếm không phân biệt dấu tiếng Việt (\"chuyen doi so\" ra \"Chuyển đổi số\")"
+    uc: "B.II.1-UC1"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Tìm kiếm"
+    loai: "Chức năng"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Mở trang Bộ chỉ số"
+      - "2. Nhập tên có dấu nhưng gõ không dấu (cả chữ thường và HOA)"
+    ket_qua_mong_doi:
+      - "Ra các dòng có tên khớp khi bỏ dấu, không phân biệt hoa/thường"
+    ket_qua_chay: "Pass"
+  - id: SET-L32
+    title: "Từ khóa bỏ khoảng trắng đầu/cuối; cả cụm từ được tìm như một chuỗi liền (không tách từ)"
+    uc: "B.II.1-UC1"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Tìm kiếm"
+    loai: "Chức năng"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Nhập \"   <mã>   \" (khoảng trắng 2 đầu)"
+      - "2. Nhập cụm 2 từ của tên theo thứ tự đảo ngược"
+    ket_qua_mong_doi:
+      - "Kết quả bằng khi nhập không có khoảng trắng; cụm đảo ngược chỉ ra dòng chứa nguyên cụm liền đó (không khớp từng từ rời)"
+    ket_qua_chay: "Pass"
+  - id: SET-L33
+    title: "Ký tự %, _, ' trong từ khóa được hiểu là ký tự thường"
+    uc: "B.II.1-UC1"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Tìm kiếm"
+    loai: "Validate"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Lần lượt nhập \"%\", \"_\", \"'\" vào ô tìm kiếm"
+    ket_qua_mong_doi:
+      - "Không lỗi hệ thống; mọi dòng trả về đều chứa đúng ký tự đã nhập (không coi là ký tự đại diện / không gây lỗi SQL)"
+    ket_qua_chay: "Pass"
   - id: SET-L11
     title: "Xuất Excel danh sách Bộ chỉ số"
     uc: "B.II.1-UC2"
@@ -158,10 +202,9 @@ testcases:
       - "1. Bấm \"Xuất Excel\" ở trang Bộ chỉ số"
     ket_qua_mong_doi:
       - "Trình duyệt tải về file .xlsx chứa dữ liệu danh sách (UC: Xuất danh sách ra Excel)"
-    ghi_chu: "UC_1409 yêu cầu export danh mục; khảo sát: trang danh sách chưa có nút Xuất Excel → nghi chưa làm"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: SET-L12
-    title: "Lọc theo trạng thái / năm áp dụng"
+    title: "Lọc theo trạng thái Đã khóa / Chưa khóa"
     uc: "B.II.1-UC1"
     tac_nhan: "Quản trị hệ thống, Cán bộ"
     tai_khoan_chay: "admin"
@@ -170,10 +213,12 @@ testcases:
     uu_tien: "Trung bình"
     automation: "Auto"
     cac_buoc:
-      - "1. Chọn bộ lọc trên trang"
+      - "1. Mở trang Bộ chỉ số"
+      - "2. Chọn \"Đã khóa\" ở bộ lọc trạng thái"
+      - "3. Chọn \"Chưa khóa\""
     ket_qua_mong_doi:
-      - "Mọi dòng khớp bộ lọc"
-    ket_qua_chay: "Không chạy"
+      - "Mọi dòng có cột Trạng thái khớp bộ lọc đã chọn"
+    ket_qua_chay: "Pass"
   - id: SET-L13
     title: "Trạng thái ở danh sách và ở chi tiết nhất quán"
     uc: "B.II.1-UC1"
@@ -184,14 +229,59 @@ testcases:
     uu_tien: "Trung bình"
     automation: "Auto"
     cac_buoc:
-      - "1. Ghi trạng thái ở danh sách"
-      - "2. Mở chi tiết"
+      - "1. Ghi nhãn trạng thái của bộ ở danh sách"
+      - "2. Mở chi tiết bộ đó"
     ket_qua_mong_doi:
-      - "Cùng một nhãn trạng thái"
-    ghi_chu: "Khảo sát: danh sách \"Đã khóa\" nhưng chi tiết hiện \"Đang áp dụng\" → cần BA làm rõ hai trạng thái"
-    ket_qua_chay: "Không chạy"
+      - "Chip trạng thái ở chi tiết cùng nhãn với danh sách"
+    ket_qua_chay: "Pass"
+  - id: SET-L14
+    title: "Kết hợp từ khóa và bộ lọc trạng thái"
+    uc: "B.II.1-UC1"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Bộ lọc"
+    loai: "Chức năng"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Tạo 1 bộ Chưa khóa có tên chứa tag"
+      - "2. Nhập tag vào ô tìm kiếm"
+      - "3. Chọn \"Đã khóa\" rồi \"Chưa khóa\""
+    ket_qua_mong_doi:
+      - "\"Đã khóa\": không có dòng; \"Chưa khóa\": đúng 1 dòng là bộ vừa tạo"
+    ket_qua_chay: "Pass"
+  - id: SET-L15
+    title: "Cột Nhóm chỉ số / Chỉ số trên danh sách khớp cấu trúc thực tế của bộ"
+    uc: "B.II.1-UC1"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xem danh sách"
+    loai: "Nghiệp vụ"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Tạo bộ có 1 nhóm, 3 chỉ số (1 cha + 2 con)"
+      - "2. Tìm bộ ở danh sách"
+    ket_qua_mong_doi:
+      - "Cột Nhóm chỉ số = 1; cột Chỉ số = 3; Phiên bản = 1; Năm áp dụng = 2026"
+    ket_qua_chay: "Pass"
+  - id: SET-L16
+    title: "Menu thao tác của dòng thay đổi theo trạng thái"
+    uc: "B.II.1-UC1"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xem danh sách"
+    loai: "Nghiệp vụ"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Mở menu thao tác của bộ Chưa khóa"
+      - "2. Khóa bộ, mở lại menu"
+    ket_qua_mong_doi:
+      - "Chưa khóa: Cấu hình bộ chỉ số, Khoá, Nhân bản, Cập nhật, Xoá · Đã khóa: chỉ Mở khoá, Nhân bản"
+    ket_qua_chay: "Pass"
   - id: SET-V01
-    title: "Chi tiết bộ chỉ số hiển thị mã, phiên bản, năm áp dụng, cấu trúc (trụ cột·nhóm·chỉ số), tổng điểm tối đa, mô tả"
+    title: "Chi tiết bộ chỉ số hiển thị tên, chip trạng thái, mã, năm áp dụng, mô tả, tổng điểm tối đa, cập nhật lần cuối và các nút thao tác"
     uc: "B.II.1-UC3"
     tac_nhan: "Quản trị hệ thống, Cán bộ"
     tai_khoan_chay: "admin"
@@ -200,13 +290,12 @@ testcases:
     uu_tien: "Cao"
     automation: "Auto"
     cac_buoc:
-      - "1. Bấm \"Xem chi tiết\" một bộ chỉ số"
+      - "1. Bấm vào một bộ chỉ số ở danh sách"
     ket_qua_mong_doi:
-      - "Hiển thị đủ; có nút Xuất Excel, Cập nhật thông tin, Cấu hình bộ chỉ số"
-    ghi_chu: "UC_1409 ghi \"chưa update UI mới\""
-    ket_qua_chay: "Không chạy"
+      - "Tiêu đề = tên bộ + chip trạng thái; có Mã bộ chỉ số, Năm áp dụng, Mô tả, Tổng điểm tối đa, Cập nhật lần cuối; nút Thao tác, Xuất Excel, Cập nhật, Cấu hình"
+    ket_qua_chay: "Pass"
   - id: SET-V02
-    title: "Cấu trúc bộ chỉ số hiển thị trụ cột → nhóm → chỉ số với điểm tối đa, có Mở rộng tất cả / Thu gọn"
+    title: "Cấu trúc bộ chỉ số hiển thị cây trụ cột → nhóm → chỉ số cha → chỉ số con kèm Tính điểm, điểm tối thiểu/tối đa; Thu gọn tất cả hoạt động"
     uc: "B.II.1-UC4"
     tac_nhan: "Quản trị hệ thống, Cán bộ"
     tai_khoan_chay: "admin"
@@ -215,13 +304,13 @@ testcases:
     uu_tien: "Cao"
     automation: "Auto"
     cac_buoc:
-      - "1. Mở chi tiết"
-      - "2. Bấm \"Mở rộng tất cả\" rồi \"Thu gọn\""
+      - "1. Mở chi tiết bộ có cấu trúc"
+      - "2. Bấm \"Thu gọn tất cả\""
     ket_qua_mong_doi:
-      - "Cây hiển thị đủ các cấp, mở/đóng đúng; điểm tối đa từng cấp"
-    ket_qua_chay: "Không chạy"
+      - "Cây có mã·tên trụ cột, nhóm, chỉ số; chỉ số tính điểm hiện \"Có\"; thu gọn thì ẩn các dòng chỉ số"
+    ket_qua_chay: "Pass"
   - id: SET-V03
-    title: "Tổng điểm tối đa bộ chỉ số bằng tổng điểm các chỉ số tính điểm"
+    title: "Tổng điểm tối đa bộ chỉ số bằng tổng điểm tối đa các chỉ số con có tính điểm"
     uc: "B.II.1-UC4"
     tac_nhan: "Quản trị hệ thống, Cán bộ"
     tai_khoan_chay: "admin"
@@ -230,12 +319,13 @@ testcases:
     uu_tien: "Cao"
     automation: "Auto"
     cac_buoc:
-      - "1. Mở chi tiết bộ có nhiều chỉ số"
+      - "1. Bộ có 1 nhóm, chỉ số cha 10đ gồm 2 con 5đ"
+      - "2. Mở chi tiết"
     ket_qua_mong_doi:
-      - "Tổng điểm = tổng điểm tối đa của các trụ cột; số trụ cột·nhóm·chỉ số khớp danh sách"
-    ket_qua_chay: "Không chạy"
+      - "Tổng điểm tối đa = 10 (5 + 5), không cộng điểm chỉ số cha"
+    ket_qua_chay: "Pass"
   - id: SET-V04
-    title: "Xuất Excel dữ liệu bộ chỉ số ở chi tiết tải được file"
+    title: "Xuất Excel ở chi tiết tải file cấu trúc bộ chỉ số"
     uc: "B.II.1-UC5"
     tac_nhan: "Quản trị hệ thống, Cán bộ"
     tai_khoan_chay: "admin"
@@ -247,9 +337,8 @@ testcases:
       - "1. Mở chi tiết"
       - "2. Bấm Xuất Excel"
     ket_qua_mong_doi:
-      - "Tải về file .xlsx chứa cấu trúc bộ chỉ số"
-    ghi_chu: "UC_1409 dòng 128"
-    ket_qua_chay: "Không chạy"
+      - "Tải về file bo-chi-so_<mã>_v<phiên bản>_<ngày>.xlsx"
+    ket_qua_chay: "Pass"
   - id: SET-V05
     title: "Mở chi tiết bộ chỉ số với id không tồn tại không gây lỗi hệ thống"
     uc: "B.II.1-UC3"
@@ -263,24 +352,41 @@ testcases:
       - "1. [API] GET /dti/indicator-sets/<id lạ>"
       - "2. Mở URL id lạ"
     ket_qua_mong_doi:
-      - "API 4xx; không 500"
-    ket_qua_chay: "Không chạy"
-  - id: SET-V06
-    title: "Bảng kỳ tự đánh giá đang sử dụng bộ chỉ số"
+      - "API 404 \"Không tìm thấy bộ chỉ số\"; giao diện không lỗi 500/trắng trang"
+    ket_qua_chay: "Pass"
+  - id: SET-V07
+    title: "Bộ chỉ số chưa có cấu trúc hiển thị trạng thái rỗng, tổng điểm 0, mô tả trống hiện \"–\""
+    uc: "B.II.1-UC4"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xem chi tiết"
+    loai: "UI"
+    uu_tien: "Thấp"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Tạo bộ không mô tả, chưa có nhóm"
+      - "2. Mở chi tiết"
+    ket_qua_mong_doi:
+      - "Hiện \"Bộ chỉ số chưa có cấu trúc\"; Tổng điểm tối đa 0; Mô tả \"–\""
+    ket_qua_chay: "Pass"
+  - id: SET-V08
+    title: "Từ chi tiết: Cập nhật mở form điền sẵn dữ liệu, Cấu hình mở trang cấu hình bộ chỉ số"
     uc: "B.II.1-UC3"
     tac_nhan: "Quản trị hệ thống, Cán bộ"
     tai_khoan_chay: "admin"
     chuc_nang: "Xem chi tiết"
-    loai: "Nghiệp vụ"
-    uu_tien: "Thấp"
+    loai: "Chức năng"
+    uu_tien: "Trung bình"
     automation: "Auto"
     cac_buoc:
-      - "1. Mở chi tiết bộ chỉ số đã gán kỳ"
+      - "1. Mở chi tiết"
+      - "2. Bấm Cập nhật → kiểm tra form → Huỷ"
+      - "3. Bấm Cấu hình"
     ket_qua_mong_doi:
-      - "Hiển thị đúng kỳ đang dùng; số kỳ khớp cột campaignCount"
-    ket_qua_chay: "Không chạy"
+      - "Form \"Cập nhật thông tin bộ chỉ số\" có sẵn tên, năm, mô tả hiện tại; Cấu hình chuyển tới /builder tiêu đề \"Cấu hình bộ chỉ số\""
+    ket_qua_chay: "Pass"
   - id: SET-C01
-    title: "Thêm bộ chỉ số (mã, tên, năm áp dụng, mô tả) thành công"
+    title: "Thêm bộ chỉ số (tên, năm áp dụng, mô tả) thành công"
     uc: "B.II.1-UC6"
     tac_nhan: "Quản trị hệ thống, Cán bộ"
     tai_khoan_chay: "admin"
@@ -289,14 +395,14 @@ testcases:
     uu_tien: "Cao"
     automation: "Auto"
     cac_buoc:
-      - "1. Bấm \"Thêm mới bộ chỉ số\""
-      - "2. Nhập mã, tên, chọn năm, mô tả"
+      - "1. Bấm \"Thêm bộ chỉ số\""
+      - "2. Nhập tên, chọn năm 2026, nhập mô tả"
       - "3. Lưu"
     ket_qua_mong_doi:
-      - "Thành công; bộ chỉ số hiện, phiên bản mặc định v1, chưa có nhóm/chỉ số"
-    ket_qua_chay: "Không chạy"
+      - "Thông báo \"Thêm bộ chỉ số thành công\"; form đóng; bộ mới ở danh sách: mã BCS-nnn, phiên bản 1, Chưa khóa, đúng năm và mô tả"
+    ket_qua_chay: "Pass"
   - id: SET-C02
-    title: "Bỏ trống Mã/Tên thì báo lỗi bắt buộc"
+    title: "Bỏ trống Tên và Năm áp dụng thì báo lỗi bắt buộc"
     uc: "B.II.1-UC6"
     tac_nhan: "Quản trị hệ thống, Cán bộ"
     tai_khoan_chay: "admin"
@@ -305,12 +411,13 @@ testcases:
     uu_tien: "Cao"
     automation: "Auto"
     cac_buoc:
-      - "1. Bấm Lưu khi chưa nhập"
+      - "1. Mở form thêm"
+      - "2. Bấm Lưu khi chưa nhập"
     ket_qua_mong_doi:
-      - "Báo lỗi bắt buộc; không tạo"
-    ket_qua_chay: "Không chạy"
+      - "Báo \"Vui lòng nhập tên bộ chỉ số\" và \"Vui lòng chọn năm áp dụng\"; form còn mở; không tạo bản ghi"
+    ket_qua_chay: "Pass"
   - id: SET-C03
-    title: "Trùng mã bộ chỉ số bị từ chối"
+    title: "Trùng tên bộ chỉ số (khác hoa/thường) bị từ chối"
     uc: "B.II.1-UC6"
     tac_nhan: "Quản trị hệ thống, Cán bộ"
     tai_khoan_chay: "admin"
@@ -319,13 +426,15 @@ testcases:
     uu_tien: "Cao"
     automation: "Auto"
     cac_buoc:
-      - "1. Tạo bộ A"
-      - "2. Tạo bộ B cùng mã"
+      - "1. Có bộ tên \"X\""
+      - "2. Thêm bộ tên \"X\" viết HOA, cùng năm"
+      - "3. Lưu"
     ket_qua_mong_doi:
-      - "Báo \"Mã bộ chỉ số đã tồn tại\""
-    ket_qua_chay: "Không chạy"
+      - "Báo \"Tên … đã tồn tại. Vui lòng nhập tên khác.\"; form còn mở; không tạo bản ghi thứ hai"
+    ghi_chu: "Khảo sát giao diện 08/11/2026: bắt trùng theo tên (mã tự sinh)"
+    ket_qua_chay: "Pass"
   - id: SET-C04
-    title: "Năm áp dụng ngoài khoảng hợp lý hoặc để trống"
+    title: "Năm áp dụng chỉ chọn từ năm hiện tại trở đi; năm quá khứ bị chặn cả ở API"
     uc: "B.II.1-UC6"
     tac_nhan: "Quản trị hệ thống, Cán bộ"
     tai_khoan_chay: "admin"
@@ -334,11 +443,11 @@ testcases:
     uu_tien: "Trung bình"
     automation: "Auto"
     cac_buoc:
-      - "1. [API] Tạo bộ với năm 1999, 3000, không có năm"
+      - "1. Mở form, mở ô Năm áp dụng"
+      - "2. [API] POST effectiveYear = 2000"
     ket_qua_mong_doi:
-      - "Bị chặn hoặc báo bắt buộc theo quy tắc"
-    ghi_chu: "Khảo sát: API nhận cả 1999, 3000 và không năm → nghi thiếu validate. Cần BA xác nhận quy tắc khoảng năm"
-    ket_qua_chay: "Không chạy"
+      - "Danh sách năm bắt đầu từ năm hiện tại, không có năm quá khứ; API 400 \"Năm áp dụng không được nhỏ hơn năm hiện tại (…)\""
+    ket_qua_chay: "Pass"
   - id: SET-C05
     title: "Hủy form thêm mới không tạo bản ghi"
     uc: "B.II.1-UC6"
@@ -349,27 +458,14 @@ testcases:
     uu_tien: "Trung bình"
     automation: "Auto"
     cac_buoc:
-      - "1. Nhập dữ liệu"
-      - "2. Huỷ"
+      - "1. Nhập tên"
+      - "2. Bấm Huỷ"
+      - "3. Tìm tên đã nhập"
     ket_qua_mong_doi:
-      - "Không có bộ mới"
-    ket_qua_chay: "Không chạy"
-  - id: SET-C06
-    title: "Mã bộ chỉ số 50 ký tự được nhận, 51 ký tự bị chặn"
-    uc: "B.II.1-UC6"
-    tac_nhan: "Quản trị hệ thống, Cán bộ"
-    tai_khoan_chay: "admin"
-    chuc_nang: "Thêm mới"
-    loai: "Validate"
-    uu_tien: "Trung bình"
-    automation: "Auto"
-    cac_buoc:
-      - "1. Nhập mã 50 rồi 51 ký tự"
-    ket_qua_mong_doi:
-      - "51 ký tự báo vượt giới hạn"
-    ket_qua_chay: "Không chạy"
+      - "Form đóng; không có bộ mới"
+    ket_qua_chay: "Pass"
   - id: SET-C07
-    title: "[API] Mã hoặc tên rỗng bị từ chối bằng HTTP 400"
+    title: "[API] Tên rỗng bị từ chối bằng HTTP 400 có thông báo"
     uc: "B.II.1-UC6"
     tac_nhan: "Quản trị hệ thống, Cán bộ"
     tai_khoan_chay: "admin"
@@ -378,12 +474,57 @@ testcases:
     uu_tien: "Trung bình"
     automation: "Auto"
     cac_buoc:
-      - "1. [API] POST name rỗng / code rỗng"
+      - "1. [API] POST name rỗng"
     ket_qua_mong_doi:
-      - "HTTP 400 có thông báo"
-    ket_qua_chay: "Không chạy"
+      - "HTTP 400 \"Vui lòng nhập 'name'\"; không tạo bản ghi"
+    ket_qua_chay: "Pass"
+  - id: SET-C08
+    title: "Mã bộ chỉ số do hệ thống tự sinh dạng BCS-nnn, không nhận mã client gửi"
+    uc: "B.II.1-UC6"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Nghiệp vụ"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Mở form thêm: kiểm tra không có ô Mã"
+      - "2. [API] POST kèm code \"QCxxxx\""
+    ket_qua_mong_doi:
+      - "Form không có ô Mã; bản ghi tạo ra có mã BCS-nnn (khác mã gửi lên), không trùng mã bộ khác"
+    ghi_chu: "Khảo sát giao diện 08/11/2026"
+    ket_qua_chay: "Pass"
+  - id: SET-C09
+    title: "Mô tả tối đa 1000 ký tự (1000 nhận, 1001 bị từ chối)"
+    uc: "B.II.1-UC6"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Validate"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Ô Mô tả: kiểm tra maxlength"
+      - "2. [API] POST mô tả 1000 rồi 1001 ký tự"
+    ket_qua_mong_doi:
+      - "maxlength = 1000; 1000: HTTP 200; 1001: HTTP 400 \"Mô tả không vượt quá 1000 ký tự\""
+    ket_qua_chay: "Pass"
+  - id: SET-C10
+    title: "[API] Tên chứa thẻ HTML/script bị từ chối"
+    uc: "B.II.1-UC6"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. [API] POST name \"<script>alert(1)</script>\" và \"<b>x</b>\""
+    ket_qua_mong_doi:
+      - "HTTP 400 \"Dữ liệu không được chứa thẻ HTML hoặc script\"; không tạo bản ghi"
+    ket_qua_chay: "Pass"
   - id: SET-E01
-    title: "Cập nhật thông tin bộ chỉ số (tên, mô tả) thành công"
+    title: "Cập nhật tên, mô tả bộ chỉ số thành công"
     uc: "B.II.1-UC9"
     tac_nhan: "Quản trị hệ thống, Cán bộ"
     tai_khoan_chay: "admin"
@@ -392,14 +533,14 @@ testcases:
     uu_tien: "Cao"
     automation: "Auto"
     cac_buoc:
-      - "1. Chi tiết → Cập nhật thông tin"
+      - "1. Chi tiết → Cập nhật"
       - "2. Đổi tên, mô tả"
       - "3. Lưu"
     ket_qua_mong_doi:
-      - "Dữ liệu mới hiển thị ở chi tiết và danh sách"
-    ket_qua_chay: "Không chạy"
+      - "Thông báo \"Cập nhật bộ chỉ số thành công\"; chi tiết hiển thị tên, mô tả mới"
+    ket_qua_chay: "Pass"
   - id: SET-E02
-    title: "Cập nhật thời gian sử dụng (năm áp dụng)"
+    title: "Cập nhật năm áp dụng"
     uc: "B.II.1-UC9"
     tac_nhan: "Quản trị hệ thống, Cán bộ"
     tai_khoan_chay: "admin"
@@ -408,11 +549,11 @@ testcases:
     uu_tien: "Cao"
     automation: "Auto"
     cac_buoc:
-      - "1. Cập nhật thông tin → đổi năm áp dụng"
+      - "1. Cập nhật → chọn năm 2027"
       - "2. Lưu"
     ket_qua_mong_doi:
-      - "Năm áp dụng mới hiển thị; cột danh sách cập nhật"
-    ket_qua_chay: "Không chạy"
+      - "Năm áp dụng 2027 hiển thị ở chi tiết và cột danh sách"
+    ket_qua_chay: "Pass"
   - id: SET-E03
     title: "Xóa trắng tên khi sửa bị chặn"
     uc: "B.II.1-UC9"
@@ -423,11 +564,11 @@ testcases:
     uu_tien: "Trung bình"
     automation: "Auto"
     cac_buoc:
-      - "1. Xóa tên"
+      - "1. Cập nhật → xóa tên"
       - "2. Lưu"
     ket_qua_mong_doi:
-      - "Báo lỗi bắt buộc"
-    ket_qua_chay: "Không chạy"
+      - "Báo \"Vui lòng nhập tên bộ chỉ số\"; dữ liệu không đổi"
+    ket_qua_chay: "Pass"
   - id: SET-E04
     title: "Hủy chỉnh sửa không đổi dữ liệu"
     uc: "B.II.1-UC9"
@@ -438,11 +579,11 @@ testcases:
     uu_tien: "Trung bình"
     automation: "Auto"
     cac_buoc:
-      - "1. Đổi tên"
+      - "1. Cập nhật → đổi tên"
       - "2. Huỷ"
     ket_qua_mong_doi:
-      - "Dữ liệu giữ nguyên"
-    ket_qua_chay: "Không chạy"
+      - "Form đóng; tên giữ nguyên (API và màn hình)"
+    ket_qua_chay: "Pass"
   - id: SET-E05
     title: "Bộ chỉ số đã khóa không sửa được thông tin / cấu trúc"
     uc: "B.II.1-UC9"
@@ -454,11 +595,27 @@ testcases:
     automation: "Auto"
     cac_buoc:
       - "1. Khóa bộ chỉ số"
-      - "2. Thử Cập nhật thông tin, Cấu hình (UI và [API] PUT)"
+      - "2. Mở chi tiết, mở trang Cấu hình"
+      - "3. [API] PUT thông tin"
     ket_qua_mong_doi:
-      - "Thao tác bị ẩn/từ chối; dữ liệu giữ nguyên"
-    ghi_chu: "Khảo sát: API PUT bộ chỉ số (chưa khóa trạng thái đã kiểm) — xác minh khi viết script"
-    ket_qua_chay: "Không chạy"
+      - "Nút Cập nhật bị vô hiệu; trang Cấu hình chỉ xem (không có Lưu, Thêm nhóm, Thêm chỉ số); API 400 \"Bộ chỉ số đã bị khoá, không thể chỉnh sửa\""
+    ket_qua_chay: "Pass"
+  - id: SET-E06
+    title: "[API] Sửa thành tên trùng bộ khác hoặc năm quá khứ bị từ chối; id không tồn tại trả 404"
+    uc: "B.II.1-UC9"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Chỉnh sửa"
+    loai: "Validate"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. [API] PUT tên = tên bộ khác"
+      - "2. PUT effectiveYear = 2025"
+      - "3. PUT id lạ"
+    ket_qua_mong_doi:
+      - "1, 2: HTTP 400 có thông báo, dữ liệu không đổi; 3: HTTP 404"
+    ket_qua_chay: "Pass"
   - id: SET-D01
     title: "Xóa bộ chỉ số chưa khóa, chưa dùng thành công"
     uc: "B.II.1-UC7"
@@ -470,12 +627,12 @@ testcases:
     automation: "Auto"
     cac_buoc:
       - "1. Menu → Xoá"
-      - "2. Xác nhận"
+      - "2. Xác nhận Xoá"
     ket_qua_mong_doi:
-      - "Bộ chỉ số biến mất"
-    ket_qua_chay: "Không chạy"
+      - "Thông báo \"Xóa bộ chỉ số thành công\"; bộ không còn ở danh sách; API GET 404"
+    ket_qua_chay: "Pass"
   - id: SET-D02
-    title: "Chọn \"Không\" ở hộp xác nhận thì giữ nguyên"
+    title: "Chọn Huỷ ở hộp xác nhận xóa thì giữ nguyên"
     uc: "B.II.1-UC7"
     tac_nhan: "Quản trị hệ thống, Cán bộ"
     tai_khoan_chay: "admin"
@@ -485,12 +642,12 @@ testcases:
     automation: "Auto"
     cac_buoc:
       - "1. Menu → Xoá"
-      - "2. Không"
+      - "2. Huỷ"
     ket_qua_mong_doi:
-      - "Còn nguyên"
-    ket_qua_chay: "Không chạy"
+      - "Bộ còn nguyên"
+    ket_qua_chay: "Pass"
   - id: SET-D03
-    title: "Bộ chỉ số đã khóa không xóa được (UI ẩn Xoá)"
+    title: "Bộ chỉ số đã khóa không xóa được (UI ẩn Xoá, API chặn)"
     uc: "B.II.1-UC7"
     tac_nhan: "Quản trị hệ thống, Cán bộ"
     tai_khoan_chay: "admin"
@@ -499,11 +656,12 @@ testcases:
     uu_tien: "Cao"
     automation: "Auto"
     cac_buoc:
-      - "1. Khóa bộ chỉ số"
-      - "2. Xem menu"
+      - "1. Khóa bộ"
+      - "2. Xem menu dòng"
+      - "3. [API] DELETE"
     ket_qua_mong_doi:
-      - "Menu không có Xoá (chỉ Mở khoá, Nhân bản)"
-    ket_qua_chay: "Không chạy"
+      - "Menu không có Xoá; API 400 \"Không thể xóa bộ chỉ số đã khoá\""
+    ket_qua_chay: "Pass"
   - id: SET-D04
     title: "Bộ chỉ số đang được kỳ tự đánh giá sử dụng không xóa được"
     uc: "B.II.1-UC7"
@@ -514,14 +672,29 @@ testcases:
     uu_tien: "Cao"
     automation: "Auto"
     cac_buoc:
-      - "1. Bộ chỉ số có campaignCount>0"
-      - "2. Xóa"
+      - "1. Khóa bộ, tạo kỳ dùng bộ"
+      - "2. Mở khóa bộ"
+      - "3. [API] DELETE"
     ket_qua_mong_doi:
-      - "Bị chặn với thông báo; bộ còn nguyên"
-    ghi_chu: "Cần BA xác nhận quy tắc"
-    ket_qua_chay: "Không chạy"
+      - "HTTP 400 \"Không thể xóa: bộ chỉ số đang được dùng trong ít nhất 1 kỳ tự đánh giá\"; bộ còn nguyên"
+    ket_qua_chay: "Pass"
+  - id: SET-D05
+    title: "[API] Xóa bộ không tồn tại / đã xóa trả 404"
+    uc: "B.II.1-UC7"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xóa"
+    loai: "Validate"
+    uu_tien: "Thấp"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Xóa 1 bộ"
+      - "2. [API] DELETE lại id đó"
+    ket_qua_mong_doi:
+      - "HTTP 404, không 500"
+    ket_qua_chay: "Pass"
   - id: SET-K01
-    title: "Khóa bộ chỉ số → Đã khóa (cập nhật trạng thái)"
+    title: "Khóa bộ chỉ số từ menu → Đã khóa"
     uc: "B.II.1-UC8"
     tac_nhan: "Quản trị hệ thống, Cán bộ"
     tai_khoan_chay: "admin"
@@ -533,8 +706,8 @@ testcases:
       - "1. Menu → Khoá"
       - "2. Xác nhận"
     ket_qua_mong_doi:
-      - "Trạng thái \"Đã khóa\" ở danh sách và chi tiết"
-    ket_qua_chay: "Không chạy"
+      - "Thông báo \"Khoá bộ chỉ số thành công\"; trạng thái Đã khóa"
+    ket_qua_chay: "Pass"
   - id: SET-K02
     title: "Mở khóa bộ chỉ số → Chưa khóa"
     uc: "B.II.1-UC8"
@@ -545,10 +718,11 @@ testcases:
     uu_tien: "Cao"
     automation: "Auto"
     cac_buoc:
-      - "1. Menu → Mở khoá"
+      - "1. Bộ Đã khóa: Menu → Mở khoá"
+      - "2. Xác nhận"
     ket_qua_mong_doi:
-      - "Trạng thái Chưa khóa; cho sửa lại"
-    ket_qua_chay: "Không chạy"
+      - "Trạng thái Chưa khóa; menu có lại Cập nhật/Xoá"
+    ket_qua_chay: "Pass"
   - id: SET-K03
     title: "Bộ chỉ số đã khóa mới chọn được khi tạo kỳ tự đánh giá"
     uc: "B.II.4-UC1"
@@ -560,11 +734,12 @@ testcases:
     automation: "Auto"
     cac_buoc:
       - "1. Mở form tạo kỳ tự đánh giá → select Bộ chỉ số"
+      - "2. [API] tạo kỳ với bộ chưa khóa"
     ket_qua_mong_doi:
-      - "Chỉ liệt kê bộ chỉ số Đã khóa (đưa vào sử dụng)"
-    ket_qua_chay: "Không chạy"
+      - "Chỉ liệt kê bộ chỉ số đã khóa; API 400 \"Chỉ chọn được bộ chỉ số đã khóa\""
+    ket_qua_chay: "Pass"
   - id: SET-K04
-    title: "Mở khóa bộ chỉ số đang được kỳ sử dụng"
+    title: "Mở khóa bộ chỉ số đang được kỳ sử dụng không ảnh hưởng kỳ đã tạo"
     uc: "B.II.4-UC2"
     tac_nhan: "Quản trị hệ thống, Cán bộ"
     tai_khoan_chay: "admin"
@@ -576,11 +751,26 @@ testcases:
       - "1. Bộ đã gán kỳ"
       - "2. Mở khóa"
     ket_qua_mong_doi:
-      - "Bị chặn hoặc cảnh báo theo quy tắc"
-    ghi_chu: "Cần BA xác nhận quy tắc"
-    ket_qua_chay: "Không chạy"
+      - "Mở khóa được (kỳ dùng bản sao cấu trúc); kỳ vẫn tồn tại"
+    ghi_chu: "Khảo sát: hệ thống cho mở khóa; Cần BA xác nhận quy tắc"
+    ket_qua_chay: "Pass"
+  - id: SET-K05
+    title: "[API] Khóa bộ đã khóa hoặc id không tồn tại bị từ chối"
+    uc: "B.II.1-UC8"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Khóa/Mở khóa"
+    loai: "Validate"
+    uu_tien: "Thấp"
+    automation: "Auto"
+    cac_buoc:
+      - "1. [API] POST /lock 2 lần"
+      - "2. POST /lock id lạ"
+    ket_qua_mong_doi:
+      - "Lần 2: HTTP 400 \"Bộ chỉ số đã được khoá\"; id lạ: 404"
+    ket_qua_chay: "Pass"
   - id: SET-S01
-    title: "Xem danh sách nhóm chỉ số của bộ chỉ số"
+    title: "Trang Cấu hình hiển thị nhóm chỉ số của bộ theo trụ cột kèm tổng điểm"
     uc: "B.II.2-UC1"
     tac_nhan: "Quản trị hệ thống, Cán bộ"
     tai_khoan_chay: "admin"
@@ -589,12 +779,12 @@ testcases:
     uu_tien: "Cao"
     automation: "Auto"
     cac_buoc:
-      - "1. Chi tiết bộ → Cấu hình bộ chỉ số"
+      - "1. Chi tiết bộ → Cấu hình"
     ket_qua_mong_doi:
-      - "Hiển thị đúng các nhóm chỉ số của bộ, theo trụ cột"
-    ket_qua_chay: "Không chạy"
+      - "Tiêu đề \"Cấu hình bộ chỉ số\" + trạng thái; cột \"Nhóm chỉ số\" có trụ cột (mã, \"N điểm\") và các nhóm (mã, tên); nút Huỷ, Lưu, Thêm nhóm"
+    ket_qua_chay: "Pass"
   - id: SET-S02
-    title: "Thêm nhóm chỉ số vào bộ chỉ số"
+    title: "Thêm nhóm chỉ số vào bộ: nhóm và toàn bộ chỉ số của nhóm được thêm"
     uc: "B.II.2-UC2"
     tac_nhan: "Quản trị hệ thống, Cán bộ"
     tai_khoan_chay: "admin"
@@ -603,10 +793,12 @@ testcases:
     uu_tien: "Cao"
     automation: "Auto"
     cac_buoc:
-      - "1. Cấu hình → chọn nhóm chỉ số → Lưu"
+      - "1. Cấu hình → Thêm nhóm"
+      - "2. Tìm và tích nhóm đã khóa → Lưu (hộp thoại)"
+      - "3. Lưu"
     ket_qua_mong_doi:
-      - "Nhóm xuất hiện trong cấu trúc; số nhóm bộ chỉ số tăng"
-    ket_qua_chay: "Không chạy"
+      - "Hộp thoại ghi \"Đã chọn 1 nhóm chỉ số\"; nhóm xuất hiện, điểm trụ cột tăng; thông báo \"Cập nhật nội dung bộ chỉ số thành công\"; API có nhóm và chỉ số của nhóm"
+    ket_qua_chay: "Pass"
   - id: SET-S03
     title: "Không thêm trùng một nhóm chỉ số hai lần vào cùng bộ"
     uc: "B.II.2-UC2"
@@ -617,10 +809,11 @@ testcases:
     uu_tien: "Trung bình"
     automation: "Auto"
     cac_buoc:
-      - "1. Thêm nhóm đã có trong bộ"
+      - "1. Thêm nhóm → tìm nhóm đã có trong bộ"
+      - "2. [API] PUT groups chứa 1 nhóm 2 lần"
     ket_qua_mong_doi:
-      - "Nhóm đã có không chọn lại được / bị từ chối"
-    ket_qua_chay: "Không chạy"
+      - "Hộp thoại không liệt kê nhóm đã có; API 400 \"Danh sách nhóm chỉ số bị trùng lặp\""
+    ket_qua_chay: "Pass"
   - id: SET-S04
     title: "Chỉ nhóm chỉ số đã khóa mới thêm vào bộ chỉ số được"
     uc: "B.II.2-UC2"
@@ -631,12 +824,13 @@ testcases:
     uu_tien: "Cao"
     automation: "Auto"
     cac_buoc:
-      - "1. Mở danh sách chọn nhóm"
+      - "1. Thêm nhóm → tìm nhóm chưa khóa"
+      - "2. [API] PUT groups với nhóm chưa khóa"
     ket_qua_mong_doi:
-      - "Chỉ liệt kê nhóm Đã khóa"
-    ket_qua_chay: "Không chạy"
+      - "Hộp thoại không liệt kê nhóm chưa khóa; API 400 \"Có nhóm chỉ số chưa được khóa…\""
+    ket_qua_chay: "Pass"
   - id: SET-S05
-    title: "Chỉnh sửa thông tin nhóm chỉ số trong bộ chỉ số"
+    title: "Đổi thứ tự nhóm chỉ số trong bộ chỉ số"
     uc: "B.II.2-UC3"
     tac_nhan: "Quản trị hệ thống, Cán bộ"
     tai_khoan_chay: "admin"
@@ -645,11 +839,12 @@ testcases:
     uu_tien: "Trung bình"
     automation: "Auto"
     cac_buoc:
-      - "1. Sửa nhóm trong bộ (thứ tự/thông tin)"
-      - "2. Lưu"
+      - "1. Bộ có nhóm A, B"
+      - "2. [API] PUT groups đổi thứ tự B trước A"
+      - "3. Mở chi tiết"
     ket_qua_mong_doi:
-      - "Thay đổi chỉ áp dụng trong bộ chỉ số; nhóm gốc không đổi"
-    ket_qua_chay: "Không chạy"
+      - "Thứ tự lưu đúng (API và cây ở chi tiết); nhóm gốc không đổi"
+    ket_qua_chay: "Pass"
   - id: SET-S06
     title: "Xóa nhóm chỉ số khỏi bộ chỉ số"
     uc: "B.II.2-UC4"
@@ -660,14 +855,14 @@ testcases:
     uu_tien: "Cao"
     automation: "Auto"
     cac_buoc:
-      - "1. Chọn xóa nhóm trong bộ"
-      - "2. Xác nhận"
+      - "1. Cấu hình → nút \"Xóa khỏi bộ chỉ số\" ở nhóm"
+      - "2. Xác nhận Xoá"
+      - "3. Lưu"
     ket_qua_mong_doi:
-      - "Nhóm (và chỉ số của nhóm) rời khỏi bộ; nhóm gốc còn nguyên"
-    ghi_chu: "UC_1409 ghi \"Chưa có thao tác xóa\" → có thể FAIL"
-    ket_qua_chay: "Không chạy"
+      - "Hộp \"Xác nhận xóa\"; nhóm và chỉ số của nhóm rời bộ (API); nhóm gốc còn nguyên"
+    ket_qua_chay: "Pass"
   - id: SET-S07
-    title: "Thiết lập Tính điểm / Không tính điểm cho nhóm chỉ số trong bộ"
+    title: "Tắt \"Tính điểm cho nhóm\" thì mọi chỉ số của nhóm không tính điểm"
     uc: "B.II.2-UC5"
     tac_nhan: "Quản trị hệ thống, Cán bộ"
     tai_khoan_chay: "admin"
@@ -676,13 +871,59 @@ testcases:
     uu_tien: "Cao"
     automation: "Auto"
     cac_buoc:
-      - "1. Đổi cờ tính điểm của nhóm"
+      - "1. Cấu hình → tắt \"Tính điểm cho nhóm\""
       - "2. Lưu"
+      - "3. Mở chi tiết"
     ket_qua_mong_doi:
-      - "Tổng điểm bộ chỉ số tính lại: nhóm không tính điểm bị loại khỏi tổng"
-    ket_qua_chay: "Không chạy"
+      - "Điểm tối đa của nhóm và trụ cột về 0; API nhóm và chỉ số isScored=false; tổng điểm bộ 0"
+    ket_qua_chay: "Pass"
+  - id: SET-S08
+    title: "[API] Nhóm chỉ số không tồn tại trong danh sách bị từ chối"
+    uc: "B.II.2-UC2"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Cấu trúc"
+    loai: "Validate"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. [API] PUT groups với id nhóm lạ"
+    ket_qua_mong_doi:
+      - "HTTP 400 \"Có nhóm chỉ số không hợp lệ trong danh sách\""
+    ket_qua_chay: "Pass"
+  - id: SET-S09
+    title: "[API] Bộ đã khóa không sửa được cấu trúc / nội dung"
+    uc: "B.II.2-UC2"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Cấu trúc"
+    loai: "Nghiệp vụ"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Khóa bộ"
+      - "2. [API] PUT groups"
+      - "3. [API] PUT indicators"
+    ket_qua_mong_doi:
+      - "HTTP 400 \"Bộ chỉ số đã khoá, hãy mở khoá trước khi sửa cấu trúc\" / \"…sửa nội dung\"; cấu trúc không đổi"
+    ket_qua_chay: "Pass"
+  - id: SET-S10
+    title: "Huỷ ở trang Cấu hình không lưu thay đổi"
+    uc: "B.II.2-UC1"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Cấu trúc"
+    loai: "Chức năng"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Cấu hình → xóa 1 chỉ số (chưa Lưu)"
+      - "2. Bấm Huỷ"
+    ket_qua_mong_doi:
+      - "Quay về chi tiết; cấu trúc giữ nguyên (API)"
+    ket_qua_chay: "Pass"
   - id: SET-I01
-    title: "Xem danh sách chỉ số của bộ chỉ số"
+    title: "Bảng chỉ số của nhóm đang chọn hiển thị mã, tên, Tính điểm, điểm tối thiểu/tối đa"
     uc: "B.II.3-UC1"
     tac_nhan: "Quản trị hệ thống, Cán bộ"
     tai_khoan_chay: "admin"
@@ -691,10 +932,10 @@ testcases:
     uu_tien: "Cao"
     automation: "Auto"
     cac_buoc:
-      - "1. Cấu hình bộ → xem chỉ số"
+      - "1. Cấu hình → chọn nhóm"
     ket_qua_mong_doi:
-      - "Hiển thị đúng chỉ số theo nhóm, kèm điểm"
-    ket_qua_chay: "Không chạy"
+      - "Bảng có cột Mã, Chỉ số, Tính điểm, Điểm tối thiểu, Điểm tối đa; đủ chỉ số cha/con của nhóm; chỉ số con có ô nhập điểm; \"Điểm tối đa của nhóm\" = tổng điểm con"
+    ket_qua_chay: "Pass"
   - id: SET-I02
     title: "Thêm chỉ số vào bộ chỉ số"
     uc: "B.II.3-UC2"
@@ -705,12 +946,14 @@ testcases:
     uu_tien: "Cao"
     automation: "Auto"
     cac_buoc:
-      - "1. Chọn chỉ số (đã khóa) → Lưu"
+      - "1. Bộ có nhóm nhưng thiếu 1 chỉ số con"
+      - "2. Cấu hình → Thêm chỉ số → chọn chỉ số → Thêm chỉ số"
+      - "3. Lưu"
     ket_qua_mong_doi:
-      - "Chỉ số hiện trong bộ; tổng điểm cập nhật; cột \"Bộ chỉ số đang sử dụng\" của chỉ số có bộ này"
-    ket_qua_chay: "Không chạy"
+      - "Chỉ số hiện trong bảng; điểm nhóm tăng; API có chỉ số"
+    ket_qua_chay: "Pass"
   - id: SET-I03
-    title: "Chỉ số phải thuộc nhóm đã có trong bộ; không thêm trùng"
+    title: "[API] Chỉ số chưa khóa hoặc thêm trùng bị từ chối"
     uc: "B.II.3-UC2"
     tac_nhan: "Quản trị hệ thống, Cán bộ"
     tai_khoan_chay: "admin"
@@ -719,27 +962,26 @@ testcases:
     uu_tien: "Trung bình"
     automation: "Auto"
     cac_buoc:
-      - "1. Thêm chỉ số của nhóm chưa có trong bộ"
-      - "2. Thêm chỉ số đã có"
+      - "1. [API] PUT indicators có chỉ số chưa khóa"
+      - "2. PUT indicators chứa 1 chỉ số 2 lần"
     ket_qua_mong_doi:
-      - "Bị chặn hoặc tự thêm nhóm theo quy tắc; chỉ số đã có không chọn lại"
-    ghi_chu: "Cần BA xác nhận quy tắc"
-    ket_qua_chay: "Không chạy"
+      - "400 \"Có chỉ số chưa được khóa…\"; 400 \"Danh sách chỉ số bị trùng lặp\""
+    ket_qua_chay: "Pass"
   - id: SET-I04
-    title: "Chỉnh sửa thông tin chỉ số trong bộ chỉ số"
+    title: "Chỉnh điểm chỉ số trong bộ không làm đổi chỉ số gốc"
     uc: "B.II.3-UC3"
     tac_nhan: "Quản trị hệ thống, Cán bộ"
     tai_khoan_chay: "admin"
     chuc_nang: "Nội dung"
-    loai: "Chức năng"
+    loai: "Nghiệp vụ"
     uu_tien: "Trung bình"
     automation: "Auto"
     cac_buoc:
-      - "1. Sửa chỉ số trong bộ"
-      - "2. Lưu"
+      - "1. [API] PUT indicators đổi điểm tối đa chỉ số con 5 → 8"
+      - "2. Xem chỉ số gốc"
     ket_qua_mong_doi:
-      - "Chỉ áp dụng trong bộ; chỉ số gốc không đổi"
-    ket_qua_chay: "Không chạy"
+      - "Trong bộ: 8; chỉ số gốc vẫn 5"
+    ket_qua_chay: "Pass"
   - id: SET-I05
     title: "Xóa chỉ số khỏi bộ chỉ số"
     uc: "B.II.3-UC4"
@@ -750,13 +992,14 @@ testcases:
     uu_tien: "Cao"
     automation: "Auto"
     cac_buoc:
-      - "1. Xóa chỉ số trong bộ"
-      - "2. Xác nhận"
+      - "1. Cấu hình → Xoá ở chỉ số con"
+      - "2. Xác nhận Xoá"
+      - "3. Lưu"
     ket_qua_mong_doi:
-      - "Chỉ số rời bộ; chỉ số gốc còn; tổng điểm cập nhật"
-    ket_qua_chay: "Không chạy"
+      - "Chỉ số rời bộ; điểm nhóm giảm; chỉ số gốc còn"
+    ket_qua_chay: "Pass"
   - id: SET-I06
-    title: "Thiết lập Tính điểm / Không tính điểm cho chỉ số trong bộ"
+    title: "Tắt Tính điểm một chỉ số: bị loại khỏi tổng điểm"
     uc: "B.II.3-UC5"
     tac_nhan: "Quản trị hệ thống, Cán bộ"
     tai_khoan_chay: "admin"
@@ -765,13 +1008,13 @@ testcases:
     uu_tien: "Cao"
     automation: "Auto"
     cac_buoc:
-      - "1. Đổi cờ tính điểm chỉ số"
+      - "1. Cấu hình → tắt công tắc Tính điểm của 1 chỉ số con 5đ"
       - "2. Lưu"
     ket_qua_mong_doi:
-      - "Chỉ số không tính điểm bị loại khỏi tổng điểm tối đa"
-    ket_qua_chay: "Không chạy"
+      - "Điểm tối đa của nhóm 10 → 5; API isScored=false; tổng điểm ở chi tiết = 5"
+    ket_qua_chay: "Pass"
   - id: SET-I07
-    title: "Chỉnh sửa điểm của chỉ số trong bộ chỉ số"
+    title: "Chỉnh điểm tối đa của chỉ số trong bộ"
     uc: "B.II.3-UC6"
     tac_nhan: "Quản trị hệ thống, Cán bộ"
     tai_khoan_chay: "admin"
@@ -780,13 +1023,13 @@ testcases:
     uu_tien: "Cao"
     automation: "Auto"
     cac_buoc:
-      - "1. Sửa điểm tối đa chỉ số trong bộ"
+      - "1. Cấu hình → sửa điểm tối đa chỉ số con 5 → 8"
       - "2. Lưu"
     ket_qua_mong_doi:
-      - "Điểm mới áp dụng trong bộ; tổng điểm tính lại; chỉ số gốc không đổi"
-    ket_qua_chay: "Không chạy"
+      - "Điểm tối đa của nhóm 10 → 13; API maxScore = 8; tổng điểm chi tiết 13"
+    ket_qua_chay: "Pass"
   - id: SET-I08
-    title: "Điểm chỉnh sửa trong bộ phải hợp lệ (min ≤ max, 0–1000)"
+    title: "Điểm trong bộ phải hợp lệ (min ≤ max, 0–1000)"
     uc: "B.II.3-UC6"
     tac_nhan: "Quản trị hệ thống, Cán bộ"
     tai_khoan_chay: "admin"
@@ -795,10 +1038,25 @@ testcases:
     uu_tien: "Cao"
     automation: "Auto"
     cac_buoc:
-      - "1. Nhập điểm min>max hoặc âm"
+      - "1. Cấu hình → điểm tối thiểu 9 > tối đa 5 → Lưu"
+      - "2. [API] max 1001, min âm, max 1000"
     ket_qua_mong_doi:
-      - "Báo lỗi; không lưu"
-    ket_qua_chay: "Không chạy"
+      - "UI: \"Điểm tối thiểu không được lớn hơn điểm tối đa (chỉ số \"…\")\", không lưu; API 1001/âm → 400 \"…từ 0 đến 1000\"; 1000 → 200"
+    ket_qua_chay: "Pass"
+  - id: SET-I09
+    title: "Thêm chỉ số khi nhóm đã đủ chỉ số báo không còn chỉ số để thêm"
+    uc: "B.II.3-UC2"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Nội dung"
+    loai: "UI"
+    uu_tien: "Thấp"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Cấu hình → nhóm đã có đủ chỉ số → Thêm chỉ số"
+    ket_qua_mong_doi:
+      - "Hộp \"Không còn chỉ số để thêm\"; nút Đóng"
+    ket_qua_chay: "Pass"
   - id: SET-N01
     title: "Nhân bản bộ chỉ số tạo bộ mới, giữ nguyên cấu trúc"
     uc: "B.II.5-UC1"
@@ -809,10 +1067,11 @@ testcases:
     uu_tien: "Cao"
     automation: "Auto"
     cac_buoc:
-      - "1. Menu → Nhân bản"
+      - "1. Menu dòng → Nhân bản"
+      - "2. Hộp \"Xác nhận nhân bản\" → Nhân bản"
     ket_qua_mong_doi:
-      - "Bộ mới có mã mới, Chưa khóa, cùng số nhóm/chỉ số và tổng điểm với bản gốc"
-    ket_qua_chay: "Không chạy"
+      - "Thông báo \"Nhân bản bộ chỉ số thành công\"; bộ mới mã khác, Chưa khóa, cùng số nhóm/chỉ số"
+    ket_qua_chay: "Pass"
   - id: SET-N02
     title: "Nhân bản bộ chỉ số đã khóa vẫn được, bản sao Chưa khóa"
     uc: "B.II.5-UC1"
@@ -826,24 +1085,10 @@ testcases:
       - "1. Khóa bộ"
       - "2. Nhân bản"
     ket_qua_mong_doi:
-      - "Menu Nhân bản có ở bộ đã khóa; bản sao Chưa khóa"
-    ket_qua_chay: "Không chạy"
-  - id: SET-N03
-    title: "Nhân bản nhiều lần cho mã duy nhất"
-    uc: "B.II.5-UC1"
-    tac_nhan: "Quản trị hệ thống, Cán bộ"
-    tai_khoan_chay: "admin"
-    chuc_nang: "Nhân bản"
-    loai: "Nghiệp vụ"
-    uu_tien: "Trung bình"
-    automation: "Auto"
-    cac_buoc:
-      - "1. Nhân bản cùng bộ 3 lần"
-    ket_qua_mong_doi:
-      - "Mã/tên không trùng"
-    ket_qua_chay: "Không chạy"
+      - "Menu có Nhân bản; bản sao Chưa khóa"
+    ket_qua_chay: "Pass"
   - id: SET-N04
-    title: "Xem và sửa chỉ số của bộ vừa nhân bản; không ảnh hưởng bản gốc"
+    title: "Sửa bộ vừa nhân bản không ảnh hưởng bản gốc"
     uc: "B.II.5-UC2"
     tac_nhan: "Quản trị hệ thống, Cán bộ"
     tai_khoan_chay: "admin"
@@ -853,11 +1098,11 @@ testcases:
     automation: "Auto"
     cac_buoc:
       - "1. Nhân bản"
-      - "2. Sửa điểm/xóa chỉ số ở bản sao"
+      - "2. [API] Sửa điểm chỉ số ở bản sao"
       - "3. Xem bản gốc"
     ket_qua_mong_doi:
-      - "Bản gốc không đổi"
-    ket_qua_chay: "Không chạy"
+      - "Bản gốc giữ nguyên điểm"
+    ket_qua_chay: "Pass"
   - id: SET-N05
     title: "Nhân bản id không tồn tại không gây lỗi"
     uc: "B.II.5-UC1"
@@ -871,7 +1116,55 @@ testcases:
       - "1. [API] POST nhân bản id lạ"
     ket_qua_mong_doi:
       - "4xx, không 500"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
+  - id: SET-G10
+    title: "[API] Tên bộ chỉ số đúng 255 ký tự được nhận, 256 ký tự bị từ chối"
+    uc: "B.II.1-UC6"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Validate"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. [API] POST tên 255 ký tự"
+      - "2. [API] POST tên 256 ký tự"
+    ket_qua_mong_doi:
+      - "255: HTTP 200; 256: HTTP 400 \"Tên không vượt quá 255 ký tự\""
+    ghi_chu: "Quy tắc chung: Tên ≤ 255 ký tự; riêng Tên chỉ số và Tên nhóm chỉ số ≤ 500"
+    ket_qua_chay: "Pass"
+  - id: SET-G11
+    title: "[API] Tên bộ chỉ số trùng trong cùng danh mục (khác hoa/thường) bị từ chối"
+    uc: "B.II.1-UC6"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Nghiệp vụ"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Có bản ghi tên \"X\""
+      - "2. [API] Tạo bản ghi mã khác, tên \"X\" và \"x\" (HOA)"
+    ket_qua_mong_doi:
+      - "Bị từ chối 4xx: tên bắt trùng trong cùng nhóm cha, không phân biệt hoa/thường"
+    ghi_chu: "Quy tắc chung: Tên bắt trùng chỉ trong cùng nhóm cha"
+    ket_qua_chay: "Pass"
+  - id: SET-G12
+    title: "[API] Tên bộ chỉ số chỉ khác dấu (\"Trùng\" và \"Trung\") là tên khác, được tạo"
+    uc: "B.II.1-UC6"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Nghiệp vụ"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Có bản ghi tên \"Trùng\""
+      - "2. [API] Tạo bản ghi tên \"Trung\""
+    ket_qua_mong_doi:
+      - "Được tạo (HTTP 200)"
+    ghi_chu: "Quy tắc chung: so trùng tên có phân biệt dấu"
+    ket_qua_chay: "Pass"
   - id: SET-G01
     title: "Trường bắt buộc chỉ nhập khoảng trắng bị chặn (bộ chỉ số)"
     uc: "B.II.1-UC6"
@@ -887,22 +1180,7 @@ testcases:
       - "3. Lưu"
     ket_qua_mong_doi:
       - "Báo lỗi bắt buộc (chuỗi rỗng sau trim); không tạo bản ghi"
-    ket_qua_chay: "Không chạy"
-  - id: SET-G02
-    title: "Tên chứa tiếng Việt có dấu, HTML, dấu nháy, & được lưu và hiển thị đúng sau khi tải lại trang (bộ chỉ số)"
-    uc: "B.II.1-UC6"
-    tac_nhan: "Quản trị hệ thống, Cán bộ"
-    tai_khoan_chay: "admin"
-    chuc_nang: "Thêm mới"
-    loai: "Nghiệp vụ"
-    uu_tien: "Trung bình"
-    automation: "Auto"
-    cac_buoc:
-      - "1. [API] Tạo bản ghi có tên chứa ký tự đặc biệt"
-      - "2. Tải lại trang (F5), tìm theo mã/tên"
-    ket_qua_mong_doi:
-      - "Tên hiển thị nguyên văn dạng chữ; thẻ HTML không bị render"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: SET-G03
     title: "Server lỗi 500 khi lưu: giữ form và dữ liệu đã nhập, không lộ lỗi nội bộ (bộ chỉ số)"
     uc: "B.II.1-UC6"
@@ -918,7 +1196,7 @@ testcases:
       - "3. Lưu"
     ket_qua_mong_doi:
       - "Form còn mở và giữ dữ liệu; không lộ stacktrace; không tạo bản ghi"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: SET-G04
     title: "Mất kết nối khi lưu: không treo giao diện, giữ form (bộ chỉ số)"
     uc: "B.II.1-UC6"
@@ -934,7 +1212,7 @@ testcases:
       - "3. Lưu"
     ket_qua_mong_doi:
       - "Form còn mở và giữ dữ liệu; trang không trắng; không tạo bản ghi"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: SET-G05
     title: "Bấm Lưu 2 lần liên tiếp chỉ tạo 1 bản ghi (bộ chỉ số)"
     uc: "B.II.1-UC6"
@@ -949,7 +1227,7 @@ testcases:
       - "2. Bấm Lưu 2 lần rất nhanh"
     ket_qua_mong_doi:
       - "Chỉ có đúng 1 bản ghi"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: SET-A01
     title: "API bộ chỉ số: không token / token giả → 401"
     uc: "B.II.1-UC1"
@@ -964,22 +1242,7 @@ testcases:
       - "2. GET với token giả"
     ket_qua_mong_doi:
       - "HTTP 401"
-    ket_qua_chay: "Không chạy"
-  - id: SET-A02
-    title: "Quyền API bộ chỉ số đúng theo ma trận quyền Cán bộ"
-    uc: "B.II.1-UC1"
-    tac_nhan: "Quản trị hệ thống, Cán bộ"
-    tai_khoan_chay: "admin"
-    chuc_nang: "Phân quyền"
-    loai: "Bảo mật"
-    uu_tien: "Cao"
-    automation: "Auto"
-    cac_buoc:
-      - "1. Lấy ma trận quyền canbo"
-      - "2. GET/POST/PUT/DELETE theo quyền Xem/Thêm/Sửa/Xóa/Khóa"
-    ket_qua_mong_doi:
-      - "Có quyền → được; không có → 403"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: SET-A03
     title: "Chưa đăng nhập vào trang bộ chỉ số bị chuyển về màn đăng nhập, không lộ dữ liệu"
     uc: "B.II.1-UC1"
@@ -994,7 +1257,7 @@ testcases:
       - "2. Mở URL trang"
     ket_qua_mong_doi:
       - "Hiện màn đăng nhập; không có dữ liệu"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: SET-P01
     title: "Danh sách bộ chỉ số tải < 3 giây"
     uc: "B.II.1-UC1"
@@ -1008,4 +1271,238 @@ testcases:
       - "1. Mở trang và đo"
     ket_qua_mong_doi:
       - "API < 3000ms, hiển thị < 6000ms"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
+  - id: SET-V09
+    title: "File Excel chi tiết bộ chỉ số có đủ cột như màn hình: Mã, Tên, Tính điểm, Điểm tối thiểu, Điểm tối đa"
+    uc: "B.II.1-UC5"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xuất Excel"
+    loai: "Chức năng"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Bộ chỉ số DTI → Bộ chỉ số → Xem chi tiết BCS-333"
+      - "3. Bấm Xuất Excel, mở file"
+    ket_qua_mong_doi:
+      - "Bảng cấu trúc trong file có đủ các cột như màn hình; giá trị Tính điểm, Điểm tối thiểu khớp từng dòng"
+    ghi_chu: "GitLab #289. Thực tế thiếu Tính điểm, Điểm tối thiểu; thừa Số nhóm, Số chỉ số"
+  - id: SET-V10
+    title: "Tiêu đề cột tên trong file Excel phản ánh đúng nội dung (Trụ cột / Nhóm chỉ số / Chỉ số)"
+    uc: "B.II.1-UC5"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xuất Excel"
+    loai: "UI"
+    uu_tien: "Thấp"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Bộ chỉ số DTI → Bộ chỉ số → Xem chi tiết BCS-333"
+      - "3. Bấm Xuất Excel, mở file"
+    ket_qua_mong_doi:
+      - "Tiêu đề cột tên bao quát cả trụ cột, nhóm và chỉ số"
+    ghi_chu: "GitLab #289. Thực tế: \"Trụ cột / Nhóm chỉ số\" nhưng có dòng chỉ số"
+  - id: SET-L34
+    title: "Các màn Bộ chỉ số (danh sách, thêm, sửa, chi tiết, cấu hình) khớp design BCS-01…BCS-08"
+    uc: "B.II.1-UC1"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xem danh sách"
+    loai: "UI"
+    uu_tien: "Trung bình"
+    automation: "Manual — chưa có script"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở menu Bộ chỉ số DTI → Bộ chỉ số"
+      - "3. Lần lượt mở các màn/popup của Bộ chỉ số"
+      - "4. So với design BCS-01…BCS-08"
+    ket_qua_mong_doi:
+      - "Bố cục, tiêu đề, nút, font, màu sắc của từng màn trùng design BCS-01…BCS-08"
+    ghi_chu: "GitLab #253"
+  - id: SET-V15
+    title: "Màn chi tiết Bộ chỉ số khớp design mới: card thông tin, bảng cấu trúc, footer"
+    uc: "B.II.1-UC3"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xem chi tiết"
+    loai: "UI"
+    uu_tien: "Trung bình"
+    automation: "Manual — chưa có script"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở menu Bộ chỉ số DTI → Bộ chỉ số"
+      - "3. Bấm vào một bộ chỉ số có cấu trúc"
+      - "4. So card thông tin, khu vực Cấu trúc bộ chỉ số và footer với design"
+    ket_qua_mong_doi:
+      - "Card thông tin, bảng Cấu trúc bộ chỉ số và footer có bố cục, nội dung trùng design BCS"
+    ghi_chu: "GitLab #81. #159 (Review CĐS 30/10) \"Chi tiết bộ chỉ số — Chỉnh card, cấu trúc và footer\" kiểm chứng cùng case"
+  - id: SET-V16
+    title: "Tìm kiếm trong \"Cấu trúc bộ chỉ số\" trả về đúng trụ cột/nhóm/chỉ số khớp từ khóa"
+    uc: "B.II.1-UC4"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xem chi tiết"
+    loai: "Chức năng"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở menu Bộ chỉ số DTI → Bộ chỉ số"
+      - "3. Mở chi tiết bộ có cấu trúc"
+      - "4. Nhập mã hoặc tên một chỉ số có trong bộ vào ô tìm kiếm cấu trúc"
+    ket_qua_mong_doi:
+      - "Cây chỉ còn các dòng khớp từ khóa (kèm trụ cột/nhóm cha của chúng); không hiện \"Bộ chỉ số chưa có cấu trúc\""
+    ghi_chu: "GitLab #219"
+  - id: SET-V17
+    title: "Tìm kiếm trong \"Cấu trúc bộ chỉ số\" không có kết quả thì báo không tìm thấy, không báo chưa có cấu trúc"
+    uc: "B.II.1-UC4"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xem chi tiết"
+    loai: "Chức năng"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở menu Bộ chỉ số DTI → Bộ chỉ số"
+      - "3. Mở chi tiết bộ có cấu trúc"
+      - "4. Nhập \"zzqcxx_khongtontai_999\" vào ô tìm kiếm cấu trúc"
+    ket_qua_mong_doi:
+      - "Hiển thị \"Không tìm thấy dữ liệu phù hợp\"; không hiện \"Bộ chỉ số chưa có cấu trúc\""
+    ghi_chu: "GitLab #219"
+  - id: SET-V18
+    title: "Bảng \"Cấu trúc bộ chỉ số\" cho kéo chỉnh độ rộng cột"
+    uc: "B.II.1-UC4"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xem chi tiết"
+    loai: "UI"
+    uu_tien: "Thấp"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở menu Bộ chỉ số DTI → Bộ chỉ số"
+      - "3. Mở chi tiết bộ có cấu trúc"
+      - "4. Kéo mép tiêu đề cột Tên sang phải"
+    ket_qua_mong_doi:
+      - "Độ rộng cột thay đổi theo thao tác kéo; các cột khác vẫn hiển thị đúng"
+    ghi_chu: "GitLab #277. Issue đang mở"
+  - id: SET-C12
+    title: "Popup Thêm bộ chỉ số không hiển thị bộ đếm ký tự ở các ô nhập"
+    uc: "B.II.1-UC6"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "UI"
+    uu_tien: "Thấp"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở menu Bộ chỉ số DTI → Bộ chỉ số"
+      - "3. Bấm thêm mới bộ chỉ số"
+      - "4. Nhập Tên và Mô tả"
+    ket_qua_mong_doi:
+      - "Không có bộ đếm dạng \"n / 255\" dưới ô Tên và Mô tả"
+    ghi_chu: "GitLab #278"
+  - id: SET-C13
+    title: "Popup Thêm bộ chỉ số không có dòng text \"* Trường bắt buộc\""
+    uc: "B.II.1-UC6"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "UI"
+    uu_tien: "Thấp"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở menu Bộ chỉ số DTI → Bộ chỉ số"
+      - "3. Bấm thêm mới bộ chỉ số"
+    ket_qua_mong_doi:
+      - "Không có dòng \"* Trường bắt buộc\" trong popup; trường bắt buộc vẫn có dấu * đỏ ở label"
+    ghi_chu: "GitLab #278"
+  - id: SET-S11
+    title: "Trang Cấu hình bộ chỉ số trình bày cấu trúc đồng bộ với màn Kết quả tự đánh giá"
+    uc: "B.II.2-UC1"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Cấu trúc"
+    loai: "UI"
+    uu_tien: "Trung bình"
+    automation: "Manual — chưa có script"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở menu Bộ chỉ số DTI → Bộ chỉ số"
+      - "3. Mở Cấu hình của một bộ có cấu trúc"
+      - "4. Mở tab Chấm điểm của một kết quả tự đánh giá dùng cùng bộ, so cách hiển thị"
+    ket_qua_mong_doi:
+      - "Cùng kiểu trình bày cây Trụ cột → Nhóm chỉ số → Chỉ số (bố cục cột trái nhóm, bảng chỉ số, cách hiển thị điểm) như màn Kết quả tự đánh giá"
+    ghi_chu: "GitLab #160. Review CĐS 30/10. Phạm vi \"đồng bộ\" cụ thể cần BA xác nhận"
+  - id: SET-I10
+    title: "Trang Cấu hình bộ chỉ số có scroll khi danh sách nhóm/chỉ số dài"
+    uc: "B.II.3-UC1"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Nội dung"
+    loai: "UI"
+    uu_tien: "Thấp"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở menu Bộ chỉ số DTI → Bộ chỉ số"
+      - "3. Mở Cấu hình bộ có nhiều nhóm và nhiều chỉ số"
+      - "4. Cuộn cột nhóm và bảng chỉ số"
+    ket_qua_mong_doi:
+      - "Cột nhóm và bảng chỉ số cuộn độc lập, xem được hết dữ liệu; nút Lưu/Huỷ luôn truy cập được"
+    ghi_chu: "GitLab #117"
+  - id: SET-I14
+    title: "Tên nhóm/chỉ số bị rút gọn ở trang Cấu hình hiện tooltip tên đầy đủ khi di chuột"
+    uc: "B.II.3-UC1"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Nội dung"
+    loai: "UI"
+    uu_tien: "Thấp"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở menu Bộ chỉ số DTI → Bộ chỉ số"
+      - "3. Mở Cấu hình bộ có nhóm/chỉ số tên dài (≥ 300 ký tự)"
+      - "4. Di chuột vào tên bị rút gọn"
+    ket_qua_mong_doi:
+      - "Tooltip hiển thị đầy đủ tên"
+    ghi_chu: "GitLab #172"
+  - id: SET-I15
+    title: "Tên nhóm/chỉ số dài không làm vỡ bố cục trang Cấu hình"
+    uc: "B.II.3-UC1"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Nội dung"
+    loai: "UI"
+    uu_tien: "Thấp"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở menu Bộ chỉ số DTI → Bộ chỉ số"
+      - "3. Mở Cấu hình bộ có nhóm/chỉ số tên dài (≥ 300 ký tự)"
+    ket_qua_mong_doi:
+      - "Tên được cắt \"…\" hoặc xuống dòng hợp lý; cột điểm, nút thao tác vẫn thẳng hàng, không tràn khung"
+    ghi_chu: "GitLab #172"
+  - id: SET-I16
+    title: "Danh sách chọn chỉ số khi Thêm chỉ số vào bộ chỉ liệt kê chỉ số Đã khóa"
+    uc: "B.II.3-UC2"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Nội dung"
+    loai: "Nghiệp vụ"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở menu Bộ chỉ số DTI → Bộ chỉ số"
+      - "3. Chuẩn bị nhóm có 1 chỉ số Chưa khóa và 1 chỉ số Đã khóa chưa có trong bộ"
+      - "4. Cấu hình → Thêm chỉ số, mở danh sách chọn"
+    ket_qua_mong_doi:
+      - "Chỉ có chỉ số Đã khóa; chỉ số Chưa khóa không xuất hiện nên không thể chọn rồi bị lỗi khi Lưu"
+    ghi_chu: "GitLab #224. Thực tế: chọn được chỉ số chưa khóa, bấm \"Lưu chỉ số\" thì báo lỗi"

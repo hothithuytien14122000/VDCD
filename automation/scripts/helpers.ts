@@ -1,6 +1,19 @@
-import { Page, expect } from '@playwright/test';
+import { Page, BrowserContext, expect } from '@playwright/test';
 
 export const BASE = 'https://cds.geneat.pro';
+/** Ẩn thông báo "Đổi mật khẩu – Mật khẩu sẽ hết hạn sau N ngày" (tài khoản sắp hết hạn mật khẩu): thông báo nổi ở góc phải,
+ *  che các nút đầu trang (Thêm mới / Xuất Excel) và bị đọc nhầm thành toast. Chỉ ẩn đúng thông báo này, toast khác giữ nguyên. */
+export async function hidePwExpiry(ctx: BrowserContext) {
+  await ctx.addInitScript(() => {
+    const hide = () => document.querySelectorAll<HTMLElement>('.ant-notification-notice').forEach(n => {
+      if (/Mật khẩu sẽ hết hạn/i.test(n.textContent || '')) {
+        const w = (n.closest('.ant-notification-notice-wrapper') as HTMLElement) || n;
+        w.style.display = 'none'; n.classList.remove('ant-notification-notice'); n.classList.add('qc-pw-expiry-hidden');
+      }
+    });
+    new MutationObserver(hide).observe(document, { childList: true, subtree: true });
+  });
+}
 export const goto = (page: Page, route: string) =>
   page.goto(`${BASE}/#/vi/${route}`, { waitUntil: 'networkidle' }).then(() => page.waitForTimeout(1200));
 

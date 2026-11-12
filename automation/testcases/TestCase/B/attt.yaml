@@ -1,0 +1,328 @@
+title: "ATTT - Phân hệ B"
+phan_he: "B - Bộ chỉ số DTI"
+tong_so: 21
+testcases:
+  - id: ATB-X01
+    title: "[API] Mọi API của Phân hệ B trả 401 khi không gửi token"
+    uc: "ATTT KT 1.3.1a"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xác thực"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Không gửi header Authorization"
+      - "2. Gọi GET danh sách (và GET chi tiết id bất kỳ) lần lượt các API: dti/pillars, dti/indicator-groups, dti/indicators, dti/indicator-sets, dti/score-scales, dti/self-assessment-campaigns"
+    ket_qua_mong_doi:
+      - "Mọi API nghiệp vụ trả HTTP 401, không trả dữ liệu"
+    ket_qua_chay: "Pass"
+  - id: ATB-X02
+    title: "[API] Token giả, token sửa payload, token alg=none bị API Phân hệ B từ chối 401"
+    uc: "ATTT KT 1.3.1a"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xác thực"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Lấy token hợp lệ của tài khoản cán bộ"
+      - "2. Tạo 3 biến thể: chuỗi ngẫu nhiên; sửa payload (đổi x-roles thành SUPER_ADMIN) giữ chữ ký cũ; header alg=none bỏ chữ ký"
+      - "3. Gọi API danh sách của Phân hệ B với từng token"
+    ket_qua_mong_doi:
+      - "Cả 3 trường hợp HTTP 401; không token nào được chấp nhận; không nâng quyền được"
+    ket_qua_chay: "Pass"
+  - id: ATB-X03
+    title: "Mở trực tiếp URL các màn của Phân hệ B khi chưa đăng nhập bị chuyển về trang đăng nhập"
+    uc: "ATTT KT 1.3.1a"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xác thực"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Trình duyệt chưa đăng nhập"
+      - "2. Mở trực tiếp URL các màn của Phân hệ B"
+    ket_qua_mong_doi:
+      - "Chuyển về #/vi/auth/login; không hiển thị dữ liệu, không gọi API nghiệp vụ thành công"
+    ket_qua_chay: "Pass"
+  - id: ATB-Q02
+    title: "[API] Tài khoản không có quyền Thêm/Sửa/Xóa gọi thẳng POST/PUT/DELETE của Phân hệ B bị chặn 403"
+    uc: "ATTT KT 1.3.1a"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Phân quyền BE"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Chọn tài khoản không có mã quyền .CREATE/.UPDATE/.DELETE tương ứng (theo permission-matrix/me)"
+      - "2. Gọi POST với body rỗng, PUT/DELETE với id ngẫu nhiên lên API của Phân hệ B"
+    ket_qua_mong_doi:
+      - "HTTP 403 — kiểm tra quyền diễn ra TRƯỚC kiểm tra dữ liệu (không trả 400/404 làm lộ thông tin); không có dữ liệu bị tạo/sửa/xóa"
+    ket_qua_chay: "Pass"
+  - id: ATB-Q03
+    title: "Tài khoản không có quyền: menu/nút của Phân hệ B bị ẩn và mở URL trực tiếp không xem được dữ liệu"
+    uc: "ATTT KT 1.3.1a"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Phân quyền BE"
+    loai: "Bảo mật"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đăng nhập tài khoản không có quyền Xem một màn của Phân hệ B"
+      - "2. Kiểm tra menu bên trái"
+      - "3. Mở trực tiếp URL màn đó"
+    ket_qua_mong_doi:
+      - "Menu không có mục đó; mở URL trực tiếp hiển thị thông báo không có quyền / bảng rỗng; API trả 403"
+    ket_qua_chay: "Pass"
+  - id: ATB-V01
+    title: "[API] BE từ chối dữ liệu sai kiểu, vượt độ dài, sai định dạng khi thêm mới ở Phân hệ B"
+    uc: "ATTT KT 1.3.4"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Kiểm tra đầu vào"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Gọi POST tạo mới trụ cột (dti/pillars) với: tên 5.000 ký tự; trường số nhận chuỗi; trường bắt buộc = null; trường ngày sai định dạng"
+    ket_qua_mong_doi:
+      - "HTTP 400 kèm thông báo rõ ràng; không có bản ghi nào được lưu (validate phía BE, không chỉ FE)"
+    ghi_chu: "Nếu API trả 200 → lỗi thiếu validate phía server (TCVN 6.2.3.4 / QĐ 742 tiêu chí 4.1)"
+    ket_qua_chay: "Pass"
+  - id: ATB-V02
+    title: "[API] Tham số tìm kiếm/lọc/phân trang bất thường của Phân hệ B không gây lỗi 500, không trả dữ liệu bất thường"
+    uc: "ATTT KT 1.3.4; PM 3"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Kiểm tra đầu vào"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Gọi API danh sách của Phân hệ B với: keyword = ' OR 1=1 -- ; keyword = <script>alert(1)</script>; filter = JSON hỏng; page = -1; size = 100000; id không phải GUID"
+    ket_qua_mong_doi:
+      - "Không có HTTP 5xx; SQLi không làm tăng số bản ghi trả về; size bị giới hạn ở mức hợp lý; id sai định dạng trả 400/404"
+    ket_qua_chay: "Pass"
+  - id: ATB-V03
+    title: "[API] Body JSON hỏng hoặc sai Content-Type gửi lên Phân hệ B trả 400 với thông báo chung"
+    uc: "ATTT KT 1.3.4"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Kiểm tra đầu vào"
+    loai: "Bảo mật"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Gửi POST với body \"{bad json\""
+      - "2. Gửi POST với Content-Type: text/plain"
+    ket_qua_mong_doi:
+      - "HTTP 400/415 thông báo \"Dữ liệu không hợp lệ\"; không lộ tên lớp, stack trace"
+    ket_qua_chay: "Pass"
+  - id: ATB-W01
+    title: "Dữ liệu chứa HTML/script nhập ở Phân hệ B hiển thị dạng văn bản, không thực thi (XSS lưu trữ)"
+    uc: "ATTT PM 3"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Chống XSS"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Tạo bản ghi QCA có tên <img src=x onerror=window.__xss=1>"
+      - "2. Mở màn danh sách/chi tiết hiển thị dữ liệu đó"
+    ket_qua_mong_doi:
+      - "Chuỗi hiển thị nguyên văn; không phát sinh thẻ img thật; window.__xss không được gán"
+    ket_qua_chay: "Pass"
+  - id: ATB-L01
+    title: "[API] Lỗi phát sinh ở Phân hệ B chỉ trả thông báo chung (kèm mã lỗi/trace id), không lộ stack trace, đường dẫn, câu SQL"
+    uc: "ATTT KT 1.3.3a-3"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xử lý lỗi"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Gây lỗi có chủ đích trên API của Phân hệ B: id sai định dạng, filter sai kiểu, body thiếu trường bắt buộc, page vượt giới hạn"
+      - "2. Đọc toàn bộ nội dung phản hồi"
+    ket_qua_mong_doi:
+      - "Phản hồi không chứa \"Exception\", \" at \", \"Npgsql\", \"System.\", đường dẫn /opt/ hay /home/, tên bảng/câu SQL; người dùng chỉ thấy thông báo chung"
+    ket_qua_chay: "Pass"
+  - id: ATB-S01
+    title: "[API] Phản hồi API Phân hệ B không chứa mật khẩu, hash, token, khóa bí mật"
+    uc: "ATTT KT 1.3.1b; UD 742-4.4"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Dữ liệu nhạy cảm"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Gọi GET danh sách và chi tiết các API của Phân hệ B"
+      - "2. Quét các trường trong phản hồi"
+    ket_qua_mong_doi:
+      - "Không có trường password/passwordHash/securityStamp/resetPasswordToken/emailVerifyToken/secret/connectionString mang giá trị"
+    ket_qua_chay: "Pass"
+  - id: ATB-N02
+    title: "Thêm/Sửa/Xóa ở Phân hệ B được ghi nhật ký có đối tượng, kết quả và giá trị trước → sau"
+    uc: "ATTT KT 1.3.3a-1; NK-04"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Nhật ký"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Ghi nhận T0"
+      - "2. Thêm, sửa tên, xóa một trụ cột QCA"
+      - "3. Tra nhật ký từ T0, mở chi tiết bản ghi Cập nhật"
+    ket_qua_mong_doi:
+      - "Có đủ 3 bản ghi Thêm / Cập nhật / Xóa với Đối tượng = mã/tên bản ghi, Kết quả = Thành công; chi tiết bản ghi Cập nhật hiển thị giá trị trước → sau"
+    ket_qua_chay: "Pass"
+  - id: ATB-N03
+    title: "Thao tác nghiệp vụ đặc thù của Phân hệ B được ghi nhật ký"
+    uc: "ATTT KT 1.3.3a-1"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Nhật ký"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Ghi nhận T0"
+      - "2. Thực hiện: Thêm/sửa/xóa trụ cột QCA; khóa/mở khóa (đưa vào sử dụng) trụ cột"
+      - "3. Tra nhật ký từ T0"
+    ket_qua_mong_doi:
+      - "Mỗi thao tác có 1 bản ghi đúng hành động (trình duyệt, phê duyệt, khóa, mở khóa…), đúng đối tượng và kết quả"
+    ket_qua_chay: "Pass"
+  - id: ATB-N04
+    title: "Xuất Excel ở Phân hệ B được ghi nhật ký (hành động Xuất file)"
+    uc: "ATTT KT 1.3.3a-1; NK-05"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Nhật ký"
+    loai: "Bảo mật"
+    uu_tien: "Trung bình"
+    automation: "Manual"
+    cac_buoc:
+      - "1. Ghi nhận T0"
+      - "2. Bấm Xuất Excel ở màn danh sách của Phân hệ B"
+      - "3. Tra nhật ký từ T0"
+    ket_qua_mong_doi:
+      - "Có bản ghi Hành động = Xuất file, Chức năng đúng màn, Kết quả = Thành công"
+    ghi_chu: "Manual: nút Xuất Excel tải file qua trình duyệt; kiểm tra bản ghi nhật ký sau khi xuất"
+    ket_qua_chay: "Manual"
+  - id: ATB-N05
+    title: "Thao tác bị từ chối do không có quyền ở Phân hệ B được ghi nhật ký với Kết quả = Thất bại"
+    uc: "ATTT KT 1.3.3a-1; NK-02"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Nhật ký"
+    loai: "Bảo mật"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Ghi nhận T0"
+      - "2. Bằng tài khoản không có quyền gọi POST/DELETE lên API của Phân hệ B (bị 403)"
+      - "3. Tra nhật ký từ T0"
+    ket_qua_mong_doi:
+      - "Có bản ghi của tài khoản đó, Kết quả = Thất bại; không ghi như thao tác thành công"
+    ket_qua_chay: "Pass"
+  - id: ATB-N06
+    title: "Nhật ký của Phân hệ B không chứa mật khẩu, token, OTP, nội dung tệp"
+    uc: "ATTT NK-08"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Nhật ký"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Thực hiện các thao tác ở Phân hệ B"
+      - "2. Xem chi tiết các bản ghi nhật ký vừa sinh (giá trị trước/sau)"
+    ket_qua_mong_doi:
+      - "Không xuất hiện chuỗi mật khẩu, Bearer token, OTP, nội dung tệp; các trường nhạy cảm được che (***)"
+    ket_qua_chay: "Pass"
+  - id: ATB-H01
+    title: "[API] API Phân hệ B chỉ phục vụ qua HTTPS: gọi http:// được chuyển 301/308 sang https://"
+    uc: "ATTT KT 1.3.2a"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Kết nối an toàn"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Gọi http://<máy chủ>/api/v1/<API của Phân hệ B> (không theo chuyển hướng)"
+    ket_qua_mong_doi:
+      - "HTTP 301/308 với Location bắt đầu https://; không trả dữ liệu qua HTTP"
+    ket_qua_chay: "Pass"
+  - id: ATB-T01
+    title: "Không thao tác quá SESSION_TIMEOUT_MINUTES khi đang ở màn của Phân hệ B: thông báo hết phiên và yêu cầu đăng nhập lại"
+    uc: "ATTT KT 1.3.2b"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thời gian chờ phiên"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Manual"
+    cac_buoc:
+      - "1. Đăng nhập, mở một màn của Phân hệ B"
+      - "2. Không thao tác quá thời gian chờ cấu hình (mặc định 30 phút)"
+      - "3. Bấm thao tác bất kỳ / gọi lại API bằng token cũ"
+    ket_qua_mong_doi:
+      - "Hiện \"Phiên làm việc đã hết hạn\", về trang đăng nhập; API trả 401 (BE kiểm tra thời điểm hoạt động cuối, không chỉ hạn JWT)"
+    ghi_chu: "Manual: phải chờ hết thời gian cấu hình (≥ 30 phút) hoặc chỉnh tham số tạm thời"
+    ket_qua_chay: "Manual"
+  - id: ATB-N07
+    title: "Thay đổi cấu hình bộ chỉ số (gán chỉ số, trọng số, thang xếp loại, kỳ tự đánh giá) được ghi nhật ký loại \"Thay đổi cấu hình\" trước → sau"
+    uc: "ATTT KT 1.3.3a-4"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Nhật ký"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Ghi nhận T0"
+      - "2. Tạo bộ chỉ số QCA, gán/bỏ chỉ số, đổi tên"
+      - "3. Tra nhật ký từ T0"
+    ket_qua_mong_doi:
+      - "Có bản ghi Thay đổi cấu hình cho bộ chỉ số QCA; chi tiết thể hiện giá trị trước → sau"
+    ket_qua_chay: "Pass"
+  - id: ATB-V04
+    title: "Công thức tính điểm (NCalc) chỉ chấp nhận hàm/biến trong danh sách trắng"
+    uc: "ATTT KT 1.3.4"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Kiểm tra đầu vào"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Manual"
+    cac_buoc:
+      - "1. Ở nơi cấu hình công thức tính điểm nhập: tên hàm lạ, biểu thức gọi hệ thống, biến không tồn tại, biểu thức rất dài/lồng sâu"
+      - "2. Lưu và tính điểm thử"
+    ket_qua_mong_doi:
+      - "Bị từ chối khi lưu với thông báo rõ; không thực thi biểu thức ngoài danh sách trắng; không treo máy chủ"
+    ghi_chu: "Manual: xác định màn cấu hình công thức với BA/Dev; nếu hệ thống không cho nhập công thức thì ghi Không áp dụng"
+    ket_qua_chay: "Manual"
+  - id: ATB-V05
+    title: "[API] Điểm tối thiểu/tối đa, trọng số, ngưỡng thang xếp loại ngoài miền hợp lệ bị BE từ chối"
+    uc: "ATTT KT 1.3.4"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Kiểm tra đầu vào"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. POST chỉ số với minScore > maxScore, điểm âm, chuỗi thay số"
+      - "2. POST thang xếp loại với ngưỡng chồng lấn / > 100%"
+    ket_qua_mong_doi:
+      - "HTTP 400; không lưu dữ liệu sai miền"
+    ket_qua_chay: "Pass"

@@ -80,8 +80,8 @@ export default function defineAuth(t) {
   m('LGN-M06', 'AUTH.1-UC2', 'Đăng nhập', 'Đăng nhập bằng tên đăng nhập (không cần gõ email)', 'Chức năng', 'Trung bình',
     '1. Nhập "qc.canbo" (chỉ tên đăng nhập, không @cds.local), captcha đúng', 'Đăng nhập thành công vì nhãn ô là "Tên đăng nhập"',
     'API nhận trường "email"; cần xác nhận hệ thống có chấp nhận tên đăng nhập thuần hay chỉ email. ' + BA);
-  m('LGN-M07', 'AUTH.1-UC2', 'Đăng nhập', 'Đăng nhập bằng tên đăng nhập viết HOA/thường lẫn lộn', 'Nghiệp vụ', 'Thấp',
-    '1. Nhập "QC.CANBO@CDS.LOCAL", mật khẩu đúng, captcha đúng', 'Đăng nhập thành công hoặc từ chối nhất quán theo quy ước', BA + ' phân biệt hoa/thường');
+  m('LGN-M07', 'AUTH.1-UC2', 'Đăng nhập', 'Tên đăng nhập/Email có phân biệt hoa/thường: viết HOA khác bị từ chối', 'Nghiệp vụ', 'Thấp',
+    '1. Nhập "QC.CANBO@CDS.LOCAL" (khác hoa/thường so với tài khoản), mật khẩu đúng, captcha đúng', 'Từ chối đăng nhập (sai tên đăng nhập/mật khẩu), không lỗi hệ thống', 'Quy tắc chung: Tên đăng nhập, Email, Mật khẩu có phân biệt hoa/thường');
   m('LGN-M08', 'AUTH.1-UC2', 'Đăng nhập', 'Tài khoản chưa gán nhóm đăng nhập được nhưng không có quyền nghiệp vụ', 'Nghiệp vụ', 'Trung bình',
     '1. Đăng nhập bằng qc.nogroup', 'Đăng nhập được; menu không có chức năng nào hoặc thông báo chưa phân quyền; không lỗi hệ thống', BA);
   m('LGN-M09', 'AUTH.1-UC4', 'Đổi mật khẩu lần đầu', 'Tài khoản bắt buộc đổi mật khẩu được chuyển sang màn đổi mật khẩu', 'Nghiệp vụ', 'Cao',
@@ -119,8 +119,8 @@ export default function defineAuth(t) {
   c('RPW-L07', 'AUTH.2-UC1', 'Yêu cầu OTP', '[API] Tài khoản bị khóa không nhận được OTP', 'Nghiệp vụ', 'Cao',
     '1. [API] POST forgot-password với email của qc.locked', 'HTTP 400 "Tài khoản bị khóa không thể thực hiện chức năng này"; không gửi mail');
   c('RPW-L08', 'AUTH.2-UC1', 'Yêu cầu OTP', 'Email phân biệt hoa/thường khi quên mật khẩu', 'Nghiệp vụ', 'Trung bình',
-    '1. [API] POST forgot-password với email tài khoản viết HOA toàn bộ', 'Được coi là cùng email: HTTP 200 và gửi OTP (email về nguyên tắc không phân biệt hoa/thường)',
-    'Khảo sát: HTTP 404 "chưa đăng kí" → nghi lỗi. ' + BA + ' hoa/thường');
+    '1. [API] POST forgot-password với email tài khoản viết HOA toàn bộ', 'Email HOA là email khác: HTTP 4xx (404 "chưa đăng kí"), không gửi OTP, không 500',
+    'Quy tắc chung: Tên đăng nhập và Email có phân biệt hoa/thường');
   c('RPW-L09', 'AUTH.2-UC1', 'Yêu cầu OTP', 'Ký tự đặc biệt / SQL trong email không gây lỗi hệ thống', 'Bảo mật', 'Cao',
     "1. [API] POST forgot-password với email  ' OR 1=1 --  và <script>alert(1)</script>", 'HTTP 4xx (không 500); không gửi mail');
   c('RPW-L10', 'AUTH.2-UC1', 'Yêu cầu OTP', 'Chống dò tài khoản: phản hồi giống nhau cho email có và không có tài khoản', 'Bảo mật', 'Trung bình',

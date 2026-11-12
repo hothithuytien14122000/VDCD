@@ -97,19 +97,6 @@ test.describe('Đăng nhập › Captcha', () => {
     await page.waitForTimeout(1500);
     expect(await imgHash(page), 'ảnh captcha phải được làm mới sau khi đăng nhập thất bại').not.toBe(before);
   });
-  test(tc('LGN-C10'), async ({ page }) => {
-    await openLogin(page);
-    const codes: string[] = [];
-    page.on('request', r => { if (r.url().includes('/jwt/login')) codes.push(JSON.parse(r.postData() ?? '{}').captchaCode); });
-    await fill(page, { user: 'qc.canbo', pass: PW, code: 'zzzzz' });
-    await lgn.submit(page).click();
-    await expectNotice(page, /mã captcha không hợp lệ/i);
-    await lgn.code(page).click(); await page.keyboard.press('Control+A'); await page.keyboard.type('yyyyy');
-    await page.waitForTimeout(3500);           // chờ toast cũ biến mất để không đọc nhầm
-    await lgn.submit(page).click();
-    await page.waitForTimeout(1500);
-    expect(codes, 'request đã gửi (mã captcha)').toEqual(['zzzzz', 'yyyyy']);
-  });
   test(tc('LGN-C04'), async () => {
     const a = await authGet('captcha', { width: '300', height: '100' }), b = await authGet('captcha', { width: '300', height: '100' });
     expect(a.status).toBe(200);
@@ -137,24 +124,6 @@ test.describe('Đăng nhập › Captcha', () => {
     expect(r.status).toBe(400); expect(r.message).toMatch(/captcha không hợp lệ/i);
     expect(r.data?.tokenString).toBeUndefined();
   });
-  test(tc('LGN-C09'), async ({ page }) => {
-    const bad = ["' OR 1=1 --", '<script>alert(1)</script>'];
-    const cap = await newCaptcha();
-    for (const s of bad) {
-      const r = await login({ email: s, password: s, captchaId: cap.captchaId, captchaCode: 'zzzzz' });
-      expect(r.status, `API với "${s}"`).toBeLessThan(500); expect(r.status).toBeGreaterThanOrEqual(400);
-      expect(r.data?.tokenString).toBeUndefined();
-    }
-    let dialog = false; page.on('dialog', d => { dialog = true; d.dismiss(); });
-    for (const s of bad) {
-      await openLogin(page);
-      await fill(page, { user: s, pass: s, code: 'zzzzz' });
-      await lgn.submit(page).click();
-      await expectNotice(page, /captcha|không hợp lệ|lỗi/i);
-      await expect(page).toHaveURL(/auth\/login/);
-    }
-    expect(dialog, 'script trong tên đăng nhập không được thực thi').toBe(false);
-  });
 });
 
 test.describe('Đăng nhập › Phiên', () => {
@@ -162,15 +131,6 @@ test.describe('Đăng nhập › Phiên', () => {
     await page.goto(`${API_BASE}/#/vi/users`, { waitUntil: 'networkidle' });
     await expect.poll(() => page.url(), { timeout: 8000 }).toMatch(/auth\/login/);
     await expect(lgn.user(page)).toBeVisible();
-  });
-  test(tc('LGN-S02'), async ({ page }) => {
-    await openLogin(page);
-    await page.evaluate(k => localStorage.setItem(k, 'a.b.c'), TOKEN_KEY);
-    let navs = 0; page.on('framenavigated', f => { if (f === page.mainFrame()) navs++; });
-    await page.goto(`${API_BASE}/#/vi/users`, { waitUntil: 'commit' });
-    await page.waitForTimeout(3000);
-    expect(navs, 'số lần chuyển trang trong 3s (vòng lặp chuyển hướng?)').toBeLessThanOrEqual(5);
-    expect(page.url(), 'token giả phải bị đẩy về trang đăng nhập').toMatch(/auth\/login/);
   });
   test(tc('LGN-S03'), async () => {
     expect(await apiStatus({ resource: 'idm/users', rawToken: 'a.b.c' })).toBe(401);

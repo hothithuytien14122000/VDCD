@@ -1,0 +1,374 @@
+title: "ATTT - Phân hệ E"
+phan_he: "E - Khảo sát hài lòng"
+tong_so: 24
+testcases:
+  - id: ATE-X01
+    title: "[API] Mọi API của Phân hệ E trả 401 khi không gửi token"
+    uc: "ATTT KT 1.3.1a"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xác thực"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Không gửi header Authorization"
+      - "2. Gọi GET danh sách (và GET chi tiết id bất kỳ) lần lượt các API: survey/surveys (+/{id}, /status), public/surveys (API công khai cho người dân)"
+    ket_qua_mong_doi:
+      - "Mọi API nghiệp vụ trả HTTP 401, không trả dữ liệu"
+      - "Ngoại lệ: public/surveys (API công khai cho người dân) được phép không token nhưng chỉ trả dữ liệu công khai"
+    ket_qua_chay: "Pass"
+  - id: ATE-X02
+    title: "[API] Token giả, token sửa payload, token alg=none bị API Phân hệ E từ chối 401"
+    uc: "ATTT KT 1.3.1a"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xác thực"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Lấy token hợp lệ của tài khoản cán bộ"
+      - "2. Tạo 3 biến thể: chuỗi ngẫu nhiên; sửa payload (đổi x-roles thành SUPER_ADMIN) giữ chữ ký cũ; header alg=none bỏ chữ ký"
+      - "3. Gọi API danh sách của Phân hệ E với từng token"
+    ket_qua_mong_doi:
+      - "Cả 3 trường hợp HTTP 401; không token nào được chấp nhận; không nâng quyền được"
+    ket_qua_chay: "Pass"
+  - id: ATE-X03
+    title: "Mở trực tiếp URL các màn của Phân hệ E khi chưa đăng nhập bị chuyển về trang đăng nhập"
+    uc: "ATTT KT 1.3.1a"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xác thực"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Trình duyệt chưa đăng nhập"
+      - "2. Mở trực tiếp URL các màn của Phân hệ E"
+    ket_qua_mong_doi:
+      - "Chuyển về #/vi/auth/login; không hiển thị dữ liệu, không gọi API nghiệp vụ thành công"
+    ket_qua_chay: "Pass"
+  - id: ATE-Q01
+    title: "[API] Tài khoản không có quyền Xem gọi thẳng API Phân hệ E bị chặn 403 (BE kiểm tra quyền, không chỉ ẩn menu)"
+    uc: "ATTT KT 1.3.1a"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Phân quyền BE"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Với từng tài khoản QC (canbo, cbdp, ldd, ldp, lanhdaobo, xemonly): đọc ma trận quyền idm/permission-matrix/me"
+      - "2. Với mỗi API của Phân hệ E mà tài khoản KHÔNG có mã quyền .VIEW: gọi GET danh sách"
+    ket_qua_mong_doi:
+      - "HTTP 403 (hoặc 401); không trả dữ liệu. Không có trường hợp ẩn menu ở FE nhưng API vẫn trả 200"
+    ket_qua_chay: "Pass"
+  - id: ATE-Q02
+    title: "[API] Tài khoản không có quyền Thêm/Sửa/Xóa gọi thẳng POST/PUT/DELETE của Phân hệ E bị chặn 403"
+    uc: "ATTT KT 1.3.1a"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Phân quyền BE"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Chọn tài khoản không có mã quyền .CREATE/.UPDATE/.DELETE tương ứng (theo permission-matrix/me)"
+      - "2. Gọi POST với body rỗng, PUT/DELETE với id ngẫu nhiên lên API của Phân hệ E"
+    ket_qua_mong_doi:
+      - "HTTP 403 — kiểm tra quyền diễn ra TRƯỚC kiểm tra dữ liệu (không trả 400/404 làm lộ thông tin); không có dữ liệu bị tạo/sửa/xóa"
+    ket_qua_chay: "Pass"
+  - id: ATE-Q03
+    title: "Tài khoản không có quyền: menu/nút của Phân hệ E bị ẩn và mở URL trực tiếp không xem được dữ liệu"
+    uc: "ATTT KT 1.3.1a"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Phân quyền BE"
+    loai: "Bảo mật"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đăng nhập tài khoản không có quyền Xem một màn của Phân hệ E"
+      - "2. Kiểm tra menu bên trái"
+      - "3. Mở trực tiếp URL màn đó"
+    ket_qua_mong_doi:
+      - "Menu không có mục đó; mở URL trực tiếp hiển thị thông báo không có quyền / bảng rỗng; API trả 403"
+    ket_qua_chay: "Pass"
+  - id: ATE-Q04
+    title: "[API] Đổi id trong URL sang bản ghi ngoài phạm vi đơn vị của tài khoản bị chặn (IDOR) — đợt khảo sát của đơn vị khác"
+    uc: "ATTT KT 1.3.1a"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Phân quyền BE"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Bằng tài khoản QTV lấy id một bản ghi thuộc đơn vị khác với đơn vị của tài khoản địa phương"
+      - "2. Bằng tài khoản địa phương (cbdp) gọi GET/PUT bản ghi đó theo id"
+    ket_qua_mong_doi:
+      - "HTTP 403/404; không trả dữ liệu, không sửa được bản ghi của đơn vị khác"
+    ket_qua_chay: "Pass"
+  - id: ATE-V01
+    title: "[API] BE từ chối dữ liệu sai kiểu, vượt độ dài, sai định dạng khi thêm mới ở Phân hệ E"
+    uc: "ATTT KT 1.3.4"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Kiểm tra đầu vào"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Gọi POST tạo mới đợt khảo sát (survey/surveys) với: tên 5.000 ký tự; trường số nhận chuỗi; trường bắt buộc = null; trường ngày sai định dạng"
+    ket_qua_mong_doi:
+      - "HTTP 400 kèm thông báo rõ ràng; không có bản ghi nào được lưu (validate phía BE, không chỉ FE)"
+    ghi_chu: "Nếu API trả 200 → lỗi thiếu validate phía server (TCVN 6.2.3.4 / QĐ 742 tiêu chí 4.1)"
+    ket_qua_chay: "Pass"
+  - id: ATE-V02
+    title: "[API] Tham số tìm kiếm/lọc/phân trang bất thường của Phân hệ E không gây lỗi 500, không trả dữ liệu bất thường"
+    uc: "ATTT KT 1.3.4; PM 3"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Kiểm tra đầu vào"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Gọi API danh sách của Phân hệ E với: keyword = ' OR 1=1 -- ; keyword = <script>alert(1)</script>; filter = JSON hỏng; page = -1; size = 100000; id không phải GUID"
+    ket_qua_mong_doi:
+      - "Không có HTTP 5xx; SQLi không làm tăng số bản ghi trả về; size bị giới hạn ở mức hợp lý; id sai định dạng trả 400/404"
+    ket_qua_chay: "Pass"
+  - id: ATE-V03
+    title: "[API] Body JSON hỏng hoặc sai Content-Type gửi lên Phân hệ E trả 400 với thông báo chung"
+    uc: "ATTT KT 1.3.4"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Kiểm tra đầu vào"
+    loai: "Bảo mật"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Gửi POST với body \"{bad json\""
+      - "2. Gửi POST với Content-Type: text/plain"
+    ket_qua_mong_doi:
+      - "HTTP 400/415 thông báo \"Dữ liệu không hợp lệ\"; không lộ tên lớp, stack trace"
+    ket_qua_chay: "Pass"
+  - id: ATE-W01
+    title: "Dữ liệu chứa HTML/script nhập ở Phân hệ E hiển thị dạng văn bản, không thực thi (XSS lưu trữ)"
+    uc: "ATTT PM 3"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Chống XSS"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Manual"
+    cac_buoc:
+      - "1. Người dân gửi phiếu có Góp ý chứa <img src=x onerror=window.__xss=1>"
+      - "2. Mở màn danh sách/chi tiết hiển thị dữ liệu đó"
+    ket_qua_mong_doi:
+      - "Chuỗi hiển thị nguyên văn; không phát sinh thẻ img thật; window.__xss không được gán"
+    ghi_chu: "Manual: API công khai giới hạn ~5 phiếu/phút và cần đợt trực tuyến đang mở; xem góp ý ở màn Phiếu trả lời/Kết quả"
+    ket_qua_chay: "Manual"
+  - id: ATE-L01
+    title: "[API] Lỗi phát sinh ở Phân hệ E chỉ trả thông báo chung (kèm mã lỗi/trace id), không lộ stack trace, đường dẫn, câu SQL"
+    uc: "ATTT KT 1.3.3a-3"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xử lý lỗi"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Gây lỗi có chủ đích trên API của Phân hệ E: id sai định dạng, filter sai kiểu, body thiếu trường bắt buộc, page vượt giới hạn"
+      - "2. Đọc toàn bộ nội dung phản hồi"
+    ket_qua_mong_doi:
+      - "Phản hồi không chứa \"Exception\", \" at \", \"Npgsql\", \"System.\", đường dẫn /opt/ hay /home/, tên bảng/câu SQL; người dùng chỉ thấy thông báo chung"
+    ket_qua_chay: "Pass"
+  - id: ATE-S01
+    title: "[API] Phản hồi API Phân hệ E không chứa mật khẩu, hash, token, khóa bí mật"
+    uc: "ATTT KT 1.3.1b; UD 742-4.4"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Dữ liệu nhạy cảm"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Gọi GET danh sách và chi tiết các API của Phân hệ E"
+      - "2. Quét các trường trong phản hồi"
+    ket_qua_mong_doi:
+      - "Không có trường password/passwordHash/securityStamp/resetPasswordToken/emailVerifyToken/secret/connectionString mang giá trị"
+    ket_qua_chay: "Pass"
+  - id: ATE-N02
+    title: "Thêm/Sửa/Xóa ở Phân hệ E được ghi nhật ký có đối tượng, kết quả và giá trị trước → sau"
+    uc: "ATTT KT 1.3.3a-1; NK-04"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Nhật ký"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Ghi nhận T0"
+      - "2. Tạo, sửa tên, xóa một đợt khảo sát nháp QCA"
+      - "3. Tra nhật ký từ T0, mở chi tiết bản ghi Cập nhật"
+    ket_qua_mong_doi:
+      - "Có đủ 3 bản ghi Thêm / Cập nhật / Xóa với Đối tượng = mã/tên bản ghi, Kết quả = Thành công; chi tiết bản ghi Cập nhật hiển thị giá trị trước → sau"
+    ket_qua_chay: "Pass"
+  - id: ATE-N03
+    title: "Thao tác nghiệp vụ đặc thù của Phân hệ E được ghi nhật ký"
+    uc: "ATTT KT 1.3.3a-1"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Nhật ký"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Ghi nhận T0"
+      - "2. Thực hiện: Tạo/sửa/xóa đợt khảo sát nháp QCA; trình duyệt, phê duyệt/từ chối đợt"
+      - "3. Tra nhật ký từ T0"
+    ket_qua_mong_doi:
+      - "Mỗi thao tác có 1 bản ghi đúng hành động (trình duyệt, phê duyệt, khóa, mở khóa…), đúng đối tượng và kết quả"
+    ket_qua_chay: "Pass"
+  - id: ATE-N04
+    title: "Xuất Excel ở Phân hệ E được ghi nhật ký (hành động Xuất file)"
+    uc: "ATTT KT 1.3.3a-1; NK-05"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Nhật ký"
+    loai: "Bảo mật"
+    uu_tien: "Trung bình"
+    automation: "Manual"
+    cac_buoc:
+      - "1. Ghi nhận T0"
+      - "2. Bấm Xuất Excel ở màn danh sách của Phân hệ E"
+      - "3. Tra nhật ký từ T0"
+    ket_qua_mong_doi:
+      - "Có bản ghi Hành động = Xuất file, Chức năng đúng màn, Kết quả = Thành công"
+    ghi_chu: "Manual: nút Xuất Excel tải file qua trình duyệt; kiểm tra bản ghi nhật ký sau khi xuất"
+    ket_qua_chay: "Manual"
+  - id: ATE-N05
+    title: "Thao tác bị từ chối do không có quyền ở Phân hệ E được ghi nhật ký với Kết quả = Thất bại"
+    uc: "ATTT KT 1.3.3a-1; NK-02"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Nhật ký"
+    loai: "Bảo mật"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Ghi nhận T0"
+      - "2. Bằng tài khoản không có quyền gọi POST/DELETE lên API của Phân hệ E (bị 403)"
+      - "3. Tra nhật ký từ T0"
+    ket_qua_mong_doi:
+      - "Có bản ghi của tài khoản đó, Kết quả = Thất bại; không ghi như thao tác thành công"
+    ket_qua_chay: "Pass"
+  - id: ATE-N06
+    title: "Nhật ký của Phân hệ E không chứa mật khẩu, token, OTP, nội dung tệp"
+    uc: "ATTT NK-08"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Nhật ký"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Thực hiện các thao tác ở Phân hệ E"
+      - "2. Xem chi tiết các bản ghi nhật ký vừa sinh (giá trị trước/sau)"
+    ket_qua_mong_doi:
+      - "Không xuất hiện chuỗi mật khẩu, Bearer token, OTP, nội dung tệp; các trường nhạy cảm được che (***)"
+    ket_qua_chay: "Pass"
+  - id: ATE-H01
+    title: "[API] API Phân hệ E chỉ phục vụ qua HTTPS: gọi http:// được chuyển 301/308 sang https://"
+    uc: "ATTT KT 1.3.2a"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Kết nối an toàn"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Gọi http://<máy chủ>/api/v1/<API của Phân hệ E> (không theo chuyển hướng)"
+    ket_qua_mong_doi:
+      - "HTTP 301/308 với Location bắt đầu https://; không trả dữ liệu qua HTTP"
+    ket_qua_chay: "Pass"
+  - id: ATE-T01
+    title: "Không thao tác quá SESSION_TIMEOUT_MINUTES khi đang ở màn của Phân hệ E: thông báo hết phiên và yêu cầu đăng nhập lại"
+    uc: "ATTT KT 1.3.2b"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thời gian chờ phiên"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Manual"
+    cac_buoc:
+      - "1. Đăng nhập, mở một màn của Phân hệ E"
+      - "2. Không thao tác quá thời gian chờ cấu hình (mặc định 30 phút)"
+      - "3. Bấm thao tác bất kỳ / gọi lại API bằng token cũ"
+    ket_qua_mong_doi:
+      - "Hiện \"Phiên làm việc đã hết hạn\", về trang đăng nhập; API trả 401 (BE kiểm tra thời điểm hoạt động cuối, không chỉ hạn JWT)"
+    ghi_chu: "Manual: phải chờ hết thời gian cấu hình (≥ 30 phút) hoặc chỉnh tham số tạm thời"
+    ket_qua_chay: "Manual"
+  - id: ATE-X04
+    title: "[API] API công khai chỉ gồm danh sách đợt đang mở, nội dung đợt và gửi phiếu; mọi API quản trị khảo sát bắt buộc token"
+    uc: "ATTT KT 1.3.1a"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "API công khai"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Không token gọi: survey/surveys, survey/surveys/{id}, survey/surveys/{id}/status, các API thống kê/kết quả"
+      - "2. Không token gọi public/surveys"
+    ket_qua_mong_doi:
+      - "Bước 1 trả 401; bước 2 trả 200 chỉ với trường công khai (không người tạo, lịch sử, số phiếu, mục tiêu)"
+    ket_qua_chay: "Pass"
+  - id: ATE-V04
+    title: "[API] Gửi phiếu công khai với dữ liệu sai (câu không thuộc đợt, giá trị ngoài Hài lòng/Chưa hài lòng, góp ý quá dài, đợt không tồn tại) bị BE từ chối"
+    uc: "ATTT KT 1.3.4"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "API công khai"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Không token POST phiếu tới đợt trực tuyến đang mở với từng loại dữ liệu sai"
+    ket_qua_mong_doi:
+      - "HTTP 400/404; không ghi nhận phiếu; không lỗi 500"
+    ghi_chu: "Chỉ gửi dữ liệu sai — không tạo phiếu hợp lệ"
+    ket_qua_chay: "Pass"
+  - id: ATE-W02
+    title: "Gửi phiếu công khai có cơ chế chống gửi tự động hàng loạt (giới hạn tần suất / captcha)"
+    uc: "ATTT PM 3"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "API công khai"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Manual"
+    cac_buoc:
+      - "1. Gửi liên tiếp nhiều phiếu hợp lệ từ cùng IP trong 1 phút"
+    ket_qua_mong_doi:
+      - "Sau ngưỡng bị từ chối (429 hoặc thông báo); số phiếu ghi nhận không vượt ngưỡng"
+    ghi_chu: "Manual: tạo phiếu thật trên đợt đang mở; đã có PUB-S* tương ứng"
+    ket_qua_chay: "Manual"
+  - id: ATE-S02
+    title: "Phiếu người dân không lưu/không hiển thị thông tin định danh (IP, thiết bị) ở màn Phiếu trả lời và tệp xuất"
+    uc: "ATTT KT 1.4.1"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Dữ liệu nhạy cảm"
+    loai: "Bảo mật"
+    uu_tien: "Trung bình"
+    automation: "Manual"
+    cac_buoc:
+      - "1. Mở chi tiết phiếu trực tuyến ở màn Phiếu trả lời"
+      - "2. Xuất Excel kết quả"
+    ket_qua_mong_doi:
+      - "Không hiển thị IP/thiết bị/định danh người trả lời"
+    ghi_chu: "Manual: đã có ANS/SRT tương ứng; kiểm lại trong đợt rà soát ATTT"
+    ket_qua_chay: "Manual"

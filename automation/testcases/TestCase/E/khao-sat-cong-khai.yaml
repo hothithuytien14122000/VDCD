@@ -1,0 +1,768 @@
+title: "Khảo sát công khai (người dân)"
+phan_he: "E - Khảo sát hài lòng"
+tong_so: 51
+testcases:
+  - id: PUB-L01
+    title: "Mở trang công khai không cần đăng nhập, hiển thị header quốc huy \"Đánh giá CĐS\", tiêu đề khảo sát, dòng \"Không cần đăng nhập\" và số khảo sát đang mở"
+    uc: "E.UC2.1"
+    tac_nhan: "Người dân"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Danh sách"
+    loai: "Chức năng"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. (Không đăng nhập) Mở trang danh sách khảo sát công khai"
+    ket_qua_mong_doi:
+      - "Trang hiển thị không yêu cầu đăng nhập; header đỏ có quốc huy và tên hệ thống; tiêu đề \"Khảo sát mức độ hài lòng của người dân\"; nhãn \"Không cần đăng nhập\"; không có menu/tài khoản nội bộ"
+    ket_qua_chay: "Pass"
+  - id: PUB-L02
+    title: "Mỗi thẻ hiển thị tên đợt, đơn vị thực hiện, hạn đến (dd/mm/yyyy), số câu hỏi và nút \"Tham gia khảo sát\" (BR-4)"
+    uc: "E.UC2.1"
+    tac_nhan: "Người dân"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Danh sách"
+    loai: "Chức năng"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. (Không đăng nhập) Mở trang danh sách khảo sát công khai"
+    ket_qua_mong_doi:
+      - "Mỗi thẻ có đủ 5 thành phần; đối chiếu API: đơn vị là đơn vị của đợt, không phải đơn vị tài khoản/thiết bị"
+    ket_qua_chay: "Pass"
+  - id: PUB-L03
+    title: "Số câu hỏi trên thẻ là tổng các câu của các nhóm, không tính ô Góp ý và không tính số nhóm (BR-4)"
+    uc: "E.UC2.1"
+    tac_nhan: "Người dân"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Danh sách"
+    loai: "Nghiệp vụ"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đợt có 2 nhóm: 3 câu + 4 câu"
+      - "2. Xem thẻ trên trang công khai"
+    ket_qua_mong_doi:
+      - "Số câu hỏi = 7"
+    ket_qua_chay: "Pass"
+  - id: PUB-L05
+    title: "Không hiển thị đợt Nháp, Chờ phê duyệt, Bị từ chối (BR-2)"
+    uc: "E.UC2.1"
+    tac_nhan: "Người dân"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Điều kiện hiển thị"
+    loai: "Nghiệp vụ"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Có đợt trực tuyến ở Nháp, Chờ phê duyệt, Bị từ chối"
+      - "2. Mở trang công khai"
+    ket_qua_mong_doi:
+      - "Không đợt nào trong 3 đợt xuất hiện; tổng số không tính chúng"
+    ket_qua_chay: "Pass"
+  - id: PUB-L06
+    title: "Không hiển thị đợt đã phê duyệt nhưng chưa tới ngày bắt đầu (kể cả khi tác vụ trạng thái chưa chạy) (BR-2)"
+    uc: "E.UC2.1"
+    tac_nhan: "Người dân"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Điều kiện hiển thị"
+    loai: "Nghiệp vụ"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đợt trực tuyến Đã phê duyệt, bắt đầu ngày mai"
+      - "2. Mở trang công khai"
+    ket_qua_mong_doi:
+      - "Không xuất hiện"
+    ket_qua_chay: "Pass"
+  - id: PUB-L08
+    title: "Không hiển thị đợt đang diễn ra nhưng không có hình thức Trực tuyến (BR-1)"
+    uc: "E.UC2.1"
+    tac_nhan: "Người dân"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Điều kiện hiển thị"
+    loai: "Nghiệp vụ"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đợt Đang diễn ra chỉ có Trực tiếp/Gián tiếp"
+      - "2. Mở trang công khai"
+    ket_qua_mong_doi:
+      - "Không xuất hiện"
+    ket_qua_chay: "Pass"
+  - id: PUB-L11
+    title: "Sắp xếp theo ngày kết thúc tăng dần; cùng ngày thì theo mã đợt tăng dần (BR-8)"
+    uc: "E.UC2.1"
+    tac_nhan: "Người dân"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Sắp xếp"
+    loai: "Nghiệp vụ"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Ba đợt kết thúc +3, +10 ngày và hai đợt cùng +5 ngày (mã nhỏ/lớn)"
+    ket_qua_mong_doi:
+      - "Thứ tự: +3, +5 (mã nhỏ), +5 (mã lớn), +10"
+    ket_qua_chay: "Pass"
+  - id: PUB-L15
+    title: "Truy cập trang ngoài phạm vi (page=999 qua URL/API) về trang cuối hợp lệ, không hiển thị dữ liệu mẫu (BR-10)"
+    uc: "E.UC2.1"
+    tac_nhan: "Người dân"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Phân trang"
+    loai: "Nghiệp vụ"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Mở danh sách với tham số trang = 999 hoặc 0 hoặc -1"
+    ket_qua_mong_doi:
+      - "Về trang cuối hợp lệ (hoặc trang 1 cho giá trị ≤ 0); không lỗi 500"
+    ket_qua_chay: "Pass"
+  - id: PUB-L17
+    title: "Bấm \"Tham gia khảo sát\" mở đúng đợt của thẻ được chọn (UC2.2) (BR-6)"
+    uc: "E.UC2.1"
+    tac_nhan: "Người dân"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Điều hướng"
+    loai: "Chức năng"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. (Không đăng nhập) Mở trang danh sách khảo sát công khai"
+      - "2. Bấm \"Tham gia khảo sát\" ở thẻ thứ 2"
+    ket_qua_mong_doi:
+      - "Mở trang nội dung của đúng đợt (tên đợt khớp thẻ); không yêu cầu đăng nhập"
+    ket_qua_chay: "Pass"
+  - id: PUB-L19
+    title: "Trang công khai không có bộ lọc, ô tìm kiếm, đăng nhập hay chức năng quản trị (BR-7)"
+    uc: "E.UC2.1"
+    tac_nhan: "Người dân"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Hiển thị"
+    loai: "UI"
+    uu_tien: "Thấp"
+    automation: "Auto"
+    cac_buoc:
+      - "1. (Không đăng nhập) Mở trang danh sách khảo sát công khai"
+    ket_qua_mong_doi:
+      - "Không có ô tìm kiếm, bộ lọc, nút đăng nhập, menu quản trị"
+    ket_qua_chay: "Pass"
+  - id: PUB-L20
+    title: "Nút \"Các khảo sát đang mở\" ở header (web) mở lại danh sách công khai (AF2)"
+    uc: "E.UC2.1"
+    tac_nhan: "Người dân"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Điều hướng"
+    loai: "Chức năng"
+    uu_tien: "Thấp"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Từ trang nội dung đợt bấm \"Các khảo sát đang mở\""
+    ket_qua_mong_doi:
+      - "Chuyển về danh sách và tải lại dữ liệu hiện tại"
+    ket_qua_chay: "Pass"
+  - id: PUB-L23
+    title: "API danh sách công khai không trả dữ liệu nội bộ (người tạo, lịch sử, mục tiêu, số phiếu, id người dùng)"
+    uc: "E.UC2.1"
+    tac_nhan: "Người dân"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Bảo mật"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. [API] GET danh sách công khai không token"
+      - "2. Xem các trường trong phản hồi"
+    ket_qua_mong_doi:
+      - "Chỉ có trường cần cho thẻ (id/mã, tên, đơn vị, hạn, số câu); không có dữ liệu nội bộ"
+    ket_qua_chay: "Pass"
+  - id: PUB-V01
+    title: "Hiển thị đủ tên đợt, đơn vị, hạn đến, số câu hỏi, các nhóm/câu theo thứ tự đã duyệt và ô góp ý (BR-5)"
+    uc: "E.UC2.2"
+    tac_nhan: "Người dân"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Xem nội dung"
+    loai: "Chức năng"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. (Không đăng nhập) Mở link của đợt trực tuyến đang diễn ra có 2 nhóm, 6 câu"
+    ket_qua_mong_doi:
+      - "Có tên đợt, Đơn vị, Hạn đến dd/mm/yyyy, Số câu hỏi; nhóm/câu theo thứ tự đã duyệt; ô Góp ý thêm; header thương hiệu; không có menu nội bộ"
+    ket_qua_chay: "Pass"
+  - id: PUB-V03
+    title: "Mỗi câu có đúng hai lựa chọn Hài lòng và Chưa hài lòng; không có câu đánh giá chung hay \"Không áp dụng\" (BR-7)"
+    uc: "E.UC2.2"
+    tac_nhan: "Người dân"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Xem nội dung"
+    loai: "Nghiệp vụ"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. (Không đăng nhập) Mở link của đợt trực tuyến đang diễn ra có 2 nhóm, 6 câu"
+    ket_qua_mong_doi:
+      - "Mỗi câu có 2 radio; không có lựa chọn \"Không áp dụng\", không có câu đánh giá chung"
+    ket_qua_chay: "Pass"
+  - id: PUB-V04
+    title: "Không hiển thị lịch sử xử lý, phiếu người khác, kết quả tổng hợp, thao tác sửa nhóm/câu (BR-6)"
+    uc: "E.UC2.2"
+    tac_nhan: "Người dân"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Xem nội dung"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. (Không đăng nhập) Mở link của đợt trực tuyến đang diễn ra có 2 nhóm, 6 câu"
+    ket_qua_mong_doi:
+      - "Không có lịch sử, kết quả, thao tác kéo thả/sửa/xóa"
+    ket_qua_chay: "Pass"
+  - id: PUB-V05
+    title: "Mở trực tiếp bằng link của đợt vào thẳng nội dung, không bắt buộc qua danh sách (AF1, BR-1)"
+    uc: "E.UC2.2"
+    tac_nhan: "Người dân"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Truy cập"
+    loai: "Chức năng"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Lấy link của đợt đang diễn ra"
+      - "2. Mở link ở trình duyệt mới (ẩn danh)"
+    ket_qua_mong_doi:
+      - "Hiển thị nội dung đúng đợt; không bị chuyển qua danh sách; không hỏi đăng nhập"
+    ket_qua_chay: "Pass"
+  - id: PUB-V07
+    title: "Link/QR không phải mã xác thực hay mã dùng một lần: mở nhiều lần, nhiều thiết bị đều được (AF1)"
+    uc: "E.UC2.2"
+    tac_nhan: "Người dân"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Truy cập"
+    loai: "Nghiệp vụ"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Mở link 3 lần liên tiếp và từ 2 trình duyệt khác nhau"
+    ket_qua_mong_doi:
+      - "Cả 3 lần đều mở được; không có cơ chế dùng một lần"
+    ket_qua_chay: "Pass"
+  - id: PUB-V08
+    title: "Đường dẫn sai/không tìm thấy đợt: UI-2.2.2 với MSG-076, không hiển thị form, không lộ thông tin nội bộ (BR-3, EF1)"
+    uc: "E.UC2.2"
+    tac_nhan: "Người dân"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Truy cập"
+    loai: "Nghiệp vụ"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Mở link với mã đợt không tồn tại (và link rác)"
+    ket_qua_mong_doi:
+      - "Hiển thị MSG-076; không có form; có nút \"Các khảo sát đang mở\"; không lộ lý do hay thông tin nội bộ"
+    ket_qua_chay: "Pass"
+  - id: PUB-V09
+    title: "Đợt không có hình thức Trực tuyến: mở link bằng mã đợt hiển thị MSG-076 (BR-3)"
+    uc: "E.UC2.2"
+    tac_nhan: "Người dân"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Truy cập"
+    loai: "Nghiệp vụ"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Lấy mã/id đợt chỉ Trực tiếp đang diễn ra"
+      - "2. Mở trang trả lời với mã đó"
+    ket_qua_mong_doi:
+      - "MSG-076; không hiển thị nội dung"
+    ket_qua_chay: "Pass"
+  - id: PUB-V10
+    title: "Đợt chưa được phê duyệt (Nháp/Chờ phê duyệt/Bị từ chối): mở link hiển thị MSG-076, không lộ lý do phê duyệt (BR-3)"
+    uc: "E.UC2.2"
+    tac_nhan: "Người dân"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Truy cập"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Lấy id đợt Nháp, Chờ phê duyệt, Bị từ chối"
+      - "2. Mở trang trả lời với từng id"
+    ket_qua_mong_doi:
+      - "MSG-076 ở cả 3; không có thông tin về trạng thái/lý do từ chối"
+    ket_qua_chay: "Pass"
+  - id: PUB-V11
+    title: "Đợt đã duyệt, có Trực tuyến nhưng chưa tới ngày bắt đầu: MSG-078, không cho gửi phiếu (BR-4, EF2)"
+    uc: "E.UC2.2"
+    tac_nhan: "Người dân"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Truy cập"
+    loai: "Nghiệp vụ"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đợt Đã phê duyệt bắt đầu ngày mai"
+      - "2. Mở link"
+    ket_qua_mong_doi:
+      - "MSG-078 (UI-2.2.2); không có form"
+    ket_qua_chay: "Pass"
+  - id: PUB-V14
+    title: "Trang không truy cập được có nút \"Các khảo sát đang mở\" chuyển về UC2.1, không yêu cầu đăng nhập"
+    uc: "E.UC2.2"
+    tac_nhan: "Người dân"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Truy cập"
+    loai: "Chức năng"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Mở link sai"
+      - "2. Bấm \"Các khảo sát đang mở\""
+    ket_qua_mong_doi:
+      - "Về danh sách công khai"
+    ket_qua_chay: "Pass"
+  - id: PUB-V15
+    title: "Nút quay lại/Các khảo sát đang mở trên trang nội dung về danh sách, không tạo phiếu và không lưu nháp câu trả lời (AF2)"
+    uc: "E.UC2.2"
+    tac_nhan: "Người dân"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Điều hướng"
+    loai: "Chức năng"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. (Không đăng nhập) Mở link của đợt trực tuyến đang diễn ra có 2 nhóm, 6 câu"
+      - "2. Chọn vài đáp án"
+      - "3. Bấm \"Các khảo sát đang mở\""
+      - "4. Mở lại đợt"
+    ket_qua_mong_doi:
+      - "Về danh sách; mở lại form không còn đáp án đã chọn; không có phiếu mới"
+    ket_qua_chay: "Pass"
+  - id: PUB-V18
+    title: "API nội dung công khai không trả dữ liệu nội bộ (người tạo, lịch sử, mục tiêu, phiếu, kết quả)"
+    uc: "E.UC2.2"
+    tac_nhan: "Người dân"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Bảo mật"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. [API] GET nội dung đợt công khai không token"
+    ket_qua_mong_doi:
+      - "Chỉ có tên, đơn vị, hạn, nhóm/câu; không có dữ liệu nội bộ hay kết quả"
+    ket_qua_chay: "Pass"
+  - id: PUB-A01
+    title: "Mở form mới không chọn sẵn đáp án; tiến độ ban đầu \"Đã trả lời 0/6\" và thanh 0% (BR-2)"
+    uc: "E.UC2.3"
+    tac_nhan: "Người dân"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Trả lời"
+    loai: "Chức năng"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. (Không đăng nhập) Mở link của đợt trực tuyến đang diễn ra có 2 nhóm, 6 câu"
+    ket_qua_mong_doi:
+      - "Không có radio nào được chọn; \"Đã trả lời 0/6\"; thanh tiến độ 0%; ô Góp ý trống với placeholder đúng"
+    ket_qua_chay: "Pass"
+  - id: PUB-A04
+    title: "Tiến độ: 4/6 hiển thị \"Đã trả lời 4/6\" và thanh ≈ 66,67%; 6/6 là 100% (BR-3)"
+    uc: "E.UC2.3"
+    tac_nhan: "Người dân"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Trả lời"
+    loai: "Nghiệp vụ"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. (Không đăng nhập) Mở link của đợt trực tuyến đang diễn ra có 2 nhóm, 6 câu"
+      - "2. Chọn đáp án 4 câu rồi 6 câu"
+    ket_qua_mong_doi:
+      - "4/6 → ≈ 66,67%; 6/6 → 100%; không dùng thanh này làm tỷ lệ hài lòng"
+    ket_qua_chay: "Pass"
+  - id: PUB-A05
+    title: "Nhập góp ý không làm thay đổi tiến độ (BR-3)"
+    uc: "E.UC2.3"
+    tac_nhan: "Người dân"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Trả lời"
+    loai: "Nghiệp vụ"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. (Không đăng nhập) Mở link của đợt trực tuyến đang diễn ra có 2 nhóm, 6 câu"
+      - "2. Nhập góp ý, chưa chọn đáp án nào"
+    ket_qua_mong_doi:
+      - "Vẫn 0/6; thanh 0%"
+    ket_qua_chay: "Pass"
+  - id: PUB-A06
+    title: "Trả lời đủ 6 câu và gửi: lưu phiếu Trực tuyến, hiển thị màn thành công MSG-080 kèm tên đợt (UI-2.3.1)"
+    uc: "E.UC2.3"
+    tac_nhan: "Người dân"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Gửi phiếu"
+    loai: "Chức năng"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. (Không đăng nhập) Mở link của đợt trực tuyến đang diễn ra có 2 nhóm, 6 câu"
+      - "2. Chọn đáp án cả 6 câu"
+      - "3. Nhập góp ý \"Tốt\""
+      - "4. Bấm \"Gửi đánh giá\""
+    ket_qua_mong_doi:
+      - "Màn thành công: dấu tích, MSG-080, \"Đánh giá của bạn đã được ghi nhận cho\" + đúng tên đợt; số phiếu của đợt tăng 1 (API); phiếu có hình thức Trực tuyến, đúng 6 đáp án, góp ý \"Tốt\", thời điểm ghi nhận"
+    ket_qua_chay: "Pass"
+  - id: PUB-A07
+    title: "Để trống Góp ý thêm vẫn gửi được khi đã đủ câu (BR-4, AF2)"
+    uc: "E.UC2.3"
+    tac_nhan: "Người dân"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Gửi phiếu"
+    loai: "Chức năng"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. (Không đăng nhập) Mở link của đợt trực tuyến đang diễn ra có 2 nhóm, 6 câu"
+      - "2. Chọn đủ 6 câu, không nhập góp ý"
+      - "3. Bấm \"Gửi đánh giá\""
+    ket_qua_mong_doi:
+      - "Gửi thành công; phiếu có góp ý trống"
+    ket_qua_chay: "Pass"
+  - id: PUB-A08
+    title: "Còn câu chưa chọn: không lưu, MSG-079 dưới từng câu thiếu với nội dung câu hỏi, cuộn tới câu thiếu đầu tiên (BR-5, EF1)"
+    uc: "E.UC2.3"
+    tac_nhan: "Người dân"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Validate"
+    loai: "Nghiệp vụ"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. (Không đăng nhập) Mở link của đợt trực tuyến đang diễn ra có 2 nhóm, 6 câu"
+      - "2. Chọn câu 1, 2, 4, 5, 6 (bỏ câu 3)"
+      - "3. Bấm \"Gửi đánh giá\""
+    ket_qua_mong_doi:
+      - "MSG-079 hiển thị dưới câu 3 kèm nội dung câu; trang cuộn tới câu 3; không lưu phiếu; đáp án đã chọn còn nguyên; nút gửi mở lại"
+    ket_qua_chay: "Pass"
+  - id: PUB-A10
+    title: "Gửi khi chưa chọn câu nào: MSG-079 ở mọi câu, không lưu"
+    uc: "E.UC2.3"
+    tac_nhan: "Người dân"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Validate"
+    loai: "Validate"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. (Không đăng nhập) Mở link của đợt trực tuyến đang diễn ra có 2 nhóm, 6 câu"
+      - "2. Bấm Gửi đánh giá ngay"
+    ket_qua_mong_doi:
+      - "MSG-079 ở cả 6 câu; không lưu"
+    ket_qua_chay: "Pass"
+  - id: PUB-A11
+    title: "Góp ý đúng 1.000 ký tự gửi được (BR-4)"
+    uc: "E.UC2.3"
+    tac_nhan: "Người dân"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Validate"
+    loai: "Validate"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. (Không đăng nhập) Mở link của đợt trực tuyến đang diễn ra có 2 nhóm, 6 câu"
+      - "2. Chọn đủ câu, góp ý 1.000 ký tự"
+      - "3. Bấm \"Gửi đánh giá\""
+    ket_qua_mong_doi:
+      - "Gửi thành công; phiếu lưu đủ 1.000 ký tự"
+    ket_qua_chay: "Pass"
+  - id: PUB-A13
+    title: "Máy chủ cũng kiểm tra độ dài góp ý: gửi API với 1.001 ký tự bị từ chối, không cắt ngầm rồi báo thành công (EF2)"
+    uc: "E.UC2.3"
+    tac_nhan: "Người dân"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Bảo mật"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. [API] POST phiếu công khai đủ đáp án, góp ý 1.001 ký tự"
+    ket_qua_mong_doi:
+      - "Bị từ chối (MSG-013); không có phiếu mới"
+    ket_qua_chay: "Pass"
+  - id: PUB-A15
+    title: "Không có câu đánh giá chung, lựa chọn \"Không áp dụng\", nút \"Chọn tất cả Hài lòng\" trên form người dân (BR-12)"
+    uc: "E.UC2.3"
+    tac_nhan: "Người dân"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Trả lời"
+    loai: "Nghiệp vụ"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. (Không đăng nhập) Mở link của đợt trực tuyến đang diễn ra có 2 nhóm, 6 câu"
+    ket_qua_mong_doi:
+      - "Không có các thành phần trên"
+    ket_qua_chay: "Pass"
+  - id: PUB-A17
+    title: "Người dân không nhập ngày thu phiếu/người nhập/hình thức; hệ thống tự ghi thời điểm và hình thức Trực tuyến (BR-7)"
+    uc: "E.UC2.3"
+    tac_nhan: "Người dân"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Gửi phiếu"
+    loai: "Nghiệp vụ"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. (Không đăng nhập) Mở link của đợt trực tuyến đang diễn ra có 2 nhóm, 6 câu"
+    ket_qua_mong_doi:
+      - "Form không có ô ngày thu, người nhập, hình thức; sau khi gửi phiếu có hình thức Trực tuyến, ngày thu \"-\", người nhập \"-\", ghi nhận lúc ≈ giờ gửi"
+    ket_qua_chay: "Pass"
+  - id: PUB-A19
+    title: "Phiếu gửi thành công được tính vào số phiếu và thống kê từng câu (hậu điều kiện)"
+    uc: "E.UC2.3"
+    tac_nhan: "Người dân"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Gửi phiếu"
+    loai: "Nghiệp vụ"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Ghi kết quả tổng hợp đợt (qua API)"
+      - "2. Gửi phiếu: câu 1 Hài lòng, câu 2 Chưa hài lòng…"
+      - "3. Đọc kết quả"
+    ket_qua_mong_doi:
+      - "Số phiếu +1; H/C của từng câu tăng đúng theo đáp án; tổng lượt +6"
+    ket_qua_chay: "Pass"
+  - id: PUB-A21
+    title: "Đợt không còn hợp lệ khi gửi: MSG-076 (bị xóa/hủy duyệt/không còn Trực tuyến) hoặc MSG-078 (chưa tới ngày bắt đầu), không lưu (EF4)"
+    uc: "E.UC2.3"
+    tac_nhan: "Người dân"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Gửi phiếu"
+    loai: "Nghiệp vụ"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. [API] POST phiếu cho id không tồn tại"
+      - "2. [API] POST phiếu cho đợt chưa duyệt / chỉ Trực tiếp"
+      - "3. [API] POST phiếu cho đợt chưa tới ngày bắt đầu"
+    ket_qua_mong_doi:
+      - "1,2: MSG-076; 3: MSG-078; không có phiếu mới"
+    ket_qua_chay: "Pass"
+  - id: PUB-A23
+    title: "Trong khi gửi nút \"Gửi đánh giá\" bị vô hiệu; nút mở lại sau khi xử lý xong (BR-8)"
+    uc: "E.UC2.3"
+    tac_nhan: "Người dân"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Gửi phiếu"
+    loai: "Chức năng"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. (Không đăng nhập) Mở link của đợt trực tuyến đang diễn ra có 2 nhóm, 6 câu"
+      - "2. Chọn đủ câu"
+      - "3. Làm chậm API gửi 3 giây → bấm Gửi"
+    ket_qua_mong_doi:
+      - "Nút disabled trong 3 giây; sau khi có kết quả hiển thị màn thành công (hoặc mở lại nút nếu lỗi)"
+    ket_qua_chay: "Pass"
+  - id: PUB-A24
+    title: "Bấm Gửi liên tiếp chỉ khởi tạo một lần gửi, chỉ một phiếu được ghi nhận (BR-8, EF6)"
+    uc: "E.UC2.3"
+    tac_nhan: "Người dân"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Gửi phiếu"
+    loai: "Nghiệp vụ"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. (Không đăng nhập) Mở link của đợt trực tuyến đang diễn ra có 2 nhóm, 6 câu"
+      - "2. Chọn đủ câu"
+      - "3. Bấm Gửi đánh giá 5 lần liên tiếp rất nhanh"
+    ket_qua_mong_doi:
+      - "Chỉ 1 phiếu mới (API); thống kê +1 đúng một lần"
+    ket_qua_chay: "Pass"
+  - id: PUB-A28
+    title: "Lỗi hệ thống khi gửi: MSG-025, không hiển thị màn thành công, giữ đáp án/góp ý, nút mở lại (EF5)"
+    uc: "E.UC2.3"
+    tac_nhan: "Người dân"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Lỗi"
+    loai: "Nghiệp vụ"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. (Không đăng nhập) Mở link của đợt trực tuyến đang diễn ra có 2 nhóm, 6 câu"
+      - "2. Chọn đủ câu, nhập góp ý"
+      - "3. Giả lập API gửi trả 500 → Gửi"
+    ket_qua_mong_doi:
+      - "MSG-025; vẫn ở form; đáp án và góp ý còn nguyên; nút Gửi mở lại; không có phiếu"
+    ket_qua_chay: "Pass"
+  - id: PUB-A29
+    title: "Mất kết nối khi gửi: MSG-026, giữ nội dung; online thử lại gửi thành công đúng một phiếu (EF5)"
+    uc: "E.UC2.3"
+    tac_nhan: "Người dân"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Lỗi"
+    loai: "Nghiệp vụ"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. (Không đăng nhập) Mở link của đợt trực tuyến đang diễn ra có 2 nhóm, 6 câu"
+      - "2. Chọn đủ câu"
+      - "3. Offline → Gửi"
+      - "4. Online → Gửi lại"
+    ket_qua_mong_doi:
+      - "MSG-026 lần 1; lần 2 thành công; tổng phiếu +1"
+    ket_qua_chay: "Pass"
+  - id: PUB-A31
+    title: "API thiếu đáp án (5/6 câu) hoặc đáp án ngoài {Hài lòng, Chưa hài lòng} hoặc câu không thuộc đợt bị từ chối"
+    uc: "E.UC2.3"
+    tac_nhan: "Người dân"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Bảo mật"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. [API] POST phiếu thiếu 1 câu"
+      - "2. [API] đáp án = \"Trung bình\""
+      - "3. [API] questionId thuộc đợt khác"
+    ket_qua_mong_doi:
+      - "Cả 3 bị từ chối (MSG-079 / lỗi validate); không có phiếu mới"
+    ket_qua_chay: "Pass"
+  - id: PUB-A32
+    title: "API gửi trùng đáp án một câu hoặc thừa đáp án không tạo phiếu sai (đếm lệch thống kê)"
+    uc: "E.UC2.3"
+    tac_nhan: "Người dân"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Bảo mật"
+    loai: "Bảo mật"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. [API] POST phiếu có 2 đáp án cho cùng câu 1"
+    ket_qua_mong_doi:
+      - "Bị từ chối hoặc chỉ ghi nhận một đáp án; H_j + C_j luôn bằng số phiếu"
+    ket_qua_chay: "Pass"
+  - id: PUB-A34
+    title: "Không yêu cầu đăng nhập, xác thực điện thoại hay mã dùng một lần; gửi nhiều phiếu từ cùng trình duyệt đều được ghi nhận (BR-11)"
+    uc: "E.UC2.3"
+    tac_nhan: "Người dân"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Gửi phiếu"
+    loai: "Nghiệp vụ"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. (Không đăng nhập) Mở link của đợt trực tuyến đang diễn ra có 2 nhóm, 6 câu"
+      - "2. Gửi phiếu lần 1, bấm \"Xem khảo sát khác\", mở lại đợt, gửi phiếu lần 2"
+    ket_qua_mong_doi:
+      - "Cả 2 phiếu được ghi nhận (+2); không bị hỏi đăng nhập/OTP; không chặn một phiếu mỗi trình duyệt"
+    ghi_chu: "Cần BA xác nhận quy tắc (SRS BR-11: không chặn trùng người)"
+    ket_qua_chay: "Pass"
+  - id: PUB-A35
+    title: "Màn thành công có \"Xem khảo sát khác\"/\"Các khảo sát đang mở\" về danh sách, không gửi lại phiếu và không còn form (AF3)"
+    uc: "E.UC2.3"
+    tac_nhan: "Người dân"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Gửi phiếu"
+    loai: "Chức năng"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. (Không đăng nhập) Mở link của đợt trực tuyến đang diễn ra có 2 nhóm, 6 câu"
+      - "2. Gửi phiếu thành công"
+      - "3. Bấm \"Xem khảo sát khác\""
+      - "4. Quay lại bằng nút Back của trình duyệt"
+    ket_qua_mong_doi:
+      - "Về danh sách; số phiếu không đổi sau khi quay lại; màn thành công không có nút gửi lại; Back không gửi lại phiếu"
+    ket_qua_chay: "Pass"
+  - id: PUB-A36
+    title: "Màn thành công chỉ hiển thị sau khi xác nhận lưu: có dấu tích xanh, lời cảm ơn MSG-080, đúng tên đợt vừa gửi, không có điểm hài lòng chung"
+    uc: "E.UC2.3"
+    tac_nhan: "Người dân"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Gửi phiếu"
+    loai: "UI"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. (Không đăng nhập) Mở link của đợt trực tuyến đang diễn ra có 2 nhóm, 6 câu"
+      - "2. Gửi phiếu cho đợt X"
+      - "3. Gửi phiếu cho đợt Y"
+    ket_qua_mong_doi:
+      - "Mỗi lần hiển thị đúng tên đợt vừa gửi; không dùng tên mẫu cố định; không có điểm/tỷ lệ hài lòng"
+    ket_qua_chay: "Pass"
+  - id: PUB-A37
+    title: "Gửi hàng loạt phiếu tự động từ một nguồn (spam) có biện pháp hạn chế hoặc được ghi nhận rõ ràng"
+    uc: "E.UC2.3"
+    tac_nhan: "Người dân"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Bảo mật"
+    loai: "Bảo mật"
+    uu_tien: "Thấp"
+    automation: "Auto"
+    cac_buoc:
+      - "1. [API] POST 100 phiếu trong 10 giây từ cùng IP"
+    ket_qua_mong_doi:
+      - "Hệ thống không sập; phản hồi nhất quán (chấp nhận hoặc giới hạn tốc độ có thông báo)"
+    ghi_chu: "Cần BA xác nhận quy tắc (SRS BR-11 không chặn trùng người; có chống spam hay không?)"
+    ket_qua_chay: "Pass"
+  - id: PUB-R01
+    title: "Bản mobile (390px) danh sách công khai: bỏ nút \"Các khảo sát đang mở\" trùng ở góc phải, nút \"Tham gia khảo sát\" rộng cả thẻ"
+    uc: "E.UC2.1"
+    tac_nhan: "Người dân"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Giao diện"
+    loai: "UI"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Mở trang danh sách với viewport 390px"
+    ket_qua_mong_doi:
+      - "Bố cục mobile đúng; không tràn ngang; nút rộng bằng thẻ"
+    ket_qua_chay: "Pass"
+  - id: PUB-R02
+    title: "Bản mobile của form: thanh tiến độ lên trước các câu, nút Gửi cố định cuối màn hình và không che ô Góp ý, vùng chạm radio ≥ 44px"
+    uc: "E.UC2.3"
+    tac_nhan: "Người dân"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Giao diện"
+    loai: "UI"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Mở form với viewport 390px"
+      - "2. Cuộn tới ô Góp ý"
+    ket_qua_mong_doi:
+      - "Tiến độ ở đầu; nút gửi cố định; ô Góp ý không bị che (có khoảng trống cuối form); radio ≥ 44px"
+    ket_qua_chay: "Pass"
+  - id: PUB-R03
+    title: "Bản web (≥ 1100px) form: khối Tiến độ và Gửi đánh giá ở cột phải; hướng dẫn \"Trả lời đủ y câu để gửi. Không cần đăng nhập, không lưu tạm.\""
+    uc: "E.UC2.3"
+    tac_nhan: "Người dân"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Giao diện"
+    loai: "UI"
+    uu_tien: "Thấp"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Mở form với viewport 1280px"
+    ket_qua_mong_doi:
+      - "Có cột phải với Tiến độ và nút Gửi; câu hướng dẫn có y = số câu thực tế của đợt (6)"
+    ket_qua_chay: "Pass"
+  - id: PUB-R04
+    title: "Màn thành công hiển thị đúng ở cả bản web và mobile"
+    uc: "E.UC2.3"
+    tac_nhan: "Người dân"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Giao diện"
+    loai: "UI"
+    uu_tien: "Thấp"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Gửi phiếu ở viewport 1280px và 390px"
+    ket_qua_mong_doi:
+      - "Cả hai bản có dấu tích, lời cảm ơn, tên đợt, nút \"Xem khảo sát khác\""
+    ket_qua_chay: "Pass"

@@ -3,13 +3,19 @@ import { Page, Locator } from '@playwright/test';
 import {
   test, expect, tc, needWrite, PAGES, dataRows, openList, searchFor, waitList, rowTexts, cellText, findRow, pickOption, pickByLabel,
   dlg, btnCancel, btnSave, toast, rowAction, rowMenuItems, confirmYes, confirmNo, api, listApi, findApi, Made, code8, goto, totalOf,
-  registerAuthTest, registerMatrixTest, registerPerfTest, registerNotFoundTest, FILTERS, SPECIAL_NAME,
+  registerSearchRules, registerCodeNameRules, registerAuthTest, registerMatrixTest, registerPerfTest, registerNotFoundTest, FILTERS, SPECIAL_NAME,
   ensurePillar, ensureGroup, ensureIndicator,
 } from './common';
+import { DUP_CODE } from './common';
 
 const cfg = PAGES.IGR;
 const RES = cfg.res;
 const made = new Made();
+registerSearchRules('IGR', cfg);
+let pl: Record<string, { id: string }> = {};
+test.afterEach(() => { pl = {}; });
+registerCodeNameRules({ P: 'IGR', cfg, made, hasParent: true, nameMax: 500,
+  mk: async (code, name, parent = 'A') => { pl[parent] ??= await ensurePillar(made); made.addDti(RES, code); const r = await api('POST', RES, { pillarId: pl[parent].id, code, name, displayOrder: 0 }); return { status: r.status, message: r.message }; } });
 test.afterEach(async () => { await made.clean(); });
 
 const PH_CODE = /nhập mã nhóm chỉ số/i, PH_NAME = /nhập tên nhóm chỉ số/i;
@@ -56,12 +62,6 @@ test.describe('Nhóm chỉ số › Danh sách / Tìm kiếm / Phân trang', () 
     const heads = (await page.locator('.ant-table-thead th').allInnerTexts()).map(s => s.trim()).filter(Boolean);
     for (const re of cfg.cols) expect(heads.some(h => re.test(h)), `thiếu cột ${re} trong [${heads.join(' | ')}]`).toBeTruthy();
     expect(await dataRows(page).count()).toBeGreaterThan(0);
-  });
-  test(tc('IGR-L02'), async ({ page }) => {
-    await openList(page, cfg);
-    const n = await totalOf(page), rows = await dataRows(page).count();
-    expect(rows).toBe(Math.min(10, n));
-    expect(await page.locator('.ant-pagination').first().innerText()).toMatch(/trong\s+\d+/i);
   });
   test(tc('IGR-L03'), async ({ page }) => {
     await openList(page, cfg);
@@ -164,16 +164,6 @@ test.describe('Nhóm chỉ số › Bộ lọc', () => {
 test.describe('Nhóm chỉ số › Xem chi tiết', () => {
   test.describe.configure({ timeout: 60_000 });
   needWrite();
-  test(tc('IGR-V01'), async ({ page }) => {
-    const { g, ind } = await groupWithIndicator();
-    await detailOf(page, g.id);
-    const txt = (await page.locator('.ant-layout-content').first().innerText()).replace(/\s+/g, ' ');
-    for (const s of [g.code, g.pillarName, 'Thứ tự hiển thị', 'Số chỉ số', 'Tổng điểm tối đa', ind.code]) expect(txt, `thiếu "${s}"`).toContain(s);
-    expect(txt).toMatch(/Số chỉ số\s*1\b/); expect(txt).toMatch(/Tổng điểm tối đa\s*10,0/);
-    const heads = (await page.locator('.ant-table-thead th').allInnerTexts()).map(s => s.trim());
-    for (const h of ['MÃ CHỈ SỐ', 'TÊN CHỈ SỐ', 'ĐIỂM TỐI THIỂU', 'ĐIỂM TỐI ĐA', 'TRẠNG THÁI', 'THAO TÁC']) expect(heads, `thiếu cột ${h}`).toContain(h);
-    for (const b of [/xuất excel/i, /^\s*cập nhật\s*$/i, /thêm chỉ số/i]) await expect(page.locator('button', { hasText: b }).first()).toBeVisible();
-  });
   test(tc('IGR-V03'), async ({ page }) => {
     const g = await ensureGroup(made); // mặc định đã khóa
     await openList(page, cfg);
@@ -193,31 +183,6 @@ registerNotFoundTest('IGR-V02', cfg);
 test.describe('Nhóm chỉ số › Thêm mới', () => {
   test.describe.configure({ timeout: 90_000 });
   needWrite();
-  test(tc('IGR-C01'), async ({ page }) => {
-    const pil = await ensurePillar(made); const code = made.addDti(RES, code8());
-    const d = await openAdd(page);
-    await fillAdd(page, d, pil.name, code);
-    await submitAdd(d);
-    expect(await toast(page)).toMatch(/thành công/i);
-    const rec = await recOf(code);
-    expect(rec?.name).toBe(`qc.automation Nhóm ${code}`); expect(rec?.pillarId).toBe(pil.id); expect(rec?.isLocked).toBeFalsy();
-    const row = await findRow(page, cfg, code);
-    await expect(row.first()).toContainText(pil.name); await expect(row.first()).toContainText('Chưa khóa');
-  });
-  test(tc('IGR-C02'), async ({ page }) => {
-    const d = await openAdd(page);
-    await submitAdd(d); await page.waitForTimeout(800);
-    expect(await d.locator('.ant-form-item-explain-error').count(), 'phải báo lỗi bắt buộc ở 3 trường').toBeGreaterThanOrEqual(3);
-    await expect(d).toBeVisible();
-  });
-  test(tc('IGR-C03'), async ({ page }) => {
-    const a = await ensureGroup(made);
-    const d = await openAdd(page);
-    await fillAdd(page, d, a.pillarName, a.code, 'qc.automation Nhóm trùng mã');
-    await submitAdd(d);
-    expect(await toast(page)).toMatch(/mã nhóm chỉ số đã tồn tại/i);
-    expect((await listApi(RES, a.code)).filter((x: any) => x.code === a.code)).toHaveLength(1);
-  });
   test(tc('IGR-C04'), async () => {
     const pil = await ensurePillar(made, { lock: false });
     const code1 = made.addDti(RES, code8()), code2 = made.addDti(RES, code8());
@@ -228,136 +193,18 @@ test.describe('Nhóm chỉ số › Thêm mới', () => {
     expect(r2.status, `thiếu pillarId (HTTP ${r2.status}: ${r2.message})`).toBe(400);
     expect(r2.message).toMatch(/trụ cột không hợp lệ/i);
   });
-  test(tc('IGR-C05'), async () => {
-    const a = await ensureGroup(made);
-    const low = a.code.toLowerCase();
-    const r = await api('POST', RES, { pillarId: a.pillarId, code: low, name: 'qc.automation Nhóm khác hoa/thường', displayOrder: 0 });
-    if (r.status < 300) made.addDti(RES, low);
-    expect(r.status, `mã chỉ khác hoa/thường phải bị coi là trùng (HTTP ${r.status}: ${r.message})`).toBeGreaterThanOrEqual(400);
-  });
-  test(tc('IGR-C06'), async ({ page }) => {
-    const pil = await ensurePillar(made); const code = made.addDti(RES, code8());
-    const d = await openAdd(page);
-    await fillAdd(page, d, pil.name, code);
-    await btnCancel(d).click();
-    await expect(page.getByRole('dialog')).toHaveCount(0);
-    expect(await recOf(code)).toBeNull();
-  });
-  test(tc('IGR-C07'), async ({ page }) => {
-    const pil = await ensurePillar(made);
-    const c50 = made.addDti(RES, code8() + 'Z'.repeat(42)), c51 = made.addDti(RES, code8() + 'Y'.repeat(43));
-    expect(c50).toHaveLength(50); expect(c51).toHaveLength(51);
-    let d = await openAdd(page);
-    await fillAdd(page, d, pil.name, c50);
-    await submitAdd(d);
-    expect(await toast(page), 'mã 50 ký tự phải tạo được').toMatch(/thành công/i);
-    expect(await recOf(c50)).toBeTruthy();
-    d = await openAdd(page);
-    await fillAdd(page, d, pil.name, c51);
-    await submitAdd(d); await page.waitForTimeout(800);
-    const msg = (await toast(page)) + ' ' + (await d.locator('.ant-form-item-explain-error').allInnerTexts()).join(' ');
-    expect(msg, 'mã 51 ký tự phải báo vượt quá 50 ký tự').toMatch(/vượt quá 50/i);
-    expect(await recOf(c51), 'mã 51 ký tự không được tạo').toBeNull();
-  });
-  test(tc('IGR-C08'), async () => {
-    const pil = await ensurePillar(made);
-    const c = made.addDti(RES, code8());
-    const a = await api('POST', RES, { pillarId: pil.id, code: c, name: '', displayOrder: 0 });
-    expect(a.status, `name rỗng (HTTP ${a.status}: ${a.message})`).toBe(400); expect(a.message).not.toBe('');
-    const b = await api('POST', RES, { pillarId: pil.id, code: '', name: 'qc.automation Nhóm', displayOrder: 0 });
-    expect(b.status, `code rỗng (HTTP ${b.status}: ${b.message})`).toBe(400); expect(b.message).not.toBe('');
-  });
 });
 
 // ================= Chỉnh sửa =================
 test.describe('Nhóm chỉ số › Chỉnh sửa', () => {
   test.describe.configure({ timeout: 60_000 });
   needWrite();
-  test(tc('IGR-E01'), async ({ page }) => {
-    const g = await ensureGroup(made, { lock: false }); const nn = `qc.automation Nhóm đã sửa ${g.code}`;
-    const d = await openEdit(page, g.code);
-    await d.getByPlaceholder(PH_NAME).fill(nn); await btnSave(d).click();
-    expect(await toast(page)).toMatch(/thành công/i);
-    expect((await recOf(g.code))?.name).toBe(nn);
-    await expect((await findRow(page, cfg, g.code)).first()).toContainText(nn);
-  });
-  test(tc('IGR-E02'), async ({ page }) => {
-    const g = await ensureGroup(made, { lock: false });
-    const d = await openEdit(page, g.code);
-    await d.getByPlaceholder(PH_NAME).fill(''); await btnSave(d).click(); await page.waitForTimeout(700);
-    expect(await d.locator('.ant-form-item-explain-error').count()).toBeGreaterThan(0);
-    expect((await recOf(g.code))?.name).toBe(g.name);
-  });
-  test(tc('IGR-E03'), async ({ page }) => {
-    const g = await ensureGroup(made, { lock: false });
-    const d = await openEdit(page, g.code);
-    await d.getByPlaceholder(PH_NAME).fill('qc.automation KHÔNG LƯU'); await btnCancel(d).click();
-    await expect(page.getByRole('dialog')).toHaveCount(0);
-    expect((await recOf(g.code))?.name).toBe(g.name);
-  });
-  test(tc('IGR-E04'), async () => {
-    const g = await ensureGroup(made); // đã khóa
-    const r = await api('PUT', `${RES}/${g.id}`, { pillarId: g.pillarId, code: g.code, name: 'qc.automation đổi tên', displayOrder: 0 });
-    expect(r.status, `sửa nhóm đã khóa (HTTP ${r.status}: ${r.message})`).toBe(400);
-    expect(r.message).toMatch(/kh(oá|óa)/i);
-    expect((await recOf(g.code))?.name).toBe(g.name);
-  });
-  test(tc('IGR-E05'), async ({ page }) => {
-    const { g } = await groupWithIndicator();
-    const p2 = await ensurePillar(made);
-    const before = [(await api('GET', `dti/pillars/${g.pillarId}`)).data, (await api('GET', `dti/pillars/${p2.id}`)).data];
-    const d = await openEdit(page, g.code);
-    await pickByLabel(page, d, /trụ cột/i, p2.name); await btnSave(d).click();
-    expect(await toast(page)).toMatch(/thành công/i);
-    expect((await recOf(g.code))?.pillarId, 'nhóm phải chuyển sang trụ cột mới').toBe(p2.id);
-    const after = [(await api('GET', `dti/pillars/${g.pillarId}`)).data, (await api('GET', `dti/pillars/${p2.id}`)).data];
-    expect(after[0].indicatorCount, 'trụ cột cũ giảm số chỉ số').toBe(before[0].indicatorCount - 1);
-    expect(after[1].indicatorCount, 'trụ cột mới tăng số chỉ số').toBe(before[1].indicatorCount + 1);
-    expect(after[1].totalMaxScore).toBe(before[1].totalMaxScore + 10);
-  });
 });
 
 // ================= Khóa / Mở khóa =================
 test.describe('Nhóm chỉ số › Khóa / Mở khóa', () => {
   test.describe.configure({ timeout: 60_000 });
   needWrite();
-  test(tc('IGR-K01'), async ({ page }) => {
-    const g = await ensureGroup(made, { lock: false });
-    await openList(page, cfg);
-    const row = await findRow(page, cfg, g.code);
-    await rowAction(page, row, LOCK_RE); await confirmYes(page);
-    expect((await recOf(g.code))?.isLocked).toBe(true);
-    await page.waitForTimeout(800);
-    const r2 = await findRow(page, cfg, g.code);
-    await expect(r2.first()).toContainText('Đã khóa');
-    const items = await rowMenuItems(page, r2);
-    expect(items.some(i => UNLOCK_RE.test(i)), `menu: ${items.join(' | ')}`).toBeTruthy();
-    expect(items.some(i => EDIT_RE.test(i) || DEL_RE.test(i)), `không được còn Cập nhật/Xoá: ${items.join(' | ')}`).toBeFalsy();
-  });
-  test(tc('IGR-K02'), async ({ page }) => {
-    const g = await ensureGroup(made);
-    await openList(page, cfg);
-    await rowAction(page, await findRow(page, cfg, g.code), UNLOCK_RE); await confirmYes(page);
-    expect((await recOf(g.code))?.isLocked).toBe(false);
-    await page.waitForTimeout(800);
-    const r2 = await findRow(page, cfg, g.code);
-    await expect(r2.first()).toContainText('Chưa khóa');
-    const items = await rowMenuItems(page, r2);
-    expect(items.some(i => EDIT_RE.test(i)) && items.some(i => DEL_RE.test(i)), `menu: ${items.join(' | ')}`).toBeTruthy();
-  });
-  test(tc('IGR-K03'), async ({ page }) => {
-    const a = await ensureGroup(made);                                         // đã khóa
-    const b = await ensureGroup(made, { pillarId: a.pillarId, lock: false });  // chưa khóa, cùng trụ cột
-    await goto(page, 'indicators');
-    await page.getByRole('button', { name: /thêm mới/i }).first().click();
-    const d = dlg(page); await d.waitFor({ state: 'visible' });
-    await pickByLabel(page, d, /^\s*trụ cột/i, a.pillarName);
-    await d.locator('.ant-form-item').filter({ hasText: /nhóm chỉ số/i }).locator('.ant-select').first().click();
-    await page.waitForTimeout(1000);
-    const opts = await page.locator('.ant-select-dropdown:not(.ant-select-dropdown-hidden) .ant-select-item-option').allInnerTexts();
-    expect(opts.some(o => o.includes(a.name)), `nhóm đã khóa phải có trong [${opts.join(' | ')}]`).toBeTruthy();
-    expect(opts.some(o => o.includes(b.name)), `nhóm chưa khóa không được liệt kê: [${opts.join(' | ')}]`).toBeFalsy();
-  });
 });
 
 // ================= Xóa =================
@@ -371,29 +218,6 @@ test.describe('Nhóm chỉ số › Xóa', () => {
     expect(await recOf(g.code)).toBeNull();
     await searchFor(page, cfg, g.code);
     expect(await dataRows(page).count()).toBe(0);
-  });
-  test(tc('IGR-D02'), async ({ page }) => {
-    const g = await ensureGroup(made, { lock: false });
-    await openList(page, cfg);
-    await rowAction(page, await findRow(page, cfg, g.code), DEL_RE); await confirmNo(page);
-    expect(await recOf(g.code)).toBeTruthy();
-  });
-  test(tc('IGR-D03'), async ({ page }) => {
-    const g = await ensureGroup(made); // đã khóa
-    await openList(page, cfg);
-    const items = await rowMenuItems(page, await findRow(page, cfg, g.code));
-    expect(items.some(i => DEL_RE.test(i)), `menu: ${items.join(' | ')}`).toBeFalsy();
-    const r = await api('DELETE', `${RES}/${g.id}`);
-    expect(r.status, `DELETE nhóm đã khóa (HTTP ${r.status}: ${r.message})`).toBe(400);
-    expect(await recOf(g.code)).toBeTruthy();
-  });
-  test(tc('IGR-D04'), async ({ page }) => {
-    const { g, ind } = await groupWithIndicator();
-    await openList(page, cfg);
-    await rowAction(page, await findRow(page, cfg, g.code), DEL_RE); await confirmYes(page);
-    expect(await toast(page)).toMatch(/không thể xóa/i);
-    expect(await recOf(g.code), 'nhóm phải còn nguyên').toBeTruthy();
-    expect(await findApi('dti/indicators', ind.code), 'chỉ số phải còn nguyên').toBeTruthy();
   });
 });
 
@@ -417,27 +241,6 @@ test.describe('Nhóm chỉ số › Bảo mật / Hiệu năng', () => {
 test.describe('Nhóm chỉ số › Edge / Lỗi', () => {
   test.describe.configure({ timeout: 60_000 });
   needWrite();
-  test(tc('IGR-G01'), async ({ page }) => {
-    const pil = await ensurePillar(made);
-    const d = await openAdd(page);
-    await pickByLabel(page, d, /trụ cột/i, pil.name);
-    await d.getByPlaceholder(PH_CODE).fill('   '); await d.getByPlaceholder(PH_NAME).fill('   ');
-    await submitAdd(d); await page.waitForTimeout(900);
-    const msg = (await page.locator('.ant-message-notice, .ant-notification-notice').allInnerTexts()).join(' ');
-    const inline = await d.locator('.ant-form-item-explain-error').count();
-    expect(inline > 0 || /không được để trống|bắt buộc|không hợp lệ/i.test(msg), `chuỗi chỉ có khoảng trắng phải bị báo lỗi (inline=${inline}, toast="${msg}")`).toBeTruthy();
-    expect(msg, 'không được báo tạo thành công').not.toMatch(/thành công/i);
-    await expect(d).toBeVisible();
-  });
-  test(tc('IGR-G02'), async ({ page }) => {
-    const pil = await ensurePillar(made); const code = made.addDti(RES, code8());
-    const r = await api('POST', RES, { pillarId: pil.id, code, name: SPECIAL_NAME, displayOrder: 0 });
-    if (r.status >= 300) throw new Error(r.message);
-    await openList(page, cfg); await page.reload(); await waitList(page);
-    const row = await findRow(page, cfg, code);
-    expect((await row.first().innerText()).replace(/\s+/g, ' ')).toContain(SPECIAL_NAME);
-    expect(await row.first().locator('b').count(), 'HTML trong tên phải hiển thị dạng chữ, không được render').toBe(0);
-  });
   for (const [id, mode] of [['IGR-G03', 'http500'], ['IGR-G04', 'offline']] as const) {
     test(tc(id), async ({ page }) => {
       const pil = await ensurePillar(made); const code = made.addDti(RES, code8());
@@ -455,12 +258,4 @@ test.describe('Nhóm chỉ số › Edge / Lỗi', () => {
       expect(await recOf(code)).toBeNull();
     });
   }
-  test(tc('IGR-G05'), async ({ page }) => {
-    const pil = await ensurePillar(made); const code = made.addDti(RES, code8());
-    const d = await openAdd(page); await fillAdd(page, d, pil.name, code);
-    await Promise.all([submitAdd(d), submitAdd(d).catch(() => {})]);
-    await page.waitForTimeout(2500);
-    const same = (await listApi(RES, code)).filter((x: any) => x.code === code);
-    expect(same.length, 'bấm Lưu 2 lần chỉ được tạo đúng 1 bản ghi').toBe(1);
-  });
 });

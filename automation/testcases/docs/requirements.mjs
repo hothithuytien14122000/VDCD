@@ -171,22 +171,22 @@ T.push(
   R('IND', 'B.I.5-UC1', null, 'Nhân bản chỉ số', [['Nhân bản', 'IND-N01'], ['Đã khóa', 'IND-N02'], ['Mã duy nhất', 'IND-N03'], ['Có con', 'IND-N04'], ['id không tồn tại', 'IND-N06']]),
   R('IND', 'B.I.5-UC2', null, 'Xem/sửa chỉ số nhân bản', [['Sửa bản sao', 'IND-N05']]),
   // B.II Bộ chỉ số
-  R('SET', 'B.II.1-UC1', null, 'Xem danh sách bộ chỉ số', [...listB('SET'), ['Lọc', 'SET-L12'], ['Trạng thái nhất quán', 'SET-L13']]),
+  R('SET', 'B.II.1-UC1', null, 'Xem danh sách bộ chỉ số', [...listB('SET'), ['Lọc', 'SET-L12'], ['Trạng thái nhất quán', 'SET-L13'], ['Từ khóa + lọc', 'SET-L14'], ['Cột Nhóm chỉ số/Chỉ số khớp', 'SET-L15'], ['Menu theo trạng thái', 'SET-L16']]),
   R('SET', 'B.II.1-UC2', null, 'Xuất Excel danh sách', [['Xuất Excel', 'SET-L11']]),
-  R('SET', 'B.II.1-UC3', null, 'Xem chi tiết bộ chỉ số', [['Chi tiết', 'SET-V01'], ['id không tồn tại', 'SET-V05'], ['Kỳ đang sử dụng', 'SET-V06']]),
-  R('SET', 'B.II.1-UC4', null, 'Xem cấu trúc bộ chỉ số', [['Cấu trúc', 'SET-V02'], ['Tổng điểm', 'SET-V03']]),
+  R('SET', 'B.II.1-UC3', null, 'Xem chi tiết bộ chỉ số', [['Chi tiết', 'SET-V01'], ['id không tồn tại', 'SET-V05'], ['Kỳ đang sử dụng', 'SET-V06'], ['Nút Cập nhật/Cấu hình', 'SET-V08']]),
+  R('SET', 'B.II.1-UC4', null, 'Xem cấu trúc bộ chỉ số', [['Cấu trúc', 'SET-V02'], ['Tổng điểm', 'SET-V03'], ['Bộ rỗng', 'SET-V07']]),
   R('SET', 'B.II.1-UC5', null, 'Xuất Excel bộ chỉ số', [['Xuất Excel chi tiết', 'SET-V04']]),
-  R('SET', 'B.II.1-UC6', null, 'Thêm mới bộ chỉ số', [['Thêm thành công', 'SET-C01'], ['Bắt buộc', 'SET-C02|SET-C07'], ['Trùng mã', 'SET-C03'], ['Năm áp dụng', 'SET-C04'], ['Hủy', 'SET-C05'], ['Độ dài mã', 'SET-C06'], ...addB('SET')]),
-  R('SET', 'B.II.1-UC7', null, 'Xóa bộ chỉ số', [['Xóa', 'SET-D01'], ['Chọn Không', 'SET-D02'], ['Đã khóa', 'SET-D03'], ['Đang được kỳ sử dụng', 'SET-D04']]),
-  R('SET', 'B.II.1-UC8', null, 'Khóa/mở khóa bộ chỉ số', [['Khóa', 'SET-K01'], ['Mở khóa', 'SET-K02']]),
-  R('SET', 'B.II.1-UC9', null, 'Cập nhật thông tin bộ chỉ số', [['Sửa thông tin', 'SET-E01'], ['Thời gian sử dụng', 'SET-E02'], ['Xóa trắng tên', 'SET-E03'], ['Hủy', 'SET-E04'], ['Đã khóa', 'SET-E05']]),
-  R('SET', 'B.II.2-UC1', null, 'Xem nhóm chỉ số của bộ', [['Danh sách nhóm', 'SET-S01']]),
-  R('SET', 'B.II.2-UC2', null, 'Thêm nhóm vào bộ', [['Thêm', 'SET-S02'], ['Không trùng', 'SET-S03'], ['Chỉ nhóm đã khóa', 'SET-S04']]),
+  R('SET', 'B.II.1-UC6', null, 'Thêm mới bộ chỉ số', [['Thêm thành công', 'SET-C01'], ['Bắt buộc', 'SET-C02|SET-C07'], ['Trùng tên', 'SET-C03'], ['Năm áp dụng', 'SET-C04|SET-C11'], ['Hủy', 'SET-C05'], ['Mã tự sinh', 'SET-C08'], ['Độ dài mô tả', 'SET-C09'], ['Chặn HTML (thay quy tắc hiển thị HTML nguyên văn)', 'SET-C10'], ...addB('SET').filter(x => x[1] !== 'SET-G02')]),
+  R('SET', 'B.II.1-UC7', null, 'Xóa bộ chỉ số', [['Xóa', 'SET-D01'], ['Chọn Không', 'SET-D02'], ['Đã khóa', 'SET-D03'], ['Đang được kỳ sử dụng', 'SET-D04'], ['id không tồn tại', 'SET-D05']]),
+  R('SET', 'B.II.1-UC8', null, 'Khóa/mở khóa bộ chỉ số', [['Khóa', 'SET-K01'], ['Mở khóa', 'SET-K02'], ['Khóa lặp / id lạ', 'SET-K05'], ['Bộ rỗng', 'SET-K06']]),
+  R('SET', 'B.II.1-UC9', null, 'Cập nhật thông tin bộ chỉ số', [['Sửa thông tin', 'SET-E01'], ['Thời gian sử dụng', 'SET-E02'], ['Xóa trắng tên', 'SET-E03'], ['Hủy', 'SET-E04'], ['Đã khóa', 'SET-E05'], ['Tên trùng / năm quá khứ / id lạ', 'SET-E06']]),
+  R('SET', 'B.II.2-UC1', null, 'Xem nhóm chỉ số của bộ', [['Danh sách nhóm', 'SET-S01'], ['Huỷ không lưu', 'SET-S10']]),
+  R('SET', 'B.II.2-UC2', null, 'Thêm nhóm vào bộ', [['Thêm', 'SET-S02'], ['Không trùng', 'SET-S03'], ['Chỉ nhóm đã khóa', 'SET-S04'], ['Nhóm không hợp lệ', 'SET-S08'], ['Bộ đã khóa', 'SET-S09']]),
   R('SET', 'B.II.2-UC3', null, 'Sửa nhóm trong bộ', [['Sửa', 'SET-S05']]),
   R('SET', 'B.II.2-UC4', null, 'Xóa nhóm khỏi bộ', [['Xóa', 'SET-S06']]),
   R('SET', 'B.II.2-UC5', null, 'Tính điểm nhóm', [['Tính/không tính điểm', 'SET-S07']]),
   R('SET', 'B.II.3-UC1', null, 'Xem chỉ số của bộ', [['Danh sách chỉ số', 'SET-I01']]),
-  R('SET', 'B.II.3-UC2', null, 'Thêm chỉ số vào bộ', [['Thêm', 'SET-I02'], ['Thuộc nhóm có trong bộ, không trùng', 'SET-I03']]),
+  R('SET', 'B.II.3-UC2', null, 'Thêm chỉ số vào bộ', [['Thêm', 'SET-I02'], ['Chưa khóa, không trùng', 'SET-I03'], ['Hết chỉ số để thêm', 'SET-I09']]),
   R('SET', 'B.II.3-UC3', null, 'Sửa chỉ số trong bộ', [['Sửa', 'SET-I04']]),
   R('SET', 'B.II.3-UC4', null, 'Xóa chỉ số khỏi bộ', [['Xóa', 'SET-I05']]),
   R('SET', 'B.II.3-UC5', null, 'Tính điểm chỉ số', [['Tính/không tính điểm', 'SET-I06']]),
@@ -231,11 +231,35 @@ T.push(
   R('LGO', 'AUTH.4-UC4', null, 'Lỗi & thao tác lặp', [['Mất mạng', 'LGO-G01'], ['Bấm Có lặp', 'LGO-G02']]),
 );
 
+// ================= QUY TẮC CHUNG MÃ / TÊN / TÌM KIẾM (áp dụng mọi trang) =================
+const ruleSearch = k => [['Tìm không phân biệt dấu tiếng Việt', `${k}-L31`], ['Bỏ khoảng trắng đầu/cuối; cả cụm tìm như chuỗi liền', `${k}-L32`], ['Ký tự % _ \' là ký tự thường', `${k}-L33`]];
+const ruleCode = k => [['Mã > 50 ký tự bị từ chối', `${k}-G07`], ['Mã chỉ gồm A–Z, 0–9, - _ . (không khoảng trắng/dấu)', `${k}-G08`], ['Trùng mã không phân biệt hoa/thường, đúng thông báo', `${k}-G09`], ['Giới hạn độ dài Tên', `${k}-G10`], ['Tên trùng trong cùng nhóm cha bị chặn', `${k}-G11`], ['Tên khác dấu là tên khác', `${k}-G12`]];
+T.push(
+  R('USR', 'A.II.1-UC4', null, 'Quy tắc chung: Tên đăng nhập ≤ 50, Họ tên ≤ 255 & không bắt trùng, Tên đăng nhập phân biệt hoa/thường', [['Tên đăng nhập > 50 ký tự', 'USR-G07'], ['Họ tên 255/256 ký tự', 'USR-G10'], ['Họ tên trùng vẫn được tạo', 'USR-G11'], ...ruleSearch('USR')]),
+  R('GRP', 'A.II.2-UC4', null, 'Quy tắc chung Mã/Tên/Tìm kiếm', [...ruleCode('GRP'), ...ruleSearch('GRP')]),
+  R('PRV', 'A.IV.1-UC2', null, 'Quy tắc chung Mã/Tên/Tìm kiếm', [...ruleCode('PRV'), ...ruleSearch('PRV')]),
+  R('COM', 'A.IV.2-UC2', null, 'Quy tắc chung Mã/Tên/Tìm kiếm', [...ruleCode('COM'), ['Tên trùng khác nhóm cha được tạo', 'COM-G13'], ...ruleSearch('COM')]),
+  R('UTY', 'A.IV.3-UC4', null, 'Quy tắc chung Mã/Tên/Tìm kiếm', [...ruleCode('UTY'), ...ruleSearch('UTY')]),
+  R('ORG', 'A.IV.4-UC4', null, 'Quy tắc chung Mã/Tên/Tìm kiếm', [...ruleCode('ORG'), ['Tên trùng khác nhóm cha được tạo', 'ORG-G13'], ...ruleSearch('ORG')]),
+  R('PIL', 'B.I.1-UC2', null, 'Quy tắc chung Mã/Tên/Tìm kiếm', [...ruleCode('PIL'), ...ruleSearch('PIL')]),
+  R('IGR', 'B.I.2-UC2', null, 'Quy tắc chung Mã/Tên/Tìm kiếm (Tên nhóm chỉ số ≤ 500)', [...ruleCode('IGR'), ['Tên trùng khác trụ cột được tạo', 'IGR-G13'], ...ruleSearch('IGR')]),
+  R('IND', 'B.I.3-UC2', null, 'Quy tắc chung Mã/Tên/Tìm kiếm (Tên chỉ số ≤ 500)', [...ruleCode('IND'), ['Tên trùng khác nhóm chỉ số được tạo', 'IND-G13'], ...ruleSearch('IND')]),
+  R('SET', 'B.II.1-UC6', null, 'Quy tắc chung Mã/Tên/Tìm kiếm', [...ruleCode('SET').slice(3), ...ruleSearch('SET')]),
+);
+
 import reqB3 from './requirements-B3.mjs';
 import reqC1 from './requirements-C1.mjs';
 import reqC2 from './requirements-C2.mjs';
 import reqC3 from './requirements-C3.mjs';
 import reqPRM from './requirements-PRM.mjs';
-T.push(...reqB3(R), ...reqC1(R), ...reqC2(R), ...reqC3(R), ...reqPRM(R));
+import reqE from './requirements-E.mjs';
+import reqATTT from './requirements-ATTT.mjs';
+import reqD from './requirements-D.mjs';
+import reqBUG from './requirements-BUG.mjs';
+import reqBUG_A1 from './requirements-BUG-A1.mjs';
+import reqBUG_A2 from './requirements-BUG-A2.mjs';
+import reqBUG_B from './requirements-BUG-B.mjs';
+import reqBUG_C from './requirements-BUG-C.mjs';
+T.push(...reqD(R), ...reqB3(R), ...reqC1(R), ...reqC2(R), ...reqC3(R), ...reqPRM(R), ...reqE(R), ...reqATTT(R), ...reqBUG(R), ...reqBUG_A1(R), ...reqBUG_A2(R), ...reqBUG_B(R), ...reqBUG_C(R));
 
 export default T;

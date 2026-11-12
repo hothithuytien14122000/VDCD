@@ -1,6 +1,6 @@
 title: "Người dùng"
 phan_he: "A - Quản trị hệ thống"
-tong_so: 61
+tong_so: 92
 testcases:
   - id: USR-L01
     title: "Danh sách Người dùng hiển thị đúng các cột"
@@ -16,7 +16,7 @@ testcases:
       - "2. Mở trang Người dùng"
     ket_qua_mong_doi:
       - "Bảng có đủ cột: STT, Tên đăng nhập, Họ tên, Số điện thoại, Email, Đơn vị, Trạng thái, Thao tác; có dữ liệu"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: USR-L02
     title: "Phân trang mặc định 10 bản ghi/trang và hiển thị tổng số bản ghi"
     uc: "A.II.1-UC1"
@@ -30,7 +30,7 @@ testcases:
       - "1. Mở trang Người dùng"
     ket_qua_mong_doi:
       - "Hiển thị \"Hiển thị 1-10 trong N bản ghi\"; tối đa 10 dòng dữ liệu; thanh phân trang xuất hiện khi N>10"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: USR-L03
     title: "Tìm theo tên đăng nhập trả về đúng bản ghi"
     uc: "A.II.1-UC1"
@@ -45,7 +45,7 @@ testcases:
       - "2. Nhập một tên đăng nhập có sẵn vào ô tìm kiếm"
     ket_qua_mong_doi:
       - "Chỉ hiển thị các dòng chứa từ khóa; có ít nhất 1 dòng"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: USR-L04
     title: "Tìm theo họ tên trả về đúng bản ghi"
     uc: "A.II.1-UC1"
@@ -59,7 +59,7 @@ testcases:
       - "1. Nhập một họ tên có sẵn vào ô tìm kiếm"
     ket_qua_mong_doi:
       - "Chỉ hiển thị các dòng chứa từ khóa"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: USR-L05
     title: "Từ khóa không tồn tại → không có dữ liệu"
     uc: "A.II.1-UC1"
@@ -72,8 +72,8 @@ testcases:
     cac_buoc:
       - "1. Nhập \"zzqcxx_khongtontai_999\""
     ket_qua_mong_doi:
-      - "Bảng rỗng / hiển thị trạng thái không có dữ liệu, không lỗi"
-    ket_qua_chay: "Không chạy"
+      - "Bảng rỗng, hiện \"Không tìm thấy dữ liệu phù hợp\"; không lỗi"
+    ket_qua_chay: "Pass"
   - id: USR-L06
     title: "Tìm kiếm không phân biệt chữ hoa/chữ thường"
     uc: "A.II.1-UC1"
@@ -87,7 +87,7 @@ testcases:
       - "1. Nhập từ khóa viết HOA rồi viết thường của cùng một giá trị"
     ket_qua_mong_doi:
       - "Hai lần tìm trả về cùng số bản ghi"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: USR-L07
     title: "Ký tự đặc biệt / chuỗi SQL trong ô tìm kiếm không gây lỗi hệ thống"
     uc: "A.II.1-UC1"
@@ -101,7 +101,7 @@ testcases:
       - "1. Nhập  ' OR 1=1 --  và  <script>alert(1)</script>"
     ket_qua_mong_doi:
       - "Không hiện lỗi 500/trắng trang, không thực thi script, không trả về toàn bộ dữ liệu bất thường"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: USR-L08
     title: "Chuyển sang trang 2 hiển thị dữ liệu khác trang 1"
     uc: "A.II.1-UC1"
@@ -115,7 +115,7 @@ testcases:
       - "1. Bấm trang 2 trên thanh phân trang"
     ket_qua_mong_doi:
       - "Trang 2 được đánh dấu active; nội dung bảng khác trang 1"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: USR-L09
     title: "Đổi số bản ghi/trang sang 20 thì số dòng thay đổi theo"
     uc: "A.II.1-UC1"
@@ -129,7 +129,7 @@ testcases:
       - "1. Chọn \"20 / trang\" ở thanh phân trang"
     ket_qua_mong_doi:
       - "Số dòng tối đa mỗi trang = 20; tổng số bản ghi không đổi"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: USR-L10
     title: "Xóa từ khóa thì danh sách trở về đầy đủ"
     uc: "A.II.1-UC1"
@@ -144,7 +144,51 @@ testcases:
       - "2. Xóa trắng ô tìm kiếm"
     ket_qua_mong_doi:
       - "Danh sách hiển thị lại như ban đầu (tổng số bản ghi bằng lúc đầu)"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
+  - id: USR-L31
+    title: "Tìm kiếm không phân biệt dấu tiếng Việt (\"chuyen doi so\" ra \"Chuyển đổi số\")"
+    uc: "A.II.1-UC1"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Tìm kiếm"
+    loai: "Chức năng"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Mở trang Người dùng"
+      - "2. Nhập tên có dấu nhưng gõ không dấu (cả chữ thường và HOA)"
+    ket_qua_mong_doi:
+      - "Ra các dòng có tên khớp khi bỏ dấu, không phân biệt hoa/thường"
+    ket_qua_chay: "Pass"
+  - id: USR-L32
+    title: "Từ khóa bỏ khoảng trắng đầu/cuối; cả cụm từ được tìm như một chuỗi liền (không tách từ)"
+    uc: "A.II.1-UC1"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Tìm kiếm"
+    loai: "Chức năng"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Nhập \"   <mã>   \" (khoảng trắng 2 đầu)"
+      - "2. Nhập cụm 2 từ của tên theo thứ tự đảo ngược"
+    ket_qua_mong_doi:
+      - "Kết quả bằng khi nhập không có khoảng trắng; cụm đảo ngược chỉ ra dòng chứa nguyên cụm liền đó (không khớp từng từ rời)"
+    ket_qua_chay: "Pass"
+  - id: USR-L33
+    title: "Ký tự %, _, ' trong từ khóa được hiểu là ký tự thường"
+    uc: "A.II.1-UC1"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Tìm kiếm"
+    loai: "Validate"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Lần lượt nhập \"%\", \"_\", \"'\" vào ô tìm kiếm"
+    ket_qua_mong_doi:
+      - "Không lỗi hệ thống; mọi dòng trả về đều chứa đúng ký tự đã nhập (không coi là ký tự đại diện / không gây lỗi SQL)"
+    ket_qua_chay: "Pass"
   - id: USR-L11
     title: "Xuất Excel danh sách Người dùng"
     uc: "A.II.1-UC2"
@@ -159,7 +203,7 @@ testcases:
     ket_qua_mong_doi:
       - "Trình duyệt tải về file .xlsx chứa dữ liệu danh sách (UC: Xuất danh sách ra Excel)"
     ghi_chu: "UC_1409 ghi FE \"Chưa làm\" → có thể FAIL (chức năng chưa phát triển)"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: USR-L12
     title: "Tìm theo email"
     uc: "A.II.1-UC1"
@@ -173,21 +217,7 @@ testcases:
       - "1. Nhập email có sẵn vào ô tìm kiếm"
     ket_qua_mong_doi:
       - "Hiển thị đúng người dùng có email đó"
-    ket_qua_chay: "Không chạy"
-  - id: USR-L13
-    title: "Lọc theo nhóm người dùng"
-    uc: "A.II.1-UC1"
-    tac_nhan: "Quản trị hệ thống"
-    tai_khoan_chay: "admin"
-    chuc_nang: "Bộ lọc"
-    loai: "Chức năng"
-    uu_tien: "Cao"
-    automation: "Auto"
-    cac_buoc:
-      - "1. Chọn một nhóm ở bộ lọc nhóm"
-    ket_qua_mong_doi:
-      - "Chỉ còn người dùng thuộc nhóm đã chọn (số bản ghi ≤ ban đầu)"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: USR-L14
     title: "Lọc theo trạng thái Đang hoạt động / Đã khóa"
     uc: "A.II.1-UC1"
@@ -201,7 +231,7 @@ testcases:
       - "1. Chọn trạng thái \"Đã khóa\" rồi \"Đang hoạt động\""
     ket_qua_mong_doi:
       - "Mọi dòng kết quả có cột Trạng thái khớp với bộ lọc"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: USR-L15
     title: "Kết hợp từ khóa và bộ lọc trạng thái"
     uc: "A.II.1-UC1"
@@ -216,7 +246,7 @@ testcases:
       - "2. Chọn trạng thái"
     ket_qua_mong_doi:
       - "Kết quả thỏa mãn đồng thời cả từ khóa và trạng thái"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: USR-V01
     title: "Xem chi tiết hiển thị đầy đủ thông tin tài khoản"
     uc: "A.II.1-UC3"
@@ -230,7 +260,7 @@ testcases:
       - "1. Bấm \"Xem chi tiết\" ở một người dùng"
     ket_qua_mong_doi:
       - "Hiển thị: tên đăng nhập, họ tên, email, SĐT, đơn vị, nhóm người dùng, trạng thái, ngày tạo"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: USR-V02
     title: "Nút Đóng thoát màn chi tiết"
     uc: "A.II.1-UC3"
@@ -245,7 +275,7 @@ testcases:
       - "2. Bấm Đóng"
     ket_qua_mong_doi:
       - "Màn chi tiết đóng, quay lại danh sách"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: USR-V03
     title: "Từ chi tiết bấm Cập nhật mở form sửa với dữ liệu hiện tại"
     uc: "A.II.1-UC3"
@@ -260,7 +290,7 @@ testcases:
       - "2. Bấm Cập nhật"
     ket_qua_mong_doi:
       - "Form cập nhật mở, ô Tên/Email đã điền sẵn đúng giá trị của người dùng"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: USR-C01
     title: "Thêm người dùng đầy đủ thông tin thành công"
     uc: "A.II.1-UC4"
@@ -277,7 +307,7 @@ testcases:
       - "4. Lưu"
     ket_qua_mong_doi:
       - "Thông báo thành công; người dùng xuất hiện khi tìm theo tên đăng nhập; trạng thái Đang hoạt động"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: USR-C02
     title: "Thêm người dùng chỉ với trường bắt buộc (Tên, Email, Tên đăng nhập, Mật khẩu)"
     uc: "A.II.1-UC4"
@@ -292,7 +322,7 @@ testcases:
       - "2. Lưu"
     ket_qua_mong_doi:
       - "Tạo thành công"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: USR-C03
     title: "Chọn Đơn vị và Nhóm người dùng khi tạo"
     uc: "A.II.1-UC4"
@@ -308,7 +338,7 @@ testcases:
       - "3. Lưu"
     ket_qua_mong_doi:
       - "Người dùng được tạo gắn đúng đơn vị và nhóm (kiểm chứng qua API/danh sách)"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: USR-C04
     title: "Bỏ trống toàn bộ trường bắt buộc thì báo lỗi từng trường"
     uc: "A.II.1-UC4"
@@ -323,7 +353,7 @@ testcases:
       - "2. Bấm Lưu khi chưa nhập"
     ket_qua_mong_doi:
       - "Hiện lỗi bắt buộc ở Tên, Email, Tên đăng nhập, Mật khẩu; không tạo bản ghi"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: USR-C05
     title: "Email sai định dạng bị chặn"
     uc: "A.II.1-UC4"
@@ -338,7 +368,7 @@ testcases:
       - "2. Lưu"
     ket_qua_mong_doi:
       - "Báo \"Email không đúng định dạng\"; không tạo"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: USR-C06
     title: "Số điện thoại sai định dạng bị chặn"
     uc: "A.II.1-UC4"
@@ -353,7 +383,7 @@ testcases:
       - "2. Lưu"
     ket_qua_mong_doi:
       - "Báo \"Số điện thoại không đúng định dạng\"; không tạo"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: USR-C07
     title: "Mật khẩu không đạt quy tắc bảo mật bị chặn"
     uc: "A.II.1-UC4"
@@ -368,7 +398,7 @@ testcases:
       - "2. Lưu"
     ket_qua_mong_doi:
       - "Báo \"Mật khẩu chưa đáp ứng đủ các yêu cầu bảo mật\"; không tạo"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: USR-C08
     title: "Trùng tên đăng nhập bị từ chối"
     uc: "A.II.1-UC4"
@@ -382,8 +412,8 @@ testcases:
       - "1. Tạo user A"
       - "2. Tạo user B cùng tên đăng nhập, email khác"
     ket_qua_mong_doi:
-      - "Báo lỗi tên đăng nhập đã được sử dụng; không tạo bản ghi thứ hai"
-    ket_qua_chay: "Không chạy"
+      - "Báo lỗi tên đăng nhập đã được sử dụng; không tạo bản ghi thứ hai (Tên đăng nhập có phân biệt hoa/thường)"
+    ket_qua_chay: "Pass"
   - id: USR-C09
     title: "Trùng email bị từ chối"
     uc: "A.II.1-UC4"
@@ -398,53 +428,7 @@ testcases:
       - "2. Tạo user B cùng email, tên đăng nhập khác"
     ket_qua_mong_doi:
       - "Báo lỗi email đã được sử dụng; không tạo bản ghi thứ hai"
-    ket_qua_chay: "Không chạy"
-  - id: USR-C10
-    title: "Hai checkbox \"Bắt buộc đổi mật khẩu\" và \"Gửi thông tin đăng nhập qua email\" mặc định được tích"
-    uc: "A.II.1-UC4"
-    tac_nhan: "Quản trị hệ thống"
-    tai_khoan_chay: "admin"
-    chuc_nang: "Thêm mới"
-    loai: "UI"
-    uu_tien: "Thấp"
-    automation: "Auto"
-    cac_buoc:
-      - "1. Mở form thêm mới"
-    ket_qua_mong_doi:
-      - "Cả hai checkbox ở trạng thái đã tích"
-    ket_qua_chay: "Không chạy"
-  - id: USR-C11
-    title: "Bỏ tích \"Bắt buộc đổi mật khẩu\" thì không bắt buộc đổi mật khẩu (bug UC)"
-    uc: "A.II.1-UC4"
-    tac_nhan: "Quản trị hệ thống"
-    tai_khoan_chay: "admin"
-    chuc_nang: "Thêm mới"
-    loai: "Nghiệp vụ"
-    uu_tien: "Cao"
-    automation: "Auto"
-    cac_buoc:
-      - "1. Bỏ tích \"Bắt buộc đổi mật khẩu\""
-      - "2. Lưu"
-      - "3. Kiểm tra dữ liệu gửi đi và bản ghi"
-    ket_qua_mong_doi:
-      - "Request gửi isRequireChangePassword=false; bản ghi lưu không bắt buộc đổi mật khẩu"
-    ghi_chu: "UC_1409 ghi bug: lỗi bắt buộc đổi mật khẩu dù không tích"
-    ket_qua_chay: "Không chạy"
-  - id: USR-C12
-    title: "Bỏ tích \"Gửi thông tin đăng nhập qua email\" thì không gửi mail"
-    uc: "A.II.1-UC4"
-    tac_nhan: "Quản trị hệ thống"
-    tai_khoan_chay: "admin"
-    chuc_nang: "Thêm mới"
-    loai: "Nghiệp vụ"
-    uu_tien: "Trung bình"
-    automation: "Auto"
-    cac_buoc:
-      - "1. Bỏ tích gửi email"
-      - "2. Lưu"
-    ket_qua_mong_doi:
-      - "Request gửi isRequestMailInfo=false"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: USR-C13
     title: "Hủy form thêm mới không tạo bản ghi"
     uc: "A.II.1-UC4"
@@ -460,9 +444,9 @@ testcases:
       - "3. Tìm tên đăng nhập đã nhập"
     ket_qua_mong_doi:
       - "Form đóng; không có bản ghi mới"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: USR-C14
-    title: "Giới hạn độ dài trường tối đa 255 ký tự"
+    title: "Giới hạn độ dài: Họ tên tối đa 255 ký tự"
     uc: "A.II.1-UC4"
     tac_nhan: "Quản trị hệ thống"
     tai_khoan_chay: "admin"
@@ -471,10 +455,10 @@ testcases:
     uu_tien: "Thấp"
     automation: "Auto"
     cac_buoc:
-      - "1. Nhập 300 ký tự vào ô Tên"
+      - "1. Nhập 300 ký tự vào ô Họ tên"
     ket_qua_mong_doi:
-      - "Ô chỉ nhận tối đa 255 ký tự"
-    ket_qua_chay: "Không chạy"
+      - "Ô chặn không cho gõ quá 255 ký tự"
+    ket_qua_chay: "Pass"
   - id: USR-C15
     title: "[API] Server từ chối email sai định dạng"
     uc: "A.II.1-UC4"
@@ -489,7 +473,7 @@ testcases:
     ket_qua_mong_doi:
       - "HTTP 400 – không tạo user (validate phía server)"
     ghi_chu: "Khảo sát: API hiện trả 200 → nghi lỗi thiếu validate server"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: USR-C16
     title: "[API] Server từ chối mật khẩu không đạt quy tắc"
     uc: "A.II.1-UC4"
@@ -504,7 +488,7 @@ testcases:
     ket_qua_mong_doi:
       - "HTTP 400 – không tạo user"
     ghi_chu: "Khảo sát: API hiện trả 200 → nghi lỗi thiếu validate server"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: USR-C17
     title: "[API] Tên rỗng trả lỗi 4xx có thông báo, không phải 500"
     uc: "A.II.1-UC4"
@@ -519,7 +503,7 @@ testcases:
     ket_qua_mong_doi:
       - "HTTP 400 có thông báo rõ ràng, không lộ stacktrace"
     ghi_chu: "Khảo sát: API hiện trả 500 + stacktrace → nghi lỗi"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: USR-C18
     title: "Đăng nhập bằng tài khoản vừa tạo"
     uc: "A.II.1-UC4"
@@ -551,7 +535,7 @@ testcases:
       - "3. Lưu"
     ket_qua_mong_doi:
       - "Thông báo thành công; danh sách hiển thị họ tên mới"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: USR-E02
     title: "Sửa số điện thoại thành công"
     uc: "A.II.1-UC5"
@@ -566,7 +550,7 @@ testcases:
       - "2. Lưu"
     ket_qua_mong_doi:
       - "SĐT mới được lưu"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: USR-E03
     title: "Đổi nhóm người dùng (mỗi người chỉ thuộc 1 nhóm)"
     uc: "A.II.1-UC5"
@@ -581,7 +565,7 @@ testcases:
       - "2. Đổi sang nhóm Y"
     ket_qua_mong_doi:
       - "User chỉ thuộc nhóm Y; không còn ở nhóm X"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: USR-E04
     title: "Sửa email thành email của người khác bị từ chối"
     uc: "A.II.1-UC5"
@@ -596,7 +580,7 @@ testcases:
       - "2. Lưu"
     ket_qua_mong_doi:
       - "Báo lỗi email đã được sử dụng; dữ liệu không đổi"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: USR-E05
     title: "Sửa email sai định dạng bị chặn"
     uc: "A.II.1-UC5"
@@ -611,7 +595,7 @@ testcases:
       - "2. Lưu"
     ket_qua_mong_doi:
       - "Báo lỗi định dạng; không lưu"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: USR-E06
     title: "Bỏ trống Họ tên khi sửa bị chặn"
     uc: "A.II.1-UC5"
@@ -626,7 +610,7 @@ testcases:
       - "2. Lưu"
     ket_qua_mong_doi:
       - "Báo lỗi bắt buộc; không lưu"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: USR-E07
     title: "Hủy chỉnh sửa không thay đổi dữ liệu"
     uc: "A.II.1-UC5"
@@ -641,7 +625,7 @@ testcases:
       - "2. Bấm Hủy"
     ket_qua_mong_doi:
       - "Dữ liệu giữ nguyên"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: USR-E08
     title: "Để trống mật khẩu mới thì không đổi mật khẩu"
     uc: "A.II.1-UC5"
@@ -671,7 +655,7 @@ testcases:
       - "1. Mở form Cập nhật người dùng"
     ket_qua_mong_doi:
       - "Ô Tên đăng nhập bị vô hiệu hóa, không nhập được"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: USR-X01
     title: "Khóa người dùng chuyển trạng thái Đã khóa"
     uc: "A.II.1 (bổ sung)"
@@ -686,7 +670,7 @@ testcases:
       - "2. Xác nhận"
     ket_qua_mong_doi:
       - "Trạng thái chuyển thành \"Đã khóa\""
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: USR-X02
     title: "Mở khóa người dùng chuyển lại Đang hoạt động"
     uc: "A.II.1 (bổ sung)"
@@ -700,7 +684,7 @@ testcases:
       - "1. Với user đã khóa: Menu → Mở khoá"
     ket_qua_mong_doi:
       - "Trạng thái chuyển thành \"Đang hoạt động\""
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: USR-X03
     title: "Người dùng đã khóa xuất hiện khi lọc \"Đã khóa\" và biến mất khi lọc \"Đang hoạt động\""
     uc: "A.II.1 (bổ sung)"
@@ -715,7 +699,7 @@ testcases:
       - "2. Lọc theo trạng thái"
     ket_qua_mong_doi:
       - "Hiển thị đúng theo bộ lọc"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: USR-X04
     title: "Xóa người dùng thành công"
     uc: "A.II.1 (bổ sung)"
@@ -730,7 +714,7 @@ testcases:
       - "2. Xác nhận \"Có\""
     ket_qua_mong_doi:
       - "Người dùng không còn trong danh sách"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: USR-X05
     title: "Chọn \"Không\" ở hộp xác nhận xóa thì giữ nguyên bản ghi"
     uc: "A.II.1 (bổ sung)"
@@ -745,7 +729,7 @@ testcases:
       - "2. Bấm \"Không\""
     ket_qua_mong_doi:
       - "Bản ghi vẫn còn"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: USR-S01
     title: "API danh sách người dùng: không token → 401, token giả → 401"
     uc: "A.II.1-UC1"
@@ -759,7 +743,7 @@ testcases:
       - "1. Gọi GET /idm/users không token / token giả"
     ket_qua_mong_doi:
       - "HTTP 401"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: USR-S02
     title: "Chưa đăng nhập vào trang Người dùng bị chuyển về màn đăng nhập"
     uc: "A.II.1-UC1"
@@ -773,7 +757,7 @@ testcases:
       - "1. Mở /#/vi/users khi chưa đăng nhập"
     ket_qua_mong_doi:
       - "Hiển thị màn đăng nhập, không lộ dữ liệu"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: USR-S03
     title: "Quyền thực thi API đúng theo ma trận quyền của vai trò Cán bộ"
     uc: "A.II.1-UC4"
@@ -788,7 +772,7 @@ testcases:
       - "2. Gọi GET/POST/DELETE /idm/users"
     ket_qua_mong_doi:
       - "Có quyền → không bị 401/403; không có quyền → 403"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: USR-P01
     title: "Danh sách người dùng tải < 3 giây"
     uc: "A.II.1-UC1"
@@ -802,7 +786,7 @@ testcases:
       - "1. Mở trang và đo thời gian API & hiển thị"
     ket_qua_mong_doi:
       - "API < 3000ms, hiển thị dữ liệu < 6000ms"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: USR-G01
     title: "Trường bắt buộc chỉ nhập khoảng trắng bị chặn (người dùng)"
     uc: "A.II.1-UC4"
@@ -818,7 +802,7 @@ testcases:
       - "3. Lưu"
     ket_qua_mong_doi:
       - "Báo lỗi bắt buộc (chuỗi rỗng sau khi trim); form còn mở; không tạo bản ghi"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: USR-G02
     title: "Tên chứa tiếng Việt có dấu, HTML, dấu nháy, & được lưu và hiển thị đúng sau khi tải lại trang (người dùng)"
     uc: "A.II.1-UC4"
@@ -833,7 +817,7 @@ testcases:
       - "2. Tải lại trang (F5), tìm theo mã"
     ket_qua_mong_doi:
       - "Tên hiển thị nguyên văn dạng chữ; thẻ HTML không bị render (chống XSS)"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: USR-G04
     title: "Server lỗi 500 khi lưu: hiển thị lỗi, giữ form và dữ liệu đã nhập (người dùng)"
     uc: "A.II.1-UC4"
@@ -849,7 +833,7 @@ testcases:
       - "3. Lưu"
     ket_qua_mong_doi:
       - "Form còn mở và giữ dữ liệu; không lộ stacktrace; không tạo bản ghi"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: USR-G05
     title: "Mất kết nối khi lưu: không treo giao diện, giữ form (người dùng)"
     uc: "A.II.1-UC4"
@@ -865,7 +849,7 @@ testcases:
       - "3. Lưu"
     ket_qua_mong_doi:
       - "Form còn mở và giữ dữ liệu; trang không trắng/lỗi; không tạo bản ghi"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: USR-V04
     title: "Mở chi tiết người dùng với id không tồn tại không gây lỗi hệ thống"
     uc: "A.II.1-UC3"
@@ -880,7 +864,7 @@ testcases:
       - "2. Mở URL chi tiết với id lạ"
     ket_qua_mong_doi:
       - "API trả 4xx (không 500); trang không trắng, không lộ lỗi nội bộ"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: USR-G06
     title: "Bấm Lưu 2 lần liên tiếp chỉ tạo 1 bản ghi (người dùng)"
     uc: "A.II.1-UC4"
@@ -895,9 +879,9 @@ testcases:
       - "2. Bấm Lưu 2 lần liên tiếp rất nhanh"
     ket_qua_mong_doi:
       - "Chỉ có đúng 1 bản ghi theo mã; không báo lỗi trùng gây hiểu nhầm"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: USR-C19
-    title: "Tên đăng nhập chỉ khác hoa/thường so với tài khoản có sẵn bị coi là trùng"
+    title: "Tên đăng nhập có phân biệt hoa/thường: \"ABC\" là tài khoản khác \"abc\""
     uc: "A.II.1-UC4"
     tac_nhan: "Quản trị hệ thống"
     tai_khoan_chay: "admin"
@@ -909,6 +893,545 @@ testcases:
       - "1. Có user \"abc\""
       - "2. [API] Tạo user \"ABC\" email khác"
     ket_qua_mong_doi:
-      - "Bị từ chối (4xx)"
-    ghi_chu: "Chưa có đặc tả rõ về phân biệt hoa/thường — cần BA xác nhận"
-    ket_qua_chay: "Không chạy"
+      - "Không bị từ chối vì trùng (Tên đăng nhập phân biệt hoa/thường): hoặc tạo được (HTTP 200), hoặc bị từ chối do định dạng (form chỉ cho chữ thường) chứ không phải do \"đã tồn tại\"; user \"abc\" không bị ảnh hưởng"
+    ghi_chu: "Quy tắc chung Mã/Tên: Tên đăng nhập, Email, Mật khẩu có phân biệt hoa/thường (khác với Mã)"
+    ket_qua_chay: "Pass"
+  - id: USR-G07
+    title: "[API] Tên đăng nhập dài hơn 50 ký tự bị từ chối (người dùng)"
+    uc: "A.II.1-UC4"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Validate"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. [API] POST với Tên đăng nhập ≥ 51 ký tự"
+    ket_qua_mong_doi:
+      - "HTTP 400 \"Tên đăng nhập không vượt quá 50 ký tự\"; không tạo bản ghi"
+    ghi_chu: "Quy tắc chung: Mã tối đa 50 ký tự, Tên đăng nhập 50 ký tự; backend kiểm tra lại khi lưu"
+    ket_qua_chay: "Pass"
+  - id: USR-G11
+    title: "Họ tên trùng nhau vẫn được tạo (không bắt trùng)"
+    uc: "A.II.1-UC4"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Nghiệp vụ"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Tạo user A họ tên \"X\""
+      - "2. Tạo user B cùng họ tên \"X\", tên đăng nhập/email khác"
+    ket_qua_mong_doi:
+      - "Cả hai được tạo (HTTP 200)"
+    ghi_chu: "Quy tắc chung: không bắt trùng Họ tên người dùng"
+    ket_qua_chay: "Pass"
+  - id: USR-L35
+    title: "Bảng danh sách người dùng không còn cột Số điện thoại"
+    uc: "A.II.1-UC1"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xem danh sách"
+    loai: "UI"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở Quản trị hệ thống → Người dùng"
+      - "3. Xem tiêu đề các cột của bảng"
+    ket_qua_mong_doi:
+      - "Không có cột \"Số điện thoại\"; các cột còn lại hiển thị đúng thứ tự theo design"
+    ghi_chu: "GitLab #280 (đã đóng), GitLab #8 (đã đóng). #8 (cột SĐT trống hiển thị \"-\") được thay thế bởi #280. Mâu thuẫn với USR-L01 (còn cột Số điện thoại) — cần cập nhật USR-L01"
+  - id: USR-L37
+    title: "Bộ lọc Nhóm người dùng có lựa chọn \"Tất cả nhóm người dùng\""
+    uc: "A.II.1-UC1"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Bộ lọc"
+    loai: "Chức năng"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở Quản trị hệ thống → Người dùng"
+      - "3. Mở bộ lọc Nhóm người dùng"
+      - "4. Chọn một nhóm, sau đó chọn lại \"Tất cả nhóm người dùng\""
+    ket_qua_mong_doi:
+      - "Danh sách lựa chọn có mục đầu tiên \"Tất cả nhóm người dùng\"; chọn mục này thì danh sách trở về đầy đủ (tổng số bản ghi bằng lúc chưa lọc)"
+    ghi_chu: "GitLab #175 (đã đóng)"
+  - id: USR-L38
+    title: "Badge trạng thái ở cột Trạng thái có border đúng design"
+    uc: "A.II.1-UC1"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xem danh sách"
+    loai: "UI"
+    uu_tien: "Thấp"
+    automation: "Manual — chưa có script"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở Quản trị hệ thống → Người dùng"
+      - "3. So badge \"Đang hoạt động\" và \"Đã khóa\" với design ND-01"
+    ket_qua_mong_doi:
+      - "Màu nền, màu chữ và border của từng badge trạng thái khớp design ND-01"
+    ghi_chu: "GitLab #214 (đã đóng)"
+  - id: USR-L39
+    title: "Màu nền hàng tiêu đề và hàng dữ liệu của bảng đúng design ND-01"
+    uc: "A.II.1-UC1"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xem danh sách"
+    loai: "UI"
+    uu_tien: "Thấp"
+    automation: "Manual — chưa có script"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở Quản trị hệ thống → Người dùng"
+      - "3. So màu nền hàng tiêu đề và hàng dữ liệu với design ND-01"
+    ket_qua_mong_doi:
+      - "Màu nền hàng tiêu đề và hàng dữ liệu đúng mã màu trong design ND-01"
+    ghi_chu: "GitLab #215 (đã đóng)"
+  - id: USR-L40
+    title: "Màn danh sách người dùng khớp design ND-01"
+    uc: "A.II.1-UC1"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xem danh sách"
+    loai: "UI"
+    uu_tien: "Trung bình"
+    automation: "Manual — chưa có script"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở Quản trị hệ thống → Người dùng"
+      - "3. So toàn màn (tiêu đề, mô tả, ô tìm kiếm, bộ lọc, nút, bảng, phân trang) với design ND-01"
+    ket_qua_mong_doi:
+      - "Bố cục, text, font, màu, khoảng cách khớp design ND-01"
+    ghi_chu: "GitLab #247 (đã đóng)"
+  - id: USR-L41
+    title: "Tải lại trang (F5) ở trang 2 danh sách người dùng giữ nguyên trang đang xem"
+    uc: "A.II.1-UC1"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Phân trang"
+    loai: "Chức năng"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở Quản trị hệ thống → Người dùng"
+      - "3. Chuyển sang trang 2"
+      - "4. Nhấn F5"
+    ket_qua_mong_doi:
+      - "Sau khi tải lại vẫn ở trang 2 (trang 2 được đánh dấu active, dữ liệu giống trước khi F5)"
+    ghi_chu: "GitLab #28 (đã đóng). Phần \"phân trang\" của issue Toàn hệ thống áp dụng cho trang Người dùng"
+  - id: USR-V06
+    title: "Drawer chi tiết không hiển thị Ngày tạo, Đổi mật khẩu, Đăng nhập gần nhất"
+    uc: "A.II.1-UC3"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xem chi tiết"
+    loai: "UI"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở Quản trị hệ thống → Người dùng"
+      - "3. Bấm \"Xem chi tiết\" ở một người dùng"
+    ket_qua_mong_doi:
+      - "Không có các trường \"Ngày tạo\", \"Đổi mật khẩu\", \"Đăng nhập gần nhất\" (không còn ngày cứng 01/01/1901)"
+    ghi_chu: "GitLab #244 (đã đóng), GitLab #18 (đã đóng), GitLab #3 (đã đóng). Mâu thuẫn với USR-V01 (còn \"ngày tạo\") — cần cập nhật USR-V01"
+  - id: USR-V08
+    title: "Màu label trạng thái \"Đã khóa\" ở drawer giống ở danh sách"
+    uc: "A.II.1-UC3"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xem chi tiết"
+    loai: "UI"
+    uu_tien: "Thấp"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở Quản trị hệ thống → Người dùng"
+      - "3. Xem chi tiết một người dùng đã khóa"
+      - "4. So label trạng thái với badge cùng người dùng ở danh sách"
+    ket_qua_mong_doi:
+      - "Màu nền, màu chữ, border của label \"Đã khóa\" ở drawer giống badge ở danh sách"
+    ghi_chu: "GitLab #4 (đã đóng)"
+  - id: USR-V09
+    title: "Font email phụ (dưới họ tên) ở drawer đồng nhất với label trong nội dung"
+    uc: "A.II.1-UC3"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xem chi tiết"
+    loai: "UI"
+    uu_tien: "Thấp"
+    automation: "Manual — chưa có script"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở Quản trị hệ thống → Người dùng"
+      - "3. Bấm \"Xem chi tiết\" ở một người dùng"
+    ket_qua_mong_doi:
+      - "Email phụ dưới họ tên dùng cùng font family/size/weight với label trong nội dung drawer, đúng design"
+    ghi_chu: "GitLab #5 (đã đóng)"
+  - id: USR-V10
+    title: "Drawer chi tiết không có trường \"Vai trò\""
+    uc: "A.II.1-UC3"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xem chi tiết"
+    loai: "UI"
+    uu_tien: "Thấp"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở Quản trị hệ thống → Người dùng"
+      - "3. Bấm \"Xem chi tiết\" ở một người dùng"
+    ket_qua_mong_doi:
+      - "Không có trường \"Vai trò\"; thông tin phân quyền chỉ thể hiện qua \"Nhóm người dùng\""
+    ghi_chu: "GitLab #6 (đã đóng)"
+  - id: USR-V11
+    title: "Drawer chi tiết không có link \"Xem quyền của nhóm\""
+    uc: "A.II.1-UC3"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xem chi tiết"
+    loai: "UI"
+    uu_tien: "Thấp"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở Quản trị hệ thống → Người dùng"
+      - "3. Bấm \"Xem chi tiết\" ở một người dùng"
+    ket_qua_mong_doi:
+      - "Không có link \"Xem quyền của nhóm\" cạnh Nhóm người dùng"
+    ghi_chu: "GitLab #17 (đã đóng)"
+  - id: USR-V12
+    title: "Mục \"Đăng nhập gần đây\" lấy dữ liệu thật từ nhật ký truy cập"
+    uc: "A.II.1-UC3"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xem chi tiết"
+    loai: "Nghiệp vụ"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đăng nhập bằng tài khoản người dùng A (ghi nhận thời điểm, IP)"
+      - "2. Đăng nhập Quản trị hệ thống → Người dùng → Xem chi tiết người dùng A"
+      - "3. So mục \"Đăng nhập gần đây\" với Nhật ký truy cập lọc theo người dùng A"
+    ket_qua_mong_doi:
+      - "Mục \"Đăng nhập gần đây\" có lần đăng nhập ở bước 1 (thời điểm, IP/thiết bị) khớp Nhật ký truy cập, mới nhất ở trên; người dùng chưa đăng nhập lần nào thì hiển thị trạng thái trống"
+    ghi_chu: "GitLab #213 (đã đóng)"
+  - id: USR-V13
+    title: "Mục \"Đăng nhập gần đây\" ở drawer hiển thị đúng design"
+    uc: "A.II.1-UC3"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xem chi tiết"
+    loai: "UI"
+    uu_tien: "Thấp"
+    automation: "Manual — chưa có script"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở Quản trị hệ thống → Người dùng"
+      - "3. Bấm \"Xem chi tiết\" ở một người dùng"
+      - "4. So mục \"Đăng nhập gần đây\" với design"
+    ket_qua_mong_doi:
+      - "Tiêu đề, số dòng, định dạng thời gian và bố cục mục \"Đăng nhập gần đây\" khớp design"
+    ghi_chu: "GitLab #19"
+  - id: USR-V14
+    title: "Drawer chi tiết không đóng khi bấm ra ngoài, chỉ đóng bằng nút Đóng hoặc X"
+    uc: "A.II.1-UC3"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xem chi tiết"
+    loai: "Chức năng"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở Quản trị hệ thống → Người dùng"
+      - "3. Bấm \"Xem chi tiết\" ở một người dùng"
+      - "4. Bấm vào vùng nền bên ngoài drawer"
+      - "5. Bấm nút X"
+      - "6. Mở lại, bấm nút Đóng"
+    ket_qua_mong_doi:
+      - "Bước 4: drawer vẫn mở; bước 5 và 6: drawer đóng"
+    ghi_chu: "GitLab #20 (đã đóng)"
+  - id: USR-V15
+    title: "Drawer chi tiết có nút sao chép số điện thoại"
+    uc: "A.II.1-UC3"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xem chi tiết"
+    loai: "Chức năng"
+    uu_tien: "Thấp"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở Quản trị hệ thống → Người dùng"
+      - "3. Xem chi tiết người dùng có số điện thoại"
+      - "4. Bấm biểu tượng sao chép cạnh SĐT"
+      - "5. Dán vào ô bất kỳ"
+    ket_qua_mong_doi:
+      - "Có biểu tượng sao chép cạnh SĐT; bấm thì hiện thông báo đã sao chép; nội dung dán ra đúng SĐT"
+    ghi_chu: "GitLab #156 (đã đóng)"
+  - id: USR-V16
+    title: "Cỡ chữ nội dung drawer chi tiết đúng design (không quá nhỏ)"
+    uc: "A.II.1-UC3"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xem chi tiết"
+    loai: "UI"
+    uu_tien: "Thấp"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở Quản trị hệ thống → Người dùng"
+      - "3. Bấm \"Xem chi tiết\" ở một người dùng"
+    ket_qua_mong_doi:
+      - "Cỡ chữ label và giá trị trong drawer đúng design (giá trị không nhỏ hơn cỡ chữ nội dung chung của hệ thống)"
+    ghi_chu: "GitLab #156 (đã đóng)"
+  - id: USR-V17
+    title: "Drawer Xem chi tiết người dùng khớp design"
+    uc: "A.II.1-UC3"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xem chi tiết"
+    loai: "UI"
+    uu_tien: "Trung bình"
+    automation: "Manual — chưa có script"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở Quản trị hệ thống → Người dùng"
+      - "3. Bấm \"Xem chi tiết\" ở một người dùng"
+      - "4. So toàn drawer với design"
+    ket_qua_mong_doi:
+      - "Bố cục, trường thông tin, text, font, màu, khoảng cách khớp design"
+    ghi_chu: "GitLab #174 (đã đóng), GitLab #248"
+  - id: USR-C20
+    title: "Bỏ tích \"Bắt buộc đổi mật khẩu lần đầu\" thì lần đầu đăng nhập vào thẳng hệ thống"
+    uc: "A.II.1-UC4"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Nghiệp vụ"
+    uu_tien: "Cao"
+    automation: "Manual — chưa có script"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở Quản trị hệ thống → Người dùng"
+      - "3. Bấm \"Thêm mới người dùng\""
+      - "4. Nhập thông tin hợp lệ, bỏ tích \"Bắt buộc đổi mật khẩu lần đầu\""
+      - "5. Lưu"
+      - "6. Đăng xuất, đăng nhập bằng tài khoản vừa tạo"
+    ket_qua_mong_doi:
+      - "Vào thẳng Dashboard, không chuyển sang màn \"Đổi mật khẩu lần đầu\"; API chi tiết người dùng có isRequireChangePassword = false"
+    ghi_chu: "GitLab #48, GitLab #119 (đã đóng)"
+  - id: USR-C22
+    title: "Danh sách chọn Đơn vị ở form thêm mới không có đơn vị đã khóa"
+    uc: "A.II.1-UC4"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Nghiệp vụ"
+    uu_tien: "Trung bình"
+    automation: "Manual — chưa có script"
+    cac_buoc:
+      - "1. Chuẩn bị một đơn vị đã khóa"
+      - "2. Đăng nhập Quản trị hệ thống → Người dùng → Thêm mới người dùng"
+      - "3. Mở ô Đơn vị, tìm đơn vị đã khóa"
+    ket_qua_mong_doi:
+      - "Đơn vị đã khóa không xuất hiện trong danh sách chọn"
+    ghi_chu: "GitLab #85 (đã đóng). Quy tắc ẩn đơn vị đã khóa — cần BA xác nhận"
+  - id: USR-C23
+    title: "Ô Tên đăng nhập giới hạn tối đa 50 ký tự trên giao diện"
+    uc: "A.II.1-UC4"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Validate"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở Quản trị hệ thống → Người dùng"
+      - "3. Bấm \"Thêm mới người dùng\""
+      - "4. Nhập 51 ký tự hợp lệ vào ô Tên đăng nhập"
+    ket_qua_mong_doi:
+      - "Ô chỉ nhận 50 ký tự (hoặc báo \"Tên đăng nhập không vượt quá 50 ký tự\"); không gửi request gây lỗi 500"
+    ghi_chu: "GitLab #95 (đã đóng)"
+  - id: USR-C24
+    title: "Tên đăng nhập có dấu tiếng Việt bị chặn"
+    uc: "A.II.1-UC4"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Validate"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở Quản trị hệ thống → Người dùng"
+      - "3. Bấm \"Thêm mới người dùng\""
+      - "4. Nhập Tên đăng nhập \"nguyễnvăn\", các trường khác hợp lệ"
+      - "5. Lưu"
+    ket_qua_mong_doi:
+      - "Báo lỗi định dạng Tên đăng nhập tại ô; không tạo người dùng"
+    ghi_chu: "GitLab #109 (đã đóng)"
+  - id: USR-C25
+    title: "Tên đăng nhập chứa khoảng trắng bị chặn"
+    uc: "A.II.1-UC4"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Validate"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở Quản trị hệ thống → Người dùng"
+      - "3. Bấm \"Thêm mới người dùng\""
+      - "4. Nhập Tên đăng nhập \"nguyen van\", các trường khác hợp lệ"
+      - "5. Lưu"
+    ket_qua_mong_doi:
+      - "Báo lỗi định dạng Tên đăng nhập tại ô; không tạo người dùng"
+    ghi_chu: "GitLab #109 (đã đóng)"
+  - id: USR-C27
+    title: "Popup Thêm người dùng khớp design ND-05"
+    uc: "A.II.1-UC4"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "UI"
+    uu_tien: "Trung bình"
+    automation: "Manual — chưa có script"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở Quản trị hệ thống → Người dùng"
+      - "3. Bấm \"Thêm mới người dùng\""
+      - "4. So popup (tiêu đề, mô tả, trường, placeholder, checkbox, nút) với design ND-05"
+    ket_qua_mong_doi:
+      - "Bố cục, text, placeholder, font, màu, nút khớp design ND-05"
+    ghi_chu: "GitLab #176 (đã đóng), GitLab #245"
+  - id: USR-C28
+    title: "Mở lại form Thêm mới người dùng sau khi đã lưu thì form trống"
+    uc: "A.II.1-UC4"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Chức năng"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở Quản trị hệ thống → Người dùng"
+      - "3. Bấm \"Thêm mới người dùng\""
+      - "4. Nhập đầy đủ thông tin hợp lệ, Lưu thành công"
+      - "5. Bấm \"Thêm mới người dùng\" lần nữa"
+      - "6. Nhập vài trường, Hủy, mở lại form"
+    ket_qua_mong_doi:
+      - "Bước 5 và 6: mọi trường trống/về giá trị mặc định, không còn dữ liệu của lần nhập trước"
+    ghi_chu: "GitLab #116 (đã đóng)"
+  - id: USR-C29
+    title: "Email thông tin tài khoản đăng nhập được gửi từ địa chỉ thuộc domain mail của công ty"
+    uc: "A.II.1-UC4"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Email"
+    loai: "Nghiệp vụ"
+    uu_tien: "Trung bình"
+    automation: "Manual — chưa có script"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở Quản trị hệ thống → Người dùng"
+      - "3. Bấm \"Thêm mới người dùng\""
+      - "4. Nhập thông tin hợp lệ với email nhận kiểm tra được, tích \"Gửi thông tin đăng nhập qua email\""
+      - "5. Lưu"
+      - "6. Mở email nhận được, xem địa chỉ người gửi"
+    ket_qua_mong_doi:
+      - "Địa chỉ người gửi (From) thuộc domain mail của công ty/hệ thống, không phải gmail.com hay địa chỉ cá nhân"
+    ghi_chu: "GitLab #63 (đã đóng). Domain gửi chính xác — cần BA xác nhận"
+  - id: USR-E10
+    title: "Form Chỉnh sửa người dùng hiển thị đúng Mã người dùng (userName), không hiển thị email"
+    uc: "A.II.1-UC5"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Chỉnh sửa"
+    loai: "Chức năng"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở Quản trị hệ thống → Người dùng"
+      - "3. Bấm \"Chỉnh sửa\" ở một người dùng"
+    ket_qua_mong_doi:
+      - "Ô Mã người dùng/Tên đăng nhập hiển thị userName của người dùng (khớp cột Tên đăng nhập ở danh sách), không phải email"
+    ghi_chu: "GitLab #1 (đã đóng)"
+  - id: USR-E11
+    title: "Font sub title form Chỉnh sửa người dùng đồng nhất với text mô tả dưới field"
+    uc: "A.II.1-UC5"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Chỉnh sửa"
+    loai: "UI"
+    uu_tien: "Thấp"
+    automation: "Manual — chưa có script"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở Quản trị hệ thống → Người dùng"
+      - "3. Bấm \"Chỉnh sửa\" ở một người dùng"
+    ket_qua_mong_doi:
+      - "Sub title dưới tiêu đề form dùng font family/size/weight theo design, đồng nhất với text mô tả dưới field"
+    ghi_chu: "GitLab #2 (đã đóng)"
+  - id: USR-E12
+    title: "Popup Chỉnh sửa người dùng khớp design ND-07"
+    uc: "A.II.1-UC5"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Chỉnh sửa"
+    loai: "UI"
+    uu_tien: "Trung bình"
+    automation: "Manual — chưa có script"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở Quản trị hệ thống → Người dùng"
+      - "3. Bấm \"Chỉnh sửa\" ở một người dùng"
+      - "4. So popup với design ND-07"
+    ket_qua_mong_doi:
+      - "Bố cục, text, placeholder, trường chỉ-đọc, font, màu, nút khớp design ND-07"
+    ghi_chu: "GitLab #177 (đã đóng), GitLab #246"
+  - id: USR-E13
+    title: "Xóa Đơn vị của người dùng khi chỉnh sửa rồi Lưu thì đơn vị được gỡ"
+    uc: "A.II.1-UC5"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Chỉnh sửa"
+    loai: "Chức năng"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở Quản trị hệ thống → Người dùng"
+      - "3. Chỉnh sửa người dùng đang có Đơn vị"
+      - "4. Xóa giá trị ô Đơn vị"
+      - "5. Lưu, mở lại chi tiết"
+    ket_qua_mong_doi:
+      - "Lưu thành công; chi tiết và API người dùng không còn đơn vị (organizationId rỗng)"
+    ghi_chu: "GitLab #109 (đã đóng)"
+  - id: USR-X06
+    title: "Xóa người dùng đang thuộc nhóm thì người dùng không còn trong danh sách thành viên của nhóm"
+    uc: "A.II.1 (bổ sung)"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xóa"
+    loai: "Nghiệp vụ"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Tạo người dùng A và thêm vào nhóm N"
+      - "2. Người dùng → Xóa người dùng A → Có"
+      - "3. Mở chi tiết nhóm N"
+    ket_qua_mong_doi:
+      - "API xóa trả 200; A không còn trong bảng thành viên của nhóm N; cột Thành viên của nhóm N giảm 1"
+    ghi_chu: "GitLab #56 (đã đóng). Hiểu theo tiêu đề \"Xóa người dùng trong nhóm 200 nhưng không clear data\""

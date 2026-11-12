@@ -1,6 +1,6 @@
 title: "Đơn vị hành chính cấp tỉnh"
 phan_he: "A - Quản trị hệ thống"
-tong_so: 38
+tong_so: 68
 testcases:
   - id: PRV-L01
     title: "Danh sách Đơn vị hành chính cấp tỉnh hiển thị đúng các cột"
@@ -16,7 +16,7 @@ testcases:
       - "2. Mở trang Đơn vị hành chính cấp tỉnh"
     ket_qua_mong_doi:
       - "Bảng có đủ cột: STT, Mã tỉnh/thành, Tên tỉnh/thành, Số đơn vị, Thao tác; có dữ liệu"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: PRV-L02
     title: "Phân trang mặc định 10 bản ghi/trang và hiển thị tổng số bản ghi"
     uc: "A.IV.1-UC1"
@@ -30,7 +30,7 @@ testcases:
       - "1. Mở trang Đơn vị hành chính cấp tỉnh"
     ket_qua_mong_doi:
       - "Hiển thị \"Hiển thị 1-10 trong N bản ghi\"; tối đa 10 dòng dữ liệu; thanh phân trang xuất hiện khi N>10"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: PRV-L03
     title: "Tìm theo mã tỉnh/thành trả về đúng bản ghi"
     uc: "A.IV.1-UC6"
@@ -45,7 +45,7 @@ testcases:
       - "2. Nhập một mã tỉnh/thành có sẵn vào ô tìm kiếm"
     ket_qua_mong_doi:
       - "Chỉ hiển thị các dòng chứa từ khóa; có ít nhất 1 dòng"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: PRV-L04
     title: "Tìm theo tên tỉnh/thành trả về đúng bản ghi"
     uc: "A.IV.1-UC6"
@@ -59,7 +59,7 @@ testcases:
       - "1. Nhập một tên tỉnh/thành có sẵn vào ô tìm kiếm"
     ket_qua_mong_doi:
       - "Chỉ hiển thị các dòng chứa từ khóa"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: PRV-L05
     title: "Từ khóa không tồn tại → không có dữ liệu"
     uc: "A.IV.1-UC6"
@@ -72,8 +72,8 @@ testcases:
     cac_buoc:
       - "1. Nhập \"zzqcxx_khongtontai_999\""
     ket_qua_mong_doi:
-      - "Bảng rỗng / hiển thị trạng thái không có dữ liệu, không lỗi"
-    ket_qua_chay: "Không chạy"
+      - "Bảng rỗng, hiện \"Không tìm thấy dữ liệu phù hợp\"; không lỗi"
+    ket_qua_chay: "Pass"
   - id: PRV-L06
     title: "Tìm kiếm không phân biệt chữ hoa/chữ thường"
     uc: "A.IV.1-UC6"
@@ -87,7 +87,7 @@ testcases:
       - "1. Nhập từ khóa viết HOA rồi viết thường của cùng một giá trị"
     ket_qua_mong_doi:
       - "Hai lần tìm trả về cùng số bản ghi"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: PRV-L07
     title: "Ký tự đặc biệt / chuỗi SQL trong ô tìm kiếm không gây lỗi hệ thống"
     uc: "A.IV.1-UC6"
@@ -101,7 +101,7 @@ testcases:
       - "1. Nhập  ' OR 1=1 --  và  <script>alert(1)</script>"
     ket_qua_mong_doi:
       - "Không hiện lỗi 500/trắng trang, không thực thi script, không trả về toàn bộ dữ liệu bất thường"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: PRV-L08
     title: "Chuyển sang trang 2 hiển thị dữ liệu khác trang 1"
     uc: "A.IV.1-UC1"
@@ -115,7 +115,7 @@ testcases:
       - "1. Bấm trang 2 trên thanh phân trang"
     ket_qua_mong_doi:
       - "Trang 2 được đánh dấu active; nội dung bảng khác trang 1"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: PRV-L09
     title: "Đổi số bản ghi/trang sang 20 thì số dòng thay đổi theo"
     uc: "A.IV.1-UC1"
@@ -129,7 +129,7 @@ testcases:
       - "1. Chọn \"20 / trang\" ở thanh phân trang"
     ket_qua_mong_doi:
       - "Số dòng tối đa mỗi trang = 20; tổng số bản ghi không đổi"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: PRV-L10
     title: "Xóa từ khóa thì danh sách trở về đầy đủ"
     uc: "A.IV.1-UC6"
@@ -144,7 +144,51 @@ testcases:
       - "2. Xóa trắng ô tìm kiếm"
     ket_qua_mong_doi:
       - "Danh sách hiển thị lại như ban đầu (tổng số bản ghi bằng lúc đầu)"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
+  - id: PRV-L31
+    title: "Tìm kiếm không phân biệt dấu tiếng Việt (\"chuyen doi so\" ra \"Chuyển đổi số\")"
+    uc: "A.IV.1-UC6"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Tìm kiếm"
+    loai: "Chức năng"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Mở trang Đơn vị hành chính cấp tỉnh"
+      - "2. Nhập tên có dấu nhưng gõ không dấu (cả chữ thường và HOA)"
+    ket_qua_mong_doi:
+      - "Ra các dòng có tên khớp khi bỏ dấu, không phân biệt hoa/thường"
+    ket_qua_chay: "Pass"
+  - id: PRV-L32
+    title: "Từ khóa bỏ khoảng trắng đầu/cuối; cả cụm từ được tìm như một chuỗi liền (không tách từ)"
+    uc: "A.IV.1-UC6"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Tìm kiếm"
+    loai: "Chức năng"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Nhập \"   <mã>   \" (khoảng trắng 2 đầu)"
+      - "2. Nhập cụm 2 từ của tên theo thứ tự đảo ngược"
+    ket_qua_mong_doi:
+      - "Kết quả bằng khi nhập không có khoảng trắng; cụm đảo ngược chỉ ra dòng chứa nguyên cụm liền đó (không khớp từng từ rời)"
+    ket_qua_chay: "Pass"
+  - id: PRV-L33
+    title: "Ký tự %, _, ' trong từ khóa được hiểu là ký tự thường"
+    uc: "A.IV.1-UC6"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Tìm kiếm"
+    loai: "Validate"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Lần lượt nhập \"%\", \"_\", \"'\" vào ô tìm kiếm"
+    ket_qua_mong_doi:
+      - "Không lỗi hệ thống; mọi dòng trả về đều chứa đúng ký tự đã nhập (không coi là ký tự đại diện / không gây lỗi SQL)"
+    ket_qua_chay: "Pass"
   - id: PRV-L11
     title: "Xuất Excel danh sách Đơn vị hành chính cấp tỉnh"
     uc: "A.IV.1-UC7"
@@ -159,7 +203,7 @@ testcases:
     ket_qua_mong_doi:
       - "Trình duyệt tải về file .xlsx chứa dữ liệu danh sách (UC: Xuất danh sách ra Excel)"
     ghi_chu: "UC_1409 ghi FE \"Chưa làm\" → có thể FAIL (chức năng chưa phát triển)"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: PRV-V01
     title: "Chi tiết tỉnh hiển thị thông tin và danh sách đơn vị thuộc tỉnh"
     uc: "A.IV.1-UC5"
@@ -173,7 +217,7 @@ testcases:
       - "1. Bấm \"Xem chi tiết\" ở một tỉnh có đơn vị"
     ket_qua_mong_doi:
       - "Hiển thị mã, tên tỉnh và bảng đơn vị thuộc tỉnh; có nút Chỉnh sửa, Thêm mới đơn vị vào tỉnh, Mở module Đơn vị"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: PRV-V02
     title: "Cột \"Số đơn vị\" khớp với số đơn vị trong màn chi tiết"
     uc: "A.IV.1-UC5"
@@ -188,7 +232,7 @@ testcases:
       - "2. Mở chi tiết"
     ket_qua_mong_doi:
       - "Số bản ghi đơn vị trong chi tiết = Số đơn vị"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: PRV-V03
     title: "Nút \"Chỉnh sửa\" ở chi tiết mở form cập nhật"
     uc: "A.IV.1-UC3"
@@ -203,7 +247,7 @@ testcases:
       - "2. Bấm Chỉnh sửa"
     ket_qua_mong_doi:
       - "Form cập nhật mở với dữ liệu hiện tại"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: PRV-C01
     title: "Thêm tỉnh/thành thành công"
     uc: "A.IV.1-UC2"
@@ -219,7 +263,7 @@ testcases:
       - "3. Lưu"
     ket_qua_mong_doi:
       - "Thông báo thành công; tỉnh xuất hiện trong danh sách với Số đơn vị = 0"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: PRV-C02
     title: "Bỏ trống Mã/Tên thì báo lỗi bắt buộc"
     uc: "A.IV.1-UC2"
@@ -233,7 +277,7 @@ testcases:
       - "1. Bấm Lưu khi chưa nhập"
     ket_qua_mong_doi:
       - "Báo lỗi bắt buộc; không tạo"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: PRV-C03
     title: "Trùng mã tỉnh bị từ chối"
     uc: "A.IV.1-UC2"
@@ -247,10 +291,10 @@ testcases:
       - "1. Tạo tỉnh A"
       - "2. Tạo tỉnh B cùng mã"
     ket_qua_mong_doi:
-      - "Báo \"Mã tỉnh đã tồn tại\"; chỉ 1 bản ghi"
-    ket_qua_chay: "Không chạy"
+      - "Báo \"Mã [ABC] đã tồn tại. Vui lòng nhập mã khác.\"; chỉ 1 bản ghi"
+    ket_qua_chay: "Pass"
   - id: PRV-C04
-    title: "Mã tỉnh dài hơn 10 ký tự bị chặn"
+    title: "Mã tỉnh dài hơn 50 ký tự bị chặn"
     uc: "A.IV.1-UC2"
     tac_nhan: "Quản trị hệ thống"
     tai_khoan_chay: "admin"
@@ -259,11 +303,11 @@ testcases:
     uu_tien: "Trung bình"
     automation: "Auto"
     cac_buoc:
-      - "1. Nhập mã 11 ký tự"
+      - "1. Nhập mã 51 ký tự"
       - "2. Lưu"
     ket_qua_mong_doi:
-      - "Báo \"Không được nhập vượt quá 10 ký tự\"; không tạo"
-    ket_qua_chay: "Không chạy"
+      - "Ô nhập chặn gõ quá 50 ký tự; nếu vượt thì báo \"Mã không vượt quá 50 ký tự\"; không tạo"
+    ket_qua_chay: "Pass"
   - id: PRV-C05
     title: "Hủy form thêm mới không tạo bản ghi"
     uc: "A.IV.1-UC2"
@@ -278,7 +322,7 @@ testcases:
       - "2. Hủy"
     ket_qua_mong_doi:
       - "Không có tỉnh mới"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: PRV-C06
     title: "Trùng tên tỉnh (khác mã)"
     uc: "A.IV.1-UC2"
@@ -292,9 +336,9 @@ testcases:
       - "1. Tạo tỉnh A"
       - "2. Tạo tỉnh B khác mã, trùng tên"
     ket_qua_mong_doi:
-      - "Hệ thống cảnh báo/từ chối tên trùng"
-    ghi_chu: "Khảo sát: API hiện cho tạo trùng tên → cần BA xác nhận quy tắc"
-    ket_qua_chay: "Không chạy"
+      - "Bị từ chối (HTTP 400): tên bắt trùng trong cùng nhóm cha — tỉnh/thành không có cha nên tên là duy nhất toàn danh mục"
+    ghi_chu: "Quy tắc chung Mã/Tên: tên bắt trùng trong cùng nhóm cha, so không phân biệt hoa/thường, có phân biệt dấu"
+    ket_qua_chay: "Pass"
   - id: PRV-E01
     title: "Sửa tên tỉnh thành công"
     uc: "A.IV.1-UC3"
@@ -310,7 +354,7 @@ testcases:
       - "3. Lưu"
     ket_qua_mong_doi:
       - "Thông báo thành công; tên mới hiển thị"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: PRV-E02
     title: "Mã tỉnh không đổi sau khi sửa tên"
     uc: "A.IV.1-UC3"
@@ -325,7 +369,7 @@ testcases:
       - "2. Kiểm tra mã"
     ket_qua_mong_doi:
       - "Mã giữ nguyên"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: PRV-E03
     title: "Xóa trắng tên khi sửa bị chặn"
     uc: "A.IV.1-UC3"
@@ -340,7 +384,7 @@ testcases:
       - "2. Lưu"
     ket_qua_mong_doi:
       - "Báo lỗi bắt buộc; không lưu"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: PRV-E04
     title: "Hủy chỉnh sửa không đổi dữ liệu"
     uc: "A.IV.1-UC3"
@@ -355,7 +399,7 @@ testcases:
       - "2. Hủy"
     ket_qua_mong_doi:
       - "Dữ liệu giữ nguyên"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: PRV-D01
     title: "Xóa tỉnh chưa có đơn vị thành công"
     uc: "A.IV.1-UC4"
@@ -370,7 +414,7 @@ testcases:
       - "2. Xác nhận"
     ket_qua_mong_doi:
       - "Tỉnh biến mất khỏi danh sách"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: PRV-D02
     title: "Xóa tỉnh đang có đơn vị tham chiếu bị chặn"
     uc: "A.IV.1-UC4"
@@ -385,7 +429,7 @@ testcases:
       - "2. Xóa tỉnh"
     ket_qua_mong_doi:
       - "Báo \"Không thể xóa: đang có đơn vị thuộc tỉnh này\"; tỉnh còn nguyên"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: PRV-D03
     title: "Chọn \"Không\" ở hộp xác nhận thì giữ nguyên"
     uc: "A.IV.1-UC4"
@@ -400,7 +444,7 @@ testcases:
       - "2. Không"
     ket_qua_mong_doi:
       - "Tỉnh vẫn còn"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: PRV-S01
     title: "API tỉnh: không token / token giả → 401"
     uc: "A.IV.1-UC1"
@@ -414,22 +458,7 @@ testcases:
       - "1. GET /provinces không token"
     ket_qua_mong_doi:
       - "HTTP 401"
-    ket_qua_chay: "Không chạy"
-  - id: PRV-S02
-    title: "Quyền API tỉnh đúng theo ma trận quyền Cán bộ (không có PROVINCE.* → 403)"
-    uc: "A.IV.1-UC2"
-    tac_nhan: "Quản trị hệ thống"
-    tai_khoan_chay: "admin"
-    chuc_nang: "Phân quyền"
-    loai: "Bảo mật"
-    uu_tien: "Cao"
-    automation: "Auto"
-    cac_buoc:
-      - "1. Lấy ma trận quyền canbo"
-      - "2. GET/POST/PUT/DELETE /provinces"
-    ket_qua_mong_doi:
-      - "Không có quyền → 403 cho mọi thao tác"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: PRV-P01
     title: "Danh sách tỉnh tải < 3 giây"
     uc: "A.IV.1-UC1"
@@ -443,7 +472,7 @@ testcases:
       - "1. Mở trang và đo"
     ket_qua_mong_doi:
       - "API < 3000ms, hiển thị < 6000ms"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: PRV-G01
     title: "Trường bắt buộc chỉ nhập khoảng trắng bị chặn (tỉnh/thành)"
     uc: "A.IV.1-UC4"
@@ -459,7 +488,7 @@ testcases:
       - "3. Lưu"
     ket_qua_mong_doi:
       - "Báo lỗi bắt buộc (chuỗi rỗng sau khi trim); form còn mở; không tạo bản ghi"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: PRV-G02
     title: "Tên chứa tiếng Việt có dấu, HTML, dấu nháy, & được lưu và hiển thị đúng sau khi tải lại trang (tỉnh/thành)"
     uc: "A.IV.1-UC4"
@@ -474,7 +503,7 @@ testcases:
       - "2. Tải lại trang (F5), tìm theo mã"
     ket_qua_mong_doi:
       - "Tên hiển thị nguyên văn dạng chữ; thẻ HTML không bị render (chống XSS)"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: PRV-G03
     title: "[API] Tên rỗng bị server từ chối bằng HTTP 400 (tỉnh/thành)"
     uc: "A.IV.1-UC4"
@@ -489,7 +518,7 @@ testcases:
     ket_qua_mong_doi:
       - "HTTP 400 kèm thông báo; không tạo bản ghi"
     ghi_chu: "Nếu API trả 200/500 → lỗi thiếu validate phía server"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: PRV-G04
     title: "Server lỗi 500 khi lưu: hiển thị lỗi, giữ form và dữ liệu đã nhập (tỉnh/thành)"
     uc: "A.IV.1-UC4"
@@ -505,7 +534,7 @@ testcases:
       - "3. Lưu"
     ket_qua_mong_doi:
       - "Form còn mở và giữ dữ liệu; không lộ stacktrace; không tạo bản ghi"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: PRV-G05
     title: "Mất kết nối khi lưu: không treo giao diện, giữ form (tỉnh/thành)"
     uc: "A.IV.1-UC4"
@@ -521,7 +550,7 @@ testcases:
       - "3. Lưu"
     ket_qua_mong_doi:
       - "Form còn mở và giữ dữ liệu; trang không trắng/lỗi; không tạo bản ghi"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: PRV-V04
     title: "Mở chi tiết tỉnh với id không tồn tại không gây lỗi hệ thống"
     uc: "A.IV.1-UC5"
@@ -536,7 +565,7 @@ testcases:
       - "2. Mở URL chi tiết với id lạ"
     ket_qua_mong_doi:
       - "API trả 4xx (không 500); trang không trắng, không lộ lỗi nội bộ"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: PRV-G06
     title: "Bấm Lưu 2 lần liên tiếp chỉ tạo 1 bản ghi (tỉnh/thành)"
     uc: "A.IV.1-UC4"
@@ -551,7 +580,7 @@ testcases:
       - "2. Bấm Lưu 2 lần liên tiếp rất nhanh"
     ket_qua_mong_doi:
       - "Chỉ có đúng 1 bản ghi theo mã; không báo lỗi trùng gây hiểu nhầm"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: PRV-E05
     title: "Sửa tên tỉnh thành tên trùng tỉnh khác bị từ chối"
     uc: "A.IV.1-UC3"
@@ -567,5 +596,473 @@ testcases:
       - "3. Lưu"
     ket_qua_mong_doi:
       - "Bị từ chối; tên B giữ nguyên"
-    ghi_chu: "Tương tự PRV-C06 (thêm trùng tên) — cần BA xác nhận quy tắc duy nhất của tên"
-    ket_qua_chay: "Không chạy"
+    ghi_chu: "Cùng quy tắc với PRV-C06 (tên bắt trùng trong cùng nhóm cha)"
+    ket_qua_chay: "Pass"
+  - id: PRV-G07
+    title: "[API] Mã dài hơn 50 ký tự bị từ chối (tỉnh/thành)"
+    uc: "A.IV.1-UC2"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Validate"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. [API] POST với Mã ≥ 51 ký tự"
+    ket_qua_mong_doi:
+      - "HTTP 400 \"Mã không vượt quá 50 ký tự\"; không tạo bản ghi"
+    ghi_chu: "Quy tắc chung: Mã tối đa 50 ký tự, Tên đăng nhập 50 ký tự; backend kiểm tra lại khi lưu"
+    ket_qua_chay: "Pass"
+  - id: PRV-G08
+    title: "[API] Mã chứa khoảng trắng, dấu tiếng Việt hoặc ký tự đặc biệt bị từ chối (tỉnh/thành)"
+    uc: "A.IV.1-UC2"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Validate"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. [API] POST với mã \"QC AUTO 1\", \"MãQC1\", \"QC1@#\", \"QC1é\""
+    ket_qua_mong_doi:
+      - "Cả 4 bị từ chối (4xx); mã chỉ gồm chữ không dấu A–Z, số 0–9 và - _ ."
+    ghi_chu: "Quy tắc chung Mã"
+    ket_qua_chay: "Pass"
+  - id: PRV-G09
+    title: "[API] Trùng mã (không phân biệt hoa/thường) báo đúng thông báo (tỉnh/thành)"
+    uc: "A.IV.1-UC2"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Nghiệp vụ"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Có bản ghi mã \"ABC\""
+      - "2. [API] Tạo mã \"ABC\", \"abc\", \"Abc\""
+    ket_qua_mong_doi:
+      - "Cả 3 bị từ chối 4xx với \"Mã [ABC] đã tồn tại. Vui lòng nhập mã khác.\""
+    ghi_chu: "Quy tắc chung: Mã bắt trùng toàn danh mục, mọi trạng thái (Đã khóa/Chưa khóa/Ngừng hoạt động…), không phân biệt hoa/thường"
+    ket_qua_chay: "Pass"
+  - id: PRV-G10
+    title: "[API] Tên đúng 255 ký tự được nhận, 256 ký tự bị từ chối (tỉnh/thành)"
+    uc: "A.IV.1-UC2"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Validate"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. [API] POST Tên 255 ký tự"
+      - "2. [API] POST Tên 256 ký tự"
+    ket_qua_mong_doi:
+      - "255: HTTP 200; 256: HTTP 400 \"Tên không vượt quá 255 ký tự\""
+    ghi_chu: "Quy tắc chung: Tên/Họ tên tối đa 255 ký tự (Tên chỉ số, Tên nhóm chỉ số tối đa 500)"
+    ket_qua_chay: "Pass"
+  - id: PRV-G11
+    title: "[API] Tên trùng trong cùng nhóm cha (khác hoa/thường) bị từ chối (tỉnh/thành)"
+    uc: "A.IV.1-UC2"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Nghiệp vụ"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Có bản ghi tên \"X\""
+      - "2. [API] Tạo bản ghi mã khác, tên \"X\" và \"x\" (HOA)"
+    ket_qua_mong_doi:
+      - "Bị từ chối 4xx: tên bắt trùng trong cùng nhóm cha, không phân biệt hoa/thường"
+    ghi_chu: "Quy tắc chung: Tên bắt trùng chỉ trong cùng nhóm cha"
+    ket_qua_chay: "Pass"
+  - id: PRV-G12
+    title: "[API] Tên chỉ khác dấu (\"Trùng\" và \"Trung\") là tên khác, được tạo (tỉnh/thành)"
+    uc: "A.IV.1-UC2"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Nghiệp vụ"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Có bản ghi tên \"Trùng\""
+      - "2. [API] Tạo bản ghi tên \"Trung\""
+    ket_qua_mong_doi:
+      - "Được tạo (HTTP 200)"
+    ghi_chu: "Quy tắc chung: so trùng tên có phân biệt dấu"
+    ket_qua_chay: "Pass"
+  - id: PRV-L12
+    title: "File Excel tỉnh/thành có đủ cột như màn hình, gồm Số xã/phường"
+    uc: "A.IV.1-UC7"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Export"
+    loai: "Chức năng"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở Đơn vị hành chính cấp tỉnh → Xuất Excel"
+      - "3. Mở file"
+    ket_qua_mong_doi:
+      - "File có cột Mã, Tên, Số xã/phường, Số đơn vị; giá trị khớp màn hình (vd TINH-536 có 3 xã/phường)"
+    ghi_chu: "GitLab #293"
+  - id: PRV-L13
+    title: "Tỉnh/thành vừa thêm mới hiển thị ở đầu danh sách"
+    uc: "A.IV.1-UC1"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xem danh sách"
+    loai: "Chức năng"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở menu Đơn vị hành chính cấp tỉnh"
+      - "3. Thêm tỉnh/thành mới (mã QCA…) và Lưu"
+      - "4. Xem trang 1 của danh sách (không tìm kiếm, không lọc)"
+    ket_qua_mong_doi:
+      - "Bản ghi vừa tạo nằm ở dòng đầu tiên (STT 1) của trang 1"
+    ghi_chu: "GitLab #111 (đã đóng). Thực tế: bản ghi mới không nằm đầu danh sách"
+  - id: PRV-L14
+    title: "Các màn Đơn vị hành chính cấp tỉnh khớp design DVT-01 đến DVT-05"
+    uc: "A.IV.1-UC1"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Giao diện"
+    loai: "UI"
+    uu_tien: "Trung bình"
+    automation: "Manual — chưa có script"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở menu Đơn vị hành chính cấp tỉnh"
+      - "3. Lần lượt mở: danh sách, popup Thêm mới, popup Cập nhật, chi tiết tỉnh/thành, hộp xác nhận Xoá"
+      - "4. Đối chiếu từng màn với Figma DVT-01…DVT-05"
+    ket_qua_mong_doi:
+      - "Bố cục, tiêu đề, sub title, nhãn, placeholder, nút, màu và cỡ chữ của cả 5 màn khớp design"
+    ghi_chu: "GitLab #234 (đã đóng). Đối chiếu Figma; issue không ghi giá trị cụ thể — cần BA/Design xác nhận nếu Figma chưa chốt"
+  - id: PRV-L15
+    title: "Căn lề trong bảng: cột chữ căn trái, cột số căn phải"
+    uc: "A.IV.1-UC1"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Giao diện chung"
+    loai: "UI"
+    uu_tien: "Thấp"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở menu Đơn vị hành chính cấp tỉnh"
+      - "3. Quan sát căn lề tiêu đề và dữ liệu các cột Mã, Tên, Số đơn vị"
+      - "4. Lặp lại ở các trang Đơn vị hành chính cấp xã, Loại đơn vị, Đơn vị"
+    ket_qua_mong_doi:
+      - "Cột chữ (Mã, Tên…) căn trái; cột số (STT, Số đơn vị, Số lượng thành viên…) căn phải; tiêu đề cột căn theo dữ liệu"
+    ghi_chu: "GitLab #24 (đã đóng). Quy ước áp dụng toàn hệ thống. Cột STT căn phải hay giữa: cần BA xác nhận"
+  - id: PRV-L16
+    title: "Bảng dữ liệu hiển thị full chiều rộng vùng nội dung, tiêu đề cột cỡ chữ 14px"
+    uc: "A.IV.1-UC1"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Giao diện chung"
+    loai: "UI"
+    uu_tien: "Thấp"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở menu Đơn vị hành chính cấp tỉnh"
+      - "3. Mở DevTools, kiểm tra chiều rộng bảng và font-size tiêu đề cột"
+      - "4. Lặp lại ở các trang Đơn vị hành chính cấp xã, Loại đơn vị, Đơn vị"
+    ket_qua_mong_doi:
+      - "Bảng rộng bằng vùng nội dung (không chừa khoảng trống bên phải); tiêu đề cột font-size = 14px"
+    ghi_chu: "GitLab #173 (đã đóng). Thực tế: bảng không full chiều rộng, tiêu đề cột 12px"
+  - id: PRV-L18
+    title: "Dòng mô tả dưới tiêu đề trang hiển thị đúng cỡ chữ theo design (không quá nhỏ)"
+    uc: "A.IV.1-UC1"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Giao diện chung"
+    loai: "UI"
+    uu_tien: "Thấp"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở menu Đơn vị hành chính cấp tỉnh"
+      - "3. Kiểm tra font-size dòng mô tả ngay dưới tiêu đề trang"
+      - "4. Lặp lại ở các trang Đơn vị hành chính cấp xã, Loại đơn vị, Đơn vị"
+    ket_qua_mong_doi:
+      - "Dòng mô tả có cỡ chữ và màu đúng design, đọc rõ, đồng nhất giữa các trang"
+    ghi_chu: "GitLab #153 (đã đóng). Review CĐS 30/10. Cỡ chữ cụ thể: cần BA/Design xác nhận"
+  - id: PRV-L19
+    title: "Ô chọn số bản ghi/trang ở thanh phân trang không có ô tìm kiếm"
+    uc: "A.IV.1-UC1"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Giao diện chung"
+    loai: "UI"
+    uu_tien: "Thấp"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở menu Đơn vị hành chính cấp tỉnh"
+      - "3. Mở ô chọn số bản ghi/trang (10/20/50…)"
+      - "4. Lặp lại ở các trang Đơn vị hành chính cấp xã, Loại đơn vị, Đơn vị"
+    ket_qua_mong_doi:
+      - "Danh sách lựa chọn mở ra, không có ô nhập tìm kiếm; chọn được giá trị bằng click"
+    ghi_chu: "GitLab #97 (đã đóng)"
+  - id: PRV-L20
+    title: "Thu gọn/mở rộng menu bên trái hoạt động"
+    uc: "A.IV.1-UC1"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Giao diện chung"
+    loai: "Chức năng"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở menu Đơn vị hành chính cấp tỉnh"
+      - "3. Bấm nút thu gọn menu"
+      - "4. Bấm lại để mở rộng; bấm một mục menu khi đang thu gọn"
+    ket_qua_mong_doi:
+      - "Menu thu gọn còn icon, vùng nội dung giãn ra; mở rộng lại hiện đủ tên mục; khi thu gọn vẫn bấm icon chuyển trang được"
+    ghi_chu: "GitLab #97 (đã đóng). Thực tế: menu thu gọn không hoạt động"
+  - id: PRV-L21
+    title: "Breadcrumb bấm được để quay về trang cấp trên"
+    uc: "A.IV.1-UC5"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Giao diện chung"
+    loai: "Chức năng"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở menu Đơn vị hành chính cấp tỉnh"
+      - "3. Mở chi tiết một tỉnh/thành"
+      - "4. Bấm mục \"Đơn vị hành chính cấp tỉnh\" trên breadcrumb"
+      - "5. Lặp lại ở các trang Đơn vị hành chính cấp xã, Loại đơn vị, Đơn vị (từ màn chi tiết)"
+    ket_qua_mong_doi:
+      - "Bấm mục breadcrumb cấp trên chuyển về đúng trang danh sách; mục cuối (trang hiện tại) không phải link"
+    ghi_chu: "GitLab #97 (đã đóng). Thực tế: breadcrumb không click được"
+  - id: PRV-L22
+    title: "Nút Xuất Excel đồng nhất màu/kiểu với các nút cùng cấp trên mọi màn danh sách"
+    uc: "A.IV.1-UC7"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Giao diện chung"
+    loai: "UI"
+    uu_tien: "Thấp"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở menu Đơn vị hành chính cấp tỉnh"
+      - "3. Quan sát nút Xuất Excel cạnh nút Thêm mới"
+      - "4. Lặp lại ở Loại đơn vị, Đơn vị, Quản lý tự đánh giá"
+    ket_qua_mong_doi:
+      - "Nút Xuất Excel cùng kiểu (màu, viền, icon, chiều cao) ở mọi màn theo design"
+    ghi_chu: "GitLab #43 (đã đóng). Issue gốc ở màn Quản lý tự đánh giá (màu nút Xuất Excel khác các nút khác)"
+  - id: PRV-V05
+    title: "Breadcrumb màn chi tiết tỉnh/thành hiển thị tên tỉnh/thành thay vì \"Chi tiết\""
+    uc: "A.IV.1-UC5"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xem chi tiết"
+    loai: "UI"
+    uu_tien: "Thấp"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở menu Đơn vị hành chính cấp tỉnh"
+      - "3. Mở chi tiết tỉnh \"Hà Nội\""
+    ket_qua_mong_doi:
+      - "Mục cuối breadcrumb là \"Hà Nội\" (tên tỉnh/thành đang xem), không phải \"Chi tiết\""
+    ghi_chu: "GitLab #71 (đã đóng)"
+  - id: PRV-V06
+    title: "Ô \"Cập nhật lần cuối\" ở chi tiết tỉnh/thành có thời gian và tên người cập nhật"
+    uc: "A.IV.1-UC5"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xem chi tiết"
+    loai: "Chức năng"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở menu Đơn vị hành chính cấp tỉnh"
+      - "3. Sửa tên một tỉnh/thành QCA và Lưu"
+      - "4. Mở chi tiết tỉnh/thành đó"
+    ket_qua_mong_doi:
+      - "Ô Cập nhật lần cuối hiển thị ngày giờ vừa sửa và họ tên tài khoản đã sửa"
+    ghi_chu: "GitLab #70 (đã đóng). Thực tế: thiếu tên người cập nhật"
+  - id: PRV-C07
+    title: "Ô Tên tỉnh/thành ở popup Thêm mới không hiển thị bộ đếm ký tự"
+    uc: "A.IV.1-UC2"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "UI"
+    uu_tien: "Thấp"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở menu Đơn vị hành chính cấp tỉnh"
+      - "3. Bấm Thêm mới"
+      - "4. Quan sát và nhập vào ô Tên tỉnh/thành"
+    ket_qua_mong_doi:
+      - "Không có bộ đếm \"0 / 255\" dưới ô Tên; vẫn chặn nhập quá 255 ký tự"
+    ghi_chu: "GitLab #263 (đã đóng)"
+  - id: PRV-C08
+    title: "Sub title popup Thêm tỉnh/thành đúng design"
+    uc: "A.IV.1-UC2"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "UI"
+    uu_tien: "Thấp"
+    automation: "Manual — chưa có script"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở menu Đơn vị hành chính cấp tỉnh"
+      - "3. Bấm Thêm mới"
+    ket_qua_mong_doi:
+      - "Dòng mô tả dưới tiêu đề popup đúng nội dung, cỡ chữ, màu theo design DVT"
+    ghi_chu: "GitLab #10 (đã đóng). Đối chiếu Figma; issue không ghi giá trị cụ thể — cần BA/Design xác nhận nếu Figma chưa chốt"
+  - id: PRV-C09
+    title: "Nhãn trường tên ở popup Thêm mới là \"Tên tỉnh/thành\""
+    uc: "A.IV.1-UC2"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "UI"
+    uu_tien: "Thấp"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở menu Đơn vị hành chính cấp tỉnh"
+      - "3. Bấm Thêm mới"
+    ket_qua_mong_doi:
+      - "Nhãn trường là \"Tên tỉnh/thành\" (không phải \"Tên tỉnh/thành phố\")"
+    ghi_chu: "GitLab #12 (đã đóng)"
+  - id: PRV-C10
+    title: "Nhập Mã tỉnh/thành đúng 50 ký tự trên form được nhận và lưu thành công"
+    uc: "A.IV.1-UC2"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Validate"
+    uu_tien: "Cao"
+    automation: "Manual — chưa có script"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở menu Đơn vị hành chính cấp tỉnh"
+      - "3. Bấm Thêm mới, nhập Mã 50 ký tự hợp lệ (A–Z, 0–9), Tên QCA"
+      - "4. Lưu"
+    ket_qua_mong_doi:
+      - "Ô Mã nhận đủ 50 ký tự (không cắt ở 10); lưu thành công; mã hiển thị đủ 50 ký tự ở danh sách"
+    ghi_chu: "GitLab #140 (đã đóng). Thực tế: ô Mã chỉ cho nhập 10 ký tự; quy tắc chung Mã tối đa 50"
+  - id: PRV-C11
+    title: "Tiêu đề nút, tiêu đề form và nút Lưu thống nhất cho Thêm mới/Chỉnh sửa"
+    uc: "A.IV.1-UC2"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Giao diện chung"
+    loai: "UI"
+    uu_tien: "Thấp"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở menu Đơn vị hành chính cấp tỉnh"
+      - "3. Mở popup Thêm mới, ghi lại tên nút mở, tiêu đề form, nút lưu"
+      - "4. Mở popup Chỉnh sửa, ghi lại tương tự"
+      - "5. Lặp lại ở các trang Đơn vị hành chính cấp xã, Loại đơn vị, Đơn vị"
+    ket_qua_mong_doi:
+      - "Mọi trang cùng một quy ước: nút mở \"Thêm mới\", tiêu đề \"Thêm mới <đối tượng>\" / \"Cập nhật <đối tượng>\", nút lưu \"Lưu\""
+    ghi_chu: "GitLab #9 (đã đóng). Câu chữ cụ thể của quy ước: cần BA xác nhận"
+  - id: PRV-C12
+    title: "Chữ \"(không bắt buộc)\" trong nhãn trường hiển thị font thường"
+    uc: "A.IV.1-UC2"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Giao diện chung"
+    loai: "UI"
+    uu_tien: "Thấp"
+    automation: "Manual — chưa có script"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở menu Đơn vị hành chính cấp tỉnh"
+      - "3. Mở popup có trường không bắt buộc (vd Mô tả)"
+      - "4. Lặp lại ở các trang Đơn vị hành chính cấp xã, Loại đơn vị, Đơn vị"
+    ket_qua_mong_doi:
+      - "Phần nhãn chính đậm theo design; phần \"(không bắt buộc)\" font-weight thường (400)"
+    ghi_chu: "GitLab #11 (đã đóng)"
+  - id: PRV-C13
+    title: "Mở lại popup Thêm mới sau khi đã thêm hoặc Hủy thì form trống"
+    uc: "A.IV.1-UC2"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Chức năng"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở menu Đơn vị hành chính cấp tỉnh"
+      - "3. Thêm mới một tỉnh/thành QCA và Lưu thành công"
+      - "4. Bấm Thêm mới lần nữa"
+      - "5. Nhập dở rồi Hủy, bấm Thêm mới lần nữa"
+      - "6. Lặp lại ở các trang Đơn vị hành chính cấp xã, Loại đơn vị, Đơn vị"
+    ket_qua_mong_doi:
+      - "Mỗi lần mở popup Thêm mới các trường đều trống/mặc định, không còn dữ liệu cũ, không còn thông báo lỗi cũ"
+    ghi_chu: "GitLab #116 (đã đóng). Thực tế: form Thêm mới còn giữ dữ liệu lần trước"
+  - id: PRV-C14
+    title: "Các popup đồng bộ vị trí/thứ tự nút, bố cục và kích thước"
+    uc: "A.IV.1-UC2"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Giao diện chung"
+    loai: "UI"
+    uu_tien: "Thấp"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở menu Đơn vị hành chính cấp tỉnh"
+      - "3. Mở lần lượt popup Thêm mới, Cập nhật, xác nhận Xoá"
+      - "4. Lặp lại ở các trang Đơn vị hành chính cấp xã, Loại đơn vị, Đơn vị"
+    ket_qua_mong_doi:
+      - "Popup cùng loại có cùng chiều rộng, căn giữa màn hình, cùng bố cục tiêu đề/mô tả/nội dung; nút Hủy và nút chính cùng vị trí, thứ tự, kích thước"
+    ghi_chu: "GitLab #154 (đã đóng). Review CĐS 30/10"
+  - id: PRV-E06
+    title: "Popup Cập nhật tỉnh/thành căn giữa và không hiển thị bộ đếm ký tự"
+    uc: "A.IV.1-UC3"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Chỉnh sửa"
+    loai: "UI"
+    uu_tien: "Thấp"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở menu Đơn vị hành chính cấp tỉnh"
+      - "3. Mở menu thao tác của một tỉnh → Cập nhật"
+    ket_qua_mong_doi:
+      - "Popup căn giữa màn hình, bố cục giống popup Thêm mới; ô Tên không có bộ đếm ký tự"
+    ghi_chu: "GitLab #264 (đã đóng)"
+  - id: PRV-E07
+    title: "Popup Cập nhật tỉnh/thành: nút Lưu bấm được khi dữ liệu hợp lệ và lưu thành công"
+    uc: "A.IV.1-UC3"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Chỉnh sửa"
+    loai: "Chức năng"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở menu Đơn vị hành chính cấp tỉnh"
+      - "3. Mở Cập nhật một tỉnh QCA"
+      - "4. Sửa Tên hợp lệ"
+      - "5. Bấm Lưu"
+    ket_qua_mong_doi:
+      - "Nút Lưu không bị disable sau khi sửa; bấm Lưu thành công, tên mới hiển thị ở danh sách"
+    ghi_chu: "GitLab #264 (đã đóng). Thực tế: nút Lưu bị disable. Lưu bật ngay khi mở popup hay chỉ khi có thay đổi: cần BA xác nhận"

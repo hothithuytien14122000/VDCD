@@ -181,13 +181,13 @@ export default function defineC2(t) {
     'Khảo sát: thông báo hiện dạng toast "Vui lòng nhập lý do từ chối" (không inline dưới ô) → lệch MSG-058');
   c('RES-A19', 'C.UC1.4b', 'Từ chối', 'Lý do chỉ gồm khoảng trắng bị chặn như để trống', 'Validate', 'Trung bình',
     '1. Nhập 3 dấu cách vào lý do; xác nhận', 'Báo lỗi bắt buộc (MSG-058); không từ chối');
-  c('RES-A20', 'C.UC1.4b', 'Từ chối', 'Lý do đúng 255 ký tự được chấp nhận', 'Validate', 'Trung bình',
-    '1. Nhập lý do 255 ký tự; xác nhận', 'Từ chối thành công; lý do lưu đủ 255 ký tự (qua API lịch sử)');
-  c('RES-A21', 'C.UC1.4b', 'Từ chối', '[API] Lý do 256 ký tự bị từ chối', 'Validate', 'Cao',
-    '1. [API] POST reject với reason 256 ký tự', '400 "Lý do từ chối tối đa 255 ký tự"; trạng thái vẫn Chờ duyệt');
-  c('RES-A22', 'C.UC1.4b', 'Từ chối', 'Ô nhập lý do trên giao diện giới hạn tối đa 255 ký tự', 'UI', 'Trung bình',
-    '1. Mở hộp thoại Từ chối\n2. Dán chuỗi 300 ký tự vào ô lý do',
-    'Ô chỉ nhận 255 ký tự hoặc báo vượt giới hạn ngay tại ô', 'Khảo sát: ô có maxlength=1000, người dùng nhập 256+ ký tự mới bị API chặn bằng toast → lệch BR-1');
+  c('RES-A20', 'C.UC1.4b', 'Từ chối', 'Lý do từ chối đúng 1.000 ký tự được chấp nhận', 'Validate', 'Trung bình',
+    '1. Nhập lý do 1.000 ký tự; xác nhận', 'Từ chối thành công; lý do lưu đủ 1.000 ký tự (qua API lịch sử)');
+  c('RES-A21', 'C.UC1.4b', 'Từ chối', '[API] Lý do từ chối 1.001 ký tự bị từ chối', 'Validate', 'Cao',
+    '1. [API] POST reject với reason 1.001 ký tự', '400 "Lý do không vượt quá 1000 ký tự"; trạng thái vẫn Chờ duyệt');
+  c('RES-A22', 'C.UC1.4b', 'Từ chối', 'Ô nhập lý do trên giao diện giới hạn tối đa 1.000 ký tự', 'UI', 'Trung bình',
+    '1. Mở hộp thoại Từ chối\n2. Dán chuỗi 1.100 ký tự vào ô lý do',
+    'Ô chặn gõ quá 1.000 ký tự (hoặc báo "Lý do không vượt quá 1000 ký tự" ngay tại ô)', 'Quy tắc chung: Mô tả, Ghi chú, Lý do tối đa 1.000 ký tự');
   c('RES-A23', 'C.UC1.4b', 'Từ chối', 'Chọn Hủy sau khi đã nhập lý do thì không từ chối và giữ nguyên trạng thái', 'Chức năng', 'Trung bình',
     '1. Bấm Từ chối, nhập lý do\n2. Bấm Hủy', 'Hộp thoại đóng; không có request reject; trạng thái vẫn Chờ duyệt; mở lại hộp thoại thì ô lý do trống');
   c('RES-A24', 'C.UC1.4b', 'Từ chối', 'Từ chối ghi Lịch sử xử lý kèm lý do', 'Nghiệp vụ', 'Cao',
@@ -282,8 +282,8 @@ export default function defineC2(t) {
     '1. Gửi thành công\n2. Xem nút; [API] PUT scores bằng Cán bộ', 'Không có nút sửa; API bị từ chối; điểm không đổi', S403);
   c('RES-F27', 'C.UC1.5', 'Gửi Bộ', 'Số hiệu văn bản quá 50 ký tự bị từ chối', 'Validate', 'Thấp',
     '1. [API] POST send với documentNumber 300 ký tự', '400 "Số văn bản tối đa 50 ký tự"', 'Khảo sát: trường ngoài SRS (Số hiệu văn bản)');
-  c('RES-F28', 'C.UC1.5', 'Gửi Bộ', 'Ghi chú gửi Bộ quá 500 ký tự bị từ chối', 'Validate', 'Thấp',
-    '1. [API] POST send với note 5000 ký tự', '400 "Ghi chú gửi Bộ tối đa 500 ký tự"', 'Khảo sát: trường ngoài SRS (Ghi chú gửi Bộ)');
+  c('RES-F28', 'C.UC1.5', 'Gửi Bộ', 'Ghi chú gửi Bộ quá 1.000 ký tự bị từ chối', 'Validate', 'Thấp',
+    '1. [API] POST send với note 1.001 ký tự', '400 "Ghi chú không vượt quá 1000 ký tự"', 'Quy tắc chung: Ghi chú tối đa 1.000 ký tự');
   c('RES-F29', 'C.UC1.5', 'Gửi Bộ', 'Ngày ký ban hành ở tương lai bị từ chối', 'Validate', 'Thấp',
     '1. [API] POST send với documentDate 2030-01-01', '400 "Ngày văn bản không được sau ngày hôm nay"');
   c('RES-F30', 'C.UC1.5', 'Gửi Bộ', 'Ngày ký ban hành sai định dạng báo lỗi đúng nguyên nhân', 'Validate', 'Thấp',
@@ -331,12 +331,12 @@ export default function defineC2(t) {
     '1. Bấm Xin mở khóa; để trống lý do; gửi', 'Báo MSG-058 dưới ô nhập; không gửi; (API 400)', 'Khảo sát: toast "Vui lòng nhập lý do xin mở khóa" (không inline) → lệch MSG-058');
   c('RES-U06', 'C.UC1.6', 'Xin mở khóa', 'Lý do chỉ khoảng trắng bị chặn', 'Validate', 'Trung bình',
     '1. Nhập 3 dấu cách; gửi', 'Báo lỗi bắt buộc; không đổi trạng thái');
-  c('RES-U07', 'C.UC1.6', 'Xin mở khóa', 'Lý do đúng 255 ký tự được chấp nhận', 'Validate', 'Trung bình',
-    '1. Nhập lý do 255 ký tự; gửi', 'Gửi yêu cầu thành công; lý do lưu đủ');
-  c('RES-U08', 'C.UC1.6', 'Xin mở khóa', '[API] Lý do 256 ký tự bị từ chối', 'Validate', 'Cao',
-    '1. [API] POST request-unlock với reason 256 ký tự', '400 "Lý do xin mở khóa tối đa 255 ký tự"; vẫn Đã gửi');
-  c('RES-U09', 'C.UC1.6', 'Xin mở khóa', 'Ô nhập lý do trên giao diện giới hạn 255 ký tự', 'UI', 'Trung bình',
-    '1. Dán 300 ký tự vào ô lý do', 'Ô chỉ nhận 255 ký tự hoặc báo vượt giới hạn tại ô', 'Khảo sát: ô có maxlength=1000, chỉ bị API chặn bằng toast → lệch BR-2');
+  c('RES-U07', 'C.UC1.6', 'Xin mở khóa', 'Lý do xin mở khóa đúng 1.000 ký tự được chấp nhận', 'Validate', 'Trung bình',
+    '1. Nhập lý do 1.000 ký tự; gửi', 'Gửi yêu cầu thành công; lý do lưu đủ 1.000 ký tự');
+  c('RES-U08', 'C.UC1.6', 'Xin mở khóa', '[API] Lý do xin mở khóa 1.001 ký tự bị từ chối', 'Validate', 'Cao',
+    '1. [API] POST request-unlock với reason 1.001 ký tự', '400 "Lý do không vượt quá 1000 ký tự"; vẫn Đã gửi');
+  c('RES-U09', 'C.UC1.6', 'Xin mở khóa', 'Ô nhập lý do trên giao diện giới hạn 1.000 ký tự', 'UI', 'Trung bình',
+    '1. Dán 1.100 ký tự vào ô lý do', 'Ô chặn gõ quá 1.000 ký tự hoặc báo vượt giới hạn tại ô', 'Quy tắc chung: Lý do tối đa 1.000 ký tự');
   c('RES-U10', 'C.UC1.6', 'Xin mở khóa', 'LĐ đơn vị có nút Xin mở khóa khi kết quả Đã gửi và kỳ đang diễn ra (BR-5 UC1.7)', 'Nghiệp vụ', 'Cao',
     '1. Đăng nhập LĐ đơn vị; mở kết quả Đã gửi', 'Có nút Xin mở khóa; xin được thành công', 'Khảo sát: LĐ đơn vị (role có APPROVE/LOCK/VIEW) không có DTI_ASSESSMENT.REQUEST_UNLOCK nên không thấy nút → nghi lỗi cấu hình quyền');
   c('RES-U11', 'C.UC1.6', 'Xin mở khóa', 'LĐ địa phương có nút Xin mở khóa khi kết quả đơn vị địa phương Đã gửi', 'Nghiệp vụ', 'Cao',

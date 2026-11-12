@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Prototype – Chọn nhiều Đơn vị thực hiện</title>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --primary:#c62828; --primary-50:#fdecec; --primary-100:#f9d4d4;
+    --text:#1f2937; --muted:#6b7280; --placeholder:#9ca3af;
+    --border:#e5e7eb; --border-strong:#d1d5db; --bg:#f5f6f8; --white:#fff;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:'Be Vietnam Pro',system-ui,sans-serif;color:var(--text);background:var(--bg);font-size:14px}
+  .layout{display:flex;min-height:100vh}
+
+  /* Sidebar */
+  .sidebar{width:260px;background:#fff;border-right:1px solid var(--border);flex-shrink:0}
+  .brand{display:flex;gap:10px;align-items:center;padding:16px;border-bottom:1px solid var(--border)}
+  .brand .logo{width:40px;height:40px;border-radius:50%;background:radial-gradient(circle,#ffd54f 0 30%,#c62828 31%)}
+  .brand b{display:block;font-size:17px}.brand small{color:var(--muted);font-size:12px}
+  .menu{padding:8px 0}
+  .menu .grp{padding:12px 20px;font-weight:500;background:#fafafa}
+  .menu .grp.active{color:var(--primary)}
+  .menu a{display:block;padding:10px 20px 10px 44px;color:var(--text);text-decoration:none}
+  .menu a.active{color:var(--primary);background:var(--primary-50);font-weight:500}
+
+  /* Main */
+  .main{flex:1;min-width:0}
+  .topbar{height:64px;background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 24px;gap:8px;color:var(--muted)}
+  .topbar b{color:var(--text)}
+  .content{padding:32px 40px;max-width:1400px}
+  .page-head{display:flex;align-items:center;gap:12px;margin-bottom:24px}
+  .icon-btn{width:44px;height:44px;border:1px solid var(--border);border-radius:10px;background:#fff;display:grid;place-items:center;cursor:pointer}
+  .page-head h1{font-size:24px;margin:0}
+  .badge{background:#f3f4f6;color:var(--muted);font-size:12px;padding:3px 8px;border-radius:6px}
+  .page-head .actions{margin-left:auto;display:flex;gap:8px}
+  .btn{height:40px;padding:0 18px;border-radius:8px;border:1px solid var(--border-strong);background:#fff;font:inherit;font-weight:500;cursor:pointer}
+  .btn-primary{background:var(--primary);border-color:var(--primary);color:#fff}
+  .btn-link{border:none;background:none;color:var(--primary);cursor:pointer;font:inherit;font-weight:500;padding:0}
+
+  .tabs{background:#fff;border:1px solid var(--border);border-radius:12px;padding:0 24px;display:flex;gap:32px;margin-bottom:20px}
+  .tabs div{padding:18px 0;color:var(--muted);font-weight:500}
+  .tabs .on{color:var(--primary);border-bottom:3px solid var(--primary)}
+
+  .card{background:#fff;border:1px solid var(--border);border-radius:12px;margin-bottom:20px}
+  .card-h{padding:18px 24px;border-bottom:1px solid var(--border);font-weight:600;font-size:16px;display:flex;align-items:center;gap:8px}
+  .card-b{padding:20px 24px}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:20px 28px}
+  .full{grid-column:1/-1}
+  label.lb{display:block;font-weight:500;margin-bottom:10px}
+  label.lb .req{color:var(--primary)}
+  .input{width:100%;height:48px;border:1px solid var(--border);border-radius:8px;padding:0 14px;font:inherit;color:var(--text)}
+  .input::placeholder{color:var(--placeholder)}
+  textarea.input{height:120px;padding:12px 14px;resize:vertical}
+
+  /* ===== Multi-select ===== */
+  .ms{position:relative}
+  .ms-control{min-height:48px;border:1px solid var(--border);border-radius:8px;padding:6px 64px 6px 8px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;cursor:pointer;background:#fff;position:relative}
+  .ms.open .ms-control,.ms-control:hover{border-color:var(--primary)}
+  .ms.open .ms-control{box-shadow:0 0 0 3px var(--primary-100)}
+  .ms.error .ms-control{border-color:var(--primary)}
+  .ms-placeholder{color:var(--placeholder);padding-left:6px}
+  .chip{display:inline-flex;align-items:center;gap:6px;background:var(--primary-50);color:var(--primary);border:1px solid var(--primary-100);border-radius:6px;padding:4px 6px 4px 10px;font-size:13px;max-width:260px}
+  .chip span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .chip button{border:none;background:none;color:inherit;cursor:pointer;font-size:15px;line-height:1;padding:0 2px;border-radius:4px}
+  .chip button:hover{background:var(--primary-100)}
+  .chip.more{background:#f3f4f6;color:var(--muted);border-color:var(--border);padding-right:10px}
+  .ms-icons{position:absolute;right:12px;top:50%;transform:translateY(-50%);display:flex;gap:8px;align-items:center;color:var(--muted)}
+  .ms-clear{border:none;background:#e5e7eb;color:#4b5563;width:18px;height:18px;border-radius:50%;cursor:pointer;font-size:12px;line-height:18px;padding:0;display:none}
+  .ms.has-value .ms-clear{display:block}
+  .chev{transition:transform .2s}
+  .ms.open .chev{transform:rotate(180deg)}
+  .err-msg{color:var(--primary);font-size:13px;margin-top:6px;display:none}
+  .ms.error + .err-msg{display:block}
+
+  .ms-drop{position:absolute;left:0;right:0;top:calc(100% + 6px);background:#fff;border:1px solid var(--border);border-radius:10px;box-shadow:0 12px 32px rgba(0,0,0,.12);z-index:20;display:none;overflow:hidden}
+  .ms.open .ms-drop{display:block}
+  .ms-search{padding:10px;border-bottom:1px solid var(--border);display:flex;gap:8px}
+  .ms-search input{flex:1;height:38px;border:1px solid var(--border);border-radius:8px;padding:0 12px 0 34px;font:inherit;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%239ca3af' stroke-width='2'%3E%3Ccircle cx='7' cy='7' r='5'/%3E%3Cpath d='m11 11 3 3'/%3E%3C/svg%3E") 11px center no-repeat}
+  .ms-search input:focus{outline:none;border-color:var(--primary)}
+  .ms-search select{height:38px;border:1px solid var(--border);border-radius:8px;padding:0 8px;font:inherit;color:var(--text)}
+  .ms-bar{display:flex;justify-content:space-between;align-items:center;padding:8px 14px;font-size:13px;color:var(--muted);border-bottom:1px solid var(--border);background:#fafafa}
+  .ms-list{max-height:300px;overflow:auto;padding:4px 0}
+  .ms-group{padding:10px 14px 4px;font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.3px;display:flex;justify-content:space-between}
+  .ms-opt{display:flex;align-items:center;gap:10px;padding:9px 14px;cursor:pointer}
+  .ms-opt:hover,.ms-opt.focus{background:#f9fafb}
+  .ms-opt.checked{background:var(--primary-50)}
+  .ms-opt input{accent-color:var(--primary);width:16px;height:16px;margin:0;cursor:pointer}
+  .ms-opt .code{font-weight:600;min-width:90px}
+  .ms-opt .type{margin-left:auto;font-size:12px;color:var(--muted)}
+  .ms-opt mark{background:#fff3b0;color:inherit;padding:0}
+  .ms-empty{padding:28px;text-align:center;color:var(--muted)}
+  .ms-foot{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-top:1px solid var(--border)}
+  .ms-foot .btn{height:34px;padding:0 14px}
+
+  /* Selected table */
+  .count{background:var(--primary);color:#fff;border-radius:10px;padding:1px 9px;font-size:12px}
+  .card-h .right{margin-left:auto;display:flex;gap:10px;align-items:center;font-weight:400}
+  .card-h .right input{height:36px;width:240px;border:1px solid var(--border);border-radius:8px;padding:0 12px;font:inherit}
+  table{width:100%;border-collapse:collapse}
+  th,td{text-align:left;padding:12px 16px;border-bottom:1px solid var(--border)}
+  th{background:#fafafa;font-weight:600;font-size:13px;color:#374151}
+  td.c,th.c{text-align:center}
+  .tag{font-size:12px;padding:3px 8px;border-radius:6px;background:#eef2ff;color:#4338ca}
+  .tag.xa{background:#ecfdf5;color:#047857}
+  .tag.bo{background:#fff7ed;color:#c2410c}
+  .del{border:none;background:none;color:var(--muted);cursor:pointer;padding:6px;border-radius:6px}
+  .del:hover{color:var(--primary);background:var(--primary-50)}
+  .empty{padding:40px;text-align:center;color:var(--muted)}
+  .empty svg{display:block;margin:0 auto 10px}
+  .toast{position:fixed;right:24px;bottom:24px;background:#111827;color:#fff;padding:12px 18px;border-radius:8px;opacity:0;transform:translateY(10px);transition:.25s;pointer-events:none}
+  .toast.show{opacity:1;transform:none}
+</style>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="brand"><div class="logo"></div><div><b>Đánh giá CĐS</b><small>Bộ Dân tộc và Tôn giáo</small></div></div>
+    <nav class="menu">
+      <div class="grp">Quản trị hệ thống</div>
+      <div class="grp">Bộ chỉ số DTI</div>
+      <div class="grp">Đánh giá CĐS</div>
+      <div class="grp active">Khảo sát hài lòng</div>
+      <a href="#" class="active">Đợt khảo sát</a>
+      <a href="#">Mẫu phiếu</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">Khảo sát hài lòng › Đợt khảo sát › <b>Chi tiết</b></div>
+    <div class="content">
+      <div class="page-head">
+        <button class="icon-btn" aria-label="Quay lại">←</button>
+        <h1>Thêm đợt khảo sát</h1><span class="badge">● Nháp</span>
+        <div class="actions">
+          <button class="btn">Hủy</button>
+          <button class="btn btn-primary" id="btnSave">Lưu</button>
+        </div>
+      </div>
+
+      <div class="tabs"><div class="on">Thông tin chung</div><div>Nội dung khảo sát (1)</div></div>
+
+      <div class="card">
+        <div class="card-h">Thông tin chung</div>
+        <div class="card-b grid">
+          <div class="full"><label class="lb">Tên đợt khảo sát <span class="req">*</span></label><input class="input" placeholder="Nhập tên đợt khảo sát"></div>
+          <div class="full"><label class="lb">Mô tả, mục đích</label><textarea class="input" placeholder="Mục đích, đối tượng và phạm vi khảo sát"></textarea></div>
+          <div><label class="lb">Ngày bắt đầu <span class="req">*</span></label><input class="input" type="date"></div>
+          <div><label class="lb">Ngày kết thúc <span class="req">*</span></label><input class="input" type="date"></div>
+          <div><label class="lb">Số phiếu mục tiêu</label><input class="input" type="number" placeholder="Nhập số phiếu mục tiêu"></div>
+
+          <!-- ===== MULTI-SELECT ĐƠN VỊ THỰC HIỆN ===== -->
+          <div>
+            <label class="lb">Đơn vị thực hiện <span class="req">*</span></label>
+            <div class="ms" id="ms">
+              <div class="ms-control" id="msControl" tabindex="0">
+                <span class="ms-placeholder">Chọn một hoặc nhiều đơn vị</span>
+                <div class="ms-icons">
+                  <button class="ms-clear" id="msClear" title="Bỏ chọn tất cả">✕</button>
+                  <svg class="chev" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="m4 6 4 4 4-4"/></svg>
+                </div>
+              </div>
+              <div class="ms-drop">
+                <div class="ms-search">
+                  <input id="msSearch" placeholder="Tìm theo mã hoặc tên đơn vị...">
+                  <select id="msType">
+                    <option value="">Tất cả loại</option>
+                    <option>Cấp Bộ</option><option>Cấp tỉnh</option><option>Cấp xã</option>
+                  </select>
+                </div>
+                <div class="ms-bar">
+                  <label style="display:flex;gap:8px;align-items:center;cursor:pointer;color:var(--text)">
+                    <input type="checkbox" id="msAll" style="accent-color:var(--primary)"> Chọn tất cả (<span id="msVisible">0</span>)
+                  </label>
+                  <span>Đã chọn <b id="msCount" style="color:var(--primary)">0</b></span>
+                </div>
+                <div class="ms-list" id="msList"></div>
+                <div class="ms-foot">
+                  <button class="btn-link" id="msOnlySel">Chỉ hiện đã chọn</button>
+                  <button class="btn btn-primary" id="msDone">Xong</button>
+                </div>
+              </div>
+            </div>
+            <div class="err-msg">Vui lòng chọn ít nhất 1 đơn vị thực hiện</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== DANH SÁCH ĐƠN VỊ ĐÃ CHỌN ===== -->
+      <div class="card">
+        <div class="card-h">
+          Đơn vị thực hiện <span class="count" id="tblCount">0</span>
+          <div class="right">
+            <input id="tblSearch" placeholder="Tìm trong danh sách đã chọn...">
+            <button class="btn-link" id="tblClear">Xóa tất cả</button>
+          </div>
+        </div>
+        <div id="tblWrap"></div>
+      </div>
+    </div>
+  </main>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const UNITS = [
+  {code:'BDTTG',   name:'Bộ Dân tộc và Tôn giáo',            type:'Cấp Bộ'},
+  {code:'VP-BDT',  name:'Văn phòng Bộ',                     type:'Cấp Bộ'},
+  {code:'BDT-QA01',name:'Ban Dân tộc tỉnh Quảng Nam',       type:'Cấp tỉnh'},
+  {code:'BDT-HG02',name:'Ban Dân tộc tỉnh Hà Giang',        type:'Cấp tỉnh'},
+  {code:'BDT-LC03',name:'Ban Dân tộc tỉnh Lào Cai',         type:'Cấp tỉnh'},
+  {code:'BDT-DL04',name:'Ban Dân tộc tỉnh Đắk Lắk',         type:'Cấp tỉnh'},
+  {code:'BDT-GL05',name:'Ban Dân tộc tỉnh Gia Lai',         type:'Cấp tỉnh'},
+  {code:'BDT-ST06',name:'Ban Dân tộc tỉnh Sóc Trăng',       type:'Cấp tỉnh'},
+  {code:'BDT-SL07',name:'Ban Dân tộc tỉnh Sơn La',          type:'Cấp tỉnh'},
+  {code:'BDT-TN08',name:'Ban Dân tộc tỉnh Thái Nguyên',     type:'Cấp tỉnh'},
+  {code:'XA-QA011',name:'UBND xã Trà Mai',                  type:'Cấp xã'},
+  {code:'XA-QA012',name:'UBND xã Phước Sơn',                type:'Cấp xã'},
+  {code:'XA-HG021',name:'UBND xã Lũng Cú',                  type:'Cấp xã'},
+  {code:'XA-LC031',name:'UBND xã Bát Xát',                  type:'Cấp xã'},
+  {code:'XA-DL041',name:'UBND xã Ea Kar',                   type:'Cấp xã'},
+  {code:'XA-GL051',name:'UBND xã Ia Grai',                  type:'Cấp xã'},
+];
+const TYPE_CLASS = {'Cấp Bộ':'bo','Cấp tỉnh':'','Cấp xã':'xa'};
+const MAX_CHIPS = 3;
+
+let selected = new Set(['BDT-QA01']);   // giá trị mặc định như màn hình hiện tại
+let draft = new Set(selected);          // lựa chọn tạm trong dropdown
+let onlySelected = false;
+
+const $ = id => document.getElementById(id);
+const ms = $('ms'), list = $('msList');
+const norm = s => s.normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/đ/g,'d').replace(/Đ/g,'D').toLowerCase();
+const esc = s => s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const byCode = c => UNITS.find(u=>u.code===c);
+
+function highlight(text, q){
+  if(!q) return esc(text);
+  const i = norm(text).indexOf(norm(q));
+  if(i<0) return esc(text);
+  return esc(text.slice(0,i))+'<mark>'+esc(text.slice(i,i+q.length))+'</mark>'+esc(text.slice(i+q.length));
+}
+
+function visibleUnits(){
+  const q = norm($('msSearch').value.trim()), t = $('msType').value;
+  return UNITS.filter(u =>
+    (!t || u.type===t) &&
+    (!q || norm(u.code+' '+u.name).includes(q)) &&
+    (!onlySelected || draft.has(u.code)));
+}
+
+/* ---- Dropdown list ---- */
+function renderList(){
+  const q = $('msSearch').value.trim();
+  const vis = visibleUnits();
+  if(!vis.length){ list.innerHTML = '<div class="ms-empty">Không tìm thấy đơn vị phù hợp</div>'; }
+  else{
+    const groups = {};
+    vis.forEach(u => (groups[u.type] ??= []).push(u));
+    list.innerHTML = Object.entries(groups).map(([type, us]) => {
+      const n = us.filter(u=>draft.has(u.code)).length;
+      return `<div class="ms-group"><span>${type}</span><button class="btn-link" style="font-size:12px;text-transform:none" data-group="${type}">${n===us.length?'Bỏ chọn nhóm':'Chọn cả nhóm'}</button></div>` +
+        us.map(u => `<label class="ms-opt ${draft.has(u.code)?'checked':''}">
+          <input type="checkbox" value="${u.code}" ${draft.has(u.code)?'checked':''}>
+          <span class="code">${highlight(u.code,q)}</span><span>${highlight(u.name,q)}</span></label>`).join('');
+    }).join('');
+  }
+  const nSel = vis.filter(u=>draft.has(u.code)).length;
+  $('msAll').checked = vis.length>0 && nSel===vis.length;
+  $('msAll').indeterminate = nSel>0 && nSel<vis.length;
+  $('msVisible').textContent = vis.length;
+  $('msCount').textContent = draft.size;
+  $('msOnlySel').textContent = onlySelected ? 'Hiện tất cả' : 'Chỉ hiện đã chọn';
+}
+
+list.addEventListener('change', e => {
+  if(e.target.type!=='checkbox') return;
+  e.target.checked ? draft.add(e.target.value) : draft.delete(e.target.value);
+  renderList();
+});
+list.addEventListener('click', e => {
+  const g = e.target.dataset.group; if(!g) return;
+  e.preventDefault();
+  const us = visibleUnits().filter(u=>u.type===g);
+  const all = us.every(u=>draft.has(u.code));
+  us.forEach(u => all ? draft.delete(u.code) : draft.add(u.code));
+  renderList();
+});
+$('msAll').addEventListener('change', e => {
+  visibleUnits().forEach(u => e.target.checked ? draft.add(u.code) : draft.delete(u.code));
+  renderList();
+});
+$('msSearch').addEventListener('input', renderList);
+$('msType').addEventListener('change', renderList);
+$('msOnlySel').addEventListener('click', () => { onlySelected = !onlySelected; renderList(); });
+
+/* ---- Open / close ---- */
+function openDrop(){
+  draft = new Set(selected); onlySelected = false;
+  $('msSearch').value=''; $('msType').value='';
+  ms.classList.add('open'); renderList();
+  setTimeout(()=>$('msSearch').focus(),0);
+}
+function commit(){ selected = new Set(draft); ms.classList.remove('open'); renderAll(); }
+$('msControl').addEventListener('click', e => {
+  if(e.target.closest('.chip button,.ms-clear')) return;
+  ms.classList.contains('open') ? commit() : openDrop();
+});
+$('msControl').addEventListener('keydown', e => { if(e.key==='Enter'||e.key===' '){ e.preventDefault(); openDrop(); }});
+$('msDone').addEventListener('click', commit);
+document.addEventListener('click', e => { if(ms.classList.contains('open') && !ms.contains(e.target)) commit(); });
+document.addEventListener('keydown', e => { if(e.key==='Escape' && ms.classList.contains('open')){ ms.classList.remove('open'); } });
+$('msClear').addEventListener('click', e => { e.stopPropagation(); selected.clear(); draft.clear(); renderAll(); if(ms.classList.contains('open')) renderList(); });
+
+/* ---- Control (chips) ---- */
+function renderControl(){
+  const ctl = $('msControl'), icons = ctl.querySelector('.ms-icons');
+  ctl.querySelectorAll('.chip,.ms-placeholder').forEach(n=>n.remove());
+  const codes = [...selected];
+  ms.classList.toggle('has-value', codes.length>0);
+  if(!codes.length){
+    ctl.insertAdjacentHTML('afterbegin','<span class="ms-placeholder">Chọn một hoặc nhiều đơn vị</span>');
+    return;
+  }
+  ms.classList.remove('error');
+  const html = codes.slice(0,MAX_CHIPS).map(c => {
+    const u = byCode(c);
+    return `<span class="chip" title="${esc(u.code+' - '+u.name)}"><span>${esc(u.code)} - ${esc(u.name)}</span><button data-rm="${u.code}" aria-label="Bỏ chọn">×</button></span>`;
+  }).join('') + (codes.length>MAX_CHIPS ? `<span class="chip more" title="${esc(codes.slice(MAX_CHIPS).join(', '))}">+${codes.length-MAX_CHIPS} đơn vị</span>` : '');
+  icons.insertAdjacentHTML('beforebegin', html);
+}
+$('msControl').addEventListener('click', e => {
+  const c = e.target.dataset.rm; if(!c) return;
+  e.stopPropagation(); removeUnit(c);
+});
+
+/* ---- Table ---- */
+function renderTable(){
+  const q = norm($('tblSearch').value.trim());
+  const rows = [...selected].map(byCode).filter(u => !q || norm(u.code+' '+u.name).includes(q));
+  $('tblCount').textContent = selected.size;
+  $('tblClear').style.display = selected.size ? '' : 'none';
+  if(!selected.size){
+    $('tblWrap').innerHTML = `<div class="empty"><svg width="48" height="48" fill="none" stroke="#d1d5db" stroke-width="1.5"><rect x="8" y="10" width="32" height="30" rx="3"/><path d="M8 18h32M16 26h16M16 32h10"/></svg>Chưa chọn đơn vị thực hiện nào.<br><button class="btn-link" onclick="event.stopPropagation();openDrop()" style="margin-top:8px">+ Chọn đơn vị</button></div>`;
+    return;
+  }
+  $('tblWrap').innerHTML = `<table><thead><tr><th class="c" style="width:70px">STT</th><th style="width:160px">Mã đơn vị</th><th>Tên đơn vị</th><th style="width:140px">Loại</th><th class="c" style="width:90px">Thao tác</th></tr></thead><tbody>` +
+    (rows.length ? rows.map((u,i)=>`<tr><td class="c">${i+1}</td><td><b>${esc(u.code)}</b></td><td>${esc(u.name)}</td><td><span class="tag ${TYPE_CLASS[u.type]}">${u.type}</span></td>
+      <td class="c"><button class="del" title="Bỏ đơn vị" onclick="removeUnit('${u.code}')"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 4h10M6 4V2.5h4V4M4.5 4l.7 9.5h5.6l.7-9.5"/></svg></button></td></tr>`).join('')
+      : `<tr><td colspan="5" class="empty">Không có đơn vị khớp từ khóa</td></tr>`) + `</tbody></table>`;
+}
+$('tblSearch').addEventListener('input', renderTable);
+$('tblClear').addEventListener('click', () => { if(confirm('Xóa tất cả đơn vị đã chọn?')){ selected.clear(); renderAll(); }});
+
+function removeUnit(code){ selected.delete(code); draft.delete(code); renderAll(); if(ms.classList.contains('open')) renderList(); toast('Đã bỏ '+code); }
+function renderAll(){ renderControl(); renderTable(); }
+function toast(m){ const t=$('toast'); t.textContent=m; t.classList.add('show'); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove('show'),1800); }
+
+$('btnSave').addEventListener('click', () => {
+  if(!selected.size){ ms.classList.add('error'); toast('Vui lòng chọn đơn vị thực hiện'); return; }
+  console.log('donViThucHien =', [...selected]);
+  toast(`Đã lưu với ${selected.size} đơn vị thực hiện`);
+});
+
+renderAll();
+</script>
+</body>
+</html>

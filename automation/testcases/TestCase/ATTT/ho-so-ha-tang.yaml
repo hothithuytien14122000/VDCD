@@ -1,0 +1,1046 @@
+title: "ATTT - Hồ sơ & Hạ tầng"
+phan_he: "ATTT - An toàn thông tin cấp độ 2 (chung)"
+tong_so: 69
+testcases:
+  - id: ATG-R01
+    title: "Quy chế bảo đảm ATTT có đủ 4 nội dung: an toàn mạng, máy chủ & ứng dụng, dữ liệu, người sử dụng đầu cuối"
+    uc: "ATTT QL 1.1.1"
+    tac_nhan: "Quản trị hệ thống, Đơn vị vận hành (hồ sơ / hạ tầng)"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Hồ sơ quản lý"
+    loai: "Hồ sơ"
+    uu_tien: "Cao"
+    automation: "Manual"
+    cac_buoc:
+      - "1. Thu thập Quy chế bảo đảm ATTT hệ thống CĐS (HS 2)"
+      - "2. Đối chiếu mục lục"
+    ket_qua_mong_doi:
+      - "Có đủ 4 nội dung quản lý an toàn"
+    ghi_chu: "Manual: kiểm tra hồ sơ / minh chứng, không phải chức năng phần mềm"
+    ket_qua_chay: "Manual"
+  - id: ATG-R02
+    title: "Quy chế được chủ quản hệ thống phê duyệt trước khi công bố áp dụng"
+    uc: "ATTT QL 1.1.2"
+    tac_nhan: "Quản trị hệ thống, Đơn vị vận hành (hồ sơ / hạ tầng)"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Hồ sơ quản lý"
+    loai: "Hồ sơ"
+    uu_tien: "Cao"
+    automation: "Manual"
+    cac_buoc:
+      - "1. Kiểm tra Quyết định ban hành Quy chế"
+    ket_qua_mong_doi:
+      - "Có quyết định ban hành do chủ quản ký, ngày ban hành trước ngày áp dụng"
+    ghi_chu: "Manual: kiểm tra hồ sơ / minh chứng, không phải chức năng phần mềm"
+    ket_qua_chay: "Manual"
+  - id: ATG-R03
+    title: "Quy chế ghi chu kỳ rà soát 03 năm hoặc khi có thay đổi"
+    uc: "ATTT QL 1.1.3"
+    tac_nhan: "Quản trị hệ thống, Đơn vị vận hành (hồ sơ / hạ tầng)"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Hồ sơ quản lý"
+    loai: "Hồ sơ"
+    uu_tien: "Cao"
+    automation: "Manual"
+    cac_buoc:
+      - "1. Tìm điều khoản rà soát trong Quy chế"
+    ket_qua_mong_doi:
+      - "Có quy định rà soát, cập nhật định kỳ 03 năm hoặc khi thay đổi"
+    ghi_chu: "Manual: kiểm tra hồ sơ / minh chứng, không phải chức năng phần mềm"
+    ket_qua_chay: "Manual"
+  - id: ATG-R04
+    title: "Có đơn vị chuyên trách ATTT của chủ quản và đầu mối kỹ thuật phía đơn vị vận hành"
+    uc: "ATTT QL 1.2.1"
+    tac_nhan: "Quản trị hệ thống, Đơn vị vận hành (hồ sơ / hạ tầng)"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Hồ sơ quản lý"
+    loai: "Hồ sơ"
+    uu_tien: "Cao"
+    automation: "Manual"
+    cac_buoc:
+      - "1. Kiểm tra hồ sơ phân công"
+    ket_qua_mong_doi:
+      - "Có văn bản nêu rõ đơn vị chuyên trách và đầu mối"
+    ghi_chu: "Manual: kiểm tra hồ sơ / minh chứng, không phải chức năng phần mềm"
+    ket_qua_chay: "Manual"
+  - id: ATG-R05
+    title: "Có danh sách đầu mối phối hợp với cơ quan có thẩm quyền và điều phối xử lý sự cố"
+    uc: "ATTT QL 1.2.2"
+    tac_nhan: "Quản trị hệ thống, Đơn vị vận hành (hồ sơ / hạ tầng)"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Hồ sơ quản lý"
+    loai: "Hồ sơ"
+    uu_tien: "Cao"
+    automation: "Manual"
+    cac_buoc:
+      - "1. Kiểm tra danh sách đầu mối"
+    ket_qua_mong_doi:
+      - "Danh sách có họ tên, chức vụ, SĐT, email; có cam kết tham gia khi có yêu cầu"
+    ghi_chu: "Manual: kiểm tra hồ sơ / minh chứng, không phải chức năng phần mềm"
+    ket_qua_chay: "Manual"
+  - id: ATG-R06
+    title: "Cán bộ vị trí ATTT có trình độ, chuyên ngành phù hợp"
+    uc: "ATTT QL 1.3.1"
+    tac_nhan: "Quản trị hệ thống, Đơn vị vận hành (hồ sơ / hạ tầng)"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Hồ sơ quản lý"
+    loai: "Hồ sơ"
+    uu_tien: "Trung bình"
+    automation: "Manual"
+    cac_buoc:
+      - "1. Kiểm tra hồ sơ tuyển dụng/phân công cán bộ ATTT"
+    ket_qua_mong_doi:
+      - "Trình độ, chuyên ngành phù hợp vị trí"
+    ghi_chu: "Manual: kiểm tra hồ sơ / minh chứng, không phải chức năng phần mềm"
+    ket_qua_chay: "Manual"
+  - id: ATG-R07
+    title: "Có quy định thực hiện nội quy ATTT và kế hoạch tuyên truyền nâng cao nhận thức hằng năm"
+    uc: "ATTT QL 1.3.2"
+    tac_nhan: "Quản trị hệ thống, Đơn vị vận hành (hồ sơ / hạ tầng)"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Hồ sơ quản lý"
+    loai: "Hồ sơ"
+    uu_tien: "Trung bình"
+    automation: "Manual"
+    cac_buoc:
+      - "1. Kiểm tra quy định và kế hoạch tuyên truyền năm hiện hành"
+    ket_qua_mong_doi:
+      - "Có quy định áp dụng cho người dùng, cán bộ quản lý, vận hành; có kế hoạch hằng năm"
+    ghi_chu: "Manual: kiểm tra hồ sơ / minh chứng, không phải chức năng phần mềm"
+    ket_qua_chay: "Manual"
+  - id: ATG-R08
+    title: "Có quy trình thu hồi tài sản và vô hiệu hóa quyền truy cập khi cán bộ thôi việc/chuyển công tác"
+    uc: "ATTT QL 1.3.3"
+    tac_nhan: "Quản trị hệ thống, Đơn vị vận hành (hồ sơ / hạ tầng)"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Hồ sơ quản lý"
+    loai: "Hồ sơ"
+    uu_tien: "Cao"
+    automation: "Manual"
+    cac_buoc:
+      - "1. Kiểm tra quy trình"
+      - "2. Đối chiếu với chức năng khóa/gỡ quyền ở ATA-U*"
+    ket_qua_mong_doi:
+      - "Quy trình có bước khóa tài khoản phần mềm, gỡ nhóm quyền, thu hồi thiết bị"
+    ghi_chu: "Manual: kiểm tra hồ sơ / minh chứng, không phải chức năng phần mềm"
+    ket_qua_chay: "Manual"
+  - id: ATG-R09
+    title: "Có tài liệu quy mô, phạm vi, thiết kế, thành phần HTTT và phương án ATTT theo cấp độ"
+    uc: "ATTT QL 1.4.1"
+    tac_nhan: "Quản trị hệ thống, Đơn vị vận hành (hồ sơ / hạ tầng)"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Hồ sơ quản lý"
+    loai: "Hồ sơ"
+    uu_tien: "Cao"
+    automation: "Manual"
+    cac_buoc:
+      - "1. Kiểm tra tài liệu kiến trúc (FE React – BE ASP.NET Core – PostgreSQL), mô hình logic/vật lý, danh mục ứng dụng/dịch vụ, phương án ATTT"
+    ket_qua_mong_doi:
+      - "Đủ 5 nội dung a–đ; có đánh giá lại khi thay đổi thiết kế"
+    ghi_chu: "Manual: kiểm tra hồ sơ / minh chứng, không phải chức năng phần mềm"
+    ket_qua_chay: "Manual"
+  - id: ATG-R10
+    title: "Có hợp đồng/cam kết với bên phát triển và bộ mã nguồn bàn giao"
+    uc: "ATTT QL 1.4.2"
+    tac_nhan: "Quản trị hệ thống, Đơn vị vận hành (hồ sơ / hạ tầng)"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Hồ sơ quản lý"
+    loai: "Hồ sơ"
+    uu_tien: "Cao"
+    automation: "Manual"
+    cac_buoc:
+      - "1. Kiểm tra hợp đồng, cam kết"
+      - "2. Kiểm tra bộ mã nguồn bàn giao (đã loại bỏ secret)"
+    ket_qua_mong_doi:
+      - "Có cam kết; mã nguồn bàn giao đầy đủ, không chứa secret"
+    ghi_chu: "Manual: kiểm tra hồ sơ / minh chứng, không phải chức năng phần mềm"
+    ket_qua_chay: "Manual"
+  - id: ATG-R11
+    title: "Có kế hoạch, quy trình kiểm thử – nghiệm thu, bộ testcase ATTT và bộ phận chịu trách nhiệm"
+    uc: "ATTT QL 1.4.3"
+    tac_nhan: "Quản trị hệ thống, Đơn vị vận hành (hồ sơ / hạ tầng)"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Hồ sơ quản lý"
+    loai: "Hồ sơ"
+    uu_tien: "Cao"
+    automation: "Manual"
+    cac_buoc:
+      - "1. Kiểm tra kế hoạch test, bộ testcase (gồm bộ ATA/ATB/ATC/ATE/ATU/ATG này), biên bản nghiệm thu"
+    ket_qua_mong_doi:
+      - "Có đủ; kết quả kiểm thử ATTT được lưu trước khi vận hành"
+    ghi_chu: "Manual: kiểm tra hồ sơ / minh chứng, không phải chức năng phần mềm"
+    ket_qua_chay: "Manual"
+  - id: ATG-R12
+    title: "Có quy trình quản lý an toàn mạng: vận hành, cập nhật, sao lưu cấu hình, khôi phục, truy cập cấu hình"
+    uc: "ATTT QL 1.5.1"
+    tac_nhan: "Quản trị hệ thống, Đơn vị vận hành (hồ sơ / hạ tầng)"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Hồ sơ quản lý"
+    loai: "Hồ sơ"
+    uu_tien: "Cao"
+    automation: "Manual"
+    cac_buoc:
+      - "1. Kiểm tra quy trình"
+    ket_qua_mong_doi:
+      - "Có đủ nội dung a–c"
+    ghi_chu: "Manual: kiểm tra hồ sơ / minh chứng, không phải chức năng phần mềm"
+    ket_qua_chay: "Manual"
+  - id: ATG-R13
+    title: "Có quy trình quản lý an toàn máy chủ và ứng dụng, gồm cập nhật phiên bản (deploy/rollback) và khôi phục ứng dụng"
+    uc: "ATTT QL 1.5.2"
+    tac_nhan: "Quản trị hệ thống, Đơn vị vận hành (hồ sơ / hạ tầng)"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Hồ sơ quản lý"
+    loai: "Hồ sơ"
+    uu_tien: "Cao"
+    automation: "Manual"
+    cac_buoc:
+      - "1. Kiểm tra quy trình deploy/rollback, khôi phục"
+    ket_qua_mong_doi:
+      - "Có đủ nội dung a–d"
+    ghi_chu: "Manual: kiểm tra hồ sơ / minh chứng, không phải chức năng phần mềm"
+    ket_qua_chay: "Manual"
+  - id: ATG-R14
+    title: "Có quy trình sao lưu – khôi phục dữ liệu (tần suất, nơi lưu, người thực hiện) và biên bản thử khôi phục"
+    uc: "ATTT QL 1.5.3"
+    tac_nhan: "Quản trị hệ thống, Đơn vị vận hành (hồ sơ / hạ tầng)"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Hồ sơ quản lý"
+    loai: "Hồ sơ"
+    uu_tien: "Cao"
+    automation: "Manual"
+    cac_buoc:
+      - "1. Kiểm tra quy trình và biên bản thử khôi phục"
+    ket_qua_mong_doi:
+      - "Có quy trình; có biên bản thử khôi phục định kỳ"
+    ghi_chu: "Manual: kiểm tra hồ sơ / minh chứng, không phải chức năng phần mềm"
+    ket_qua_chay: "Manual"
+  - id: ATG-R15
+    title: "Có phương án, kế hoạch, quy trình ứng cứu sự cố ATTT (thông thường và nghiêm trọng) và cơ chế phối hợp"
+    uc: "ATTT QL 1.5.4"
+    tac_nhan: "Quản trị hệ thống, Đơn vị vận hành (hồ sơ / hạ tầng)"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Hồ sơ quản lý"
+    loai: "Hồ sơ"
+    uu_tien: "Cao"
+    automation: "Manual"
+    cac_buoc:
+      - "1. Kiểm tra hồ sơ quản lý sự cố"
+    ket_qua_mong_doi:
+      - "Đủ nội dung a–g"
+    ghi_chu: "Manual: kiểm tra hồ sơ / minh chứng, không phải chức năng phần mềm"
+    ket_qua_chay: "Manual"
+  - id: ATG-R16
+    title: "Có quy định quản lý truy cập tài nguyên nội bộ và Internet cho người sử dụng đầu cuối"
+    uc: "ATTT QL 1.5.5"
+    tac_nhan: "Quản trị hệ thống, Đơn vị vận hành (hồ sơ / hạ tầng)"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Hồ sơ quản lý"
+    loai: "Hồ sơ"
+    uu_tien: "Trung bình"
+    automation: "Manual"
+    cac_buoc:
+      - "1. Kiểm tra quy định"
+    ket_qua_mong_doi:
+      - "Có đủ nội dung a–b"
+    ghi_chu: "Manual: kiểm tra hồ sơ / minh chứng, không phải chức năng phần mềm"
+    ket_qua_chay: "Manual"
+  - id: ATG-R17
+    title: "Có Phương án quản lý rủi ro ATTT (tài sản – mối đe dọa – điểm yếu – mức rủi ro – biện pháp) và rà soát định kỳ"
+    uc: "ATTT QL 1.6"
+    tac_nhan: "Quản trị hệ thống, Đơn vị vận hành (hồ sơ / hạ tầng)"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Hồ sơ quản lý"
+    loai: "Hồ sơ"
+    uu_tien: "Cao"
+    automation: "Manual"
+    cac_buoc:
+      - "1. Kiểm tra phương án"
+    ket_qua_mong_doi:
+      - "Có đủ các thành phần; có kế hoạch rà soát"
+    ghi_chu: "Manual: kiểm tra hồ sơ / minh chứng, không phải chức năng phần mềm"
+    ket_qua_chay: "Manual"
+  - id: ATG-R18
+    title: "Có Phương án kết thúc vận hành, thanh lý, hủy bỏ hệ thống"
+    uc: "ATTT QL 1.7"
+    tac_nhan: "Quản trị hệ thống, Đơn vị vận hành (hồ sơ / hạ tầng)"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Hồ sơ quản lý"
+    loai: "Hồ sơ"
+    uu_tien: "Trung bình"
+    automation: "Manual"
+    cac_buoc:
+      - "1. Kiểm tra phương án"
+    ket_qua_mong_doi:
+      - "Có nội dung xuất/lưu dữ liệu, thu hồi tài khoản, xóa sạch dữ liệu và bản sao lưu, hủy khóa mã hóa, chứng thư"
+    ghi_chu: "Manual: kiểm tra hồ sơ / minh chứng, không phải chức năng phần mềm"
+    ket_qua_chay: "Manual"
+  - id: ATG-R19
+    title: "Phân vùng mạng: web/reverse proxy ở DMZ; API và PostgreSQL ở vùng máy chủ nội bộ; DB không public"
+    uc: "ATTT TK a"
+    tac_nhan: "Quản trị hệ thống, Đơn vị vận hành (hồ sơ / hạ tầng)"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Hạ tầng"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Manual"
+    cac_buoc:
+      - "1. Kiểm tra sơ đồ logic/vật lý, quy hoạch IP"
+      - "2. Từ Internet thử kết nối cổng PostgreSQL (khi được phép)"
+    ket_qua_mong_doi:
+      - "Đủ các vùng mạng tối thiểu; DB không truy cập được từ Internet"
+    ghi_chu: "Manual: kiểm tra cấu hình hạ tầng (đơn vị vận hành cung cấp minh chứng); quét cổng/thử xâm nhập chỉ làm khi có văn bản cho phép"
+    ket_qua_chay: "Manual"
+  - id: ATG-R20
+    title: "Quản trị máy chủ/ứng dụng từ xa qua VPN; không mở SSH/RDP/DB ra Internet"
+    uc: "ATTT TK b.i"
+    tac_nhan: "Quản trị hệ thống, Đơn vị vận hành (hồ sơ / hạ tầng)"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Hạ tầng"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Manual"
+    cac_buoc:
+      - "1. Kiểm tra cấu hình VPN"
+      - "2. Kiểm tra các cổng quản trị từ Internet (khi được phép)"
+    ket_qua_mong_doi:
+      - "Chỉ quản trị qua VPN; cổng quản trị đóng với Internet"
+    ghi_chu: "Manual: kiểm tra cấu hình hạ tầng (đơn vị vận hành cung cấp minh chứng); quét cổng/thử xâm nhập chỉ làm khi có văn bản cho phép"
+    ket_qua_chay: "Manual"
+  - id: ATG-R21
+    title: "Có tường lửa tích hợp phòng chống xâm nhập kiểm soát truy cập giữa các vùng mạng"
+    uc: "ATTT TK b.ii"
+    tac_nhan: "Quản trị hệ thống, Đơn vị vận hành (hồ sơ / hạ tầng)"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Hạ tầng"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Manual"
+    cac_buoc:
+      - "1. Kiểm tra thiết bị/giải pháp và chính sách giữa các vùng"
+    ket_qua_mong_doi:
+      - "Có sản phẩm tường lửa + IPS hoặc tương đương"
+    ghi_chu: "Manual: kiểm tra cấu hình hạ tầng (đơn vị vận hành cung cấp minh chứng); quét cổng/thử xâm nhập chỉ làm khi có văn bản cho phép"
+    ket_qua_chay: "Manual"
+  - id: ATG-R22
+    title: "Có phương án phòng chống mã độc cho máy chủ và máy trạm"
+    uc: "ATTT TK b.iii"
+    tac_nhan: "Quản trị hệ thống, Đơn vị vận hành (hồ sơ / hạ tầng)"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Hạ tầng"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Manual"
+    cac_buoc:
+      - "1. Kiểm tra sản phẩm/giải pháp phòng chống mã độc"
+    ket_qua_mong_doi:
+      - "Có giải pháp đang hoạt động"
+    ghi_chu: "Manual: kiểm tra cấu hình hạ tầng (đơn vị vận hành cung cấp minh chứng); quét cổng/thử xâm nhập chỉ làm khi có văn bản cho phép"
+    ket_qua_chay: "Manual"
+  - id: ATG-W01
+    title: "Có phương án chống tấn công ứng dụng web; có WAF nếu CĐS thuộc hệ thống tại khoản 2 Điều 8 NĐ 85/2016"
+    uc: "ATTT TK b.iv"
+    tac_nhan: "Quản trị hệ thống, Đơn vị vận hành (hồ sơ / hạ tầng)"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Hạ tầng"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Manual"
+    cac_buoc:
+      - "1. Xác nhận loại hệ thống trong thuyết minh"
+      - "2. Kiểm tra WAF/phương án tương đương"
+      - "3. Gửi request chứa mẫu tấn công phổ biến (khi được phép)"
+    ket_qua_mong_doi:
+      - "Có phương án; request tấn công bị chặn/ghi nhận"
+    ghi_chu: "Manual: kiểm tra cấu hình hạ tầng (đơn vị vận hành cung cấp minh chứng); quét cổng/thử xâm nhập chỉ làm khi có văn bản cho phép; cần xác nhận loại hệ thống"
+    ket_qua_chay: "Manual"
+  - id: ATG-R23
+    title: "Thư điện tử: CĐS không phải hệ thống thư (Không áp dụng); chức năng gửi mail dùng SMTP có TLS, tài khoản SMTP riêng"
+    uc: "ATTT TK b.v"
+    tac_nhan: "Quản trị hệ thống, Đơn vị vận hành (hồ sơ / hạ tầng)"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Hạ tầng"
+    loai: "Bảo mật"
+    uu_tien: "Trung bình"
+    automation: "Manual"
+    cac_buoc:
+      - "1. Kiểm tra cấu hình SMTP của ứng dụng"
+    ket_qua_mong_doi:
+      - "SMTP dùng TLS (465/587 STARTTLS); tài khoản SMTP riêng cho CĐS"
+    ghi_chu: "Manual: kiểm tra cấu hình hạ tầng (đơn vị vận hành cung cấp minh chứng); quét cổng/thử xâm nhập chỉ làm khi có văn bản cho phép"
+    ket_qua_chay: "Manual"
+  - id: ATG-R24
+    title: "Có phương án dự phòng thiết bị chuyển mạch trung tâm và tường lửa trung tâm"
+    uc: "ATTT TK b.vi"
+    tac_nhan: "Quản trị hệ thống, Đơn vị vận hành (hồ sơ / hạ tầng)"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Hạ tầng"
+    loai: "Bảo mật"
+    uu_tien: "Trung bình"
+    automation: "Manual"
+    cac_buoc:
+      - "1. Kiểm tra sơ đồ dự phòng"
+    ket_qua_mong_doi:
+      - "Có thiết bị/đường dự phòng"
+    ghi_chu: "Manual: kiểm tra cấu hình hạ tầng (đơn vị vận hành cung cấp minh chứng); quét cổng/thử xâm nhập chỉ làm khi có văn bản cho phép"
+    ket_qua_chay: "Manual"
+  - id: ATG-H01
+    title: "[API] Truy cập ứng dụng từ Internet chỉ qua kết nối an toàn: HTTP chuyển hướng sang HTTPS"
+    uc: "ATTT KT 1.1.1a"
+    tac_nhan: "Quản trị hệ thống, Đơn vị vận hành (hồ sơ / hạ tầng)"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Hạ tầng"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Gọi http://<máy chủ>/ không theo chuyển hướng"
+    ket_qua_mong_doi:
+      - "HTTP 301/308 sang https://"
+    ket_qua_chay: "Pass"
+  - id: ATG-R25
+    title: "Tường lửa chỉ mở 443 (80 chỉ để chuyển hướng) cho CĐS; chặn các cổng khác"
+    uc: "ATTT KT 1.1.1b"
+    tac_nhan: "Quản trị hệ thống, Đơn vị vận hành (hồ sơ / hạ tầng)"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Hạ tầng"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Manual"
+    cac_buoc:
+      - "1. Kiểm tra chính sách tường lửa"
+      - "2. Quét cổng địa chỉ public (khi có văn bản cho phép)"
+    ket_qua_mong_doi:
+      - "Chỉ 80/443 mở"
+    ghi_chu: "Manual: kiểm tra cấu hình hạ tầng (đơn vị vận hành cung cấp minh chứng); quét cổng/thử xâm nhập chỉ làm khi có văn bản cho phép"
+    ket_qua_chay: "Manual"
+  - id: ATG-R26
+    title: "Thiết bị mạng/proxy có thời gian chờ đóng phiên kết nối không hoạt động"
+    uc: "ATTT KT 1.1.1c"
+    tac_nhan: "Quản trị hệ thống, Đơn vị vận hành (hồ sơ / hạ tầng)"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Hạ tầng"
+    loai: "Bảo mật"
+    uu_tien: "Trung bình"
+    automation: "Manual"
+    cac_buoc:
+      - "1. Kiểm tra cấu hình timeout (keepalive_timeout, client_body_timeout của nginx; timeout phiên firewall)"
+    ket_qua_mong_doi:
+      - "Có giá trị timeout hợp lý"
+    ghi_chu: "Manual: kiểm tra cấu hình hạ tầng (đơn vị vận hành cung cấp minh chứng); quét cổng/thử xâm nhập chỉ làm khi có văn bản cho phép"
+    ket_qua_chay: "Manual"
+  - id: ATG-R27
+    title: "Máy chủ CĐS chỉ được kết nối ra ngoài tới đích cần thiết (SMTP, NTP, kho cập nhật…)"
+    uc: "ATTT KT 1.1.2"
+    tac_nhan: "Quản trị hệ thống, Đơn vị vận hành (hồ sơ / hạ tầng)"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Hạ tầng"
+    loai: "Bảo mật"
+    uu_tien: "Trung bình"
+    automation: "Manual"
+    cac_buoc:
+      - "1. Kiểm tra chính sách outbound"
+    ket_qua_mong_doi:
+      - "Mặc định chặn; chỉ mở các đích cần thiết"
+    ghi_chu: "Manual: kiểm tra cấu hình hạ tầng (đơn vị vận hành cung cấp minh chứng); quét cổng/thử xâm nhập chỉ làm khi có văn bản cho phép"
+    ket_qua_chay: "Manual"
+  - id: ATG-R28
+    title: "Thiết bị hệ thống có ghi và lưu trữ nhật ký"
+    uc: "ATTT KT 1.1.3a"
+    tac_nhan: "Quản trị hệ thống, Đơn vị vận hành (hồ sơ / hạ tầng)"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Hạ tầng"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Manual"
+    cac_buoc:
+      - "1. Kiểm tra cấu hình log của firewall, switch, proxy"
+    ket_qua_mong_doi:
+      - "Có ghi log và lưu trữ"
+    ghi_chu: "Manual: kiểm tra cấu hình hạ tầng (đơn vị vận hành cung cấp minh chứng); quét cổng/thử xâm nhập chỉ làm khi có văn bản cho phép"
+    ket_qua_chay: "Manual"
+  - id: ATG-R29
+    title: "Thiết bị mạng, máy chủ đồng bộ thời gian với máy chủ thời gian (NTP)"
+    uc: "ATTT KT 1.1.3b"
+    tac_nhan: "Quản trị hệ thống, Đơn vị vận hành (hồ sơ / hạ tầng)"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Hạ tầng"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Manual"
+    cac_buoc:
+      - "1. Kiểm tra cấu hình NTP và độ lệch"
+    ket_qua_mong_doi:
+      - "Có NTP; lệch < 1 giây"
+    ghi_chu: "Manual: kiểm tra cấu hình hạ tầng (đơn vị vận hành cung cấp minh chứng); quét cổng/thử xâm nhập chỉ làm khi có văn bản cho phép"
+    ket_qua_chay: "Manual"
+  - id: ATG-R30
+    title: "Có phương án phòng chống xâm nhập bảo vệ vùng DMZ và vùng máy chủ nội bộ"
+    uc: "ATTT KT 1.1.4a"
+    tac_nhan: "Quản trị hệ thống, Đơn vị vận hành (hồ sơ / hạ tầng)"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Hạ tầng"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Manual"
+    cac_buoc:
+      - "1. Kiểm tra IPS/IDS cho 2 vùng"
+    ket_qua_mong_doi:
+      - "Có giải pháp đang hoạt động"
+    ghi_chu: "Manual: kiểm tra cấu hình hạ tầng (đơn vị vận hành cung cấp minh chứng); quét cổng/thử xâm nhập chỉ làm khi có văn bản cho phép"
+    ket_qua_chay: "Manual"
+  - id: ATG-R31
+    title: "Cơ sở dữ liệu dấu hiệu tấn công (signature) được cập nhật định kỳ"
+    uc: "ATTT KT 1.1.4b"
+    tac_nhan: "Quản trị hệ thống, Đơn vị vận hành (hồ sơ / hạ tầng)"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Hạ tầng"
+    loai: "Bảo mật"
+    uu_tien: "Trung bình"
+    automation: "Manual"
+    cac_buoc:
+      - "1. Kiểm tra ngày cập nhật signature gần nhất"
+    ket_qua_mong_doi:
+      - "Cập nhật trong chu kỳ quy định"
+    ghi_chu: "Manual: kiểm tra cấu hình hạ tầng (đơn vị vận hành cung cấp minh chứng); quét cổng/thử xâm nhập chỉ làm khi có văn bản cho phép"
+    ket_qua_chay: "Manual"
+  - id: ATG-R32
+    title: "Thiết bị hệ thống bật xác thực khi quản trị trực tiếp/từ xa"
+    uc: "ATTT KT 1.1.5a"
+    tac_nhan: "Quản trị hệ thống, Đơn vị vận hành (hồ sơ / hạ tầng)"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Hạ tầng"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Manual"
+    cac_buoc:
+      - "1. Kiểm tra cấu hình xác thực thiết bị"
+    ket_qua_mong_doi:
+      - "Có xác thực; không dùng mật khẩu mặc định"
+    ghi_chu: "Manual: kiểm tra cấu hình hạ tầng (đơn vị vận hành cung cấp minh chứng); quét cổng/thử xâm nhập chỉ làm khi có văn bản cho phép"
+    ket_qua_chay: "Manual"
+  - id: ATG-R33
+    title: "Quản trị thiết bị từ xa chỉ qua kết nối an toàn (SSH/HTTPS), tắt Telnet/HTTP"
+    uc: "ATTT KT 1.1.5b"
+    tac_nhan: "Quản trị hệ thống, Đơn vị vận hành (hồ sơ / hạ tầng)"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Hạ tầng"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Manual"
+    cac_buoc:
+      - "1. Kiểm tra giao thức quản trị"
+    ket_qua_mong_doi:
+      - "Chỉ giao thức an toàn"
+    ghi_chu: "Manual: kiểm tra cấu hình hạ tầng (đơn vị vận hành cung cấp minh chứng); quét cổng/thử xâm nhập chỉ làm khi có văn bản cho phép"
+    ket_qua_chay: "Manual"
+  - id: ATG-R34
+    title: "Giới hạn địa chỉ được phép quản trị thiết bị từ xa"
+    uc: "ATTT KT 1.1.5c"
+    tac_nhan: "Quản trị hệ thống, Đơn vị vận hành (hồ sơ / hạ tầng)"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Hạ tầng"
+    loai: "Bảo mật"
+    uu_tien: "Trung bình"
+    automation: "Manual"
+    cac_buoc:
+      - "1. Kiểm tra ACL quản trị thiết bị"
+    ket_qua_mong_doi:
+      - "Chỉ dải IP quản trị được phép"
+    ghi_chu: "Manual: kiểm tra cấu hình hạ tầng (đơn vị vận hành cung cấp minh chứng); quét cổng/thử xâm nhập chỉ làm khi có văn bản cho phép"
+    ket_qua_chay: "Manual"
+  - id: ATG-R35
+    title: "Máy chủ có chính sách xác thực khi truy cập, quản lý, sử dụng"
+    uc: "ATTT KT 1.2.1a"
+    tac_nhan: "Quản trị hệ thống, Đơn vị vận hành (hồ sơ / hạ tầng)"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Hạ tầng"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Manual"
+    cac_buoc:
+      - "1. Kiểm tra cấu hình xác thực SSH/OS"
+    ket_qua_mong_doi:
+      - "Có xác thực; ưu tiên khóa SSH, tắt đăng nhập root trực tiếp"
+    ghi_chu: "Manual: kiểm tra cấu hình hạ tầng (đơn vị vận hành cung cấp minh chứng); quét cổng/thử xâm nhập chỉ làm khi có văn bản cho phép"
+    ket_qua_chay: "Manual"
+  - id: ATG-U01
+    title: "Tài khoản mặc định của hệ điều hành, PostgreSQL, web server đã đổi mật khẩu hoặc vô hiệu hóa"
+    uc: "ATTT KT 1.2.1b"
+    tac_nhan: "Quản trị hệ thống, Đơn vị vận hành (hồ sơ / hạ tầng)"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Hạ tầng"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Manual"
+    cac_buoc:
+      - "1. Kiểm tra tài khoản postgres, root, tài khoản mặc định web server"
+    ket_qua_mong_doi:
+      - "Không còn mật khẩu mặc định; tài khoản không dùng bị vô hiệu hóa"
+    ghi_chu: "Manual: kiểm tra cấu hình hạ tầng (đơn vị vận hành cung cấp minh chứng); quét cổng/thử xâm nhập chỉ làm khi có văn bản cho phép"
+    ket_qua_chay: "Manual"
+  - id: ATG-R36
+    title: "Cấu hình máy chủ bảo đảm an toàn mật khẩu (độ phức tạp, thời hạn đổi) cho tài khoản hệ điều hành"
+    uc: "ATTT KT 1.2.1c"
+    tac_nhan: "Quản trị hệ thống, Đơn vị vận hành (hồ sơ / hạ tầng)"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Hạ tầng"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Manual"
+    cac_buoc:
+      - "1. Kiểm tra PAM/chính sách mật khẩu OS"
+    ket_qua_mong_doi:
+      - "Có quy tắc độ dài, loại ký tự, thời hạn"
+    ghi_chu: "Manual: kiểm tra cấu hình hạ tầng (đơn vị vận hành cung cấp minh chứng); quét cổng/thử xâm nhập chỉ làm khi có văn bản cho phép"
+    ket_qua_chay: "Manual"
+  - id: ATG-R37
+    title: "Quản trị máy chủ từ xa chỉ qua kết nối an toàn"
+    uc: "ATTT KT 1.2.2a"
+    tac_nhan: "Quản trị hệ thống, Đơn vị vận hành (hồ sơ / hạ tầng)"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Hạ tầng"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Manual"
+    cac_buoc:
+      - "1. Kiểm tra dịch vụ quản trị đang mở"
+    ket_qua_mong_doi:
+      - "Chỉ SSH (qua VPN); không Telnet/FTP"
+    ghi_chu: "Manual: kiểm tra cấu hình hạ tầng (đơn vị vận hành cung cấp minh chứng); quét cổng/thử xâm nhập chỉ làm khi có văn bản cho phép"
+    ket_qua_chay: "Manual"
+  - id: ATG-R38
+    title: "Máy chủ có timeout đóng phiên quản trị không hoạt động"
+    uc: "ATTT KT 1.2.2b"
+    tac_nhan: "Quản trị hệ thống, Đơn vị vận hành (hồ sơ / hạ tầng)"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Hạ tầng"
+    loai: "Bảo mật"
+    uu_tien: "Trung bình"
+    automation: "Manual"
+    cac_buoc:
+      - "1. Kiểm tra ClientAliveInterval / TMOUT"
+    ket_qua_mong_doi:
+      - "Có giá trị timeout"
+    ghi_chu: "Manual: kiểm tra cấu hình hạ tầng (đơn vị vận hành cung cấp minh chứng); quét cổng/thử xâm nhập chỉ làm khi có văn bản cho phép"
+    ket_qua_chay: "Manual"
+  - id: ATG-R39
+    title: "Máy chủ ghi nhật ký: kết nối mạng, đăng nhập, lỗi, thay đổi cấu hình, truy cập dữ liệu quan trọng"
+    uc: "ATTT KT 1.2.3a"
+    tac_nhan: "Quản trị hệ thống, Đơn vị vận hành (hồ sơ / hạ tầng)"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Hạ tầng"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Manual"
+    cac_buoc:
+      - "1. Kiểm tra auth.log, syslog, log firewall, log PostgreSQL"
+    ket_qua_mong_doi:
+      - "Có đủ 5 loại thông tin"
+    ghi_chu: "Manual: kiểm tra cấu hình hạ tầng (đơn vị vận hành cung cấp minh chứng); quét cổng/thử xâm nhập chỉ làm khi có văn bản cho phép"
+    ket_qua_chay: "Manual"
+  - id: ATG-R40
+    title: "Máy chủ đồng bộ thời gian với máy chủ thời gian"
+    uc: "ATTT KT 1.2.3b"
+    tac_nhan: "Quản trị hệ thống, Đơn vị vận hành (hồ sơ / hạ tầng)"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Hạ tầng"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Manual"
+    cac_buoc:
+      - "1. Kiểm tra timedatectl / chrony"
+    ket_qua_mong_doi:
+      - "Đồng bộ NTP đang bật"
+    ghi_chu: "Manual: kiểm tra cấu hình hạ tầng (đơn vị vận hành cung cấp minh chứng); quét cổng/thử xâm nhập chỉ làm khi có văn bản cho phép"
+    ket_qua_chay: "Manual"
+  - id: ATG-R41
+    title: "Nhật ký máy chủ lưu tối thiểu 01 tháng"
+    uc: "ATTT KT 1.2.3c"
+    tac_nhan: "Quản trị hệ thống, Đơn vị vận hành (hồ sơ / hạ tầng)"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Hạ tầng"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Manual"
+    cac_buoc:
+      - "1. Kiểm tra logrotate/nơi lưu log"
+    ket_qua_mong_doi:
+      - "Lưu ≥ 30 ngày"
+    ghi_chu: "Manual: kiểm tra cấu hình hạ tầng (đơn vị vận hành cung cấp minh chứng); quét cổng/thử xâm nhập chỉ làm khi có văn bản cho phép"
+    ket_qua_chay: "Manual"
+  - id: ATG-R42
+    title: "Loại bỏ tài khoản không dùng/không hợp lệ trên máy chủ"
+    uc: "ATTT KT 1.2.4a"
+    tac_nhan: "Quản trị hệ thống, Đơn vị vận hành (hồ sơ / hạ tầng)"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Hạ tầng"
+    loai: "Bảo mật"
+    uu_tien: "Trung bình"
+    automation: "Manual"
+    cac_buoc:
+      - "1. Rà soát /etc/passwd, tài khoản DB"
+    ket_qua_mong_doi:
+      - "Không còn tài khoản thừa"
+    ghi_chu: "Manual: kiểm tra cấu hình hạ tầng (đơn vị vận hành cung cấp minh chứng); quét cổng/thử xâm nhập chỉ làm khi có văn bản cho phép"
+    ket_qua_chay: "Manual"
+  - id: ATG-R43
+    title: "Bật tường lửa hệ điều hành chặn truy cập trái phép"
+    uc: "ATTT KT 1.2.4b"
+    tac_nhan: "Quản trị hệ thống, Đơn vị vận hành (hồ sơ / hạ tầng)"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Hạ tầng"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Manual"
+    cac_buoc:
+      - "1. Kiểm tra ufw/iptables"
+    ket_qua_mong_doi:
+      - "Tường lửa bật, chỉ mở cổng cần thiết"
+    ghi_chu: "Manual: kiểm tra cấu hình hạ tầng (đơn vị vận hành cung cấp minh chứng); quét cổng/thử xâm nhập chỉ làm khi có văn bản cho phép"
+    ket_qua_chay: "Manual"
+  - id: ATG-H02
+    title: "Máy chủ web tắt giao thức không an toàn: từ chối bắt tay TLS 1.0/1.1"
+    uc: "ATTT KT 1.2.4c"
+    tac_nhan: "Quản trị hệ thống, Đơn vị vận hành (hồ sơ / hạ tầng)"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Hạ tầng"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Bắt tay TLS tới máy chủ với maxVersion = TLSv1.1"
+    ket_qua_mong_doi:
+      - "Bắt tay thất bại"
+    ket_qua_chay: "Pass"
+  - id: ATG-R44
+    title: "Vô hiệu hóa dịch vụ hệ thống không sử dụng trên máy chủ"
+    uc: "ATTT KT 1.2.4c"
+    tac_nhan: "Quản trị hệ thống, Đơn vị vận hành (hồ sơ / hạ tầng)"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Hạ tầng"
+    loai: "Bảo mật"
+    uu_tien: "Trung bình"
+    automation: "Manual"
+    cac_buoc:
+      - "1. Liệt kê dịch vụ đang chạy/cổng đang nghe"
+    ket_qua_mong_doi:
+      - "Không có dịch vụ thừa"
+    ghi_chu: "Manual: kiểm tra cấu hình hạ tầng (đơn vị vận hành cung cấp minh chứng); quét cổng/thử xâm nhập chỉ làm khi có văn bản cho phép"
+    ket_qua_chay: "Manual"
+  - id: ATG-R45
+    title: "Có phương án cập nhật bản vá hệ điều hành và dịch vụ (nginx, PostgreSQL, .NET runtime)"
+    uc: "ATTT KT 1.2.4d"
+    tac_nhan: "Quản trị hệ thống, Đơn vị vận hành (hồ sơ / hạ tầng)"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Hạ tầng"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Manual"
+    cac_buoc:
+      - "1. Kiểm tra phương án và phiên bản hiện tại"
+    ket_qua_mong_doi:
+      - "Có phương án; phiên bản còn được hỗ trợ, không có lỗ hổng nghiêm trọng đã biết"
+    ghi_chu: "Manual: kiểm tra cấu hình hạ tầng (đơn vị vận hành cung cấp minh chứng); quét cổng/thử xâm nhập chỉ làm khi có văn bản cho phép"
+    ket_qua_chay: "Manual"
+  - id: ATG-R46
+    title: "Máy chủ có phần mềm phòng chống mã độc (hoặc tương đương) tự động cập nhật"
+    uc: "ATTT KT 1.2.5a"
+    tac_nhan: "Quản trị hệ thống, Đơn vị vận hành (hồ sơ / hạ tầng)"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Hạ tầng"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Manual"
+    cac_buoc:
+      - "1. Kiểm tra phần mềm và cấu hình cập nhật"
+    ket_qua_mong_doi:
+      - "Có và đang tự động cập nhật"
+    ghi_chu: "Manual: kiểm tra cấu hình hạ tầng (đơn vị vận hành cung cấp minh chứng); quét cổng/thử xâm nhập chỉ làm khi có văn bản cho phép"
+    ket_qua_chay: "Manual"
+  - id: ATG-R47
+    title: "Có phương án dò quét mã độc cho phần mềm trước khi cài đặt"
+    uc: "ATTT KT 1.2.5b"
+    tac_nhan: "Quản trị hệ thống, Đơn vị vận hành (hồ sơ / hạ tầng)"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Hạ tầng"
+    loai: "Bảo mật"
+    uu_tien: "Trung bình"
+    automation: "Manual"
+    cac_buoc:
+      - "1. Kiểm tra quy trình"
+    ket_qua_mong_doi:
+      - "Có quy trình quét trước khi cài"
+    ghi_chu: "Manual: kiểm tra cấu hình hạ tầng (đơn vị vận hành cung cấp minh chứng); quét cổng/thử xâm nhập chỉ làm khi có văn bản cho phép"
+    ket_qua_chay: "Manual"
+  - id: ATG-R48
+    title: "Có phương án xóa sạch dữ liệu máy chủ khi chuyển giao/đổi mục đích"
+    uc: "ATTT KT 1.2.6"
+    tac_nhan: "Quản trị hệ thống, Đơn vị vận hành (hồ sơ / hạ tầng)"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Hạ tầng"
+    loai: "Bảo mật"
+    uu_tien: "Trung bình"
+    automation: "Manual"
+    cac_buoc:
+      - "1. Kiểm tra phương án"
+    ket_qua_mong_doi:
+      - "Có phương án xóa an toàn"
+    ghi_chu: "Manual: kiểm tra cấu hình hạ tầng (đơn vị vận hành cung cấp minh chứng); quét cổng/thử xâm nhập chỉ làm khi có văn bản cho phép"
+    ket_qua_chay: "Manual"
+  - id: ATG-S01
+    title: "[API] Mã JavaScript phát hành cho trình duyệt không chứa khóa bí mật, chuỗi kết nối, mật khẩu"
+    uc: "ATTT UD 742-4.4"
+    tac_nhan: "Quản trị hệ thống, Đơn vị vận hành (hồ sơ / hạ tầng)"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Bí mật trong mã nguồn"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Tải trang chủ và các tệp /assets/*.js"
+      - "2. Quét chuỗi: connection string (Host=…;Password=), \"BEGIN PRIVATE KEY\", AWS key (AKIA…), \"client_secret\", \"smtp\" kèm mật khẩu"
+    ket_qua_mong_doi:
+      - "Không phát hiện bí mật"
+    ket_qua_chay: "Pass"
+  - id: ATG-S02
+    title: "[API] Không lộ tệp cấu hình/mã nguồn qua web: /.env, /.git/config, /appsettings.json, source map"
+    uc: "ATTT UD 742-4.4"
+    tac_nhan: "Quản trị hệ thống, Đơn vị vận hành (hồ sơ / hạ tầng)"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Bí mật trong mã nguồn"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. GET lần lượt các đường dẫn trên"
+    ket_qua_mong_doi:
+      - "Không trả nội dung tệp thật (chỉ 404 hoặc trang SPA mặc định); không có nội dung chứa khóa/chuỗi kết nối"
+    ket_qua_chay: "Pass"
+  - id: ATG-S03
+    title: "Kho mã nguồn không chứa secret (quét gitleaks); secret đặt ở biến môi trường/secret store"
+    uc: "ATTT UD 742-4.4"
+    tac_nhan: "Quản trị hệ thống, Đơn vị vận hành (hồ sơ / hạ tầng)"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Bí mật trong mã nguồn"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Manual"
+    cac_buoc:
+      - "1. Chạy gitleaks trên toàn bộ lịch sử repo BE/FE"
+      - "2. Kiểm tra appsettings.*.json đã commit"
+    ket_qua_mong_doi:
+      - "Không phát hiện secret; connection string, JWT secret, mật khẩu SMTP, API key lấy từ biến môi trường"
+    ghi_chu: "Manual: cần quyền truy cập repo mã nguồn của đội Dev"
+    ket_qua_chay: "Manual"
+  - id: ATG-R49
+    title: "Quy trình phát triển tuân thủ Khung phát triển phần mềm an toàn (CV 166/CATTT-ATHTTT): review code, quản lý thư viện bên thứ ba, kiểm thử bảo mật"
+    uc: "ATTT PM 1"
+    tac_nhan: "Quản trị hệ thống, Đơn vị vận hành (hồ sơ / hạ tầng)"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Hồ sơ quản lý"
+    loai: "Hồ sơ"
+    uu_tien: "Cao"
+    automation: "Manual"
+    cac_buoc:
+      - "1. Kiểm tra minh chứng review code, danh mục thư viện & kết quả quét phụ thuộc (npm audit / dotnet list package --vulnerable)"
+    ket_qua_mong_doi:
+      - "Có minh chứng cho từng hoạt động"
+    ghi_chu: "Manual: kiểm tra hồ sơ / minh chứng, không phải chức năng phần mềm"
+    ket_qua_chay: "Manual"
+  - id: ATG-R50
+    title: "Có tài liệu Hướng dẫn triển khai và thiết lập cấu hình"
+    uc: "ATTT PM 2a"
+    tac_nhan: "Quản trị hệ thống, Đơn vị vận hành (hồ sơ / hạ tầng)"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Hồ sơ quản lý"
+    loai: "Hồ sơ"
+    uu_tien: "Trung bình"
+    automation: "Manual"
+    cac_buoc:
+      - "1. Kiểm tra tài liệu"
+    ket_qua_mong_doi:
+      - "Có tài liệu, khớp phiên bản triển khai"
+    ghi_chu: "Manual: kiểm tra hồ sơ / minh chứng, không phải chức năng phần mềm"
+    ket_qua_chay: "Manual"
+  - id: ATG-R51
+    title: "Có tài liệu Hướng dẫn sử dụng và quản trị"
+    uc: "ATTT PM 2b"
+    tac_nhan: "Quản trị hệ thống, Đơn vị vận hành (hồ sơ / hạ tầng)"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Hồ sơ quản lý"
+    loai: "Hồ sơ"
+    uu_tien: "Trung bình"
+    automation: "Manual"
+    cac_buoc:
+      - "1. Kiểm tra tài liệu"
+    ket_qua_mong_doi:
+      - "Có tài liệu, gồm phần quản trị tham số, nhật ký, sao lưu"
+    ghi_chu: "Manual: kiểm tra hồ sơ / minh chứng, không phải chức năng phần mềm"
+    ket_qua_chay: "Manual"
+  - id: ATG-R52
+    title: "Có Tài liệu thiết kế"
+    uc: "ATTT PM 2c"
+    tac_nhan: "Quản trị hệ thống, Đơn vị vận hành (hồ sơ / hạ tầng)"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Hồ sơ quản lý"
+    loai: "Hồ sơ"
+    uu_tien: "Trung bình"
+    automation: "Manual"
+    cac_buoc:
+      - "1. Kiểm tra tài liệu"
+    ket_qua_mong_doi:
+      - "Có tài liệu thiết kế cập nhật"
+    ghi_chu: "Manual: kiểm tra hồ sơ / minh chứng, không phải chức năng phần mềm"
+    ket_qua_chay: "Manual"
+  - id: ATG-R53
+    title: "Có Mã nguồn sản phẩm (theo yêu cầu bên đề nghị đánh giá)"
+    uc: "ATTT PM 2d"
+    tac_nhan: "Quản trị hệ thống, Đơn vị vận hành (hồ sơ / hạ tầng)"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Hồ sơ quản lý"
+    loai: "Hồ sơ"
+    uu_tien: "Trung bình"
+    automation: "Manual"
+    cac_buoc:
+      - "1. Kiểm tra bộ mã nguồn bàn giao"
+    ket_qua_mong_doi:
+      - "Đầy đủ, build được"
+    ghi_chu: "Manual: kiểm tra hồ sơ / minh chứng, không phải chức năng phần mềm"
+    ket_qua_chay: "Manual"
+  - id: ATG-W04
+    title: "[API] CORS không cho phép nguồn tùy ý gọi API có xác thực"
+    uc: "ATTT PM 3"
+    tac_nhan: "Quản trị hệ thống, Đơn vị vận hành (hồ sơ / hạ tầng)"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Lỗ hổng web"
+    loai: "Bảo mật"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Gọi API kèm header Origin: https://evil.example"
+    ket_qua_mong_doi:
+      - "Access-Control-Allow-Origin không phải \"*\" và không phản chiếu nguồn lạ"
+    ghi_chu: "Khảo sát 28/10: Access-Control-Allow-Origin: *"
+    ket_qua_chay: "Pass"
+  - id: ATG-W06
+    title: "Tự rà soát OWASP Top 10 (SQLi, XSS, CSRF, IDOR, upload) bằng SAST/DAST, xử lý hết trước khi gửi đơn vị đánh giá"
+    uc: "ATTT PM 3"
+    tac_nhan: "Quản trị hệ thống, Đơn vị vận hành (hồ sơ / hạ tầng)"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Lỗ hổng web"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Manual"
+    cac_buoc:
+      - "1. Chạy SAST (SonarQube/Semgrep) và DAST (OWASP ZAP) trên môi trường test"
+      - "2. Lập danh sách và xử lý lỗ hổng"
+    ket_qua_mong_doi:
+      - "Không còn lỗ hổng mức Cao/Nghiêm trọng; có báo cáo trước/sau xử lý"
+    ghi_chu: "Manual: chạy công cụ quét chuyên dụng, cần văn bản cho phép"
+    ket_qua_chay: "Manual"
+  - id: ATG-R54
+    title: "Có kết quả đánh giá lỗ hổng của tổ chức chuyên môn được cấp phép trước nghiệm thu"
+    uc: "ATTT PM 3"
+    tac_nhan: "Quản trị hệ thống, Đơn vị vận hành (hồ sơ / hạ tầng)"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Hồ sơ quản lý"
+    loai: "Hồ sơ"
+    uu_tien: "Cao"
+    automation: "Manual"
+    cac_buoc:
+      - "1. Kiểm tra báo cáo đánh giá và biên bản xác nhận"
+    ket_qua_mong_doi:
+      - "Báo cáo xác nhận không còn lỗ hổng/điểm yếu"
+    ghi_chu: "Manual: kiểm tra hồ sơ / minh chứng, không phải chức năng phần mềm"
+    ket_qua_chay: "Manual"
+  - id: ATG-R55
+    title: "Thuyết minh Hồ sơ đề xuất cấp độ đủ: tổng quan HTTT, đề xuất cấp độ, phương án bảo đảm ATTT (lấy từ mục A–D sheet)"
+    uc: "ATTT HS 1"
+    tac_nhan: "Quản trị hệ thống, Đơn vị vận hành (hồ sơ / hạ tầng)"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Hồ sơ quản lý"
+    loai: "Hồ sơ"
+    uu_tien: "Cao"
+    automation: "Manual"
+    cac_buoc:
+      - "1. Kiểm tra hồ sơ"
+    ket_qua_mong_doi:
+      - "Đủ các phần a–c theo Điều 8 TT 12/2022"
+    ghi_chu: "Manual: kiểm tra hồ sơ / minh chứng, không phải chức năng phần mềm"
+    ket_qua_chay: "Manual"
+  - id: ATG-R56
+    title: "Quy chế bảo đảm ATTT được phê duyệt trước khi Hồ sơ đề xuất cấp độ được phê duyệt"
+    uc: "ATTT HS 2"
+    tac_nhan: "Quản trị hệ thống, Đơn vị vận hành (hồ sơ / hạ tầng)"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Hồ sơ quản lý"
+    loai: "Hồ sơ"
+    uu_tien: "Cao"
+    automation: "Manual"
+    cac_buoc:
+      - "1. So sánh ngày phê duyệt Quy chế và Hồ sơ"
+    ket_qua_mong_doi:
+      - "Quy chế phê duyệt trước"
+    ghi_chu: "Manual: kiểm tra hồ sơ / minh chứng, không phải chức năng phần mềm"
+    ket_qua_chay: "Manual"
+  - id: ATG-R57
+    title: "Hồ sơ đề xuất cấp độ được phê duyệt trước Báo cáo KT-KT/Thiết kế cơ sở/Kế hoạch thuê dịch vụ"
+    uc: "ATTT HS 3"
+    tac_nhan: "Quản trị hệ thống, Đơn vị vận hành (hồ sơ / hạ tầng)"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Hồ sơ quản lý"
+    loai: "Hồ sơ"
+    uu_tien: "Thấp"
+    automation: "Manual"
+    cac_buoc:
+      - "1. So sánh ngày phê duyệt"
+    ket_qua_mong_doi:
+      - "Đúng thứ tự khuyến khích"
+    ghi_chu: "Manual: kiểm tra hồ sơ / minh chứng, không phải chức năng phần mềm"
+    ket_qua_chay: "Manual"
+  - id: ATG-R58
+    title: "Mọi yêu cầu A–D ở trạng thái Hoàn thành/Không áp dụng trước go-live (bộ testcase ATTT Pass hoặc có lý do Không áp dụng)"
+    uc: "ATTT HS 4"
+    tac_nhan: "Quản trị hệ thống, Đơn vị vận hành (hồ sơ / hạ tầng)"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Hồ sơ quản lý"
+    loai: "Hồ sơ"
+    uu_tien: "Cao"
+    automation: "Manual"
+    cac_buoc:
+      - "1. Tổng hợp kết quả chạy toàn bộ testcase ATA/ATB/ATC/ATE/ATU/ATG"
+    ket_qua_mong_doi:
+      - "Không còn testcase ATTT Fail chưa có phương án xử lý"
+    ghi_chu: "Manual: kiểm tra hồ sơ / minh chứng, không phải chức năng phần mềm"
+    ket_qua_chay: "Manual"
+  - id: ATG-R59
+    title: "Có kế hoạch kiểm tra, đánh giá ATTT định kỳ/đột xuất (dò quét, thử nghiệm xâm nhập, đánh giá mã nguồn) và phương án xử lý nội dung chưa đạt"
+    uc: "ATTT HS 5"
+    tac_nhan: "Quản trị hệ thống, Đơn vị vận hành (hồ sơ / hạ tầng)"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Hồ sơ quản lý"
+    loai: "Hồ sơ"
+    uu_tien: "Trung bình"
+    automation: "Manual"
+    cac_buoc:
+      - "1. Kiểm tra kế hoạch và báo cáo kỳ gần nhất"
+    ket_qua_mong_doi:
+      - "Có kế hoạch, báo cáo và phương án xử lý"
+    ghi_chu: "Manual: kiểm tra hồ sơ / minh chứng, không phải chức năng phần mềm"
+    ket_qua_chay: "Manual"
+  - id: ATG-R60
+    title: "Thực hiện báo cáo ATTT định kỳ hằng năm đúng mốc (15/12–14/12; gửi chủ quản trước 20/12, cơ quan quản lý trước 25/12)"
+    uc: "ATTT HS 6"
+    tac_nhan: "Quản trị hệ thống, Đơn vị vận hành (hồ sơ / hạ tầng)"
+    tai_khoan_chay: "không đăng nhập"
+    chuc_nang: "Hồ sơ quản lý"
+    loai: "Hồ sơ"
+    uu_tien: "Trung bình"
+    automation: "Manual"
+    cac_buoc:
+      - "1. Kiểm tra báo cáo năm gần nhất"
+    ket_qua_mong_doi:
+      - "Báo cáo đúng nội dung Điều 14 và đúng hạn"
+    ghi_chu: "Manual: kiểm tra hồ sơ / minh chứng, không phải chức năng phần mềm"
+    ket_qua_chay: "Manual"

@@ -1,0 +1,148 @@
+// BẢNG TRUY VẾT PHÂN HỆ D — Dashboard và Báo cáo thống kê (SRS v1.4, srs.txt dòng 1386–2048; 9 UC: 1.1–1.4, 2.1–2.5).
+// Mỗi UC + quy tắc dùng chung = 1 yêu cầu; phân rã thành điều kiện (BR, luồng chính/thay thế/ngoại lệ, field spec, lỗi, quyền).
+// Điều kiện → testcase qua tag ở catalog-D.mjs. Ngoài SRS: lệch flow dev (Luồng Dashboard đơn vị) và chuỗi giao diện thật → ghi ở note testcase.
+import '../docs/catalog.mjs';
+import { ids } from './catalog-E-lib.mjs';
+const S = (P, L) => (...tags) => ids(P, ...tags.map(t => `${L}.${t}`));
+export default (R) => {
+  const F = S('DSH', 'F'), V = S('DSH', 'V'), X = S('DSH', 'X'), T = S('DSH', 'T'), O = S('DSH', 'O'), G = S('DSH', 'G'), SS = S('DSH', 'S'), PP = S('DSH', 'P');
+  const RF = S('RNK', 'F'), RV = S('RNK', 'V'), RX = S('RNK', 'X'), RG = S('RNK', 'G'), RS = S('RNK', 'S'), RP = S('RNK', 'P');
+  const CF = S('SSD', 'F'), CU = S('SSD', 'U'), CC = S('SSD', 'C'), CV = S('SSD', 'V'), CT = S('SSD', 'T'), CX = S('SSD', 'X'), CG = S('SSD', 'G'), CS = S('SSD', 'S'), CP = S('SSD', 'P');
+  return [
+  // ======================= NHÓM 1 — DASHBOARD ĐƠN VỊ =======================
+  R('DSH', 'D.N1', 1393, 'Quy tắc dùng chung nhóm 1: nguồn dữ liệu bản gửi gần nhất, kỳ đang diễn ra, 4 quyền độc lập, phạm vi, bộ lọc thời gian, công thức, làm tròn (dòng 1393–1422)', [
+    ['Nguồn: bản gửi gần nhất; không ghi dữ liệu (dòng 1395)', V('latest-sent', 'readonly')],
+    ['4 quyền độc lập, menu theo quyền xem, tab theo quyền (dòng 1400–1401)', SS('menu-hidden', 'tab-perm')],
+    ['Phạm vi Đơn vị / Đơn vị và con: ô Đơn vị, mặc định đơn vị tài khoản, không gộp con (dòng 1402–1404)', F('unit-hidden', 'unit-tree', 'default-unit', 'unit-no-merge')],
+    ['Bộ lọc thời gian: Hình thức, Xem theo, Khung giao kỳ, Đột xuất, danh sách kỳ được giao + dòng phụ bộ chỉ số (dòng 1405–1410)', F('default-form', 'viewby-list', 'frame-intersect', 'adhoc', 'period-assigned', 'period-item')],
+    ['Mặc định kỳ gần nhất, Xem theo/Khung theo chu kỳ kỳ đó (dòng 1411)', F('default-period', 'default-viewby')],
+    ['Công thức: điểm tối đa loại Không tính điểm, Điểm XH, tỷ lệ, tỷ trọng, xếp loại đúng mốc (dòng 1413–1420)', V('card-max-excl', 'card-rank', 'table-ratio', 'pie', 'level-boundary', 'level-round')],
+    ['Làm tròn 2/1 chữ số, half-up, từ điểm gốc, kiểu số Việt Nam (dòng 1421)', V('number-fmt', 'round-half')],
+  ]),
+  R('DSH', 'D.UC1.1', 1423, 'UC1.1 Xem kết quả kỳ của đơn vị: 3 thẻ, biểu đồ cột, biểu đồ tròn, bảng cây (BR-1…BR-10, AF1–AF5, EF1–EF5)', [
+    ['Mở màn từ menu, tiêu đề, dòng phụ cập nhật theo bộ lọc', F('menu', 'subtitle')],
+    ['Thẻ Tổng điểm (BR-2), Điểm xếp hạng + tooltip (BR-3), Mức độ + thang (BR-4)', V('card-total', 'card-rank', 'card-rank-tip', 'card-level')],
+    ['Biểu đồ cột: mỗi nhóm 1 cột, nhãn 1 chữ số, tooltip, màu cố định (BR-5)', V('bar', 'bar-tip', 'color')],
+    ['Biểu đồ tròn: tỷ trọng, tổng 100%, giữa vòng tổng điểm, chú giải, tooltip (BR-6)', V('pie', 'pie-tip')],
+    ['Bảng cây 3 cấp, mặc định trụ cột mở nhóm thu gọn, chỉ số con, tổng cha = Σ con, Tổng cộng (BR-7)', V('table-tree', 'table-default', 'table-sub', 'table-sum', 'table-total')],
+    ['Chỉ số Không tính điểm "-" và không cộng (BR-8)', V('table-noscore')],
+    ['Mở/thu gọn từng dòng, Thu gọn / Mở rộng tất cả không gọi API (bước 7–8)', V('expand-row', 'expand-all')],
+    ['Kỳ đang diễn ra MSG-112 + Tạm thời (BR-9, AF1); kỳ kết thúc không có', V('provisional', 'official')],
+    ['Chưa có kết quả chính thức MSG-022 (BR-10, EF1)', V('no-result')],
+    ['Đột xuất ẩn Xem theo/Khung (AF2); phạm vi Đơn vị ẩn ô Đơn vị (AF3); đổi đơn vị; đổi hình thức tải lại kỳ', F('adhoc', 'unit-hidden', 'unit-change', 'form-reload')],
+    ['Không có kỳ phù hợp MSG-021/022 (EF2); khung không hợp lệ MSG-017 (EF3); định dạng ngày', F('no-period', 'frame-invalid', 'frame-format')],
+    ['Không quyền / ngoài phạm vi MSG-043/045 (EF4)', SS('menu-hidden', 'scope-api', 'unauth')],
+    ['Lỗi tải MSG-025/026 giữ bộ lọc; Thử lại không reset bộ lọc (EF5)', G('err500', 'err-net', 'retry')],
+    ['API: tham số sai/không tồn tại không 500', G('api-bad-id')],
+    ['Hiệu năng mở dashboard', PP('load')],
+  ]),
+  R('DSH', 'D.UC1.2', 1505, 'UC1.2 Xuất kết quả kỳ của đơn vị (BR-1…BR-5, EF1–EF3, cấu trúc tệp dòng 1667–1671)', [
+    ['Tên tệp, 2 sheet, đầu sheet (BR-2)', X('ok', 'sheets')],
+    ['Sheet Tổng quan và Chi tiết chỉ số đủ mọi dòng, không phụ thuộc mở/thu gọn (BR-1)', X('overview', 'detail')],
+    ['Kiểu ô số, tỷ lệ chưa làm tròn, ô trống', X('cell-types')],
+    ['Tính chất số liệu Tạm thời / Chính thức (BR-3)', X('nature')],
+    ['Không có kết quả MSG-023 (BR-4, EF1)', X('no-data')],
+    ['Chặn bấm lặp, lỗi MSG-024/026 (BR-5, EF3)', X('double', 'err')],
+    ['Quyền xuất và phạm vi khi xuất (EF2)', `${X('perm')}|${SS('scope-export')}`],
+  ]),
+  R('DSH', 'D.UC1.3', 1546, 'UC1.3 So sánh kết quả của đơn vị theo thời gian (BR-1…BR-10, AF1–AF4, EF1–EF5)', [
+    ['Mở tab giữ đơn vị, hình thức của tab Kết quả kỳ (bước 3)', T('open')],
+    ['Cặp Bộ chỉ số - Thang: mặc định, không Tất cả, 1 bộ dùng 2 thang (BR-1)', T('pair-default', 'pair-two-scales')],
+    ['Danh sách kỳ theo bộ lọc + cặp, tự chọn tất cả, thêm/bỏ, tối thiểu 2 (BR-2, BR-3, EF1)', T('periods-all', 'periods-filter', 'remove', 'add', 'min2')],
+    ['Kỳ tăng dần (BR-4)', T('order')],
+    ['Biểu đồ Điểm XH qua các kỳ (BR-5), Tỷ lệ theo nhóm (BR-6), vòng tròn mỗi kỳ (BR-7), không màu theo kỳ (BR-9)', T('rank-chart', 'group-chart', 'pies', 'no-color-period')],
+    ['Bảng Số liệu so sánh, mở nhóm (BR-8)', T('table', 'table-expand')],
+    ['Kỳ chưa có kết quả "Chưa có dữ liệu"/"Chưa gửi" (BR-5, BR-7, AF3)', T('no-result')],
+    ['Kỳ đang diễn ra nhãn Tạm thời (BR-10, AF3)', T('provisional')],
+    ['Nhiều kỳ cuộn ngang, cố định cột Chỉ tiêu (BR-9)', T('scroll')],
+    ['Đột xuất (AF1); đổi đơn vị (AF2)', T('adhoc', 'unit-change')],
+    ['Không cặp/kỳ MSG-021/022 (EF2); khung không hợp lệ MSG-017 (EF3)', T('no-pair', 'frame-invalid')],
+    ['Không quyền / ngoài phạm vi (EF4)', `${SS('scope-api-trend')}|${SS('tab-perm')}`],
+    ['Lỗi tải MSG-025/026 (EF5)', G('trend-err')],
+    ['API trend: tối thiểu 2 kỳ, không trộn bộ chỉ số', G('api-trend-1', 'api-mixed-pair')],
+  ]),
+  R('DSH', 'D.UC1.4', 1621, 'UC1.4 Xuất so sánh kết quả theo thời gian (BR-1…BR-5, EF1–EF4, cấu trúc tệp dòng 1672–1676)', [
+    ['Tên tệp, 2 sheet; nội dung sheet So sánh theo kỳ và Đóng góp theo nhóm', O('ok', 'content', 'contrib')],
+    ['Xuất đúng kỳ đang chọn, luôn đủ cây (BR-1)', O('selected-only')],
+    ['Tính chất số liệu từng kỳ (BR-2); kỳ chưa có kết quả có cột trống (BR-3)', O('nature', 'no-result-col')],
+    ['Mọi kỳ chưa có kết quả MSG-023 (BR-4, EF1); dưới 2 kỳ MSG-113 (EF2)', O('all-empty', 'min2')],
+    ['Quyền xuất (EF3); chặn bấm lặp, lỗi (BR-5, EF4)', O('perm', 'double')],
+  ]),
+  // ======================= NHÓM 2 — BẢNG XẾP HẠNG =======================
+  R('RNK', 'D.N2', 1684, 'Quy tắc dùng chung nhóm 2: quyền, Bảng xếp hạng không giới hạn phạm vi, hạng, nhóm xếp hạng, điểm tỉnh, thay đổi hạng, màu (dòng 1684–1705)', [
+    ['Bảng xếp hạng không giới hạn phạm vi; người dân không xem được (dòng 1688)', `${RF('scope-none')}|${RS('unauth')}`],
+    ['Hạng giảm dần trên giá trị làm tròn, đồng hạng 1,2,2,4, đồng hạng theo tên (dòng 1691)', RV('rank-order', 'tie', 'tie-round')],
+    ['Chưa có kết quả không có hạng, không tính vào số xếp hạng (dòng 1692)', RV('not-sent')],
+    ['Nhóm Tất cả / Trung ương / Tỉnh; hạng riêng trong nhóm (dòng 1693)', `${RF('group-list')}|${RV('central', 'province-cols')}`],
+    ['Điểm tỉnh = trung bình điểm chưa làm tròn của đơn vị đã gửi; xếp loại tỉnh (dòng 1694)', RV('province-avg', 'province-level')],
+    ['Thay đổi hạng: kỳ liền trước, cùng nhóm, ▲▼0/Mới, ẩn khi không có kỳ trước/Đột xuất (dòng 1695)', RV('change', 'change-group', 'change-hide')],
+    ['Màu thanh theo mức xếp loại (dòng 1705)', RV('chart-row', 'level')],
+  ]),
+  R('RNK', 'D.UC2.1', 1707, 'UC2.1 Xem bảng xếp hạng (BR-1…BR-10, AF1–AF5, EF1–EF5)', [
+    ['Mở màn, tiêu đề, dòng phụ', RF('menu')],
+    ['Mọi đơn vị được giao kỳ (BR-1)', RF('scope-none')],
+    ['Mặc định kỳ gần nhất hệ thống, nhóm Tất cả (BR-2); ô Kỳ mọi kỳ thỏa bộ lọc', RF('default', 'period-all', 'viewby')],
+    ['Biểu đồ 3 đầu 3 cuối + dòng giữa (BR-3); dòng biểu đồ, chú giải, tooltip (BR-4); đơn vị chưa gửi ngoài biểu đồ', RV('chart', 'chart-row', 'chart-tip', 'chart-unsent')],
+    ['Biểu đồ phân bố theo xếp loại (giao diện thật, ngoài SRS)', RV('distribution')],
+    ['Bảng nhóm Tất cả/TW 6 cột, dòng phụ cấp, Tổng điểm, Điểm XH (BR-5)', RV('cols-unit', 'subline', 'total-score')],
+    ['Bảng nhóm Tỉnh: cột, số đã gửi, tỉnh chưa gửi (BR-6, AF1)', RV('province-cols', 'province-sent', 'province-zero')],
+    ['Đơn vị chưa gửi cuối bảng (BR-7)', RV('not-sent')],
+    ['Tooltip cột Điểm XH theo nhóm (BR-8)', RV('tip')],
+    ['Phân trang 20, chân bảng, không cột Thao tác (BR-9)', RV('page')],
+    ['Kỳ đang diễn ra Tạm thời + MSG-112 (BR-10, AF3)', RV('provisional')],
+    ['Nhóm Trung ương (AF2); Đột xuất ẩn cột Thay đổi hạng (AF4)', `${RV('central')}|${RF('adhoc')}`],
+    ['Kỳ chưa ai gửi (EF1); không kỳ phù hợp (EF2); khung không hợp lệ (EF3)', `${RV('no-ranked')}|${RF('no-period', 'frame-invalid')}`],
+    ['Không quyền MSG-043 (EF4)', RS('menu-hidden')],
+    ['Lỗi tải (EF5); API filter/page sai', RG('err500', 'api-filter', 'api-page')],
+    ['Hiệu năng', RP('load')],
+  ]),
+  R('RNK', 'D.UC2.2', 1795, 'UC2.2 Xuất bảng xếp hạng (BR-1…BR-4, EF1–EF3, cấu trúc tệp dòng 2038–2042)', [
+    ['Tên tệp, chỉ sheet nhóm đang xem, đầu sheet + tính chất số liệu (BR-2)', RX('ok', 'header')],
+    ['Toàn bộ dòng, kể cả chưa gửi (BR-1)', RX('all-rows')],
+    ['Cột nhóm Tất cả/TW và nhóm Tỉnh; Thay đổi hạng số nguyên/Mới, không xuất khi ẩn', RX('cols', 'cols-province', 'change-col')],
+    ['Kỳ chưa ai gửi MSG-023 (BR-3, EF1)', RX('no-data')],
+    ['Quyền xuất (EF2); chặn bấm lặp, lỗi (BR-4, EF3)', RX('perm', 'double')],
+  ]),
+  // ======================= NHÓM 2 — SO SÁNH ĐƠN VỊ =======================
+  R('SSD', 'D.N2-SS', 1689, 'Quy tắc dùng chung So sánh đơn vị: menu theo quyền + phạm vi ≥ 2 đơn vị, hạng trong đơn vị đã chọn, chỉ tiêu, đơn vị mặc định, MSG-116, màu (dòng 1689–1705)', [
+    ['Menu chỉ hiện khi có quyền và phạm vi ≥ 2 đơn vị (dòng 1689)', `${CF('menu-scope', 'menu-nochild', 'url-blocked')}|${CS('noperm')}`],
+    ['Hạng chỉ trong đơn vị đã chọn, không dùng hạng toàn hệ thống (dòng 1696)', CV('rank', 'rank-vs-ranking')],
+    ['Chỉ tiêu: Điểm XH, Trụ cột, Nhóm; không tới chỉ số (dòng 1698–1699)', CC('crit-list', 'crit-add-pillar')],
+    ['Đơn vị mặc định 3 đầu + 3 cuối, ≤ 6 chọn hết (dòng 1701)', CU('default-6', 'default-le6')],
+    ['Hai tab dùng chung đơn vị; đổi kỳ giữ đơn vị có kết quả, < 2 chọn lại (dòng 1702)', `${CT('open')}|${CU('period-keep')}`],
+    ['≥ 10 đơn vị MSG-116, không giới hạn tối đa (dòng 1703)', `${CU('many')}|${CT('many')}`],
+  ]),
+  R('SSD', 'D.UC2.3', 1835, 'UC2.3 So sánh chi tiết các đơn vị (BR-1…BR-9, AF1–AF6, EF1–EF6)', [
+    ['Mở màn, tiêu đề, tab mặc định, dòng phụ; bộ lọc thời gian (BR-1)', CF('menu', 'default-period', 'filters')],
+    ['Ô chọn đơn vị cây, tìm, chọn nhiều, chỉ đơn vị có kết quả trong phạm vi, cha không tự chọn con (BR-2)', CU('tree', 'only-result', 'scope-ldp')],
+    ['Tối thiểu 2 đơn vị (BR-3, EF1); bỏ đơn vị cập nhật', CU('min2', 'remove')],
+    ['Chỉ tiêu mặc định, tối thiểu 1, đổi kỳ khác bộ chỉ số về mặc định (BR-4, EF2)', CC('crit-default', 'crit-min1', 'crit-reset', 'crit-keep')],
+    ['Biểu đồ cột theo chỉ tiêu + tooltip (BR-5)', CV('bar', 'bar-tip')],
+    ['Biểu đồ tròn toàn bộ nhóm (BR-6)', CV('pies')],
+    ['Bảng Số liệu so sánh + hạng (BR-7); số liệu khớp Bảng xếp hạng', CV('table', 'rank', 'score')],
+    ['Cuộn ngang (BR-8); kỳ đang diễn ra (BR-9, AF2)', CV('scroll', 'provisional')],
+    ['Đổi kỳ (AF1); Đột xuất (AF4)', `${CU('period-keep')}|${CF('adhoc')}`],
+    ['Kỳ < 2 đơn vị có kết quả (EF3); khung/kỳ không hợp lệ (EF4)', `${CU('no-unit')}|${CF('frame-invalid')}`],
+    ['Không quyền / ngoài phạm vi (EF5)', CS('noperm', 'idor', 'unauth')],
+    ['Lỗi tải (EF6); API detail tham số sai', CG('err', 'api-detail')],
+    ['Hiệu năng', CP('load')],
+  ]),
+  R('SSD', 'D.UC2.4', 1917, 'UC2.4 So sánh các đơn vị qua các kỳ (BR-1…BR-8, AF1–AF5, EF1–EF6)', [
+    ['Mở tab giữ đơn vị; mở thẳng 3 đầu + 3 cuối kỳ mới nhất (BR-4, AF4)', CT('open', 'open-direct')],
+    ['Cặp Bộ chỉ số - Thang (BR-1); chỉ tiêu chọn một (BR-2)', CT('pair', 'crit-one')],
+    ['Kỳ so sánh mặc định tất cả, tối thiểu 2 (BR-3, EF1)', CT('periods', 'min2-period')],
+    ['Đơn vị theo kỳ đã chọn, tối thiểu 2 (BR-4, EF2), MSG-116 (AF3)', CT('units', 'min2-unit', 'many')],
+    ['Bảng: tiêu đề, dòng đơn vị, cột kỳ, ô tỷ lệ + hạng, chưa có dữ liệu (BR-5, BR-6, AF1)', CT('table', 'cell', 'no-result')],
+    ['Không biểu đồ, không phân trang, cuộn ngang (BR-7); Tạm thời (BR-8)', CT('no-chart', 'provisional')],
+    ['Đột xuất (AF2); không cặp/kỳ, khung không hợp lệ (EF3, EF4)', CT('adhoc', 'no-pair')],
+    ['API trend tham số không đủ', CG('api-trend')],
+  ]),
+  R('SSD', 'D.UC2.5', 1993, 'UC2.5 Xuất so sánh đơn vị (BR-1…BR-4, EF1–EF4, cấu trúc tệp dòng 2043–2048)', [
+    ['Tệp tab Chi tiết: tên, 2 sheet, nội dung', CX('ok-detail', 'detail-content', 'detail-contrib')],
+    ['Tệp tab Qua các kỳ: tên, cấu trúc', CX('ok-trend')],
+    ['Đúng tab, kỳ, đơn vị, chỉ tiêu đang chọn (BR-1); không đơn vị ngoài phạm vi (BR-3)', CX('selected', 'scope')],
+    ['Chưa đủ điều kiện MSG-113/114/115 (EF1); không có dữ liệu MSG-023 (BR-4, EF2)', CX('invalid', 'all-empty')],
+    ['Quyền xuất (EF3); chặn bấm lặp, lỗi (EF4)', CX('perm', 'double')],
+  ]),
+  ];
+};

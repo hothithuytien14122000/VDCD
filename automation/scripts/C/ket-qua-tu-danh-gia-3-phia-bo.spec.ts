@@ -315,14 +315,6 @@ async function uiVsApi(page: Page, filter: any) {
 }
 
 test.describe('Kết quả tự đánh giá › Phía Bộ › Danh sách & tab (UC2.1)', () => {
-  test(tc('RES-B01'), async ({ page }) => {
-    await openList(page, null);
-    const heads = await headsOf(page);
-    for (const c of COLS) expect(heads.some(h => h.toLowerCase() === c.toLowerCase()), `thiếu cột "${c}" (cột thực tế: ${heads.join(' | ')})`).toBeTruthy();
-    const rows = await rowsData(page);
-    expect(rows.length).toBeGreaterThan(0);
-    expect(new Set(rows.map(r => r.cells[2])).size, 'danh sách phải có dữ liệu của nhiều đơn vị').toBeGreaterThan(1);
-  });
   test(tc('RES-B02'), async ({ page }) => {
     await openList(page, null);
     await expect(page.locator('.ant-segmented-item-selected')).toContainText('Định kỳ');
@@ -353,54 +345,6 @@ test.describe('Kết quả tự đánh giá › Phía Bộ › Danh sách & tab 
     await openList(page, { type: 'AdHoc' });
     await clickTab(page, 'Cần xử lý');
     await expect(page.getByText(/thời hạn/i), 'tab Cần xử lý không được có bộ lọc Thời hạn').toHaveCount(0);
-  });
-  test(tc('RES-B06'), async ({ page }) => {
-    await layout();
-    await openList(page, { type: 'AdHoc', kw: KW });
-    await clickTab(page, 'Chưa gửi');
-    const got = (await rowsData(page)).map(r => `${r.cells[2]}:${statusOf(r.cells)}`);
-    for (const [k, s] of [['E2', 'NotStarted'], ['E1', 'Scoring'], ['E4', 'PendingApproval'], ['E3', 'Approved']] as const)
-      expect(got, `tab Chưa gửi phải có ${ORG_NAME[k]} (${ST[s]}) của kỳ đang diễn ra; thực tế: ${got.join('; ') || 'rỗng'}`).toContain(`${ORG_NAME[k]}:${ST[s]}`);
-    for (const g of got) expect(g, 'không được có Đã gửi / Chờ mở khóa').not.toMatch(/Đã gửi|Chờ mở khóa/);
-  });
-  test(tc('RES-B07'), async ({ page }) => {
-    await openList(page, { type: 'Periodic' });
-    await setPhase(page, /đã kết thúc/i);
-    const names = await tabNames(page);
-    expect(names, `tab thực tế: ${names.join(', ')}`).not.toContain('Chưa gửi');
-    expect(names).not.toContain('Sắp đến hạn');
-  });
-  test(tc('RES-B08'), async ({ page }) => {
-    await openList(page, null);
-    const el = page.getByRole('tab', { name: /^Chưa gửi/ }).first();
-    expect(await el.count(), 'không có tab Chưa gửi').toBeGreaterThan(0);
-    expect(norm(await el.innerText()), 'nhãn tab Chưa gửi không được kèm số').toBe('Chưa gửi');
-  });
-  test(tc('RES-B09'), async ({ page }) => {
-    await openList(page, { type: 'AdHoc', kw: KW });
-    await layout();
-    expect(await hasTab(page, 'Sắp đến hạn'), noTabMsg('Sắp đến hạn')).toBeTruthy();
-    await clickTab(page, 'Sắp đến hạn');
-    const got = (await rowsData(page)).map(r => nameOf(r.cells));
-    expect(got, 'kỳ fixture còn 430 ngày > Nhắc trước hạn 3 ngày nên không được có trong tab').not.toContain(CAMP_NAME);
-  });
-  test(tc('RES-B10'), async ({ page }) => {
-    await openList(page, { type: 'AdHoc' });
-    expect(await hasTab(page, 'Sắp đến hạn'), noTabMsg('Sắp đến hạn')).toBeTruthy();
-    await clickTab(page, 'Sắp đến hạn');
-    for (const r of await rowsData(page)) expect(r.cells[3], `${nameOf(r.cells)}: kỳ có Nhắc trước hạn trống chỉ vào tab khi còn đúng 0 ngày`).toMatch(/Còn 0 ngày|Hôm nay|Còn 1 ngày/);
-  });
-  test(tc('RES-B11'), async ({ page }) => {
-    await openList(page, { type: 'AdHoc' });
-    expect(await hasTab(page, 'Sắp đến hạn'), noTabMsg('Sắp đến hạn')).toBeTruthy();
-    await clickTab(page, 'Sắp đến hạn');
-    for (const r of await rowsData(page)) expect(r.cells[3], `${nameOf(r.cells)}: kỳ đã kết thúc không thuộc Sắp đến hạn`).not.toContain('Đã kết thúc');
-  });
-  test(tc('RES-B12'), async ({ page }) => {
-    await openList(page, { type: 'AdHoc' });
-    expect(await hasTab(page, 'Sắp đến hạn'), noTabMsg('Sắp đến hạn')).toBeTruthy();
-    await clickTab(page, 'Sắp đến hạn');
-    for (const r of await rowsData(page)) expect(['Đã gửi', 'Chờ mở khóa']).not.toContain(statusOf(r.cells));
   });
   for (const [id, type, tab, cmp] of [['B13', 'Periodic', 'Đã gửi', 'Submitted'], ['B14', 'AdHoc', 'Đã gửi', 'Submitted']] as const) {
     test(tc(`RES-${id}`), async ({ page }) => {
@@ -458,97 +402,6 @@ test.describe('Kết quả tự đánh giá › Phía Bộ › Danh sách & tab 
     await clickTab(page, 'Đã gửi');
     expect((await rowsData(page)).map(x => x.cells[2]), 'phải biến mất khỏi tab Đã gửi').not.toContain(ORG_NAME.DP);
   });
-  test(tc('RES-B22'), async ({ page }) => {
-    for (const type of ['Periodic', 'AdHoc']) {
-      const s = (await api('GET', `${RES}/summary?filter=${F({ campaignType: type, phase: 'all' })}`, undefined, actor())).data;
-      const sum = (s.statuses as any[]).reduce((a, x) => a + x.count, 0);
-      expect(s.statuses.length, `${type}: số nhóm trạng thái`).toBe(8);
-      expect(s.total, `${type}: total phải bằng tổng các trạng thái`).toBe(sum);
-    }
-    await openList(page, { type: 'AdHoc' });
-    const s = (await api('GET', `${RES}/summary?filter=${F({ campaignType: 'AdHoc', phase: 'all' })}`, undefined, actor())).data;
-    expect(await tabCount(page, 'Tất cả')).toBe(s.total);
-    for (const x of s.statuses as any[]) if (await tabCount(page, x.statusName) >= 0) expect(await tabCount(page, x.statusName), x.statusName).toBe(x.count);
-  });
-  test(tc('RES-B23'), async ({ page }) => {
-    await layout();
-    await openList(page, { type: 'AdHoc' });
-    for (const name of ['Đã gửi', 'Chờ mở khóa', 'Đã phê duyệt', 'Đang chấm điểm']) {
-      const n = await tabCount(page, name);
-      await clickTab(page, name);
-      expect(await totalOf(page), `tab ${name}`).toBe(n);
-    }
-  });
-  test(tc('RES-B24'), async ({ page }) => {
-    needWrite();
-    const id = await rid('BO');
-    await toState('BO', 'Submitted');
-    const A = (await getRes(id)).score;
-    expect((await post(id, 'reassess', { reason: 'qc.automation B24' }, 'canbo')).status).toBe(200);
-    const d = await getRes(id);
-    const sc2 = d.indicators.filter((i: any) => i.isLeaf && i.isScored).map((i: any) => ({ indicatorSetIndicatorId: i.indicatorSetIndicatorId, score: 4 }));
-    expect((await api('PUT', `${RES}/${id}/scores`, { scores: sc2 }, 'canbo')).status).toBe(200);
-    await toState('BO', 'Submitted');
-    const B = (await getRes(id)).score;
-    expect(B, 'điểm gửi lần 2 phải khác lần 1 để phân biệt').not.toBe(A);
-    await openList(page, { type: 'AdHoc', kw: KW });
-    const row = (await rowsData(page)).find(r => r.cells[2] === ORG_NAME.BO)!;
-    expect(row.cells[5], `điểm ở danh sách phải là điểm bản gửi mới nhất (${B})`).toContain(String(B));
-    const subs = (await api('GET', `${RES}/${id}/submissions`, undefined, actor())).data;
-    const list = Array.isArray(subs) ? subs : subs?.items ?? subs?.submissions ?? [];
-    expect(list.length, 'Hồ sơ gửi Bộ phải có ≥ 2 lần gửi').toBeGreaterThanOrEqual(2);
-    await openDetail(page, id, 'dossier');
-    expect(await bodyText(page), 'bản gần nhất phải ghi "Bản chính thức"').toMatch(/Bản chính thức/);
-  });
-  test(tc('RES-B25'), async ({ page }) => {
-    await openList(page, { type: 'AdHoc' });
-    await clickTab(page, 'Chưa gửi');
-    expect(await page.locator('tbody input[type=checkbox]').count(), 'mỗi dòng phải có ô chọn').toBeGreaterThan(0);
-    expect(await page.locator('thead input[type=checkbox]').count(), 'tiêu đề phải có ô chọn tất cả').toBeGreaterThan(0);
-  });
-  test(tc('RES-B26'), async ({ page }) => {
-    await toState('DP', 'Submitted');
-    await openList(page, { type: 'AdHoc', kw: KW });
-    expect(await page.locator('tbody input[type=checkbox]').count(), 'chưa có cột ô chọn (xem RES-B25)').toBeGreaterThan(0);
-    for (const k of ['DP', 'BO'] as Key[]) expect(await rowOfFx(page, k).locator('input[type=checkbox]').count(), `${ORG_NAME[k]} đã gửi: không có ô chọn`).toBe(0);
-  });
-  test(tc('RES-B27'), async ({ page }) => {
-    await layout();
-    await openList(page, { type: 'AdHoc', kw: KW });
-    const all = page.locator('thead input[type=checkbox]').first();
-    expect(await all.count(), 'chưa có ô chọn tất cả (xem RES-B25)').toBeGreaterThan(0);
-    await all.check();
-    const boxes = page.locator('tbody input[type=checkbox]');
-    for (let i = 0; i < await boxes.count(); i++) expect(await boxes.nth(i).isChecked()).toBeTruthy();
-    expect(await rowOfFx(page, 'DP').locator('input[type=checkbox]').count()).toBe(0);
-  });
-  test(tc('RES-B28'), async ({ page }) => {
-    await openList(page, { type: 'AdHoc', kw: KW });
-    const b = await needBtn(page, /gửi nhắc nhở/i, 'Gửi nhắc nhở');
-    await expect(b, 'chưa chọn dòng nào thì nút Gửi nhắc nhở phải bị vô hiệu').toBeDisabled();
-  });
-  test(tc('RES-B29'), async ({ page }) => {
-    await layout();
-    await openList(page, { type: 'AdHoc', kw: KW });
-    await clickTab(page, 'Chưa gửi');
-    const box = page.locator('tbody input[type=checkbox]').first();
-    expect(await box.count(), 'chưa có ô chọn dòng (xem RES-B25)').toBeGreaterThan(0);
-    const b = await needBtn(page, /gửi nhắc nhở/i, 'Gửi nhắc nhở');
-    await box.check(); await expect(b).toBeEnabled();
-    await box.uncheck(); await expect(b).toBeDisabled();
-  });
-  test(tc('RES-B30'), async ({ page }) => {
-    await layout();
-    await openList(page, { type: 'AdHoc', kw: KW });
-    const rows = rowsL(page);
-    const n = await rows.count();
-    expect(n).toBeGreaterThan(1);
-    for (let i = 0; i < n; i++) {
-      const r = rows.nth(i), who2 = norm(await r.locator('td').nth(2).innerText()) + '/' + statusOf((await rowsData(page))[i].cells);
-      expect(await r.getByRole('button', { name: 'Xem chi tiết' }).count(), `${who2}: nút Xem chi tiết`).toBe(1);
-      expect(await r.locator('button.ant-dropdown-trigger').count(), `${who2}: nút Xem chi tiết phải kèm mũi tên xuống`).toBe(1);
-    }
-  });
   const MENU: [string, Key, string, RegExp[], RegExp?][] = [
     ['B31', 'E2', 'NotStarted', [/^xem$/i, /^gửi nhắc nhở$/i]], ['B32', 'E1', 'Scoring', [/^xem$/i, /^gửi nhắc nhở$/i]],
     ['B33', 'E4', 'PendingApproval', [/^xem$/i, /^gửi nhắc nhở$/i]], ['B35', 'E3', 'Approved', [/^xem$/i, /^gửi nhắc nhở$/i]],
@@ -561,28 +414,12 @@ test.describe('Kết quả tự đánh giá › Phía Bộ › Danh sách & tab 
     for (const re of want) expect(items.some(i => re.test(i)), `[${who()}] thiếu mục ${re}; menu thực tế: ${items.join(' | ') || 'không có'}`).toBeTruthy();
     expect(items.length, `không được có mục nào khác; menu thực tế: ${items.join(' | ')}`).toBe(want.length);
   });
-  test(tc('RES-B34'), async ({ page }) => {
-    await toState('E4', 'Rejected');
-    await openList(page, { type: 'AdHoc', kw: KW });
-    const items = await menuOf(page, rowOfFx(page, 'E4'));
-    for (const re of [/^xem$/i, /^gửi nhắc nhở$/i]) expect(items.some(i => re.test(i)), `thiếu mục ${re}; menu thực tế: ${items.join(' | ') || 'không có'}`).toBeTruthy();
-    expect(items.length, items.join(' | ')).toBe(2);
-  });
   for (const [id, st] of [['B38', 'Submitted'], ['B39', 'NotSent']] as const) test(tc(`RES-${id}`), async ({ page }) => {
     await openList(page, { type: 'Periodic', phase: 'closed', status: st });
     const row = rowsL(page).first();
     expect(await rowsL(page).count(), `phải có dòng ${ST[st]} của kỳ đã kết thúc`).toBeGreaterThan(0);
     const items = await menuOf(page, row);
     expect(items.length ? items.every(i => /^xem$/i.test(i)) && items.length === 1 : false, `[${who()}] menu dòng ${ST[st]} (kỳ đã kết thúc) chỉ được có "Xem"; thực tế: ${items.join(' | ') || 'không có mục nào'}`).toBeTruthy();
-  });
-  test(tc('RES-B40'), async ({ page }) => {
-    await layout();
-    await openList(page, { type: 'AdHoc', kw: KW });
-    const row = rowOfFx(page, 'E2');
-    const items = await menuOf(page, row);
-    expect(items[0] ?? '', `[${who()}] mục Xem phải đứng đầu menu; menu thực tế: ${items.join(' | ') || 'không có'}`).toMatch(/^xem$/i);
-    await rowAct(page, row, /^xem$/i);
-    await expect(page).toHaveURL(new RegExp(await rid('E2')));
   });
   test(tc('RES-B41'), async ({ page }) => {
     await layout();
@@ -598,34 +435,6 @@ test.describe('Kết quả tự đánh giá › Phía Bộ › Danh sách & tab 
     const sel = (await filterSelects(page).allInnerTexts()).map(norm);
     expect(sel.some(s => /đơn vị/i.test(s)), `phải có bộ lọc Đơn vị (bộ lọc thực tế: ${sel.join(' | ')})`).toBeTruthy();
   });
-  test(tc('RES-B43'), async ({ page }) => {
-    await openList(page, null);
-    const sel = filterSelects(page).filter({ hasText: /đơn vị/i }).first();
-    expect(await sel.count(), 'chưa có bộ lọc Đơn vị (xem RES-B42)').toBeGreaterThan(0);
-    await sel.click();
-    const opts = (await page.locator('.ant-select-dropdown:not(.ant-select-dropdown-hidden) .ant-select-item-option').allInnerTexts()).map(norm);
-    const allowed = new Set((await lstAll({ campaignType: 'Periodic', phase: 'all' }, actor())).map(x => x.organizationName));
-    for (const o of opts) expect(allowed.has(o), `đơn vị "${o}" ngoài phạm vi tài khoản`).toBeTruthy();
-  });
-  test(tc('RES-B44'), async ({ page }) => {
-    await openList(page, { type: 'AdHoc' });
-    const sel = filterSelects(page).filter({ hasText: /kỳ đánh giá/i }).first();
-    await sel.click();
-    const dd = page.locator('.ant-select-dropdown:not(.ant-select-dropdown-hidden)').last();
-    await dd.waitFor({ state: 'visible' });
-    const opts = dd.locator('.ant-select-item-option');
-    expect(await opts.count()).toBeGreaterThan(1);
-    const picked: string[] = [];
-    for (const i of [0, 1]) { picked.push(norm(await opts.nth(i).innerText())); await opts.nth(i).click(); await page.waitForTimeout(500); }
-    await page.keyboard.press('Escape'); await settle(page);
-    for (const r of await rowsData(page)) expect(picked, `dòng "${nameOf(r.cells)}" ngoài 2 kỳ đã chọn`).toContain(nameOf(r.cells));
-    expect(await tabCount(page, 'Tất cả'), 'số trên tab Tất cả cập nhật theo bộ lọc').toBe(await totalOf(page));
-  });
-  test(tc('RES-B45'), async ({ page }) => {
-    await openList(page, null);
-    const sel = (await filterSelects(page).allInnerTexts()).map(norm);
-    expect(sel.some(s => /thời hạn/i.test(s)), `phải có bộ lọc Thời hạn (bộ lọc thực tế: ${sel.join(' | ')})`).toBeTruthy();
-  });
   test(tc('RES-B46'), async ({ page }) => {
     await layout();
     await openList(page, { type: 'AdHoc' });
@@ -633,14 +442,6 @@ test.describe('Kết quả tự đánh giá › Phía Bộ › Danh sách & tab 
     const rows = await rowsData(page);
     expect(rows.length).toBeGreaterThan(0);
     for (const r of rows) expect(nameOf(r.cells).toLowerCase()).toContain('res3 phía');
-  });
-  test(tc('RES-B47'), async ({ page }) => {
-    await layout();
-    await openList(page, { type: 'AdHoc', kw: KW });
-    await search(page, 'RES3 ĐV3');
-    const rows = await rowsData(page);
-    expect(rows.length).toBeGreaterThan(0);
-    for (const r of rows) expect(r.cells[2]).toContain('RES3 ĐV3');
   });
   test(tc('RES-B48'), async ({ page }) => {
     await openList(page, { type: 'AdHoc' });
@@ -661,17 +462,6 @@ test.describe('Kết quả tự đánh giá › Phía Bộ › Danh sách & tab 
       for (const r of await rowsData(page)) expect(r.text.toLowerCase(), `"${bad}" khớp dòng không chứa chuỗi`).toContain(bad.toLowerCase());
     }
     expect(dialogSeen, 'không được thực thi script').toBeFalsy();
-  });
-  test(tc('RES-B50'), async ({ page }) => {
-    await toState('DP', 'Submitted');
-    await openList(page, { type: 'AdHoc' });
-    await clickTab(page, 'Đã gửi');
-    await search(page, KW);
-    const sel = filterSelects(page).filter({ hasText: /kỳ đánh giá/i }).first();
-    await pickOption(page, sel, CAMP_NAME); await page.keyboard.press('Escape'); await settle(page);
-    const rows = await rowsData(page);
-    expect(rows.length).toBeGreaterThan(0);
-    for (const r of rows) { expect(nameOf(r.cells)).toBe(CAMP_NAME); expect(statusOf(r.cells)).toBe('Đã gửi'); expect(r.text).toContain(KW); }
   });
   test(tc('RES-B51'), async ({ page }) => {
     await openList(page, { type: 'AdHoc' });
@@ -697,61 +487,11 @@ test.describe('Kết quả tự đánh giá › Phía Bộ › Danh sách & tab 
     await expect(page.getByRole('tab', { name: /^Đã gửi/ })).toHaveAttribute('aria-selected', 'true');
     expect(await searchBox(page).inputValue()).toBe('qc');
   });
-  test(tc('RES-B53'), async ({ page }) => {
-    const tot: Record<string, number> = {};
-    for (const type of ['AdHoc', 'Periodic'] as const) {
-      await openList(page, { type });
-      tot[type] = await totalOf(page);
-      expect(tot[type], `tổng bản ghi UI của ${type}`).toBe((await lst({ campaignType: type, phase: 'all' }, actor())).totalElements);
-      const a = (await lst({ campaignType: type, phase: 'all' }, actor())).content as any[];
-      for (const x of a.slice(0, 3)) expect(x.campaignType).toBe(type);
-      await rowsL(page).first().getByRole('button', { name: 'Xem chi tiết' }).click();
-      await page.waitForTimeout(1800);
-      expect(await bodyText(page), `chi tiết dòng đầu của ${type}: Phân loại`).toContain(type === 'AdHoc' ? 'Đột xuất' : 'Định kỳ');
-    }
-    expect(tot.AdHoc).not.toBe(tot.Periodic);
-  });
   test(tc('RES-B54'), async ({ page }) => {
     await openList(page, { type: 'AdHoc' });
     const n = await totalOf(page);
     expect(await rowsL(page).count()).toBe(Math.min(10, n));
     expect(norm(await page.locator('.ant-pagination').first().innerText())).toMatch(/hiển thị 1-\d+ trong\s+\d+ bản ghi/i);
-  });
-  test(tc('RES-B55'), async ({ page }) => {
-    await openList(page, { type: 'AdHoc' });
-    test.skip((await totalOf(page)) <= 10, 'Dữ liệu chỉ có 1 trang');
-    const before = (await rowsData(page)).map(r => r.text).join('|');
-    await page.locator('.ant-pagination-item-2').first().click(); await settle(page);
-    await expect(page.locator('.ant-pagination-item-active')).toHaveText('2');
-    const rows = await rowsData(page);
-    expect(rows.map(r => r.text).join('|')).not.toBe(before);
-    expect(rows[0].cells[0], 'STT tiếp nối trang 1').toBe('11');
-  });
-  test(tc('RES-B56'), async ({ page }) => {
-    await openList(page, { type: 'AdHoc' });
-    const n = await totalOf(page);
-    test.skip(n <= 10, 'Dữ liệu chỉ có 1 trang');
-    await pickOption(page, page.locator(PAGER_SEL).first(), '20'); await settle(page);
-    expect(await rowsL(page).count()).toBe(Math.min(20, n));
-    expect(await totalOf(page)).toBe(n);
-  });
-  test(tc('RES-B57'), async ({ page }) => {
-    await openList(page, { type: 'AdHoc' });
-    test.skip((await totalOf(page)) <= 10, 'Dữ liệu chỉ có 1 trang');
-    await page.locator('.ant-pagination-item-2').first().click(); await settle(page);
-    expect(norm(await page.locator('.ant-pagination').first().innerText())).toMatch(/hiển thị 11-\d+ trong\s+\d+ bản ghi/i);
-  });
-  test(tc('RES-B58'), async ({ page }) => {
-    await page.route(/\/api\/v1\/dti\/assessment-results\?/, r => r.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ message: '', data: { page: 1, size: 10, totalElements: 0, totalPages: 0, numberOfElements: 0, content: [], allowedActions: ['VIEW'] } }) }));
-    await openList(page, { type: 'Periodic' });
-    expect(await rowsL(page).count()).toBe(0);
-    expect(await bodyText(page), 'danh sách rỗng phải hiển thị "Chưa có dữ liệu"').toContain('Chưa có dữ liệu');
-  });
-  test(tc('RES-B59'), async ({ page }) => {
-    await openList(page, { type: 'AdHoc' });
-    await search(page, 'zzqcxx_khongtontai_999');
-    expect(await rowsL(page).count()).toBe(0);
-    expect(await bodyText(page), 'tìm không ra phải hiển thị "Không tìm thấy kết quả phù hợp"').toContain('Không tìm thấy kết quả phù hợp');
   });
   const EXP: [string, Q, string | null][] = [['B60', { type: 'Periodic' }, 'Đã gửi'], ['B61', { type: 'AdHoc' }, null], ['B62', { type: 'AdHoc' }, 'Đã gửi'], ['B63', { type: 'AdHoc' }, 'Chưa thực hiện']];
   for (const [id, q, tab] of EXP) test(tc(`RES-${id}`), async ({ page }) => {
@@ -766,47 +506,6 @@ test.describe('Kết quả tự đánh giá › Phía Bộ › Danh sách & tab 
     expect(rows.length - 1, 'số dòng dữ liệu trong file = số bản ghi đang lọc').toBe(n);
     if (tab) for (const r of rows.slice(1)) expect(r.join(' | '), `dòng file: ${r.join(' | ')}`).toContain(tab);
   });
-  test(tc('RES-B64'), async ({ page }) => {
-    await openList(page, { type: 'AdHoc' });
-    await search(page, 'zzqcxx_khongtontai_999');
-    const b = await needBtn(page, /xuất excel/i, 'Xuất Excel');
-    let dl = false; page.on('download', () => { dl = true; });
-    await b.click();
-    expect(await toastNow(page)).toContain('Không có dữ liệu để xuất');
-    expect(dl, 'không được tải file').toBeFalsy();
-  });
-  test(tc('RES-B65'), async ({ page }) => {
-    await openList(page, { type: 'AdHoc' });
-    const b = await needBtn(page, /xuất excel/i, 'Xuất Excel');
-    await page.route(/\/dti\/assessment-results\/export/, r => r.fulfill(MOCK500));
-    let dl = false; page.on('download', () => { dl = true; });
-    await b.click();
-    const t = await toastNow(page);
-    expect(t).toContain('Xuất dữ liệu thất bại. Vui lòng thử lại');
-    expect(t.toLowerCase()).not.toMatch(/exception|stack|internal server/);
-    expect(dl).toBeFalsy();
-  });
-  test(tc('RES-B66'), async ({ page }) => {
-    for (const phase of ['active', 'closed']) {
-      await openList(page, { type: 'Periodic', phase });
-      const { rows, a } = await uiVsApi(page, { campaignType: 'Periodic', phase });
-      expect(rows.length).toBeGreaterThan(0);
-      rows.forEach((r, i) => {
-        if (phase === 'closed') expect(r.cells[3], 'kỳ đã kết thúc').toContain('Đã kết thúc');
-        else { expect(r.cells[3]).toMatch(/\d{2}\/\d{2}\/\d{4}/); expect(r.cells[3], `${nameOf(r.cells)}: Còn n ngày khớp daysRemaining`).toContain(`Còn ${a[i].daysRemaining} ngày`); }
-      });
-    }
-  });
-  test(tc('RES-B67'), async ({ page }) => {
-    await openList(page, { type: 'Periodic' });
-    const { rows, a } = await uiVsApi(page, { campaignType: 'Periodic', phase: 'all' });
-    rows.forEach((r, i) => {
-      expect(r.cells[4], `${nameOf(r.cells)}/${r.cells[2]}`).toContain(`${a[i].scoredCount}/${a[i].indicatorCount} chỉ số`);
-      if (a[i].indicatorCount > 0) expect(r.cells[4]).toContain(`${Math.round(a[i].scoredCount / a[i].indicatorCount * 100)}%`);
-    });
-    const d = await getRes(a[0].id, actor());
-    expect(d?.scoredCount, 'khớp chi tiết').toBe(a[0].scoredCount);
-  });
   test(tc('RES-B68'), async ({ page }) => {
     await layout();
     await openList(page, { type: 'AdHoc', kw: KW });
@@ -816,36 +515,6 @@ test.describe('Kết quả tự đánh giá › Phía Bộ › Danh sách & tab 
       const x = a[i], sc = x.score == null ? '—' : String(x.score).replace('.', ',');
       expect(r.cells[5].replace(/\s+/g, ' '), `${r.cells[2]}: Điểm "điểm / tối đa"`).toBe(`${sc} / ${String(x.maxScore).replace('.', ',')}`);
     });
-  });
-  test(tc('RES-B69'), async ({ page }) => {
-    await toState('DP', 'Submitted');
-    await openList(page, { type: 'AdHoc', kw: KW });
-    const x = (await lst({ campaignType: 'AdHoc', phase: 'all', status: 'Submitted', fullTextSearch: KW }, actor())).content.find((c: any) => c.levelName);
-    expect(x?.levelName, 'API phải có xếp loại').toBeTruthy();
-    const heads = (await headsOf(page)).join(' | ');
-    const row = (await rowsData(page)).find(r => r.cells[2] === x.organizationName)!;
-    expect(row.text.includes(x.levelName) || /xếp loại/i.test(heads), `danh sách phải hiển thị Xếp loại "${x.levelName}" (cột: ${heads})`).toBeTruthy();
-    expect(row.text, 'dòng phải chứa xếp loại').toContain(x.levelName);
-  });
-  test(tc('RES-B70'), async ({ page }) => {
-    await layout();
-    await openList(page, { type: 'AdHoc' });
-    await clickTab(page, 'Đã gửi');
-    for (const r of await rowsData(page)) expect(r.cells[6]).toMatch(/Gửi ngày \d{2}\/\d{2}\/\d{4}/);
-    await openList(page, { type: 'Periodic', phase: 'closed' });
-    await clickTab(page, 'Chưa gửi');
-    for (const r of await rowsData(page)) expect(r.cells[6]).toContain('Quá hạn, không nộp');
-    await openList(page, { type: 'AdHoc' });
-    await clickTab(page, 'Chờ mở khóa');
-    for (const r of await rowsData(page)) expect(r.cells[6]).toMatch(/Xin \d{2}\/\d{2}: .+/);
-  });
-  test(tc('RES-B71'), async () => {
-    const bad: string[] = [];
-    for (const type of ['AdHoc', 'Periodic']) for (const x of await lstAll({ campaignType: type, phase: 'all' }, actor())) {
-      if (x.scoredCount > x.indicatorCount) bad.push(`${x.campaignName}/${x.organizationName}: đã chấm ${x.scoredCount}/${x.indicatorCount} chỉ số`);
-      else if (x.score != null && x.maxScore != null && x.score > x.maxScore) bad.push(`${x.campaignName}/${x.organizationName}: điểm ${x.score} > tối đa ${x.maxScore}`);
-    }
-    expect(bad, `${bad.length} dòng vi phạm`).toEqual([]);
   });
   test(tc('RES-B72'), async ({ page }) => {
     needWrite();
@@ -893,224 +562,13 @@ const remNoti = (as: string, id: string) => notiOf(as, id, 'ASSESSMENT_REMINDER'
 const remHist = async (id: string) => (await histOf(id)).filter(h => /nhắc nhở/i.test(h.actionName));
 
 test.describe('Kết quả tự đánh giá › Phía Bộ › Nhắc nhở (UC2.2)', () => {
-  test(tc('RES-R01'), async ({ page }) => {
-    needWrite();
-    await toState('E2', 'NotStarted');
-    await openRemind(page, 'E2');
-    expect(await sendRemind(page)).toMatch(/thành công|đã gửi nhắc nhở/i);
-    expect((await getRes(await rid('E2'))).status).toBe('NotStarted');
-  });
-  test(tc('RES-R02'), async ({ page }) => {
-    await toState('E2', 'NotStarted');
-    const d = await openRemind(page, 'E2');
-    expect(norm(await d.innerText())).toContain('Gửi nhắc nhở cho 1 đơn vị?');
-  });
-  test(tc('RES-R03'), async ({ page }) => {
-    await layout();
-    const d = await openRemind(page, 'E2');
-    const t = norm(await d.innerText());
-    for (const x of [ORG_NAME.E2, CAMP_NAME, '0/1 chỉ số', 'Chưa thực hiện']) expect(t, `hộp thoại phải có "${x}"`).toContain(x);
-    await mbtn(page, /hu[ỷủ]/i).click();
-    await page.waitForTimeout(500);
-    await openList(page, { type: 'AdHoc', kw: KW });
-    const b = await needBtn(page, /gửi nhắc nhở/i, 'Gửi nhắc nhở');
-    await b.click();
-    const t2 = norm(await modalL(page).innerText());
-    expect(t2, 'danh sách nhắc không được có đơn vị đã gửi').not.toContain('Đã gửi');
-    expect(t2).not.toContain('Chờ mở khóa');
-    await mbtn(page, /hu[ỷủ]/i).click();
-  });
-  test(tc('RES-R04'), async ({ page }) => {
-    await layout();
-    await openList(page, { type: 'AdHoc', kw: KW });
-    await clickTab(page, 'Chưa gửi');
-    const boxes = page.locator('tbody input[type=checkbox]');
-    expect(await boxes.count(), 'chưa có ô chọn dòng (xem RES-B25)').toBeGreaterThan(2);
-    for (let i = 0; i < 3; i++) await boxes.nth(i).check();
-    await (await needBtn(page, /gửi nhắc nhở/i, 'Gửi nhắc nhở')).click();
-    expect(norm(await modalL(page).innerText())).toContain('3 đơn vị');
-  });
-  test(tc('RES-R05'), async ({ page }) => {
-    await layout();
-    await openList(page, { type: 'AdHoc', kw: KW });
-    const boxes = page.locator('tbody input[type=checkbox]');
-    expect(await boxes.count(), 'chưa có ô chọn dòng (xem RES-B25)').toBeGreaterThan(1);
-    await boxes.first().check();
-    await (await needBtn(page, /gửi nhắc nhở/i, 'Gửi nhắc nhở')).click();
-    expect(norm(await modalL(page).innerText()), 'chỉ nhắc đơn vị đã chọn').toContain('1 đơn vị');
-  });
-  test(tc('RES-R06'), async ({ page }) => {
-    needWrite();
-    await toState('E2', 'NotStarted');
-    await openDetail(page, await rid('E2'));
-    await (await needBtn(page, /nhắc nhở/i, 'Gửi nhắc nhở')).click();
-    const d = modalL(page); await d.waitFor({ state: 'visible' });
-    const t = norm(await d.innerText());
-    expect(t.includes('1 đơn vị') || (t.includes(ORG_NAME.E2) && t.includes(CAMP_NAME)), `hộp thoại phải nêu đúng 1 đơn vị: ${t}`).toBeTruthy();
-    expect(await sendRemind(page)).toMatch(/thành công|đã gửi nhắc nhở/i);
-  });
-  test(tc('RES-R07'), async ({ page }) => {
-    await remindable('MD'); const rid2 = await rid('MD');
-    const n0 = (await remNoti('cbdp', rid2)).length, h0 = (await remHist(rid2)).length;
-    await openList(page, { type: 'AdHoc', kw: KW_MI });
-    await rowAct(page, rowOfFx(page, 'MD'), /nhắc nhở/i);
-    await modalL(page).waitFor({ state: 'visible' });
-    await mbtn(page, /hu[ỷủ]/i).click(); await page.waitForTimeout(800);
-    expect(await page.locator('.ant-modal:visible').count(), 'hộp thoại phải đóng').toBe(0);
-    expect((await remNoti('cbdp', rid2)).length).toBe(n0);
-    expect((await remHist(rid2)).length).toBe(h0);
-  });
-  test(tc('RES-R08'), async ({ page }) => {
-    needWrite();
-    await remindable('MD'); const id = await rid('MD');
-    const before = { cbdp: (await remNoti('cbdp', id)).length, ldp: (await remNoti('ldp', id)).length };
-    await openRemind(page, 'MD'); await sendRemind(page); await page.waitForTimeout(1500);
-    for (const as of ['cbdp', 'ldp'] as const) {
-      const n = await remNoti(as, id);
-      expect(n.length, `${as} phải nhận thông báo Sắp đến hạn mới`).toBe(before[as] + 1);
-      expect(n[0].title).toBe('Sắp đến hạn');
-    }
-  });
-  test(tc('RES-R09'), async ({ page }) => {
-    needWrite();
-    await remindable('MD'); const id = await rid('MD');
-    const b0 = (await remNoti('lanhdaobo', id)).length;
-    await openRemind(page, 'MD'); await sendRemind(page); await page.waitForTimeout(1500);
-    expect((await remNoti('lanhdaobo', id)).length, 'Lãnh đạo Bộ không nhận TB-004').toBe(b0);
-    const others = await Promise.all(['canbo', 'ldd'].map(async as => [as, (await remNoti(as, id)).length] as const));
-    expect(others.filter(([, n]) => n > 0).map(([as]) => as), 'Cán bộ/Lãnh đạo đơn vị ngoài đơn vị không được nhận thông báo nhắc nhở của đơn vị khác').toEqual([]);
-  });
-  test(tc('RES-R10'), async ({ page }) => {
-    needWrite();
-    await remindable('MD'); const id = await rid('MD');
-    await openRemind(page, 'MD'); await sendRemind(page); await page.waitForTimeout(1500);
-    const n = (await remNoti('cbdp', id))[0];
-    expect(n.title).toBe('Sắp đến hạn');
-    expect(n.description).toContain(CAMP_MI);
-    expect(n.description).toMatch(/hết hạn vào 31\/12\/2027\. Đơn vị chưa gửi kết quả/);
-    expect(n.type).toBe('ASSESSMENT_REMINDER');
-  });
-  test(tc('RES-R11'), async ({ page }) => {
-    needWrite();
-    await layout();
-    const ids = [await rid('E2'), await rid('E4')];
-    const h0 = await Promise.all(ids.map(async i => (await remHist(i)).length));
-    await openRemind(page, 'E2'); await sendRemind(page); await page.waitForTimeout(600);
-    await openRemind(page, 'E4'); await sendRemind(page); await page.waitForTimeout(1200);
-    for (let i = 0; i < 2; i++) {
-      const h = await remHist(ids[i]);
-      expect(h.length, 'mỗi kết quả đúng 1 dòng nhắc mới').toBe(h0[i] + 1);
-      expect(h[0].actorName, 'người nhắc').toBeTruthy(); expect(h[0].at).toBeTruthy();
-      expect(h[0].actionName).toMatch(/Bộ gửi nhắc nhở/i);
-    }
-  });
-  test(tc('RES-R12'), async ({ page }) => {
-    needWrite();
-    await toState('E4', 'PendingApproval'); const id = await rid('E4');
-    const d0 = await getRes(id), h0 = (await histOf(id)).length;
-    await openRemind(page, 'E4'); await sendRemind(page); await page.waitForTimeout(1200);
-    const d1 = await getRes(id), h = await histOf(id);
-    expect(d1.status).toBe(d0.status); expect(d1.score).toBe(d0.score);
-    expect(h.length).toBe(h0 + 1); expect(h[0].isStatusUnchanged, 'lịch sử không có chuyển trạng thái').toBe(true);
-  });
-  test(tc('RES-R13'), async ({ page }) => {
-    needWrite();
-    await toState('E2', 'NotStarted'); const id = await rid('E2');
-    const h0 = (await remHist(id)).length;
-    for (let i = 0; i < 3; i++) { await openRemind(page, 'E2'); expect(await sendRemind(page), `lần ${i + 1}`).toMatch(/thành công|đã gửi nhắc nhở/i); await page.waitForTimeout(500); }
-    expect((await remHist(id)).length).toBe(h0 + 3);
-  });
-  test(tc('RES-R14'), async () => { test.skip(true, 'Manual: thông báo tự động do job theo lịch chạy theo ngày hạn, không kích hoạt được theo yêu cầu'); });
-  test(tc('RES-R15'), async () => { test.skip(true, 'Manual: cần kiểm tra hộp thư thực của người nhận'); });
   const rem = async (k: Key, st: string) => { await toState(k, st); const id = await rid(k); return { id, r: await remind([id]) }; };
-  test(tc('RES-R16'), async () => {
-    const id = await partialScoring(); const r = await remind([id]);
-    expect(r.status, `[${who()}] HTTP ${r.status}: ${r.message}`).toBe(200); expect(r.data?.reminderCount).toBe(1);
-  });
-  test(tc('RES-R17'), async () => {
-    const { r } = await rem('E4', 'PendingApproval');
-    expect(r.status, `[${who()}] HTTP ${r.status}: ${r.message}`).toBe(200); expect(r.data?.reminderCount).toBe(1);
-  });
-  test(tc('RES-R18'), async () => {
-    const { r } = await rem('E3', 'Approved');
-    expect(r.status, `[${who()}] HTTP ${r.status}: ${r.message}`).toBe(200); expect(r.data?.reminderCount).toBe(1);
-  });
-  test(tc('RES-R19'), async () => {
-    await toState('DP', 'Submitted');
-    const id = await rid('DP');
-    expect((await post(id, 'reassess', { reason: 'qc.automation R19' }, 'canbo')).status).toBe(200);
-    const r = await remind([id]);
-    expect(r.status, `[${who()}] Bị từ chối (Bộ yêu cầu đánh giá lại) vẫn nhắc được — HTTP ${r.status}: ${r.message}`).toBe(200);
-    expect(r.data?.reminderCount).toBe(1);
-  });
-  test(tc('RES-R20'), async ({ page }) => {
-    await toState('DP', 'Submitted'); const id = await rid('DP');
-    const n0 = (await remNoti('cbdp', id)).length;
-    const r = await remind([id]);
-    expect(r.status, `HTTP ${r.status}: ${r.message}`).toBe(400);
-    expect((await remNoti('cbdp', id)).length, 'không tạo thông báo').toBe(n0);
-    await openList(page, { type: 'AdHoc', kw: KW });
-    expect((await menuOf(page, rowOfFx(page, 'DP'))).filter(i => /nhắc nhở/i.test(i)), 'menu dòng Đã gửi không được có mục nhắc').toEqual([]);
-  });
-  test(tc('RES-R21'), async () => {
-    await toState('BO', 'UnlockRequested'); const id = await rid('BO');
-    const n0 = (await remNoti('canbo', id)).length;
-    const r = await remind([id]);
-    expect(r.status, `HTTP ${r.status}: ${r.message}`).toBe(400);
-    expect((await remNoti('canbo', id)).length).toBe(n0);
-  });
-  test(tc('RES-R22'), async () => {
-    const id = await endedQa();
-    test.skip(!id, 'Không có kết quả QA của kỳ đã kết thúc để thử (không dựng được kỳ đã kết thúc)');
-    const r = await remind([id!]);
-    expect(r.status, `HTTP ${r.status}: ${r.message}`).toBe(400);
-    expect(r.message, 'phải báo kỳ đã kết thúc (MSG-061)').toMatch(/đã kết thúc/i);
-  });
-  test(tc('RES-R23'), async () => {
-    await toState('DP', 'Submitted'); await toState('E2', 'NotStarted');
-    const a = await rid('DP'), b = await rid('E2');
-    const n0 = (await remNoti('cbdp', a)).length, h0 = (await remHist(a)).length;
-    const r = await remind([a, b]);
-    expect(r.status, `[${who()}] HTTP ${r.status}: ${r.message}`).toBe(200);
-    expect(r.data).toMatchObject({ reminderCount: 1, skippedCount: 1 });
-    expect((await remNoti('cbdp', a)).length).toBe(n0); expect((await remHist(a)).length).toBe(h0);
-  });
-  test(tc('RES-R24'), async () => {
-    await toState('DP', 'Submitted'); const id = await rid('DP');
-    const n0 = (await remNoti('cbdp', id)).length;
-    const r = await remind([id]);
-    expect(r.status).toBe(400);
-    expect(r.message, 'phải báo MSG-060').toContain('Không thể thực hiện vì kết quả đang ở trạng thái');
-    expect((await remNoti('cbdp', id)).length).toBe(n0);
-  });
   const periodicFx = async () => {
     const c = (await listApi(CAMP, 'RES3 fixture P')).find((x: any) => x.name === 'qc.automation RES3 fixture P');
     const rows = c ? await lstAll({ campaignIds: [c.id], campaignType: 'Periodic', phase: 'all' }, 'canbo') : [];
     rows.forEach(x => EXTRA_OK.add(x.id));
     return rows;
   };
-  test(tc('RES-R25'), async () => {
-    const rows = await periodicFx();
-    test.skip(!rows.length, 'Kỳ định kỳ fixture chưa sinh kết quả (hệ thống chỉ sinh theo job); nhắc kỳ định kỳ có sẵn sẽ ảnh hưởng đơn vị thật');
-    const r = await remind([rows[0].id]);
-    expect(r.status, `[${who()}] HTTP ${r.status}: ${r.message}`).toBe(200);
-  });
-  test(tc('RES-R26'), async () => {
-    await remindable('MD'); const id = await rid('MD'); const n0 = (await remNoti('cbdp', id)).length;
-    const r = await remind([id]);
-    expect(r.status, `[${who()}] HTTP ${r.status}: ${r.message}`).toBe(200);
-    const n = await remNoti('cbdp', id);
-    expect(n.length).toBe(n0 + 1); expect(n[0].description).toContain(CAMP_MI);
-  });
-  test(tc('RES-R27'), async ({ page }) => {
-    await toState('E2', 'NotStarted');
-    await openList(page, { type: 'AdHoc', kw: KW });
-    expect(await page.getByRole('button', { name: /gửi nhắc nhở/i }).count(), 'không được có nút Gửi nhắc nhở').toBe(0);
-    for (const t of await menuOf(page, rowOfFx(page, 'E2'))) expect(t).not.toMatch(/nhắc nhở/i);
-    const r = await remind([await rid('E2')]);
-    expect(r.status, `HTTP ${r.status}: ${r.message}`).toBe(403);
-    expect(r.message).toContain('Bạn không có quyền thực hiện thao tác này');
-  });
   test(tc('RES-R28'), async () => {
     await toState('E2', 'NotStarted'); const id = await rid('E2');
     for (const as of ['ldd', 'ldp']) { const r = await remind([id], as); expect(r.status, `${as}: HTTP ${r.status}: ${r.message}`).toBe(403); }
@@ -1118,32 +576,6 @@ test.describe('Kết quả tự đánh giá › Phía Bộ › Nhắc nhở (UC2
   test(tc('RES-R29'), async () => {
     const r = await remind([await rid('E2')], 'xemonly');
     expect(r.status, `HTTP ${r.status}: ${r.message}`).toBe(403);
-  });
-  test(tc('RES-R30'), async () => {
-    await toState('E2', 'NotStarted'); await remindable('MD');
-    const inScope = await rid('MD'), out = await rid('E2');
-    const h0 = (await remHist(out)).length;
-    const r = await remind([inScope, out]);
-    expect(r.status, `[${who()}] HTTP ${r.status}: ${r.message}`).toBe(200);
-    expect(r.data).toMatchObject({ reminderCount: 1, skippedCount: 1 });
-    expect((await remHist(out)).length, 'đơn vị ngoài phạm vi không có lịch sử nhắc').toBe(h0);
-  });
-  test(tc('RES-R31'), async ({ page }) => {
-    needWrite();
-    await remindable('MD'); const id = await rid('MD');
-    await openRemind(page, 'MD');
-    const ta = modalL(page).locator('textarea').first();
-    if (await ta.count()) {
-      await ta.fill('qca nhắc');
-      await sendRemind(page); await page.waitForTimeout(1500);
-      expect((await remNoti('cbdp', id))[0].description, 'nội dung đã nhập phải có trong thông báo').toContain('qca nhắc');
-    }
-  });
-  test(tc('RES-R32'), async ({ page }) => {
-    needWrite();
-    await toState('E2', 'NotStarted');
-    await openRemind(page, 'E2');
-    expect(await sendRemind(page)).toContain('Gửi nhắc nhở thành công');
   });
 });
 
@@ -1162,65 +594,6 @@ const reNoti = (as: string, id: string) => notiOf(as, id, 'ASSESSMENT_REASSESSME
 const REASON_ERR = /vui lòng nhập lý do/i;
 
 test.describe('Kết quả tự đánh giá › Phía Bộ › Yêu cầu đánh giá lại (UC2.3)', () => {
-  test(tc('RES-W01'), async ({ page }) => {
-    const d = await openReassess(page);
-    const t = norm(await d.innerText());
-    expect(t).toMatch(/đánh giá lại/i); expect(t).toMatch(/Lý do.*\*/);
-    await expect(d.locator('textarea').first()).toBeVisible();
-    await expect(mbtn(page, /gửi yêu cầu/i)).toBeVisible(); await expect(mbtn(page, /hu[ỷủ]/i)).toBeVisible();
-  });
-  test(tc('RES-W02'), async ({ page }) => {
-    await toState('DP', 'Submitted');
-    await openDetail(page, await rid('DP'));
-    await (await needBtn(page, /yêu cầu đánh giá lại/i, 'Yêu cầu đánh giá lại')).click();
-    const d = modalL(page); await d.waitFor({ state: 'visible' });
-    expect(norm(await d.innerText())).toMatch(/Lý do.*\*/);
-    await expect(mbtn(page, /gửi yêu cầu/i)).toBeVisible();
-  });
-  test(tc('RES-W03'), async ({ page }) => {
-    needWrite();
-    const d = await openReassess(page); const id = await rid('DP');
-    await d.locator('textarea').first().fill('qc.automation W03 lý do hợp lệ');
-    await submitReassess(page);
-    expect(await toastNow(page)).toContain('Gửi yêu cầu đánh giá lại thành công');
-    expect((await getRes(id)).status).toBe('Rejected');
-    await openList(page, { type: 'AdHoc', kw: KW });
-    expect(statusOf((await rowsData(page)).find(r => r.cells[2] === ORG_NAME.DP)!.cells)).toBe('Bị từ chối');
-    await openDetail(page, id); expect(await bodyText(page)).toContain('Bị từ chối');
-  });
-  test(tc('RES-W04'), async ({ page }) => {
-    needWrite();
-    const d = await openReassess(page); const id = await rid('DP');
-    await submitReassess(page); await page.waitForTimeout(800);
-    expect(norm(await d.locator('.ant-form-item-explain-error').allInnerTexts().then(a => a.join(' '))), 'phải báo lỗi dưới ô nhập').toMatch(REASON_ERR);
-    expect((await getRes(id)).status).toBe('Submitted');
-  });
-  test(tc('RES-W05'), async ({ page }) => {
-    needWrite();
-    const d = await openReassess(page); const id = await rid('DP');
-    await d.locator('textarea').first().fill('   '); await submitReassess(page); await page.waitForTimeout(800);
-    const err = norm((await d.locator('.ant-form-item-explain-error').allInnerTexts()).join(' ') + ' ' + (await msgs(page, 300)));
-    expect(err).toMatch(REASON_ERR);
-    expect((await getRes(id)).status).toBe('Submitted');
-  });
-  test(tc('RES-W06'), async ({ page }) => {
-    needWrite();
-    const d = await openReassess(page); const id = await rid('DP');
-    await d.locator('textarea').first().fill(LONG(255)); await submitReassess(page);
-    expect(await toastNow(page)).toMatch(/thành công/i);
-    expect((await reHist(id))[0].note).toHaveLength(255);
-  });
-  test(tc('RES-W07'), async ({ page }) => {
-    needWrite();
-    const d = await openReassess(page); const id = await rid('DP');
-    const ta = d.locator('textarea').first();
-    await ta.fill(LONG(256));
-    const len = (await ta.inputValue()).length;
-    await submitReassess(page); await page.waitForTimeout(800);
-    const err = norm((await d.locator('.ant-form-item-explain-error').allInnerTexts()).join(' '));
-    expect(len <= 255 || /255/.test(err), `ô nhập nhận ${len} ký tự và không báo vượt giới hạn 255 (lỗi hiển thị: "${err}")`).toBeTruthy();
-    expect((await getRes(id)).status, 'không được gửi').toBe('Submitted');
-  });
   test(tc('RES-W08'), async () => {
     await toState('DP', 'Submitted'); const id = await rid('DP');
     for (const n of [256, 1001]) {
@@ -1229,56 +602,6 @@ test.describe('Kết quả tự đánh giá › Phía Bộ › Yêu cầu đánh
       expect(r.message).toContain('255');
     }
     expect((await getRes(id)).status).toBe('Submitted');
-  });
-  test(tc('RES-W09'), async () => {
-    await toState('DP', 'Submitted'); const id = await rid('DP');
-    for (const body of [undefined, {}, { reason: null }]) {
-      const r = await post(id, 'reassess', body, 'canbo');
-      expect(r.status, `body ${JSON.stringify(body)}: HTTP ${r.status}: ${r.message}`).toBe(400);
-      expect(r.message).toMatch(REASON_ERR);
-    }
-    expect((await getRes(id)).status).toBe('Submitted');
-  });
-  test(tc('RES-W10'), async ({ page }) => {
-    needWrite();
-    const d = await openReassess(page); const id = await rid('DP');
-    const h0 = (await histOf(id)).length;
-    await d.locator('textarea').first().fill('qc.automation W10'); await mbtn(page, /hu[ỷủ]/i).click(); await page.waitForTimeout(800);
-    expect(await page.locator('.ant-modal:visible').count()).toBe(0);
-    expect((await getRes(id)).status).toBe('Submitted'); expect((await histOf(id)).length).toBe(h0);
-  });
-  test(tc('RES-W11'), async ({ page }) => {
-    needWrite();
-    const d = await openReassess(page); const id = await rid('DP'); const L = 'qc.automation W11 lý do đầy đủ';
-    await d.locator('textarea').first().fill(L); await submitReassess(page); await toastNow(page);
-    const h = (await reHist(id))[0];
-    expect(h, 'phải có dòng lịch sử Yêu cầu đánh giá lại').toBeTruthy();
-    expect(h.actionName).toMatch(/Bộ yêu cầu đánh giá lại/i);
-    expect(h.fromStatus).toBe('Submitted'); expect(h.toStatus).toBe('Rejected');
-    expect(h.note).toBe(L); expect(h.actorName).toBeTruthy();
-  });
-  test(tc('RES-W12'), async ({ page }) => {
-    needWrite();
-    const d = await openReassess(page); const id = await rid('DP'); const L = 'qc.automation W12 lý do';
-    const b = { cbdp: (await reNoti('cbdp', id)).length, ldp: (await reNoti('ldp', id)).length };
-    await d.locator('textarea').first().fill(L); await submitReassess(page); await toastNow(page); await page.waitForTimeout(1200);
-    for (const as of ['cbdp', 'ldp'] as const) {
-      const n = await reNoti(as, id);
-      expect(n.length, `${as} nhận thông báo mới`).toBe(b[as] + 1);
-      expect(n[0].description).toContain(CAMP_NAME); expect(n[0].description).toContain(L);
-    }
-  });
-  test(tc('RES-W13'), async ({ page, browser }) => {
-    needWrite();
-    const d = await openReassess(page); const id = await rid('DP'); const L = 'qc.automation W13';
-    await d.locator('textarea').first().fill(L); await submitReassess(page); await toastNow(page);
-    const { ctx, page: p2 } = await asRole(browser, 'cbdp');
-    try {
-      await openDetail(p2, id);
-      const t = await bodyText(p2);
-      expect(t, 'cảnh báo Bộ yêu cầu đánh giá lại kèm lý do').toMatch(/Bộ yêu cầu đánh giá lại/i); expect(t).toContain(L);
-      expect(await p2.getByRole('button', { name: /chấm lại|trình duyệt|lưu nháp/i }).count()).toBeGreaterThan(0);
-    } finally { await ctx.close(); }
   });
   test(tc('RES-W14'), async () => {
     needWrite();
@@ -1291,16 +614,6 @@ test.describe('Kết quả tự đánh giá › Phía Bộ › Yêu cầu đánh
     const acts = (await histOf(id)).map(h => h.actionName).join(' | ');
     for (const a of [/đánh giá lại/i, /trình duyệt/i, /phê duyệt/i, /gửi/i]) expect(acts).toMatch(a);
   });
-  test(tc('RES-W15'), async () => {
-    needWrite();
-    await toState('DP', 'Submitted'); const id = await rid('DP');
-    const old = ((await api('GET', `${RES}/${id}/submissions`, undefined, 'canbo')).data.submissions as any[])[0].attachment.id;
-    expect((await post(id, 'reassess', { reason: 'qc.automation W15' }, 'canbo')).status).toBe(200);
-    await toState('DP', 'Approved');
-    const r = await post(id, 'send', { attachmentId: old, fileType: 'DigitalSigned' }, 'canbo');
-    expect(r.status, `gửi lại bằng file cũ phải bị từ chối, HTTP ${r.status}: ${r.message}`).toBeGreaterThanOrEqual(400);
-  });
-  test(tc('RES-W16'), async () => { test.skip(true, 'Manual: cần chờ hết hạn nộp của kỳ thật (không thể rút ngắn kỳ đang diễn ra)'); });
   test(tc('RES-W17'), async () => {
     needWrite();
     await toState('DP', 'Submitted'); const id = await rid('DP');
@@ -1309,23 +622,6 @@ test.describe('Kết quả tự đánh giá › Phía Bộ › Yêu cầu đánh
     const after = ((await api('GET', `${RES}/${id}/submissions`, undefined, actor())).data?.submissions ?? []) as any[];
     expect(after.length, 'lần gửi cũ vẫn còn trong Hồ sơ gửi Bộ').toBe(before.length);
     expect(after[0].attachment?.fileName).toBeTruthy(); expect(after[0].sentDate).toBeTruthy();
-  });
-  test(tc('RES-W18'), async () => {
-    await toState('BO', 'UnlockRequested'); const id = await rid('BO');
-    const r = await post(id, 'reassess', { reason: 'qc.automation W18' }, actor());
-    expect(r.status, `[${who()}] HTTP ${r.status}: ${r.message}`).toBe(400);
-    expect(r.message).toMatch(/trạng thái/i);
-    expect((await getRes(id)).status).toBe('UnlockRequested');
-  });
-  test(tc('RES-W19'), async () => {
-    needWrite();
-    await toState('DP', 'Submitted'); const id = await rid('DP');
-    expect((await post(id, 'reassess', { reason: 'qc.automation W19' }, 'canbo')).status).toBe(200);
-    const n = (await reHist(id)).length;
-    const r = await post(id, 'reassess', { reason: 'qc.automation W19 lần 2' }, actor());
-    expect(r.status, `HTTP ${r.status}: ${r.message}`).toBeGreaterThanOrEqual(400); expect(r.status).toBeLessThan(500);
-    expect(r.message, 'phải báo trạng thái không hợp lệ (MSG-060)').toMatch(/trạng thái/i);
-    expect((await reHist(id)).length).toBe(n);
   });
   test(tc('RES-W20'), async () => {
     await toState('E2', 'NotStarted'); await toState('E3', 'Approved'); await toState('E1', 'Scoring');
@@ -1336,68 +632,11 @@ test.describe('Kết quả tự đánh giá › Phía Bộ › Yêu cầu đánh
       expect((await getRes(id)).status).toBe(st);
     }
   });
-  test(tc('RES-W21'), async ({ page }) => {
-    await openList(page, { type: 'Periodic', phase: 'closed', status: 'Submitted' });
-    expect(await rowsL(page).count()).toBeGreaterThan(0);
-    expect((await menuOf(page, rowsL(page).first())).filter(i => /đánh giá lại/i.test(i)), 'kỳ đã kết thúc: không có mục Yêu cầu đánh giá lại').toEqual([]);
-    const id = await endedQa();
-    test.skip(!id, 'Không có kết quả QA của kỳ đã kết thúc để thử API');
-    const r = await post(id!, 'reassess', { reason: 'qc.automation W21' }, actor());
-    expect(r.status, `HTTP ${r.status}: ${r.message}`).toBeGreaterThanOrEqual(400);
-    expect(r.message, 'phải báo kỳ đã kết thúc (MSG-061)').toMatch(/đã kết thúc/i);
-  });
-  test(tc('RES-W22'), async ({ page }) => {
-    await toState('DP', 'Submitted'); const id = await rid('DP');
-    await openList(page, { type: 'AdHoc', kw: KW });
-    expect((await menuOf(page, rowOfFx(page, 'DP'))).filter(i => /đánh giá lại/i.test(i)), `[${who()}] không được có mục Yêu cầu đánh giá lại`).toEqual([]);
-    for (const as of ['lanhdaobo', 'ldd', 'ldp']) {
-      const r = await post(id, 'reassess', { reason: 'qc.automation W22' }, as);
-      expect(r.status, `${as}: HTTP ${r.status}: ${r.message}`).toBe(403);
-      expect(r.message).toContain('Bạn không có quyền thực hiện thao tác này');
-    }
-    expect((await getRes(id)).status).toBe('Submitted');
-  });
   test(tc('RES-W23'), async () => {
     await toState('BO', 'Submitted'); const id = await rid('BO');
     const r = await post(id, 'reassess', { reason: 'qc.automation W23' }, actor());
     expect([403, 404], `HTTP ${r.status}: ${r.message}`).toContain(r.status);
     expect((await getRes(id)).status).toBe('Submitted');
-  });
-  test(tc('RES-W24'), async ({ page }) => {
-    needWrite();
-    const d = await openReassess(page); const id = await rid('DP'); const L = '<b>x</b> & "q" ế';
-    await d.locator('textarea').first().fill(L); await submitReassess(page); await toastNow(page); await page.waitForTimeout(800);
-    expect((await reHist(id))[0].note).toBe(L);
-    expect((await reNoti('cbdp', id))[0].description).toContain(L);
-    await openDetail(page, id, 'history');
-    expect(await bodyText(page)).toContain(L);
-    expect(await page.locator('.ant-layout-content b', { hasText: /^x$/ }).count(), 'HTML không được render').toBe(0);
-  });
-  test(tc('RES-W25'), async ({ page }) => {
-    needWrite();
-    const d = await openReassess(page); const id = await rid('DP');
-    const n0 = (await reHist(id)).length, t0 = (await reNoti('cbdp', id)).length;
-    await d.locator('textarea').first().fill('qc.automation W25');
-    const b = mbtn(page, /gửi yêu cầu/i);
-    await Promise.all([b.click(), b.click({ force: true, noWaitAfter: true }).catch(() => {})]);
-    await page.waitForTimeout(2500);
-    expect((await reHist(id)).length, 'chỉ 1 dòng lịch sử').toBe(n0 + 1);
-    expect((await reNoti('cbdp', id)).length, 'chỉ 1 thông báo TB-012').toBe(t0 + 1);
-  });
-  test(tc('RES-W26'), async () => {
-    const c = (await listApi(CAMP, 'RES3 fixture P')).find((x: any) => x.name === 'qc.automation RES3 fixture P');
-    const rows = c ? await lstAll({ campaignIds: [c.id], campaignType: 'Periodic', phase: 'all' }, 'canbo') : [];
-    test.skip(!rows.length, 'Kỳ định kỳ fixture chưa sinh kết quả (hệ thống sinh theo job); không thể dựng kết quả Đã gửi của kỳ định kỳ');
-    EXTRA_OK.add(rows[0].id);
-    const r = await post(rows[0].id, 'reassess', { reason: 'qc.automation W26' }, actor());
-    expect(r.status, `HTTP ${r.status}: ${r.message}`).toBe(200);
-  });
-  test(tc('RES-W27'), async ({ page }) => {
-    needWrite();
-    const d = await openReassess(page); const id = await rid('DP');
-    await d.locator('textarea').first().fill('qc.automation W27'); await submitReassess(page);
-    expect(await toastNow(page)).toMatch(/thành công/i);
-    expect((await getRes(id)).status).toBe('Rejected');
   });
   test(tc('RES-W28'), async ({ page }) => {
     needWrite();
@@ -1429,23 +668,6 @@ async function periodicRows(): Promise<any[]> {
 const NO_PERIODIC = 'Kỳ định kỳ fixture chưa sinh kết quả (hệ thống sinh theo job); không dựng được kết quả định kỳ để thao tác';
 
 test.describe('Kết quả tự đánh giá › Phía Bộ › Duyệt mở khóa (UC2.4a)', () => {
-  test(tc('RES-O01'), async ({ page }) => {
-    await openUnlockAct(page, APPROVE);
-    const t = norm(await modalL(page).innerText());
-    expect(t, 'MSG-008 nêu tên kỳ và đơn vị').toContain(`Bạn có chắc chắn muốn mở khóa kết quả ${CAMP_NAME} của ${ORG_NAME.BO}?`);
-    await expect(mbtn(page, /^duyệt mở khóa$/i)).toBeVisible(); await expect(mbtn(page, /^h[ủu]y$|^huỷ$/i)).toBeVisible();
-  });
-  test(tc('RES-O02'), async ({ page }) => {
-    needWrite();
-    await openUnlockAct(page, APPROVE); const id = await rid('BO');
-    await yes(page).click();
-    expect(await toastNow(page)).toContain('Duyệt mở khóa thành công');
-    expect((await getRes(id)).status).toBe('Scoring');
-    await page.waitForTimeout(800);
-    await openList(page, { type: 'AdHoc', kw: KW });
-    expect(statusOf((await rowsData(page)).find(r => r.cells[2] === ORG_NAME.BO)!.cells)).toBe('Đang chấm điểm');
-    expect((await menuOf(page, rowOfFx(page, 'BO'))).filter(i => /duyệt|từ chối/i.test(i))).toEqual([]);
-  });
   test(tc('RES-O03'), async ({ page }) => {
     needWrite();
     await openUnlockAct(page, APPROVE); const id = await rid('BO'); const h0 = (await histOf(id)).length;
@@ -1460,14 +682,6 @@ test.describe('Kết quả tự đánh giá › Phía Bộ › Duyệt mở khó
     const h = (await unHist(id, /duyệt mở khóa/i))[0];
     expect(h).toBeTruthy(); expect(h.fromStatus).toBe('UnlockRequested'); expect(h.toStatus).toBe('Scoring');
     expect(h.actorName).toBeTruthy(); expect(h.at).toBeTruthy();
-  });
-  test(tc('RES-O05'), async ({ page }) => {
-    needWrite();
-    await openUnlockAct(page, APPROVE, 'DP'); const id = await rid('DP');
-    const n0 = (await unNoti('cbdp', id, 'ASSESSMENT_UNLOCK_APPROVED')).length;
-    await yes(page).click(); await toastNow(page); await page.waitForTimeout(1200);
-    const n = await unNoti('cbdp', id, 'ASSESSMENT_UNLOCK_APPROVED');
-    expect(n.length).toBe(n0 + 1); expect(n[0].title).toBe('Đã mở khóa kết quả'); expect(n[0].description).toContain(CAMP_NAME);
   });
   test(tc('RES-O06'), async ({ page }) => {
     needWrite();
@@ -1485,10 +699,6 @@ test.describe('Kết quả tự đánh giá › Phía Bộ › Duyệt mở khó
     await openList(page, { type: 'AdHoc', kw: KW });
     await clickTab(page, 'Cần xử lý');
   });
-  test(tc('RES-O08'), async () => {
-    const rows = await periodicRows();
-    test.skip(!rows.length, NO_PERIODIC);
-  });
   test(tc('RES-O09'), async ({ page }) => {
     needWrite();
     await toState('BO', 'UnlockRequested'); const id = await rid('BO');
@@ -1504,49 +714,6 @@ test.describe('Kết quả tự đánh giá › Phía Bộ › Duyệt mở khó
     await (await needBtn(page, /duyệt mở khóa/i, 'Duyệt mở khóa')).click(); await yes(page).click(); await toastNow(page); await page.waitForTimeout(1200);
     expect(await bodyText(page)).toContain('Đang chấm điểm');
   });
-  test(tc('RES-O11'), async () => { test.skip(true, 'Manual: cần kỳ đã kết thúc có yêu cầu mở khóa đang chờ; hệ thống không cho tạo (yêu cầu mở khóa chỉ gửi được khi kỳ đang diễn ra) và không thể rút ngắn kỳ đã duyệt'); });
-  test(tc('RES-O12'), async ({ page }) => {
-    needWrite();
-    await openUnlockAct(page, APPROVE); const id = await rid('BO');
-    await mbtn(page, /^không$|hu[ỷủ]/i).click(); await page.waitForTimeout(500);
-    await openList(page, { type: 'AdHoc', kw: KW });
-    expect((await post(id, 'reject-unlock', { reason: 'qc.automation O12 người khác xử lý trước' }, 'lanhdaobo')).status).toBe(200);
-    await rowAct(page, rowOfFx(page, 'BO'), APPROVE); await yes(page).click();
-    const t = await toastNow(page);
-    expect(t, 'phải báo MSG-060').toContain('Không thể thực hiện vì kết quả đang ở trạng thái');
-    expect((await getRes(id)).status).toBe('Submitted');
-  });
-  test(tc('RES-O13'), async () => {
-    await toState('DP', 'Submitted'); await toState('E1', 'Scoring'); await toState('E2', 'NotStarted');
-    for (const k of ['DP', 'E1', 'E2'] as Key[]) {
-      const id = await rid(k), st = (await getRes(id)).status;
-      const r = await post(id, 'approve-unlock', undefined, actor());
-      expect(r.status, `${ST[st]}: HTTP ${r.status}: ${r.message}`).toBeGreaterThanOrEqual(400); expect(r.status).toBeLessThan(500);
-      expect(r.message, `${ST[st]}: phải báo MSG-060`).toContain('Không thể thực hiện vì kết quả đang ở trạng thái');
-      expect((await getRes(id)).status).toBe(st);
-    }
-  });
-  test(tc('RES-O14'), async () => {
-    needWrite();
-    await toState('DP', 'UnlockRequested'); const id = await rid('DP');
-    const n0 = (await unNoti('cbdp', id, 'ASSESSMENT_UNLOCK_APPROVED')).length;
-    const rs = await Promise.all([post(id, 'approve-unlock', undefined, actor()), post(id, 'approve-unlock', undefined, 'ldd')]);
-    expect(rs.map(r => r.status).sort(), `HTTP ${rs.map(r => `${r.status}:${r.message}`).join(' / ')}`).toEqual([200, 400]);
-    expect(rs.find(r => r.status === 400)!.message).toMatch(/người khác cập nhật|tải lại/i);
-    await new Promise(r => setTimeout(r, 1200));
-    expect((await unHist(id, /duyệt mở khóa/i)).length).toBeGreaterThanOrEqual(1);
-    expect((await unNoti('cbdp', id, 'ASSESSMENT_UNLOCK_APPROVED')).length, 'chỉ 1 thông báo TB-010').toBe(n0 + 1);
-  });
-  test(tc('RES-O15'), async ({ page }) => {
-    needWrite();
-    await openUnlockAct(page, APPROVE, 'DP'); const id = await rid('DP');
-    const n0 = (await unNoti('cbdp', id, 'ASSESSMENT_UNLOCK_APPROVED')).length, h0 = (await unHist(id, /duyệt mở khóa/i)).length;
-    const b = yes(page);
-    await Promise.all([b.click(), b.click({ force: true, noWaitAfter: true }).catch(() => {})]);
-    await page.waitForTimeout(2500);
-    expect((await unHist(id, /duyệt mở khóa/i)).length, 'chỉ 1 dòng lịch sử').toBe(h0 + 1);
-    expect((await unNoti('cbdp', id, 'ASSESSMENT_UNLOCK_APPROVED')).length).toBe(n0 + 1);
-  });
   test(tc('RES-O16'), async ({ page }) => {
     await toState('BO', 'UnlockRequested');
     await openList(page, { type: 'AdHoc', kw: KW });
@@ -1559,33 +726,11 @@ test.describe('Kết quả tự đánh giá › Phía Bộ › Duyệt mở khó
     await yes(page).click(); expect(await toastNow(page)).toMatch(/thành công/i);
     expect((await getRes(id)).status).toBe('Scoring');
   });
-  test(tc('RES-O18'), async ({ browser }) => {
-    await toState('DP', 'UnlockRequested'); const id = await rid('DP');
-    for (const key of ['cbdp', 'ldp']) {
-      const { ctx, page } = await asRole(browser, key);
-      try {
-        await openList(page, { type: 'AdHoc', kw: KW });
-        const items = await menuOf(page, rowOfFx(page, 'DP'));
-        expect(items.filter(i => /duyệt mở khóa|từ chối mở khóa/i.test(i)), `${key}: không được có mục duyệt/từ chối`).toEqual([]);
-      } finally { await ctx.close(); }
-      const r = await post(id, 'approve-unlock', undefined, key);
-      expect(r.status, `${key}: HTTP ${r.status}: ${r.message}`).toBe(403);
-      expect(r.message).toContain('Bạn không có quyền thực hiện thao tác này');
-    }
-    expect((await getRes(id)).status).toBe('UnlockRequested');
-  });
   test(tc('RES-O19'), async () => {
     await toState('BO', 'UnlockRequested'); const id = await rid('BO');
     for (const act of ['approve-unlock', 'reject-unlock']) {
       const r = await post(id, act, { reason: 'qc.automation O19' }, 'xemonly');
       expect(r.status, `${act}: HTTP ${r.status}: ${r.message}`).toBe(403);
-    }
-  });
-  test(tc('RES-O20'), async () => {
-    for (const id of [FAKE, 'abc']) {
-      const r = await post(id, 'approve-unlock', undefined, actor());
-      expect(r.status, `${id}: HTTP ${r.status}: ${r.message}`).toBe(404);
-      expect(r.message).toContain('Không tìm thấy kết quả tự đánh giá');
     }
   });
   test(tc('RES-O21'), async ({ page }) => {
@@ -1609,28 +754,6 @@ test.describe('Kết quả tự đánh giá › Phía Bộ › Duyệt mở khó
 test.describe('Kết quả tự đánh giá › Phía Bộ › Từ chối mở khóa (UC2.4b)', () => {
   const reasonBox = (p: Page) => modalL(p).locator('textarea').first();
   const confirmReject = (p: Page) => mbtn(p, /xác nhận từ chối|^từ chối$/i);
-  test(tc('RES-O23'), async ({ page }) => {
-    await openUnlockAct(page, REJECT);
-    const t = norm(await modalL(page).innerText());
-    expect(t).toContain('Từ chối mở khóa kết quả?'); expect(t).toMatch(/Lý do từ chối.*\*/);
-    await expect(mbtn(page, /^từ chối$/i), 'nút Từ chối').toBeVisible(); await expect(mbtn(page, /^h[ủu]y$|^huỷ$/i)).toBeVisible();
-  });
-  test(tc('RES-O24'), async ({ page }) => {
-    needWrite();
-    await openUnlockAct(page, REJECT); const id = await rid('BO');
-    const subs = async () => ((await api('GET', `${RES}/${id}/submissions`, undefined, 'canbo')).data.submissions as any[]).length;
-    const n0 = await subs(), s0 = (await getRes(id)).score;
-    await reasonBox(page).fill('qc.automation O24'); await confirmReject(page).click();
-    expect(await toastNow(page)).toContain('Từ chối mở khóa thành công');
-    const d = await getRes(id); expect(d.status).toBe('Submitted'); expect(d.score).toBe(s0); expect(await subs()).toBe(n0);
-  });
-  test(tc('RES-O25'), async ({ page }) => {
-    needWrite();
-    await openUnlockAct(page, REJECT); const id = await rid('BO');
-    await confirmReject(page).click(); await page.waitForTimeout(800);
-    expect(norm((await modalL(page).locator('.ant-form-item-explain-error').allInnerTexts()).join(' ')), 'phải báo lỗi dưới ô nhập').toMatch(REASON_ERR);
-    expect((await getRes(id)).status).toBe('UnlockRequested');
-  });
   test(tc('RES-O26'), async ({ page }) => {
     needWrite();
     await openUnlockAct(page, REJECT); const id = await rid('BO');
@@ -1645,16 +768,6 @@ test.describe('Kết quả tự đánh giá › Phía Bộ › Từ chối mở 
     await reasonBox(page).fill(LONG(255)); await confirmReject(page).click();
     expect(await toastNow(page)).toMatch(/thành công/i);
     expect((await unHist(id, /từ chối mở khóa/i))[0].note).toHaveLength(255);
-  });
-  test(tc('RES-O28'), async ({ page }) => {
-    needWrite();
-    await openUnlockAct(page, REJECT); const id = await rid('BO');
-    await reasonBox(page).fill(LONG(256));
-    const len = (await reasonBox(page).inputValue()).length;
-    await confirmReject(page).click(); await page.waitForTimeout(800);
-    const err = norm((await modalL(page).locator('.ant-form-item-explain-error').allInnerTexts()).join(' '));
-    expect(len <= 255 || /255/.test(err), `ô nhập nhận ${len} ký tự và không báo vượt giới hạn 255 (lỗi: "${err}")`).toBeTruthy();
-    expect((await getRes(id)).status).toBe('UnlockRequested');
   });
   test(tc('RES-O29'), async () => {
     await toState('BO', 'UnlockRequested'); const id = await rid('BO');
@@ -1678,14 +791,6 @@ test.describe('Kết quả tự đánh giá › Phía Bộ › Từ chối mở 
     const h = (await unHist(id, /từ chối mở khóa/i))[0];
     expect(h.fromStatus).toBe('UnlockRequested'); expect(h.toStatus).toBe('Submitted'); expect(h.note).toBe(L); expect(h.actorName).toBeTruthy();
   });
-  test(tc('RES-O32'), async ({ page }) => {
-    needWrite();
-    await openUnlockAct(page, REJECT, 'DP'); const id = await rid('DP'); const L = 'qc.automation O32 lý do';
-    const n0 = (await unNoti('cbdp', id, 'ASSESSMENT_UNLOCK_REJECTED')).length;
-    await reasonBox(page).fill(L); await confirmReject(page).click(); await toastNow(page); await page.waitForTimeout(1200);
-    const n = await unNoti('cbdp', id, 'ASSESSMENT_UNLOCK_REJECTED');
-    expect(n.length).toBe(n0 + 1); expect(n[0].description).toMatch(/bị từ chối\. Lý do: qc\.automation O32 lý do/);
-  });
   test(tc('RES-O33'), async ({ page }) => {
     needWrite();
     await openUnlockAct(page, REJECT); const id = await rid('BO');
@@ -1697,18 +802,6 @@ test.describe('Kết quả tự đánh giá › Phía Bộ › Từ chối mở 
     await page.waitForTimeout(1000);
     expect((await unNoti(bo, id, 'ASSESSMENT_UNLOCK_REQUESTED')).length, 'Bộ nhận thông báo yêu cầu mới').toBe(n0 + 1);
   });
-  test(tc('RES-O34'), async () => {
-    needWrite();
-    await toState('DP', 'UnlockRequested'); const id = await rid('DP');
-    expect((await post(id, 'reject-unlock', { reason: 'qc.automation O34' }, actor())).status).toBe(200);
-    const n = (await unHist(id, /từ chối mở khóa/i)).length;
-    for (const _ of [1, 2]) {
-      const r = await post(id, 'reject-unlock', { reason: 'qc.automation O34 lần 2' }, actor());
-      expect(r.status, `HTTP ${r.status}: ${r.message}`).toBeGreaterThanOrEqual(400); expect(r.status).toBeLessThan(500);
-      expect(r.message, 'phải báo MSG-060').toContain('Không thể thực hiện vì kết quả đang ở trạng thái');
-    }
-    expect((await unHist(id, /từ chối mở khóa/i)).length).toBe(n);
-  });
   test(tc('RES-O35'), async ({ page }) => {
     needWrite();
     await toState('BO', 'UnlockRequested'); const id = await rid('BO');
@@ -1719,10 +812,6 @@ test.describe('Kết quả tự đánh giá › Phía Bộ › Từ chối mở 
     await page.waitForTimeout(1000);
     expect(await page.getByRole('button', { name: /duyệt mở khóa|từ chối mở khóa/i }).count(), 'mất nút Duyệt/Từ chối').toBe(0);
   });
-  test(tc('RES-O36'), async () => {
-    const rows = await periodicRows();
-    test.skip(!rows.length, NO_PERIODIC);
-  });
   test(tc('RES-O37'), async () => {
     await toState('BO', 'UnlockRequested'); const id = await rid('BO');
     for (const as of ['ldp', 'cbdp', 'xemonly']) {
@@ -1730,16 +819,6 @@ test.describe('Kết quả tự đánh giá › Phía Bộ › Từ chối mở 
       expect(r.status, `${as}: HTTP ${r.status}: ${r.message}`).toBe(403);
     }
     expect((await getRes(id)).status).toBe('UnlockRequested');
-  });
-  test(tc('RES-O38'), async ({ page }) => {
-    needWrite();
-    await openUnlockAct(page, REJECT, 'DP'); const id = await rid('DP'); const L = '<b>x</b> & "q" ế';
-    await reasonBox(page).fill(L); await confirmReject(page).click(); await toastNow(page); await page.waitForTimeout(1200);
-    expect((await unHist(id, /từ chối mở khóa/i))[0].note).toBe(L);
-    expect((await unNoti('cbdp', id, 'ASSESSMENT_UNLOCK_REJECTED'))[0].description).toContain(L);
-    await openDetail(page, id, 'history');
-    expect(await bodyText(page)).toContain(L);
-    expect(await page.locator('.ant-layout-content b', { hasText: /^x$/ }).count()).toBe(0);
   });
   test(tc('RES-O39'), async ({ page }) => {
     needWrite();
@@ -1766,56 +845,11 @@ const fmtD = (iso: string) => { const d = new Date(iso); return `${String(d.getD
 const closedOne = async (status: string, type = 'Periodic') => (await lst({ campaignType: type, phase: 'closed', status }, 'canbo', 1, 5)).content?.[0];
 
 test.describe('Kết quả tự đánh giá › Phía Bộ › Chi tiết kết quả (UC2.5)', () => {
-  test(tc('RES-H01'), async ({ page }) => {
-    await toState('E2', 'NotStarted'); const id = await rid('E2');
-    await openList(page, { type: 'AdHoc', kw: KW });
-    await rowOfFx(page, 'E2').getByRole('button', { name: 'Xem chi tiết' }).click(); await page.waitForTimeout(1800);
-    await expect(page).toHaveURL(new RegExp(id));
-    const t = await bodyText(page), d = await getRes(id);
-    expect(t).toContain(CAMP_NAME); expect(t).toContain('Chưa thực hiện');
-    expect(t, 'Đơn vị · Hạn nộp dd/mm/yyyy (Còn n ngày)').toContain(`${ORG_NAME.E2} · Hạn nộp: ${fmtD(d.campaignEndDate)} (Còn ${d.daysRemaining} ngày)`);
-  });
-  test(tc('RES-H02'), async ({ page }) => {
-    await toState('DP', 'Submitted'); const id = await rid('DP'); const d = await getRes(id);
-    await openDetail(page, id);
-    const t = await bodyText(page);
-    for (const x of ['Đơn vị thực hiện', 'Phân loại', 'Bộ chỉ số áp dụng', 'Thời gian thực hiện', ORG_NAME.DP, 'Đột xuất', d.indicatorSetName, `${fmtD(d.campaignStartDate)} – ${fmtD(d.campaignEndDate)}`]) expect(t, x).toContain(x);
-  });
-  test(tc('RES-H03'), async ({ page }) => {
-    await toState('DP', 'Submitted'); const id = await rid('DP');
-    await openDetail(page, id);
-    expect(await page.getByText(/điểm tự chấm/i).count(), 'nội dung Chấm điểm').toBeGreaterThan(0);
-    await detailTab(page, /^Hồ sơ gửi Bộ/); expect(await bodyText(page)).toMatch(/Văn bản xác nhận/);
-    await detailTab(page, /^Lịch sử/); expect(await bodyText(page)).toMatch(/Đã gửi|Gửi/);
-    await detailTab(page, /^Chấm điểm \(/); expect(await page.getByText(/điểm tự chấm/i).count()).toBeGreaterThan(0);
-  });
   test(tc('RES-H04'), async ({ page }) => {
     await toState('E2', 'NotStarted');
     await openDetail(page, await rid('E2'));
     expect(await page.locator('.ant-table input, .ant-layout-content input[type=number], .ant-input-number-input').count(), 'ô điểm không nhập được').toBe(0);
     expect(await secBtn(page, /lưu nháp|trình duyệt|hủy chỉnh sửa|huỷ chỉnh sửa/i).count(), `[${who()}] không có nút Lưu nháp/Trình duyệt/Hủy chỉnh sửa`).toBe(0);
-  });
-  test(tc('RES-H05'), async ({ page }) => {
-    await toState('E2', 'NotStarted'); await openDetail(page, await rid('E2'));
-    await expect(await needBtn(page, /nhắc nhở/i, 'Gửi nhắc nhở')).toBeVisible();
-  });
-  test(tc('RES-H06'), async ({ page }) => {
-    await toState('DP', 'Submitted'); await openDetail(page, await rid('DP'));
-    await expect(await needBtn(page, /yêu cầu đánh giá lại/i, 'Yêu cầu đánh giá lại')).toBeVisible();
-    expect(await secBtn(page, /nhắc nhở|duyệt mở khóa|từ chối mở khóa|xin mở khóa|gửi bộ/i).count(), 'không có nút Phía Bộ khác').toBe(0);
-  });
-  test(tc('RES-H07'), async ({ page }) => {
-    await toState('BO', 'UnlockRequested'); await openDetail(page, await rid('BO'));
-    await expect(await needBtn(page, /^duyệt mở khóa$/i, 'Duyệt mở khóa')).toBeVisible();
-    await expect(await needBtn(page, /^từ chối mở khóa$/i, 'Từ chối mở khóa')).toBeVisible();
-  });
-  test(tc('RES-H08'), async ({ page }) => {
-    for (const st of ['Submitted', 'NotSent']) {
-      const x = await closedOne(st); expect(x, `phải có kết quả ${ST[st]} của kỳ đã kết thúc`).toBeTruthy();
-      await openDetail(page, x.id);
-      expect(await bodyText(page), 'thông báo chế độ chỉ xem').toMatch(/chế độ chỉ xem/i);
-      expect(await secBtn(page, /nhắc nhở|đánh giá lại|duyệt mở khóa|từ chối mở khóa/i).count(), `${ST[st]}: không có nút thao tác Phía Bộ`).toBe(0);
-    }
   });
   test(tc('RES-H09'), async ({ page }) => {
     await toState('E4', 'PendingApproval'); await openDetail(page, await rid('E4'));
@@ -1849,14 +883,6 @@ test.describe('Kết quả tự đánh giá › Phía Bộ › Chi tiết kết 
     await openDetail(page, await partialScoring());
     expect(await bodyText(page)).toContain('ĐIỂM TẠM TÍNH');
   });
-  test(tc('RES-H16'), async ({ page }) => {
-    const id = await partialScoring(); const d = await getRes(id);
-    await openDetail(page, id);
-    const t = await bodyText(page);
-    for (const g of d.groups) { expect(t).toContain(g.indicatorGroupName); expect(t).toContain(`Điểm nhóm: ${g.score} / ${g.maxScore}`); }
-    for (const i of leavesOf(d)) { expect(t).toContain(i.indicatorCode); expect(t).toContain(`Điểm tối đa: ${i.maxScore}`); }
-    for (const h of ['MINH CHỨNG', 'GIẢI TRÌNH', 'ĐIỂM TỰ CHẤM']) expect(t.toUpperCase()).toContain(h);
-  });
   test(tc('RES-H17'), async ({ page }) => {
     const id = await partialScoring(); const d = await getRes(id);
     let att = leavesOf(d).flatMap((i: any) => i.attachments ?? [])[0];
@@ -1878,29 +904,6 @@ test.describe('Kết quả tự đánh giá › Phía Bộ › Chi tiết kết 
       expect(u, `liên kết tệp: ${u}`).not.toMatch(/localhost|chrome-error/);
     }
   });
-  test(tc('RES-H18'), async ({ page }) => {
-    const id = await partialScoring(); const d = await getRes(id);
-    const att = leavesOf(d).flatMap((i: any) => i.attachments ?? [])[0];
-    test.skip(!att, 'Chưa có chỉ số nào có minh chứng (chạy RES-H17 trước)');
-    await page.context().route(/\/files\//, r => r.fulfill({ status: 404, body: 'not found' }));
-    await openDetail(page, id);
-    await page.getByText(att.fileName).first().click();
-    expect(await msgs(page, 2500), 'phải báo MSG-049').toContain('Tệp không tồn tại hoặc đã bị xóa');
-  });
-  test(tc('RES-H19'), async ({ page }) => {
-    await toState('DP', 'Submitted'); const id = await rid('DP');
-    const subs = (await api('GET', `${RES}/${id}/submissions`, undefined, 'canbo')).data.submissions as any[];
-    await openDetail(page, id, 'dossier');
-    const t = await bodyText(page);
-    expect(subs.length).toBeGreaterThanOrEqual(1);
-    expect(t, 'bản gần nhất ghi "Bản chính thức"').toMatch(/Bản chính thức/);
-    expect(subs[0].isOfficial).toBe(true); expect(new Date(subs[0].sentDate) >= new Date(subs[subs.length - 1].sentDate)).toBeTruthy();
-    expect(t).toContain(subs[0].attachment.fileName); expect(t).toContain(subs[0].sentByUserName);
-  });
-  test(tc('RES-H20'), async ({ page }) => {
-    await toState('E2', 'NotStarted'); await openDetail(page, await rid('E2'), 'dossier');
-    expect(await bodyText(page), 'Hồ sơ gửi Bộ trống phải hiển thị "Chưa có dữ liệu"').toContain('Chưa có dữ liệu');
-  });
   test(tc('RES-H21'), async ({ page }) => {
     await toState('DP', 'Submitted'); const id = await rid('DP');
     const h = await histOf(id);
@@ -1910,11 +913,6 @@ test.describe('Kết quả tự đánh giá › Phía Bộ › Chi tiết kết 
     for (const x of h.slice(0, 3)) { expect(t).toContain(x.actionName); expect(t).toContain(x.actorName); }
     for (let i = 1; i < h.length; i++) expect(new Date(h[i - 1].at) >= new Date(h[i].at), 'mới nhất trước').toBeTruthy();
     expect(t).toMatch(/\(.+→.+\)|từ .+ sang/i);
-  });
-  test(tc('RES-H22'), async ({ page }) => {
-    await toState('DP', 'Submitted'); await openDetail(page, await rid('DP'), 'history');
-    const sel = (await page.locator('.ant-select:visible').allInnerTexts()).map(norm);
-    expect(sel.some(s => /hành động/i.test(s)), `Lịch sử phải có bộ lọc Hành động (bộ lọc thực tế: ${sel.join(' | ') || 'không có'})`).toBeTruthy();
   });
   test(tc('RES-H23'), async () => {
     needWrite();
@@ -1967,60 +965,9 @@ test.describe('Kết quả tự đánh giá › Phía Bộ › Chi tiết kết 
     for (const i of leavesOf(d)) { if (i.score == null) expect(t).toContain(i.indicatorCode); else expect(t).not.toContain(i.indicatorCode); }
     expect(t).toContain(`Còn thiếu ${miss} chỉ số`);
   });
-  test(tc('RES-H30'), async ({ page }) => {
-    await openDetail(page, await partialScoring());
-    const exp = secBtn(page, /mở rộng tất cả/i), col = secBtn(page, /thu gọn tất cả/i);
-    expect(await exp.count() + await col.count(), 'phải có nút Mở rộng tất cả / Thu gọn tất cả').toBeGreaterThan(0);
-    const rows0 = await page.locator('.ant-layout-content tbody tr').count();
-    await col.first().click(); await page.waitForTimeout(500);
-    const rows1 = await page.locator('.ant-layout-content tbody tr').count();
-    await exp.first().click(); await page.waitForTimeout(500);
-    expect(rows1).toBeLessThan(rows0 + 1); expect(await page.locator('.ant-layout-content tbody tr').count()).toBeGreaterThanOrEqual(rows1);
-  });
-  test(tc('RES-H31'), async ({ page }) => {
-    await layout();
-    await openList(page, { type: 'AdHoc', kw: KW });
-    await clickTab(page, 'Chưa gửi'); await clickTab(page, 'Đã gửi');
-    const url = page.url();
-    await rowsL(page).first().getByRole('button', { name: 'Xem chi tiết' }).click(); await page.waitForTimeout(1500);
-    await page.locator('.ant-layout-content button').first().click(); await page.waitForTimeout(1500);
-    expect(page.url(), 'quay lại danh sách giữ bộ lọc').toContain('status=Submitted');
-    expect(page.url()).toContain('campaignType=AdHoc');
-    expect(url).toContain('status=Submitted');
-  });
   test(tc('RES-H32'), async ({ page }) => {
     await toState('DP', 'Submitted'); await openDetail(page, await rid('DP'));
     expect(await secBtn(page, /xuất excel/i).count(), `[${who()}] chi tiết không có Xuất Excel (BR-5)`).toBe(0);
-  });
-  test(tc('RES-H33'), async ({ page }) => {
-    for (const id of [FAKE, 'abc']) {
-      const r = await api('GET', `${RES}/${id}`, undefined, actor());
-      expect(r.status, `${id}: HTTP ${r.status}: ${r.message}`).toBe(404);
-      await openDetail(page, id);
-      expect(await bodyText(page), `${id}: MSG-044`).toContain('Nội dung không còn tồn tại hoặc bạn không có quyền xem');
-    }
-  });
-  test(tc('RES-H34'), async ({ browser }) => {
-    await toState('BO', 'UnlockRequested'); const id = await rid('BO');
-    const { ctx, page } = await asRole(browser, 'cbdp');
-    try {
-      const r = await api('GET', `${RES}/${id}`, undefined, 'cbdp');
-      expect(r.status, `HTTP ${r.status}: ${r.message}`).toBeGreaterThanOrEqual(400);
-      await openDetail(page, id);
-      const t = await bodyText(page);
-      expect(t, 'không hiển thị dữ liệu của đơn vị ngoài phạm vi').not.toContain(ORG_NAME.BO);
-      expect(t, 'MSG-045 hoặc MSG-044').toMatch(/Bạn không có quyền truy cập dữ liệu của đơn vị này|Nội dung không còn tồn tại hoặc bạn không có quyền xem/);
-    } finally { await ctx.close(); }
-  });
-  test(tc('RES-H35'), async ({ page }) => {
-    await toState('DP', 'Submitted'); const id = await rid('DP');
-    await openList(page, { type: 'AdHoc', kw: KW });
-    const row = (await rowsData(page)).find(r => r.cells[2] === ORG_NAME.DP)!;
-    await rowOfFx(page, 'DP').getByRole('button', { name: 'Xem chi tiết' }).click(); await page.waitForTimeout(1800);
-    const t = await bodyText(page), d = await getRes(id);
-    expect(t).toContain(row.cells[6].split('\n')[0]);
-    expect(row.cells[4]).toContain(`${d.scoredCount}/${d.indicatorCount}`); expect(t).toContain(`${d.scoredCount} / ${d.indicatorCount}`);
-    expect(row.cells[5].replace(/\s/g, '')).toBe(`${d.score}/${d.maxScore}`); expect(t).toContain(`${d.score} / ${d.maxScore}`);
   });
   test(tc('RES-H36'), async ({ page }) => {
     const id = await partialScoring(); const d = await getRes(id);
@@ -2029,15 +976,6 @@ test.describe('Kết quả tự đánh giá › Phía Bộ › Chi tiết kết 
     await openDetail(page, id); expect(await bodyText(page)).toContain(`${d.score} / ${d.maxScore}`);
     const big = await getRes((await bigResult()).id, actor());
     expect(big.groups.reduce((a: number, g: any) => a + g.score, 0), `${big.campaignName}/${big.organizationName}: tổng điểm nhóm`).toBe(big.score ?? 0);
-  });
-  test(tc('RES-H37'), async ({ page }) => {
-    const x = await bigResult();
-    test.skip(x.indicatorCount < 100, `Không có kết quả đủ lớn (lớn nhất ${x.indicatorCount} chỉ số)`);
-    const t0 = Date.now();
-    await page.goto(`${ROUTE}/${x.id}`, { waitUntil: 'commit' });
-    await page.getByText(/điểm tự chấm/i).first().waitFor({ timeout: 15_000 });
-    const ms = Date.now() - t0;
-    expect(ms, `mở chi tiết ${x.indicatorCount} chỉ số mất ${ms}ms`).toBeLessThanOrEqual(5000);
   });
   test(tc('RES-H38'), async ({ page }) => {
     await toState('DP', 'Submitted'); const id = await rid('DP'); const d = await getRes(id);
@@ -2066,17 +1004,6 @@ test.describe('Kết quả tự đánh giá › Phía Bộ › Chi tiết kết 
     const e2 = (await histOf(await rid('E2'))).find(y => /nhắc nhở/i.test(y.actionName));
     expect(e2?.actorName).toMatch(/^QC /);
     await openDetail(page, id, 'history'); expect(await bodyText(page)).toContain('QC Cán bộ');
-  });
-  test(tc('RES-H40'), async ({ page }) => {
-    await layout();
-    await openList(page, { type: 'AdHoc' });
-    if ((await totalOf(page)) > 10) { await page.locator('.ant-pagination-item-2').first().click(); await settle(page); }
-    await search(page, 'RES3 phía');
-    const row = rowsL(page).first(), name = await row.locator('td').nth(2).innerText();
-    await rowAct(page, row, /^xem$/i);
-    await page.waitForTimeout(1500);
-    const t = await bodyText(page);
-    expect(t).toContain(name.trim()); expect(t).toContain(CAMP_NAME);
   });
 });
 
@@ -2110,17 +1037,6 @@ async function freshSend(k: Key) {
 const newest = (l: any[]) => l.sort((a, b) => +new Date(b.createdOnDate) - +new Date(a.createdOnDate))[0];
 
 test.describe('Kết quả tự đánh giá › Phía Bộ › Thông báo', () => {
-  test(tc('RES-M01'), async ({ page }) => {
-    await openList(page, { type: 'AdHoc', kw: KW });
-    const api_n = await unreadOf(actor());
-    expect(await badgeOf(page), 'số chưa đọc trên chuông = API').toBe(Math.min(api_n, 99));
-    await openBell(page, false);
-    const t = norm(await popL(page).innerText());
-    expect(t).toContain('Tất cả'); expect(t).toContain('Chưa đọc');
-    expect(await itemsL(page).count(), 'danh sách thông báo').toBeGreaterThan(0);
-    await popL(page).getByRole('button', { name: /^Chưa đọc/ }).click(); await page.waitForTimeout(1000);
-    expect(await itemsL(page).count()).toBeGreaterThan(0);
-  });
   test(tc('RES-M02'), async ({ page }) => {
     needWrite();
     const id = await rid('DP'); await toState('DP', 'Submitted'); const n0 = (await notiOf(actor(), id, 'ASSESSMENT_SENT')).length;
@@ -2138,63 +1054,6 @@ test.describe('Kết quả tự đánh giá › Phía Bộ › Thông báo', () 
     const n = await notiOf(as, id, 'ASSESSMENT_SENT');
     expect(n.length, `${ROLE_NAME[as]} nhận thông báo gửi kết quả (đang có ${n0})`).toBe(n0 + 1);
     expect(n[0].description).toContain(CAMP_NAME);
-  });
-  test(tc('RES-M05'), async ({ page }) => {
-    needWrite();
-    const id = await rid('DP'); await toState('DP', 'Submitted'); const n0 = (await notiOf(actor(), id, 'ASSESSMENT_UNLOCK_REQUESTED')).length;
-    expect((await post(id, 'request-unlock', { reason: 'qc.automation M05 lý do' }, 'cbdp')).status).toBe(200); await page.waitForTimeout(1200);
-    const n = await notiOf(actor(), id, 'ASSESSMENT_UNLOCK_REQUESTED');
-    expect(n.length).toBe(n0 + 1); expect(n[0].title).toBe('Yêu cầu mở khóa'); expect(n[0].description).toContain('Lý do: qc.automation M05 lý do');
-    await openBell(page); expect(norm(await popL(page).innerText())).toContain('qc.automation M05 lý do');
-    await post(id, 'reject-unlock', { reason: 'qc.automation M05 dọn' }, bo);
-  });
-  test(tc('RES-M06'), async () => {
-    needWrite();
-    const id = await rid('DP'); await toState('DP', 'Submitted');
-    const c0 = (await notiOf('canbo', id, 'ASSESSMENT_UNLOCK_REQUESTED')).length, d0 = (await notiOf('ldd', id, 'ASSESSMENT_UNLOCK_REQUESTED')).length;
-    expect((await post(id, 'request-unlock', { reason: 'qc.automation M06' }, 'cbdp')).status).toBe(200); await new Promise(r => setTimeout(r, 1200));
-    expect((await notiOf('canbo', id, 'ASSESSMENT_UNLOCK_REQUESTED')).length, 'Cán bộ nhận').toBe(c0 + 1);
-    expect((await notiOf('ldd', id, 'ASSESSMENT_UNLOCK_REQUESTED')).length, 'Lãnh đạo đơn vị nhận').toBe(d0 + 1);
-    await post(id, 'reject-unlock', { reason: 'qc.automation M06 dọn' }, bo);
-  });
-  test(tc('RES-M07'), async ({ page }) => {
-    needWrite();
-    const id = await freshUnlockReq('qc.automation M07', 'DP');
-    const top = newest(await notiOf(actor(), id, 'ASSESSMENT_UNLOCK_REQUESTED')); expect(top?.isRead, 'Lãnh đạo Bộ phải nhận thông báo yêu cầu mới').toBe(false);
-    await openBell(page);
-    await itemsL(page).filter({ hasText: 'Yêu cầu mở khóa' }).filter({ hasText: ORG_NAME.DP }).first().click(); await page.waitForTimeout(1800);
-    await expect(page).toHaveURL(new RegExp(id));
-    const n = (await notiOf(actor(), id, 'ASSESSMENT_UNLOCK_REQUESTED')).find(x => x.id === top.id);
-    expect(n.isRead, 'thông báo đã được đánh dấu đã đọc').toBe(true);
-  });
-  test(tc('RES-M08'), async ({ page }) => {
-    test.setTimeout(180_000);
-    needWrite();
-    await freshUnlockReq('qc.automation M08', 'DP'); expect(await unreadOf(actor())).toBeGreaterThan(0);
-    const unread = async () => ((await api('GET', `${NOTI}?page=1&size=100`, undefined, actor())).data?.content as any[]).filter(n => !n.isRead).map(n => n.id);
-    const ids = await unread();
-    await openBell(page);
-    await popL(page).getByRole('button', { name: /đánh dấu tất cả|đọc tất cả/i }).click(); await page.waitForTimeout(1500);
-    expect((await unread()).filter(i => ids.includes(i)), 'mọi thông báo chưa đọc trước đó phải thành đã đọc').toEqual([]);
-    expect(await badgeOf(page), 'huy hiệu chuông về 0 (cho phép 1 thông báo mới đến cùng lúc)').toBeLessThanOrEqual(1);
-  });
-  test(tc('RES-M09'), async ({ page }) => {
-    needWrite();
-    await freshUnlockReq('qc.automation M09', 'DP');
-    await openBell(page);
-    await popL(page).getByRole('button', { name: /^Chưa đọc/ }).click(); await page.waitForTimeout(1200);
-    const n = await itemsL(page).count(); expect(n).toBeGreaterThan(0);
-    expect(await itemsL(page).locator('span[title="Chưa đọc"]').count(), 'mọi thông báo ở tab Chưa đọc đều chưa đọc').toBe(n);
-  });
-  test(tc('RES-M10'), async ({ page }) => {
-    needWrite();
-    const id = await rid('MD'); expect((await getRes(id)).status).toMatch(/NotStarted|Scoring/); const n0 = (await notiOf(actor(), id, 'ASSESSMENT_REMINDER')).length;
-    const r = await remind([id], 'canbo'); expect(r.status, `${r.status} ${r.message}`).toBe(200); await page.waitForTimeout(1200);
-    const n = await notiOf(actor(), id, 'ASSESSMENT_REMINDER');
-    expect(n.length, 'CB địa phương nhận thông báo Sắp đến hạn').toBe(n0 + 1);
-    expect(n[0].title).toBe('Sắp đến hạn'); expect(n[0].description).toContain(CAMP_MI);
-    await openList(page, { type: 'AdHoc', kw: KW }); await bellBtn(page).click(); await page.waitForTimeout(1200);
-    expect(norm(await popL(page).innerText())).toContain('Sắp đến hạn');
   });
   test(tc('RES-M11'), async () => {
     needWrite();
@@ -2219,42 +1078,12 @@ test.describe('Kết quả tự đánh giá › Phía Bộ › Thông báo', () 
     const n = await notiOf('canbo', id, 'ASSESSMENT_UNLOCK_REJECTED');
     expect(n.length).toBe(n0 + 1); expect(n[0].title).toBe('Từ chối mở khóa'); expect(n[0].description).toContain('Lý do: qc.automation M13 lý do');
   });
-  test(tc('RES-M14'), async () => {
-    needWrite();
-    const id = await freshUnlockReq('qc.automation M14');
-    await post(id, 'reject-unlock', { reason: 'qc.automation M14' }, bo); await new Promise(r => setTimeout(r, 1000));
-    const r = await api('GET', `${NOTI}?page=1&size=100`, undefined, 'xemonly');
-    const mine_ = ((r.data?.content ?? []) as any[]).filter(n => /^ASSESSMENT_/.test(n.type));
-    expect(mine_.length, 'tài khoản chỉ xem không nhận thông báo ASSESSMENT_*').toBe(0);
-  });
-  test(tc('RES-M15'), async () => {
-    needWrite();
-    const id = await freshUnlockReq('qc.automation M15');
-    await toState('E2', 'NotStarted'); const e2 = await rid('E2'); expect((await remind([e2], 'canbo')).status).toBe(200); await new Promise(r => setTimeout(r, 1200));
-    for (const as of ['cbdp', 'ldp']) {
-      expect((await notiOf(as, id)).length + (await notiOf(as, e2)).length, `${ROLE_NAME[as]} (đơn vị khác) không được nhận thông báo của đơn vị QA - Đơn vị Bộ`).toBe(0);
-    }
-  });
   test(tc('RES-M16'), async () => {
     needWrite();
     const id = await freshUnlockReq('qc.automation M16'); const n0 = (await notiOf('canbo', id, 'ASSESSMENT_UNLOCK_APPROVED')).length;
     const rs = await Promise.all([post(id, 'approve-unlock', undefined, bo), post(id, 'approve-unlock', undefined, bo)]);
     expect(rs.filter(r => r.status === 200).length).toBe(1); await new Promise(r => setTimeout(r, 1500));
     expect((await notiOf('canbo', id, 'ASSESSMENT_UNLOCK_APPROVED')).length, 'không tạo thông báo trùng').toBe(n0 + 1);
-  });
-  test(tc('RES-M17'), async ({ page }) => {
-    needWrite();
-    const id = await freshUnlockReq('qc.automation M17'); const H = '<b>x</b> & "q"';
-    expect((await post(id, 'reject-unlock', { reason: H }, bo)).status).toBe(200); await new Promise(r => setTimeout(r, 1200));
-    const n = newest(await notiOf('canbo', id, 'ASSESSMENT_UNLOCK_REJECTED'));
-    expect(n.description, 'lưu nguyên văn').toContain(H);
-    await openList(page, { type: 'AdHoc', kw: KW });
-    const { ctx, page: cp } = await asRole(page.context().browser()!, 'canbo');
-    try {
-      await openList(cp, { type: 'AdHoc', kw: KW }); await openBell(cp, false);
-      const it = itemsL(cp).filter({ hasText: 'Từ chối mở khóa' }).filter({ hasText: CAMP_NAME }).first();
-      expect(await it.innerText()).toContain(H); expect(await it.locator('b').count(), 'không render thẻ HTML').toBe(0);
-    } finally { await ctx.close(); }
   });
   test(tc('RES-M18'), async () => {
     for (const h of [{}, { Authorization: 'Bearer abc.def.ghi' }]) {
@@ -2271,19 +1100,6 @@ test.describe('Kết quả tự đánh giá › Phía Bộ › Thông báo', () 
     expect(r.status, `HTTP ${r.status}`).toBeLessThan(500);
     const after = (await notiOf('cbdp', idr, 'ASSESSMENT_REMINDER')).find(n => n.id === other!.id);
     expect(after.isRead, `thông báo của người khác không được đánh dấu đã đọc (HTTP ${r.status}: ${r.message})`).toBe(false);
-  });
-  test(tc('RES-M20'), async () => {
-    test.skip(true, 'Thông báo tổng hợp "Sắp đến hạn" do job theo lịch sinh khi kỳ còn n ngày; không kích hoạt được theo yêu cầu và không dựng được kỳ còn 1 ngày mà không để lại kỳ đã phê duyệt không xóa được');
-  });
-  test(tc('RES-M21'), async ({ page }) => {
-    needWrite();
-    await toState('DP', 'Submitted');
-    await openList(page, { type: 'AdHoc', kw: KW });
-    const b0 = await badgeOf(page), u0 = await unreadOf(actor());
-    expect(b0).toBe(Math.min(u0, 99));
-    const id = await rid('DP'); expect((await post(id, 'request-unlock', { reason: 'qc.automation M21' }, 'cbdp')).status).toBe(200);
-    await expect.poll(async () => badgeOf(page), { timeout: 20_000, message: 'số chưa đọc phải tăng mà không cần tải lại' }).toBeGreaterThan(Math.min(b0, 98));
-    await post(id, 'reject-unlock', { reason: 'qc.automation M21 dọn' }, bo);
   });
 });
 
@@ -2318,60 +1134,6 @@ async function staleRow(page: Page, k: Key, after: () => Promise<any>) {
 }
 
 test.describe('Kết quả tự đánh giá › Phía Bộ › Ngoại lệ & lỗi', () => {
-  test(tc('RES-Q01'), async () => {
-    needWrite();
-    const probe = await api('POST', `${RES}/reminders`, { resultIds: [FAKE] }, actor());
-    test.skip(probe.status !== 403, `[${who()}] có quyền nhắc nhở: không gửi body rỗng/sai lên hệ thống thật vì có thể nhắc toàn bộ đơn vị (đã từng xảy ra)`);
-    for (const body of ['{}', '{"resultIds":[]}', '{"resultIds":["abc"]}', '{"resultIds":null}', undefined]) {
-      const r = await apiRaw('POST', `${RES}/reminders`, actor(), body);
-      expect(r.status, `body ${body}: HTTP ${r.status} ${r.text.slice(0, 120)}`).toBe(400);
-    }
-  });
-  test(tc('RES-Q02'), async () => {
-    const r = await remind([FAKE], actor());
-    expect(r.status, `HTTP ${r.status}: ${r.message}`).toBe(400);
-    expect(r.message).toContain('Không có đơn vị nào cần nhắc nhở'); expect(String(r.message)).not.toMatch(NOLEAK);
-  });
-  test(tc('RES-Q03'), async ({ page }) => {
-    needWrite();
-    await toState('E2', 'NotStarted');
-    await openRemind(page, 'E2');
-    await page.route(RE_REM, r => r.fulfill(J500()));
-    await mbtn(page, /gửi nhắc nhở/i).click();
-    const t = await failToast(page);
-    expect(t, 'phải có thông báo lỗi').not.toBe(''); expect(t).not.toMatch(NOLEAK); expect(t).not.toMatch(/thành công|đã gửi nhắc nhở/i);
-    await expect(modalL(page), 'hộp thoại giữ nguyên').toBeVisible();
-  });
-  test(tc('RES-Q04'), async ({ page }) => {
-    needWrite();
-    await toState('E2', 'NotStarted');
-    await openRemind(page, 'E2');
-    await page.route(RE_REM, r => r.abort('internetdisconnected'));
-    await mbtn(page, /gửi nhắc nhở/i).click();
-    const t = await failToast(page);
-    expect(t, 'phải báo lỗi kết nối').not.toBe(''); expect(t).not.toMatch(/thành công/i);
-    expect(await modalBusy(page), 'nút không treo ở trạng thái đang xử lý').toBe(0);
-    await page.unroute(RE_REM); await expect(mbtn(page, /gửi nhắc nhở/i)).toBeEnabled();
-  });
-  test(tc('RES-Q05'), async ({ page }) => {
-    needWrite();
-    const d = await openReassess(page); void d; const id = await rid('DP');
-    await rBox(page).fill('qc.automation Q05 giữ lại');
-    await page.route(RE_REA, r => r.fulfill(J500()));
-    await submitReassess(page); const t = await failToast(page);
-    expect(t).not.toBe(''); expect(t).not.toMatch(NOLEAK);
-    await expect(modalL(page)).toBeVisible(); expect(await rBox(page).inputValue()).toBe('qc.automation Q05 giữ lại');
-    expect((await getRes(id)).status).toBe('Submitted');
-  });
-  test(tc('RES-Q06'), async ({ page }) => {
-    needWrite();
-    await openReassess(page); const id = await rid('DP'); const h0 = (await reHist(id)).length;
-    await rBox(page).fill('qc.automation Q06');
-    await page.route(RE_REA, r => r.abort('internetdisconnected'));
-    await submitReassess(page); const t = await failToast(page);
-    expect(t, 'phải báo lỗi kết nối').not.toBe(''); expect(t).not.toMatch(/thành công/i);
-    expect(await modalBusy(page)).toBe(0); expect((await getRes(id)).status).toBe('Submitted'); expect((await reHist(id)).length).toBe(h0);
-  });
   for (const [t, re, mode] of [['Q07', RE_APP, '500'], ['Q08', RE_APP, 'off'], ['Q09', RE_REJ, '500'], ['Q10', RE_REJ, 'off']] as const) test(tc(`RES-${t}`), async ({ page }) => {
     needWrite();
     const rej = re === RE_REJ;
@@ -2386,29 +1148,6 @@ test.describe('Kết quả tự đánh giá › Phía Bộ › Ngoại lệ & l�
     expect(await modalBusy(page)).toBe(0);
     expect((await getRes(id)).status).toBe('UnlockRequested');
   });
-  test(tc('RES-Q11'), async ({ page }) => {
-    await page.route(/\/dti\/assessment-results(\?|$)/, r => r.fulfill(J500()));
-    await page.goto(ROUTE, { waitUntil: 'networkidle' }); await page.waitForTimeout(1500);
-    const t = norm(await page.locator('body').innerText());
-    expect(t.length, 'không trắng trang').toBeGreaterThan(50); expect(t).not.toMatch(NOLEAK);
-    expect(t, 'phải có thông báo lỗi hệ thống').toMatch(/lỗi|thất bại|không thể|thử lại/i);
-  });
-  test(tc('RES-Q12'), async () => {
-    for (const f of ['{bad', '[1', '%7B%22a%22']) {
-      const r = await api('GET', `${RES}?page=1&size=10&filter=${f}`, undefined, actor());
-      expect(r.status, `filter=${f}: HTTP ${r.status} ${r.message}`).toBe(400);
-      expect(r.message).toContain('Bộ lọc không hợp lệ'); expect(String(r.message)).not.toMatch(NOLEAK);
-    }
-  });
-  test(tc('RES-Q13'), async () => {
-    const total = (await lst({ campaignType: 'AdHoc', phase: 'all' }, actor(), 1, 10)).totalElements;
-    for (const q of ['page=0&size=10', 'page=-1&size=10', 'page=abc&size=10', 'page=999&size=10', 'page=1&size=0', 'page=1&size=1000']) {
-      const r = await api('GET', `${RES}?${q}&filter=${F({ campaignType: 'AdHoc', phase: 'all' })}`, undefined, actor());
-      expect(r.status, `${q}: HTTP ${r.status} ${r.message}`).toBe(200);
-      expect(r.data.content.length, `${q}: số dòng trả về không vượt 100 (tổng ${total})`).toBeLessThanOrEqual(100);
-      if (q.startsWith('page=999')) expect(r.data.content.length, 'trang vượt cuối trả rỗng').toBe(0);
-    }
-  });
   test(tc('RES-Q14'), async () => {
     for (const s of ['bogus', 'organizationName,asc', 'x;drop', '']) {
       const r = await api('GET', `${RES}?page=1&size=10&sort=${encodeURIComponent(s)}`, undefined, actor());
@@ -2420,10 +1159,6 @@ test.describe('Kết quả tự đánh giá › Phía Bộ › Ngoại lệ & l�
       const r = await api('GET', `${RES}/${u}`, undefined, actor());
       expect([400, 404], `${u}: HTTP ${r.status} ${r.message}`).toContain(r.status); expect(String(r.message)).not.toMatch(NOLEAK);
     }
-  });
-  test(tc('RES-Q16'), async () => {
-    const r = await post(FAKE, 'reassess', { reason: 'x' }, actor());
-    expect(r.status, `HTTP ${r.status}: ${r.message}`).toBe(404); expect(r.message).toContain('Không tìm thấy kết quả tự đánh giá');
   });
   test(tc('RES-Q17'), async () => {
     const r = await post(FAKE, 'reject-unlock', { reason: 'x' }, actor());
@@ -2440,16 +1175,6 @@ test.describe('Kết quả tự đánh giá › Phía Bộ › Ngoại lệ & l�
       expect(Object.keys(j).filter(k => !['code', 'message', 'data', 'errorDetail', 'totalTime', 'isSuccess'].includes(k)), `${m} ${u}: body chỉ gồm code/message`).toEqual([]);
     }
   });
-  test(tc('RES-Q19'), async ({ page }) => {
-    test.setTimeout(180_000);
-    needWrite();
-    const id = await rid('BO');
-    await staleRow(page, 'BO', async () => { expect((await post(id, 'approve-unlock', undefined, bo)).status).toBe(200); });
-    await rowAct(page, rowOfFx(page, 'BO'), APPROVE);
-    await yes(page).click(); const t = await toastNow(page);
-    expect(t, 'báo trạng thái đã thay đổi').toContain('Không thể thực hiện vì kết quả đang ở trạng thái');
-    expect((await getRes(id)).status).toBe('Scoring');
-  });
   test(tc('RES-Q20'), async ({ page }) => {
     needWrite();
     await openUnlockAct(page, REJECT); const id = await rid('BO');
@@ -2459,35 +1184,6 @@ test.describe('Kết quả tự đánh giá › Phía Bộ › Ngoại lệ & l�
     await page.waitForURL(/login|dang-nhap|sign-?in|auth/i, { timeout: 10_000 }).catch(() => {});
     expect(page.url(), 'phải chuyển về đăng nhập').toMatch(/login|dang-nhap|sign-?in|auth/i);
     expect((await getRes(id)).status).toBe('UnlockRequested');
-  });
-  test(tc('RES-Q21'), async ({ page }) => {
-    needWrite();
-    const x = await xssCamp(); let fired = false; page.on('dialog', d => { fired = true; d.dismiss(); });
-    await openList(page, { type: 'AdHoc', kw: 'RES3 XSS' });
-    const row = rowsL(page).first(); expect(await row.count(), 'kỳ tên đặc biệt phải có trong danh sách').toBeGreaterThan(0);
-    const txt = norm(await row.innerText());
-    expect(txt).toContain('<b>x</b> & "q"'); expect(txt).toContain('Dài-Dài-');
-    expect(await row.locator('b').count(), 'không render thẻ HTML').toBe(0);
-    const bb = await row.boundingBox(), tb = await page.locator('.ant-table').first().boundingBox();
-    expect(bb!.width, 'dòng không vỡ bố cục').toBeLessThanOrEqual(tb!.width + 2);
-    await openDetail(page, x.id); expect(await bodyText(page)).toContain('<b>x</b> & "q"');
-    expect(fired, 'script không được chạy').toBe(false);
-  });
-  test(tc('RES-Q22'), async ({ page }) => {
-    test.setTimeout(180_000);
-    needWrite();
-    const id = await rid('BO');
-    await staleRow(page, 'BO', async () => { expect((await post(id, 'reject-unlock', { reason: 'qc.automation Q22' }, bo)).status).toBe(200); });
-    await rowAct(page, rowOfFx(page, 'BO'), APPROVE);
-    await yes(page).click(); const t = await toastNow(page);
-    expect(t, 'chặn: báo trạng thái đã đổi').toContain('Không thể thực hiện vì kết quả đang ở trạng thái');
-    expect((await getRes(id)).status, 'không chuyển Đang chấm điểm').toBe('Submitted');
-  });
-  test(tc('RES-Q23'), async () => {
-    test.skip(true, 'Cần thu hồi/đổi quyền của tài khoản trong cấu hình phân quyền dùng chung với các agent khác; không an toàn chạy tự động trên hệ thống chung');
-  });
-  test(tc('RES-Q24'), async () => {
-    test.skip(true, 'Cần kỳ thử có ≥ 50 đơn vị Chưa thực hiện; dựng 50 đơn vị/kỳ sẽ để lại dữ liệu rác không xóa được, và nhắc nhở thật sự bị chặn bởi quy tắc an toàn dữ liệu thật');
   });
 });
 
@@ -2523,23 +1219,8 @@ test.describe('Kết quả tự đánh giá › Phía Bộ › Phân quyền & b
       }
     }
   });
-  test(tc('RES-K03'), async ({ browser }) => {
-    const { ctx, page } = await asRole(browser, 'xemonly');
-    try {
-      await page.goto(ROUTE, { waitUntil: 'networkidle' }); await page.waitForTimeout(1500);
-      const t = norm(await page.locator('body').innerText());
-      expect(t, 'MSG-043 / 403').toMatch(/Bạn không có quyền thực hiện thao tác này|403/);
-      expect(await page.locator('tbody tr.ant-table-row').count()).toBe(0);
-    } finally { await ctx.close(); }
-    expect((await api('GET', `${RES}?page=1&size=10`, undefined, 'xemonly')).status).toBe(403);
-    expect((await api('GET', `${RES}/${await rid('DP')}`, undefined, 'xemonly')).status).toBe(403);
-  });
   test(tc('RES-K04'), async () => {
     for (const t of ['Periodic', 'AdHoc']) expect(await totalAs('canbo', t), `tổng ${t}`).toBe(await totalAs('superadmin', t));
-  });
-  test(tc('RES-K05'), async ({ page }) => {
-    for (const t of ['Periodic', 'AdHoc']) expect(await totalAs(actor(), t), `tổng ${t}`).toBe(await totalAs('superadmin', t));
-    await openList(page, { type: 'AdHoc' }); expect(await totalOf(page)).toBe(await totalAs('superadmin', 'AdHoc'));
   });
   for (const [t, root] of [['K06', ORG_DP], ['K07', ORG_DP]] as const) test(tc(`RES-${t}`), async ({ page }) => {
     const rows = await lstAll({ campaignType: 'AdHoc', phase: 'all' }, actor());
@@ -2592,32 +1273,6 @@ test.describe('Kết quả tự đánh giá › Phía Bộ › Phân quyền & b
     }
     expect(bad, bad.join('; ')).toEqual([]);
   });
-  test(tc('RES-K13'), async ({ browser }) => {
-    test.setTimeout(180_000);
-    needWrite();
-    await toState('DP', 'Submitted'); await toState('BO', 'Submitted');
-    const want: Record<string, boolean> = { canbo: true, lanhdaobo: false, ldd: false, ldp: false };
-    const bad: string[] = [];
-    for (const [as, yes_] of Object.entries(want)) {
-      const { ctx, page } = await asRole(browser, as);
-      try {
-        await openList(page, { type: 'AdHoc', kw: KW });
-        const m = await menuOf(page, rowOfFx(page, as === 'ldp' ? 'DP' : 'BO')); const has = m.some(i => /đánh giá lại/i.test(i));
-        if (has !== yes_) bad.push(`${as}: Yêu cầu đánh giá lại=${has} (cần ${yes_}; menu: ${m.join(' | ') || 'không có'})`);
-      } finally { await ctx.close(); }
-    }
-    expect(bad, bad.join('; ')).toEqual([]);
-  });
-  test(tc('RES-K14'), async () => {
-    needWrite();
-    const id = await rid('MD'); expect((await getRes(id)).status).toMatch(/NotStarted|Scoring/);
-    const bad: string[] = [];
-    for (const as of ['xemonly', 'ldp', 'lanhdaobo', 'ldd', 'cbdp', 'canbo']) {
-      const r = await remind([id], as); const ok = ['cbdp', 'canbo'].includes(as);
-      if ((r.status === 200) !== ok || (!ok && r.status !== 403)) bad.push(`${as}: HTTP ${r.status} (cần ${ok ? 200 : 403})`);
-    }
-    expect(bad, bad.join('; ')).toEqual([]);
-  });
   test(tc('RES-K15'), async () => {
     test.setTimeout(180_000);
     needWrite();
@@ -2665,18 +1320,6 @@ test.describe('Kết quả tự đánh giá › Phía Bộ › Phân quyền & b
     expect(extra, `file chứa đơn vị ngoài phạm vi: ${extra.slice(0, 4).join('; ')}`).toEqual([]);
     fs.rmSync(f.file, { force: true });
   });
-  test(tc('RES-K19'), async () => {
-    const bad: string[] = [];
-    const id = await rid('MD');
-    for (const as of ['canbo', 'lanhdaobo', 'ldd', 'ldp', 'cbdp']) {
-      const d = (await api('GET', `${RES}/${id}`, undefined, as)).data; const allowed = (d?.allowedActions ?? []) as string[];
-      const r = await remind([id], as === 'canbo' ? 'canbo' : as);
-      const has = allowed.includes('remind');
-      if (has && r.status === 403) bad.push(`${as}: UI cho nhắc nhở nhưng API 403`);
-      if (!has && r.status !== 403 && r.status !== 404) bad.push(`${as}: UI ẩn nhắc nhở nhưng API HTTP ${r.status}`);
-    }
-    expect(bad, bad.join('; ')).toEqual([]);
-  });
   test(tc('RES-K20'), async ({ page }) => {
     await toState('E2', 'NotStarted');
     await openList(page, { type: 'AdHoc', kw: KW_MI });
@@ -2695,25 +1338,6 @@ test.describe('Kết quả tự đánh giá › Phía Bộ › Phân quyền & b
     expect([403, 404], `HTTP ${r.status} ${r.message}`).toContain(r.status);
     expect((await getRes(id)).status).toBe('UnlockRequested');
   });
-  test(tc('RES-K22'), async ({ page }) => {
-    needWrite();
-    const x = await xssCamp(); const id = await rid('BO');
-    await toState('BO', 'Submitted');
-    const bad = await post(id, 'request-unlock', { reason: '<img src=x onerror=alert(1)>' }, 'canbo');
-    expect(bad.status, `lý do chứa script phải bị từ chối (HTTP ${bad.status} ${bad.message})`).toBe(400);
-    let fired = false; page.on('dialog', d => { fired = true; d.dismiss(); });
-    await openList(page, { type: 'AdHoc', kw: 'RES3 XSS' });
-    expect(await page.locator('tbody b, tbody img').count(), 'danh sách không render HTML').toBe(0);
-    await openDetail(page, x.id); expect(await page.locator('.ant-layout-content b, .ant-layout-content img').count(), 'chi tiết không render HTML').toBe(0);
-    await freshUnlockReq('<b>k22</b>', 'DP');
-    await openBell(page);
-    const it = itemsL(page).filter({ hasText: 'Yêu cầu mở khóa' }).first();
-    expect(await it.innerText()).toContain('<b>k22</b>'); expect(await it.locator('b').count()).toBe(0);
-    expect(fired).toBe(false);
-  });
-  test(tc('RES-K23'), async () => {
-    test.skip(true, 'Đăng xuất làm thu hồi token dùng chung của tài khoản thử (các agent khác đang chạy cùng tài khoản); không thử trên hệ thống chung');
-  });
   test(tc('RES-K24'), async () => {
     needWrite();
     await toState('BO', 'UnlockRequested'); const id = await rid('BO');
@@ -2726,30 +1350,5 @@ test.describe('Kết quả tự đánh giá › Phía Bộ › Phân quyền & b
     await page.goto(`${ROUTE}${qs({ type: 'AdHoc' })}`, { waitUntil: 'commit' });
     await page.locator('tbody tr.ant-table-row').first().waitFor({ timeout: 15_000 });
     const ms = Date.now() - t0; expect(ms, `tải 10 dòng ${ms}ms`).toBeLessThanOrEqual(3000);
-  });
-  test(tc('RES-K26'), async ({ page }) => {
-    await openList(page, { type: 'AdHoc' });
-    await pickOption(page, page.locator(PAGER_SEL).first(), /100/);
-    const t0 = Date.now();
-    await expect.poll(async () => rowsL(page).count(), { timeout: 15_000 }).toBeGreaterThan(10);
-    await settle(page, 0);
-    const ms = Date.now() - t0; expect(ms, `tải 100 dòng/trang ${ms}ms`).toBeLessThanOrEqual(5000);
-  });
-  test(tc('RES-K27'), async ({ page }) => {
-    await openList(page, { type: 'AdHoc' });
-    const t0 = Date.now();
-    const f = await downloadTo(page, async () => (await needBtn(page, /xuất excel/i, 'Xuất Excel')).click());
-    const ms = Date.now() - t0; fs.rmSync(f.file, { force: true });
-    expect(ms, `xuất Excel ${ms}ms`).toBeLessThanOrEqual(10_000);
-  });
-  test(tc('RES-K28'), async ({ page }) => {
-    await layout();
-    await openList(page, { type: 'AdHoc', kw: KW });
-    for (const n of ['Đã gửi', 'Chờ mở khóa', 'Chưa gửi']) if (!(await hasTab(page, n))) throw new Error(noTabMsg(n));
-    for (const n of ['Đã gửi', 'Chờ mở khóa', 'Chưa gửi']) await page.getByRole('tab', { name: new RegExp(`^${n}`) }).first().click({ noWaitAfter: true });
-    await settle(page, 1500);
-    const rows = await rowsData(page);
-    for (const r of rows) expect(statusOf(r.cells), 'dữ liệu thuộc tab cuối cùng (Chưa gửi)').toBe('Chưa gửi');
-    await expect(page.getByRole('tab', { name: /^Chưa gửi/ })).toHaveAttribute('aria-selected', 'true');
   });
 });

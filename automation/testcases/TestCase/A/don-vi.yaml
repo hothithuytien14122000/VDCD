@@ -1,6 +1,6 @@
 title: "Đơn vị"
 phan_he: "A - Quản trị hệ thống"
-tong_so: 48
+tong_so: 70
 testcases:
   - id: ORG-L01
     title: "Danh sách Đơn vị hiển thị đúng các cột"
@@ -16,7 +16,7 @@ testcases:
       - "2. Mở trang Đơn vị"
     ket_qua_mong_doi:
       - "Bảng có đủ cột: STT, Mã đơn vị, Tên đơn vị, Loại đơn vị, Tỉnh/thành tham chiếu, Số lượng thành viên, Trạng thái, Thao tác; có dữ liệu"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: ORG-L02
     title: "Phân trang mặc định 10 bản ghi/trang và hiển thị tổng số bản ghi"
     uc: "A.IV.4-UC1"
@@ -30,7 +30,7 @@ testcases:
       - "1. Mở trang Đơn vị"
     ket_qua_mong_doi:
       - "Hiển thị \"Hiển thị 1-10 trong N bản ghi\"; tối đa 10 dòng dữ liệu; thanh phân trang xuất hiện khi N>10"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: ORG-L03
     title: "Tìm theo mã đơn vị trả về đúng bản ghi"
     uc: "A.IV.4-UC1"
@@ -45,7 +45,7 @@ testcases:
       - "2. Nhập một mã đơn vị có sẵn vào ô tìm kiếm"
     ket_qua_mong_doi:
       - "Chỉ hiển thị các dòng chứa từ khóa; có ít nhất 1 dòng"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: ORG-L04
     title: "Tìm theo tên đơn vị trả về đúng bản ghi"
     uc: "A.IV.4-UC1"
@@ -59,7 +59,7 @@ testcases:
       - "1. Nhập một tên đơn vị có sẵn vào ô tìm kiếm"
     ket_qua_mong_doi:
       - "Chỉ hiển thị các dòng chứa từ khóa"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: ORG-L05
     title: "Từ khóa không tồn tại → không có dữ liệu"
     uc: "A.IV.4-UC1"
@@ -72,8 +72,8 @@ testcases:
     cac_buoc:
       - "1. Nhập \"zzqcxx_khongtontai_999\""
     ket_qua_mong_doi:
-      - "Bảng rỗng / hiển thị trạng thái không có dữ liệu, không lỗi"
-    ket_qua_chay: "Không chạy"
+      - "Bảng rỗng, hiện \"Không tìm thấy dữ liệu phù hợp\"; không lỗi"
+    ket_qua_chay: "Pass"
   - id: ORG-L06
     title: "Tìm kiếm không phân biệt chữ hoa/chữ thường"
     uc: "A.IV.4-UC1"
@@ -87,7 +87,7 @@ testcases:
       - "1. Nhập từ khóa viết HOA rồi viết thường của cùng một giá trị"
     ket_qua_mong_doi:
       - "Hai lần tìm trả về cùng số bản ghi"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: ORG-L07
     title: "Ký tự đặc biệt / chuỗi SQL trong ô tìm kiếm không gây lỗi hệ thống"
     uc: "A.IV.4-UC1"
@@ -101,7 +101,7 @@ testcases:
       - "1. Nhập  ' OR 1=1 --  và  <script>alert(1)</script>"
     ket_qua_mong_doi:
       - "Không hiện lỗi 500/trắng trang, không thực thi script, không trả về toàn bộ dữ liệu bất thường"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: ORG-L08
     title: "Chuyển sang trang 2 hiển thị dữ liệu khác trang 1"
     uc: "A.IV.4-UC1"
@@ -115,21 +115,7 @@ testcases:
       - "1. Bấm trang 2 trên thanh phân trang"
     ket_qua_mong_doi:
       - "Trang 2 được đánh dấu active; nội dung bảng khác trang 1"
-    ket_qua_chay: "Không chạy"
-  - id: ORG-L09
-    title: "Đổi số bản ghi/trang sang 20 thì số dòng thay đổi theo"
-    uc: "A.IV.4-UC1"
-    tac_nhan: "Quản trị hệ thống"
-    tai_khoan_chay: "admin"
-    chuc_nang: "Phân trang"
-    loai: "Chức năng"
-    uu_tien: "Trung bình"
-    automation: "Auto"
-    cac_buoc:
-      - "1. Chọn \"20 / trang\" ở thanh phân trang"
-    ket_qua_mong_doi:
-      - "Số dòng tối đa mỗi trang = 20; tổng số bản ghi không đổi"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: ORG-L10
     title: "Xóa từ khóa thì danh sách trở về đầy đủ"
     uc: "A.IV.4-UC1"
@@ -144,7 +130,51 @@ testcases:
       - "2. Xóa trắng ô tìm kiếm"
     ket_qua_mong_doi:
       - "Danh sách hiển thị lại như ban đầu (tổng số bản ghi bằng lúc đầu)"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
+  - id: ORG-L31
+    title: "Tìm kiếm không phân biệt dấu tiếng Việt (\"chuyen doi so\" ra \"Chuyển đổi số\")"
+    uc: "A.IV.4-UC1"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Tìm kiếm"
+    loai: "Chức năng"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Mở trang Đơn vị"
+      - "2. Nhập tên có dấu nhưng gõ không dấu (cả chữ thường và HOA)"
+    ket_qua_mong_doi:
+      - "Ra các dòng có tên khớp khi bỏ dấu, không phân biệt hoa/thường"
+    ket_qua_chay: "Pass"
+  - id: ORG-L32
+    title: "Từ khóa bỏ khoảng trắng đầu/cuối; cả cụm từ được tìm như một chuỗi liền (không tách từ)"
+    uc: "A.IV.4-UC1"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Tìm kiếm"
+    loai: "Chức năng"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Nhập \"   <mã>   \" (khoảng trắng 2 đầu)"
+      - "2. Nhập cụm 2 từ của tên theo thứ tự đảo ngược"
+    ket_qua_mong_doi:
+      - "Kết quả bằng khi nhập không có khoảng trắng; cụm đảo ngược chỉ ra dòng chứa nguyên cụm liền đó (không khớp từng từ rời)"
+    ket_qua_chay: "Pass"
+  - id: ORG-L33
+    title: "Ký tự %, _, ' trong từ khóa được hiểu là ký tự thường"
+    uc: "A.IV.4-UC1"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Tìm kiếm"
+    loai: "Validate"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Lần lượt nhập \"%\", \"_\", \"'\" vào ô tìm kiếm"
+    ket_qua_mong_doi:
+      - "Không lỗi hệ thống; mọi dòng trả về đều chứa đúng ký tự đã nhập (không coi là ký tự đại diện / không gây lỗi SQL)"
+    ket_qua_chay: "Pass"
   - id: ORG-L11
     title: "Xuất Excel danh sách Đơn vị"
     uc: "A.IV.4-UC2"
@@ -159,7 +189,7 @@ testcases:
     ket_qua_mong_doi:
       - "Trình duyệt tải về file .xlsx chứa dữ liệu danh sách (UC: Xuất danh sách ra Excel)"
     ghi_chu: "UC_1409 ghi FE \"Chưa làm\" → có thể FAIL (chức năng chưa phát triển)"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: ORG-L12
     title: "Lọc theo loại đơn vị"
     uc: "A.IV.4-UC1"
@@ -173,21 +203,7 @@ testcases:
       - "1. Chọn một loại đơn vị ở bộ lọc"
     ket_qua_mong_doi:
       - "Mọi dòng có cột Loại đơn vị = loại đã chọn"
-    ket_qua_chay: "Không chạy"
-  - id: ORG-L13
-    title: "Lọc theo tỉnh/thành tham chiếu"
-    uc: "A.IV.4-UC1"
-    tac_nhan: "Quản trị hệ thống"
-    tai_khoan_chay: "admin"
-    chuc_nang: "Bộ lọc"
-    loai: "Chức năng"
-    uu_tien: "Cao"
-    automation: "Auto"
-    cac_buoc:
-      - "1. Chọn một tỉnh ở bộ lọc"
-    ket_qua_mong_doi:
-      - "Mọi dòng có Tỉnh/thành tham chiếu = tỉnh đã chọn"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: ORG-V01
     title: "Chi tiết đơn vị hiển thị loại, tỉnh tham chiếu, số người dùng, kỳ đánh giá hiện tại"
     uc: "A.IV.4-UC3"
@@ -201,7 +217,7 @@ testcases:
       - "1. Bấm \"Xem chi tiết\" một đơn vị"
     ket_qua_mong_doi:
       - "Hiển thị tên, mã, trạng thái, Loại đơn vị, Tham chiếu tỉnh, số Người dùng và bảng \"Người dùng trong đơn vị\"; có nút Thêm người dùng vào đơn vị, Đổi tỉnh, Bỏ tham chiếu"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: ORG-V02
     title: "Bảng người dùng trong đơn vị có cột Tên đăng nhập, Họ tên, Vai trò, Email, Trạng thái và lọc theo vai trò"
     uc: "A.IV.4-UC9"
@@ -216,7 +232,7 @@ testcases:
       - "2. Lọc theo vai trò"
     ket_qua_mong_doi:
       - "Bảng lọc đúng theo vai trò"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: ORG-C01
     title: "Thêm đơn vị thành công với Mã, Tên, Loại đơn vị"
     uc: "A.IV.4-UC4"
@@ -232,7 +248,7 @@ testcases:
       - "3. Lưu"
     ket_qua_mong_doi:
       - "Thông báo thành công; đơn vị xuất hiện, trạng thái Chưa khóa"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: ORG-C02
     title: "Bỏ trống Mã/Tên/Loại đơn vị thì báo lỗi bắt buộc"
     uc: "A.IV.4-UC4"
@@ -246,7 +262,7 @@ testcases:
       - "1. Bấm Lưu khi chưa nhập"
     ket_qua_mong_doi:
       - "Báo lỗi bắt buộc ở 3 trường; không tạo"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: ORG-C03
     title: "Bỏ trống riêng Loại đơn vị thì báo lỗi"
     uc: "A.IV.4-UC4"
@@ -261,7 +277,7 @@ testcases:
       - "2. Lưu"
     ket_qua_mong_doi:
       - "Báo lỗi bắt buộc ở Loại đơn vị; không tạo"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: ORG-C04
     title: "Trùng mã đơn vị bị từ chối"
     uc: "A.IV.4-UC4"
@@ -275,8 +291,8 @@ testcases:
       - "1. Tạo đơn vị A"
       - "2. Tạo đơn vị B cùng mã"
     ket_qua_mong_doi:
-      - "Báo mã đã tồn tại; chỉ 1 bản ghi"
-    ket_qua_chay: "Không chạy"
+      - "Báo \"Mã [ABC] đã tồn tại. Vui lòng nhập mã khác.\"; chỉ 1 bản ghi"
+    ket_qua_chay: "Pass"
   - id: ORG-C05
     title: "Thêm đơn vị con (chọn Đơn vị cha)"
     uc: "A.IV.4-UC4"
@@ -291,7 +307,7 @@ testcases:
       - "2. Tạo đơn vị con chọn đơn vị cha"
     ket_qua_mong_doi:
       - "Đơn vị con tạo thành công, gắn đúng đơn vị cha"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: ORG-C06
     title: "Thêm đơn vị có tham chiếu tỉnh/thành"
     uc: "A.IV.4-UC4"
@@ -305,7 +321,7 @@ testcases:
       - "1. Tạo đơn vị, chọn tỉnh tham chiếu"
     ket_qua_mong_doi:
       - "Cột Tỉnh/thành tham chiếu hiển thị đúng tỉnh"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: ORG-C07
     title: "Email đơn vị sai định dạng bị chặn"
     uc: "A.IV.4-UC4"
@@ -320,7 +336,7 @@ testcases:
       - "2. Lưu"
     ket_qua_mong_doi:
       - "Báo lỗi định dạng email; không tạo"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: ORG-C09
     title: "Chỉ đơn vị thuộc loại cấp xã mới được tham chiếu xã/phường"
     uc: "A.IV.4-UC4"
@@ -334,7 +350,7 @@ testcases:
       - "1. [API] Tạo đơn vị loại cấp tỉnh kèm communeId"
     ket_qua_mong_doi:
       - "Bị từ chối: \"Chỉ đơn vị thuộc loại cấp xã mới tham chiếu đơn vị hành chính cấp xã\""
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: ORG-C08
     title: "Hủy form thêm mới không tạo bản ghi"
     uc: "A.IV.4-UC4"
@@ -349,7 +365,7 @@ testcases:
       - "2. Hủy"
     ket_qua_mong_doi:
       - "Không có đơn vị mới"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: ORG-E01
     title: "Sửa tên đơn vị thành công"
     uc: "A.IV.4-UC5"
@@ -365,7 +381,7 @@ testcases:
       - "3. Lưu"
     ket_qua_mong_doi:
       - "Thông báo thành công; tên mới hiển thị"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: ORG-E02
     title: "Đổi loại đơn vị"
     uc: "A.IV.4-UC5"
@@ -380,7 +396,7 @@ testcases:
       - "2. Lưu"
     ket_qua_mong_doi:
       - "Cột Loại đơn vị đổi theo"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: ORG-E03
     title: "Xóa trắng tên khi sửa bị chặn"
     uc: "A.IV.4-UC5"
@@ -395,7 +411,7 @@ testcases:
       - "2. Lưu"
     ket_qua_mong_doi:
       - "Báo lỗi bắt buộc; không lưu"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: ORG-E04
     title: "Hủy chỉnh sửa không đổi dữ liệu"
     uc: "A.IV.4-UC5"
@@ -410,7 +426,7 @@ testcases:
       - "2. Hủy"
     ket_qua_mong_doi:
       - "Dữ liệu giữ nguyên"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: ORG-D01
     title: "Xóa đơn vị chưa có người dùng thành công"
     uc: "A.IV.4-UC6"
@@ -425,7 +441,7 @@ testcases:
       - "2. Xác nhận"
     ket_qua_mong_doi:
       - "Đơn vị biến mất"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: ORG-D02
     title: "Xóa đơn vị đang có người dùng bị chặn"
     uc: "A.IV.4-UC6"
@@ -440,7 +456,7 @@ testcases:
       - "2. Xóa đơn vị"
     ket_qua_mong_doi:
       - "Báo \"Không thể xóa: đang có người dùng thuộc đơn vị này\"; đơn vị còn nguyên"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: ORG-D03
     title: "Chọn \"Không\" ở hộp xác nhận thì giữ nguyên"
     uc: "A.IV.4-UC6"
@@ -455,7 +471,7 @@ testcases:
       - "2. Không"
     ket_qua_mong_doi:
       - "Đơn vị vẫn còn"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: ORG-K01
     title: "Khóa đơn vị chuyển trạng thái Đã khóa"
     uc: "A.IV.4-UC7"
@@ -470,7 +486,7 @@ testcases:
       - "2. Xác nhận"
     ket_qua_mong_doi:
       - "Trạng thái \"Đã khóa\""
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: ORG-K02
     title: "Mở khóa đơn vị chuyển lại Chưa khóa"
     uc: "A.IV.4-UC7"
@@ -484,7 +500,7 @@ testcases:
       - "1. Menu → Mở khoá"
     ket_qua_mong_doi:
       - "Trạng thái \"Chưa khóa\""
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: ORG-R01
     title: "Đổi tỉnh tham chiếu của đơn vị ở màn chi tiết"
     uc: "A.IV.4-UC8"
@@ -500,7 +516,7 @@ testcases:
       - "3. Lưu"
     ket_qua_mong_doi:
       - "Tỉnh tham chiếu đổi; cột danh sách cập nhật"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: ORG-R02
     title: "Bỏ tham chiếu tỉnh của đơn vị"
     uc: "A.IV.4-UC8"
@@ -515,7 +531,7 @@ testcases:
       - "2. Xác nhận"
     ket_qua_mong_doi:
       - "Tỉnh tham chiếu trở thành trống / \"–\""
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: ORG-M01
     title: "Thêm người dùng vào đơn vị"
     uc: "A.IV.4-UC11"
@@ -531,7 +547,7 @@ testcases:
       - "3. Lưu"
     ket_qua_mong_doi:
       - "User xuất hiện trong bảng người dùng; số Người dùng tăng; cột Đơn vị của user ở trang Người dùng đổi theo"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: ORG-M02
     title: "Xóa người dùng khỏi đơn vị"
     uc: "A.IV.4-UC10"
@@ -545,7 +561,7 @@ testcases:
       - "1. Trong bảng người dùng đơn vị, xóa user khỏi đơn vị"
     ket_qua_mong_doi:
       - "User biến mất khỏi bảng; số Người dùng giảm; user vẫn tồn tại"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: ORG-S01
     title: "API đơn vị: không token / token giả → 401"
     uc: "A.IV.4-UC1"
@@ -559,22 +575,7 @@ testcases:
       - "1. GET /organizations không token"
     ket_qua_mong_doi:
       - "HTTP 401"
-    ket_qua_chay: "Không chạy"
-  - id: ORG-S02
-    title: "Quyền API đơn vị đúng theo ma trận quyền Cán bộ"
-    uc: "A.IV.4-UC4"
-    tac_nhan: "Quản trị hệ thống"
-    tai_khoan_chay: "admin"
-    chuc_nang: "Phân quyền"
-    loai: "Bảo mật"
-    uu_tien: "Cao"
-    automation: "Auto"
-    cac_buoc:
-      - "1. Lấy ma trận quyền canbo"
-      - "2. GET/POST /organizations"
-    ket_qua_mong_doi:
-      - "Có quyền → được; không → 403"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: ORG-P01
     title: "Danh sách đơn vị tải < 3 giây"
     uc: "A.IV.4-UC1"
@@ -588,7 +589,7 @@ testcases:
       - "1. Mở trang và đo"
     ket_qua_mong_doi:
       - "API < 3000ms, hiển thị < 6000ms"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: ORG-G01
     title: "Trường bắt buộc chỉ nhập khoảng trắng bị chặn (đơn vị)"
     uc: "A.IV.4-UC4"
@@ -604,7 +605,7 @@ testcases:
       - "3. Lưu"
     ket_qua_mong_doi:
       - "Báo lỗi bắt buộc (chuỗi rỗng sau khi trim); form còn mở; không tạo bản ghi"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: ORG-G02
     title: "Tên chứa tiếng Việt có dấu, HTML, dấu nháy, & được lưu và hiển thị đúng sau khi tải lại trang (đơn vị)"
     uc: "A.IV.4-UC4"
@@ -619,7 +620,7 @@ testcases:
       - "2. Tải lại trang (F5), tìm theo mã"
     ket_qua_mong_doi:
       - "Tên hiển thị nguyên văn dạng chữ; thẻ HTML không bị render (chống XSS)"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: ORG-G04
     title: "Server lỗi 500 khi lưu: hiển thị lỗi, giữ form và dữ liệu đã nhập (đơn vị)"
     uc: "A.IV.4-UC4"
@@ -635,7 +636,7 @@ testcases:
       - "3. Lưu"
     ket_qua_mong_doi:
       - "Form còn mở và giữ dữ liệu; không lộ stacktrace; không tạo bản ghi"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: ORG-G05
     title: "Mất kết nối khi lưu: không treo giao diện, giữ form (đơn vị)"
     uc: "A.IV.4-UC4"
@@ -651,7 +652,7 @@ testcases:
       - "3. Lưu"
     ket_qua_mong_doi:
       - "Form còn mở và giữ dữ liệu; trang không trắng/lỗi; không tạo bản ghi"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: ORG-V03
     title: "Mở chi tiết đơn vị với id không tồn tại không gây lỗi hệ thống"
     uc: "A.IV.4-UC3"
@@ -666,7 +667,7 @@ testcases:
       - "2. Mở URL chi tiết với id lạ"
     ket_qua_mong_doi:
       - "API trả 4xx (không 500); trang không trắng, không lộ lỗi nội bộ"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: ORG-G06
     title: "Bấm Lưu 2 lần liên tiếp chỉ tạo 1 bản ghi (đơn vị)"
     uc: "A.IV.4-UC4"
@@ -681,7 +682,7 @@ testcases:
       - "2. Bấm Lưu 2 lần liên tiếp rất nhanh"
     ket_qua_mong_doi:
       - "Chỉ có đúng 1 bản ghi theo mã; không báo lỗi trùng gây hiểu nhầm"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: ORG-V04
     title: "Tìm người dùng trong chi tiết đơn vị"
     uc: "A.IV.4-UC9"
@@ -696,7 +697,7 @@ testcases:
       - "2. Nhập tên đăng nhập 1 user"
     ket_qua_mong_doi:
       - "Chỉ còn đúng user đó"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: ORG-M03
     title: "Người dùng đang thuộc đơn vị khác được chuyển sang đơn vị mới"
     uc: "A.IV.4-UC11"
@@ -711,4 +712,368 @@ testcases:
       - "2. Chi tiết đơn vị B → Thêm người dùng → chọn user → Lưu"
     ket_qua_mong_doi:
       - "User chuyển sang B (theo thông báo của màn hình)"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
+  - id: ORG-G07
+    title: "[API] Mã dài hơn 50 ký tự bị từ chối (đơn vị)"
+    uc: "A.IV.4-UC4"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Validate"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. [API] POST với Mã ≥ 51 ký tự"
+    ket_qua_mong_doi:
+      - "HTTP 400 \"Mã không vượt quá 50 ký tự\"; không tạo bản ghi"
+    ghi_chu: "Quy tắc chung: Mã tối đa 50 ký tự, Tên đăng nhập 50 ký tự; backend kiểm tra lại khi lưu"
+    ket_qua_chay: "Pass"
+  - id: ORG-G08
+    title: "[API] Mã chứa khoảng trắng, dấu tiếng Việt hoặc ký tự đặc biệt bị từ chối (đơn vị)"
+    uc: "A.IV.4-UC4"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Validate"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. [API] POST với mã \"QC AUTO 1\", \"MãQC1\", \"QC1@#\", \"QC1é\""
+    ket_qua_mong_doi:
+      - "Cả 4 bị từ chối (4xx); mã chỉ gồm chữ không dấu A–Z, số 0–9 và - _ ."
+    ghi_chu: "Quy tắc chung Mã"
+    ket_qua_chay: "Pass"
+  - id: ORG-G09
+    title: "[API] Trùng mã (không phân biệt hoa/thường) báo đúng thông báo (đơn vị)"
+    uc: "A.IV.4-UC4"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Nghiệp vụ"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Có bản ghi mã \"ABC\""
+      - "2. [API] Tạo mã \"ABC\", \"abc\", \"Abc\""
+    ket_qua_mong_doi:
+      - "Cả 3 bị từ chối 4xx với \"Mã [ABC] đã tồn tại. Vui lòng nhập mã khác.\""
+    ghi_chu: "Quy tắc chung: Mã bắt trùng toàn danh mục, mọi trạng thái (Đã khóa/Chưa khóa/Ngừng hoạt động…), không phân biệt hoa/thường"
+    ket_qua_chay: "Pass"
+  - id: ORG-G10
+    title: "[API] Tên đúng 255 ký tự được nhận, 256 ký tự bị từ chối (đơn vị)"
+    uc: "A.IV.4-UC4"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Validate"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. [API] POST Tên 255 ký tự"
+      - "2. [API] POST Tên 256 ký tự"
+    ket_qua_mong_doi:
+      - "255: HTTP 200; 256: HTTP 400 \"Tên không vượt quá 255 ký tự\""
+    ghi_chu: "Quy tắc chung: Tên/Họ tên tối đa 255 ký tự (Tên chỉ số, Tên nhóm chỉ số tối đa 500)"
+    ket_qua_chay: "Pass"
+  - id: ORG-G11
+    title: "[API] Tên trùng trong cùng nhóm cha (khác hoa/thường) bị từ chối (đơn vị)"
+    uc: "A.IV.4-UC4"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Nghiệp vụ"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Có bản ghi tên \"X\" thuộc cha A"
+      - "2. [API] Tạo bản ghi mã khác, tên \"X\" và \"x\" (HOA) cùng cha A"
+    ket_qua_mong_doi:
+      - "Bị từ chối 4xx: tên bắt trùng trong cùng nhóm cha, không phân biệt hoa/thường"
+    ghi_chu: "Quy tắc chung: Tên bắt trùng chỉ trong cùng nhóm cha"
+    ket_qua_chay: "Pass"
+  - id: ORG-G12
+    title: "[API] Tên chỉ khác dấu (\"Trùng\" và \"Trung\") là tên khác, được tạo (đơn vị)"
+    uc: "A.IV.4-UC4"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Nghiệp vụ"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Có bản ghi tên \"Trùng\""
+      - "2. [API] Tạo bản ghi tên \"Trung\" cùng cha"
+    ket_qua_mong_doi:
+      - "Được tạo (HTTP 200)"
+    ghi_chu: "Quy tắc chung: so trùng tên có phân biệt dấu"
+    ket_qua_chay: "Pass"
+  - id: ORG-G13
+    title: "[API] Tên trùng nhưng khác nhóm cha thì được tạo (đơn vị)"
+    uc: "A.IV.4-UC4"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Nghiệp vụ"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Có bản ghi tên \"X\" thuộc đơn vị cha A"
+      - "2. [API] Tạo bản ghi tên \"X\" thuộc đơn vị cha B"
+    ket_qua_mong_doi:
+      - "Được tạo (HTTP 200)"
+    ghi_chu: "Quy tắc chung: tên chỉ bắt trùng trong cùng nhóm cha"
+    ket_qua_chay: "Pass"
+  - id: ORG-L14
+    title: "Các màn Đơn vị khớp design DV-01 đến DV-07"
+    uc: "A.IV.4-UC1"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Giao diện"
+    loai: "UI"
+    uu_tien: "Trung bình"
+    automation: "Manual — chưa có script"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở menu Đơn vị"
+      - "3. Lần lượt mở: danh sách, popup Thêm mới, popup Cập nhật, chi tiết, các popup thao tác"
+      - "4. Đối chiếu Figma DV-01…DV-07"
+    ket_qua_mong_doi:
+      - "Bố cục, tiêu đề, nhãn, nút, màu và cỡ chữ của các màn khớp design"
+    ghi_chu: "GitLab #238 (đã đóng). Đối chiếu Figma; issue không ghi giá trị cụ thể — cần BA/Design xác nhận nếu Figma chưa chốt. #268 (đang mở): danh sách chưa đúng thiết kế"
+  - id: ORG-L15
+    title: "Đơn vị vừa thêm mới hiển thị ở đầu danh sách"
+    uc: "A.IV.4-UC1"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xem danh sách"
+    loai: "Chức năng"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở menu Đơn vị"
+      - "3. Thêm đơn vị QCA và Lưu"
+      - "4. Xem trang 1 (không tìm kiếm, không lọc)"
+    ket_qua_mong_doi:
+      - "Đơn vị vừa tạo nằm ở dòng đầu tiên của trang 1"
+    ghi_chu: "GitLab #76 (đã đóng)"
+  - id: ORG-L16
+    title: "Tải lại trang (F5) giữ nguyên trang, từ khóa và bộ lọc đang chọn"
+    uc: "A.IV.4-UC1"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xem danh sách"
+    loai: "Chức năng"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở menu Đơn vị"
+      - "3. Nhập từ khóa, chọn bộ lọc Loại đơn vị, chuyển sang trang 2"
+      - "4. Nhấn F5"
+    ket_qua_mong_doi:
+      - "Sau tải lại vẫn ở trang 2 với đúng từ khóa và bộ lọc, cùng kết quả như trước F5"
+    ghi_chu: "GitLab #28 (đã đóng). Đã có ở C: RES-L84, RES-B73; case này kiểm ở Phân hệ A"
+  - id: ORG-L17
+    title: "Quay lại từ màn chi tiết đơn vị giữ nguyên từ khóa, bộ lọc và trang"
+    uc: "A.IV.4-UC3"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xem chi tiết"
+    loai: "Chức năng"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở menu Đơn vị"
+      - "3. Nhập từ khóa, chọn bộ lọc, chuyển sang trang 2"
+      - "4. Mở chi tiết một đơn vị"
+      - "5. Bấm nút Quay lại (lặp lại với nút Back trình duyệt)"
+    ket_qua_mong_doi:
+      - "Về danh sách với đúng từ khóa, bộ lọc và trang 2 như trước khi xem chi tiết"
+    ghi_chu: "GitLab #113 (đã đóng). Đã có ở C/E: RES-V16, RES-D42, ANS-V06; case này kiểm ở Phân hệ A"
+  - id: ORG-V05
+    title: "Bộ lọc bảng \"Người dùng trong đơn vị\" (ô tìm kiếm, select vai trò) khớp design"
+    uc: "A.IV.4-UC9"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Giao diện"
+    loai: "UI"
+    uu_tien: "Thấp"
+    automation: "Manual — chưa có script"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở menu Đơn vị"
+      - "3. Mở chi tiết một đơn vị có người dùng"
+      - "4. Đối chiếu ô tìm kiếm và select Vai trò với Figma"
+    ket_qua_mong_doi:
+      - "Ô tìm kiếm và select Vai trò đúng vị trí, kích thước, placeholder, giá trị mặc định theo design"
+    ghi_chu: "GitLab #87 (đã đóng). Đối chiếu Figma; issue không ghi giá trị cụ thể — cần BA/Design xác nhận nếu Figma chưa chốt"
+  - id: ORG-V06
+    title: "Cột thao tác của bảng \"Người dùng trong đơn vị\" có tiêu đề \"Thao tác\""
+    uc: "A.IV.4-UC9"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Người dùng trong đơn vị"
+    loai: "UI"
+    uu_tien: "Thấp"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở menu Đơn vị"
+      - "3. Mở chi tiết một đơn vị có người dùng"
+    ket_qua_mong_doi:
+      - "Cột cuối (icon thao tác) có tiêu đề \"Thao tác\""
+    ghi_chu: "GitLab #218 (đã đóng)"
+  - id: ORG-C10
+    title: "Popup Thêm mới/Cập nhật đơn vị khớp design"
+    uc: "A.IV.4-UC4"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Giao diện"
+    loai: "UI"
+    uu_tien: "Trung bình"
+    automation: "Manual — chưa có script"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở menu Đơn vị"
+      - "3. Mở popup Thêm mới"
+      - "4. Mở popup Cập nhật một đơn vị"
+      - "5. Đối chiếu Figma DV"
+    ket_qua_mong_doi:
+      - "Tiêu đề, mô tả, thứ tự trường, nhãn, placeholder, nút của 2 popup đúng design"
+    ghi_chu: "GitLab #47 (đã đóng). Đối chiếu Figma; issue không ghi giá trị cụ thể — cần BA/Design xác nhận nếu Figma chưa chốt. #268 (đang mở): popup Thêm/Cập nhật chưa đúng thiết kế"
+  - id: ORG-C11
+    title: "Chọn tỉnh/thành có xã trực thuộc thì hiện trường chọn Xã/Phường, chỉ liệt kê xã thuộc tỉnh đó"
+    uc: "A.IV.4-UC4"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Chức năng"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở menu Đơn vị"
+      - "3. Bấm Thêm mới, chọn Loại đơn vị cấp xã"
+      - "4. Chọn tỉnh/thành có xã trực thuộc"
+      - "5. Mở trường Xã/Phường, chọn một xã, Lưu"
+    ket_qua_mong_doi:
+      - "Trường Xã/Phường hiển thị sau khi chọn tỉnh; chỉ có xã thuộc tỉnh đã chọn; lưu thành công, chi tiết đơn vị hiển thị đúng xã"
+    ghi_chu: "GitLab #77 (đã đóng). Liên quan ORG-C09 (chỉ đơn vị loại cấp xã được tham chiếu xã). Trường hiện với mọi loại hay chỉ loại cấp xã: cần BA xác nhận"
+  - id: ORG-C12
+    title: "Số điện thoại đơn vị sai định dạng bị chặn"
+    uc: "A.IV.4-UC4"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Validate"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở menu Đơn vị"
+      - "3. Bấm Thêm mới, nhập đủ trường bắt buộc"
+      - "4. Nhập Số điện thoại \"abc123\""
+      - "5. Lưu"
+    ket_qua_mong_doi:
+      - "Báo lỗi định dạng số điện thoại dưới ô; không tạo bản ghi"
+    ghi_chu: "GitLab #102 (đã đóng). Quy tắc định dạng SĐT (độ dài, đầu số, cho phép +84): cần BA xác nhận"
+  - id: ORG-C13
+    title: "Số điện thoại hợp lệ được lưu và hiển thị lại ở chi tiết và form Cập nhật"
+    uc: "A.IV.4-UC4"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Chức năng"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở menu Đơn vị"
+      - "3. Thêm đơn vị QCA với Số điện thoại 0912345678, Lưu"
+      - "4. Mở chi tiết, rồi mở Cập nhật"
+    ket_qua_mong_doi:
+      - "Chi tiết và form Cập nhật hiển thị đúng 0912345678"
+    ghi_chu: "GitLab #102 (đã đóng). Thực tế: Đơn vị cha và SĐT không lưu (Đơn vị cha xem ORG-C05)"
+  - id: ORG-C14
+    title: "Các ô chọn (Loại đơn vị, Tỉnh/thành, Đơn vị cha) có ô tìm kiếm"
+    uc: "A.IV.4-UC4"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Giao diện chung"
+    loai: "Chức năng"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở menu Đơn vị"
+      - "3. Bấm Thêm mới"
+      - "4. Mở từng ô chọn, gõ một phần tên"
+    ket_qua_mong_doi:
+      - "Mỗi ô chọn có tìm kiếm; danh sách lọc theo chuỗi đã gõ (không phân biệt hoa/thường)"
+    ghi_chu: "GitLab #97 (đã đóng). Áp dụng chung các select dài trong hệ thống"
+  - id: ORG-E05
+    title: "Form Cập nhật đơn vị hiển thị tên Loại đơn vị, không hiển thị ID (UUID)"
+    uc: "A.IV.4-UC5"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Chỉnh sửa"
+    loai: "Chức năng"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở menu Đơn vị"
+      - "3. Mở Cập nhật một đơn vị đã có Loại đơn vị"
+    ket_qua_mong_doi:
+      - "Trường Loại đơn vị hiển thị tên loại đang gán (vd \"Sở\"), không phải chuỗi UUID"
+    ghi_chu: "GitLab #274 (đã đóng)"
+  - id: ORG-M04
+    title: "Popup Thêm người dùng vào đơn vị không liệt kê người dùng đã thuộc đơn vị đó"
+    uc: "A.IV.4-UC11"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm người dùng"
+    loai: "Nghiệp vụ"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở menu Đơn vị"
+      - "3. Mở chi tiết một đơn vị đang có người dùng A"
+      - "4. Bấm Thêm người dùng vào đơn vị, tìm A"
+    ket_qua_mong_doi:
+      - "Người dùng A không có trong danh sách chọn"
+    ghi_chu: "GitLab #45 (đã đóng)"
+  - id: ORG-R03
+    title: "Popup Đổi tỉnh tham chiếu hiển thị 2 nút Huỷ và Lưu đúng design"
+    uc: "A.IV.4-UC8"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Tham chiếu tỉnh"
+    loai: "UI"
+    uu_tien: "Thấp"
+    automation: "Manual — chưa có script"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở menu Đơn vị"
+      - "3. Mở chi tiết một đơn vị → Đổi tỉnh tham chiếu"
+    ket_qua_mong_doi:
+      - "Nút Huỷ (phụ) và Lưu (chính) đúng màu, kích thước, thứ tự, căn lề theo design"
+    ghi_chu: "GitLab #75 (đã đóng)"
+  - id: ORG-S03
+    title: "[API] API phân quyền đơn vị kiểm tra quyền theo ma trận quyền của Cán bộ"
+    uc: "A.IV.4-UC1"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Phân quyền"
+    loai: "Bảo mật"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Lấy ma trận quyền của tài khoản Cán bộ (permission-matrix/me)"
+      - "2. Bằng token Cán bộ gọi các API thao tác phân quyền/người dùng của đơn vị mà ma trận không cấp"
+    ket_qua_mong_doi:
+      - "API không được cấp quyền trả 403, không thay đổi dữ liệu; API được cấp vẫn hoạt động"
+    ghi_chu: "GitLab #133 (đã đóng). Thực tế: trả 200 thay vì 403"

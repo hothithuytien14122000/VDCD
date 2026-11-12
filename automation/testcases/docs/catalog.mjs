@@ -16,7 +16,7 @@ function listSuite(P, name, o) {
   t(`${P}-L04`, ucSearch, 'Tìm kiếm', `Tìm theo ${kwName.label} trả về đúng bản ghi`, 'Chức năng', 'Cao',
     `1. Nhập một ${kwName.label} có sẵn vào ô tìm kiếm`, `Chỉ hiển thị các dòng chứa từ khóa`);
   t(`${P}-L05`, ucSearch, 'Tìm kiếm', 'Từ khóa không tồn tại → không có dữ liệu', 'Chức năng', 'Cao',
-    `1. Nhập "zzqcxx_khongtontai_999"`, 'Bảng rỗng / hiển thị trạng thái không có dữ liệu, không lỗi');
+    `1. Nhập "zzqcxx_khongtontai_999"`, 'Bảng rỗng, hiện "Không tìm thấy dữ liệu phù hợp"; không lỗi');
   t(`${P}-L06`, ucSearch, 'Tìm kiếm', 'Tìm kiếm không phân biệt chữ hoa/chữ thường', 'Chức năng', 'Trung bình',
     `1. Nhập từ khóa viết HOA rồi viết thường của cùng một giá trị`, 'Hai lần tìm trả về cùng số bản ghi');
   t(`${P}-L07`, ucSearch, 'Tìm kiếm', "Ký tự đặc biệt / chuỗi SQL trong ô tìm kiếm không gây lỗi hệ thống", 'Bảo mật', 'Cao',
@@ -27,6 +27,15 @@ function listSuite(P, name, o) {
     `1. Chọn "20 / trang" ở thanh phân trang`, 'Số dòng tối đa mỗi trang = 20; tổng số bản ghi không đổi', 'Auto', perPageNote || '');
   t(`${P}-L10`, ucSearch, 'Tìm kiếm', 'Xóa từ khóa thì danh sách trở về đầy đủ', 'Chức năng', 'Trung bình',
     `1. Tìm một từ khóa\n2. Xóa trắng ô tìm kiếm`, 'Danh sách hiển thị lại như ban đầu (tổng số bản ghi bằng lúc đầu)');
+  // Quy tắc tìm kiếm chung (Mã/Tên/Tìm kiếm): tương đối, không phân biệt hoa/thường và dấu, cả cụm là chuỗi liền, % _ ' là ký tự thường
+  if (['USR', 'GRP', 'PRV', 'COM', 'UTY', 'ORG', 'PIL', 'IGR', 'IND', 'SET'].includes(P)) {
+    t(`${P}-L31`, ucSearch, 'Tìm kiếm', 'Tìm kiếm không phân biệt dấu tiếng Việt ("chuyen doi so" ra "Chuyển đổi số")', 'Chức năng', 'Trung bình',
+      `1. Mở trang ${name}\n2. Nhập tên có dấu nhưng gõ không dấu (cả chữ thường và HOA)`, 'Ra các dòng có tên khớp khi bỏ dấu, không phân biệt hoa/thường');
+    t(`${P}-L32`, ucSearch, 'Tìm kiếm', 'Từ khóa bỏ khoảng trắng đầu/cuối; cả cụm từ được tìm như một chuỗi liền (không tách từ)', 'Chức năng', 'Trung bình',
+      `1. Nhập "   <mã>   " (khoảng trắng 2 đầu)\n2. Nhập cụm 2 từ của tên theo thứ tự đảo ngược`, 'Kết quả bằng khi nhập không có khoảng trắng; cụm đảo ngược chỉ ra dòng chứa nguyên cụm liền đó (không khớp từng từ rời)');
+    t(`${P}-L33`, ucSearch, 'Tìm kiếm', 'Ký tự %, _, \' trong từ khóa được hiểu là ký tự thường', 'Validate', 'Trung bình',
+      `1. Lần lượt nhập "%", "_", "'" vào ô tìm kiếm`, 'Không lỗi hệ thống; mọi dòng trả về đều chứa đúng ký tự đã nhập (không coi là ký tự đại diện / không gây lỗi SQL)');
+  }
   if (!o.noExport) t(`${P}-L11`, ucExport, 'Export', `Xuất Excel danh sách ${name}`, 'Chức năng', 'Trung bình',
     `1. Bấm "Xuất Excel" ở trang ${name}`, 'Trình duyệt tải về file .xlsx chứa dữ liệu danh sách (UC: Xuất danh sách ra Excel)',
     o.exportAuto === false ? 'Auto' : 'Auto', o.exportNote || '');
@@ -53,13 +62,13 @@ t('USR-C04', 'A.II.1-UC4', 'Thêm mới', 'Bỏ trống toàn bộ trường b�
 t('USR-C05', 'A.II.1-UC4', 'Thêm mới', 'Email sai định dạng bị chặn', 'Validate', 'Cao', '1. Nhập email "abc"\n2. Lưu', 'Báo "Email không đúng định dạng"; không tạo');
 t('USR-C06', 'A.II.1-UC4', 'Thêm mới', 'Số điện thoại sai định dạng bị chặn', 'Validate', 'Trung bình', '1. Nhập SĐT "abc"\n2. Lưu', 'Báo "Số điện thoại không đúng định dạng"; không tạo');
 t('USR-C07', 'A.II.1-UC4', 'Thêm mới', 'Mật khẩu không đạt quy tắc bảo mật bị chặn', 'Validate', 'Cao', '1. Nhập mật khẩu "123"\n2. Lưu', 'Báo "Mật khẩu chưa đáp ứng đủ các yêu cầu bảo mật"; không tạo');
-t('USR-C08', 'A.II.1-UC4', 'Thêm mới', 'Trùng tên đăng nhập bị từ chối', 'Nghiệp vụ', 'Cao', '1. Tạo user A\n2. Tạo user B cùng tên đăng nhập, email khác', 'Báo lỗi tên đăng nhập đã được sử dụng; không tạo bản ghi thứ hai');
+t('USR-C08', 'A.II.1-UC4', 'Thêm mới', 'Trùng tên đăng nhập bị từ chối', 'Nghiệp vụ', 'Cao', '1. Tạo user A\n2. Tạo user B cùng tên đăng nhập, email khác', 'Báo lỗi tên đăng nhập đã được sử dụng; không tạo bản ghi thứ hai (Tên đăng nhập có phân biệt hoa/thường)');
 t('USR-C09', 'A.II.1-UC4', 'Thêm mới', 'Trùng email bị từ chối', 'Nghiệp vụ', 'Cao', '1. Tạo user A\n2. Tạo user B cùng email, tên đăng nhập khác', 'Báo lỗi email đã được sử dụng; không tạo bản ghi thứ hai');
 t('USR-C10', 'A.II.1-UC4', 'Thêm mới', 'Hai checkbox "Bắt buộc đổi mật khẩu" và "Gửi thông tin đăng nhập qua email" mặc định được tích', 'UI', 'Thấp', '1. Mở form thêm mới', 'Cả hai checkbox ở trạng thái đã tích');
 t('USR-C11', 'A.II.1-UC4', 'Thêm mới', 'Bỏ tích "Bắt buộc đổi mật khẩu" thì không bắt buộc đổi mật khẩu (bug UC)', 'Nghiệp vụ', 'Cao', '1. Bỏ tích "Bắt buộc đổi mật khẩu"\n2. Lưu\n3. Kiểm tra dữ liệu gửi đi và bản ghi', 'Request gửi isRequireChangePassword=false; bản ghi lưu không bắt buộc đổi mật khẩu', 'Auto', 'UC_1409 ghi bug: lỗi bắt buộc đổi mật khẩu dù không tích');
 t('USR-C12', 'A.II.1-UC4', 'Thêm mới', 'Bỏ tích "Gửi thông tin đăng nhập qua email" thì không gửi mail', 'Nghiệp vụ', 'Trung bình', '1. Bỏ tích gửi email\n2. Lưu', 'Request gửi isRequestMailInfo=false');
 t('USR-C13', 'A.II.1-UC4', 'Thêm mới', 'Hủy form thêm mới không tạo bản ghi', 'Chức năng', 'Trung bình', '1. Điền dữ liệu\n2. Bấm Hủy\n3. Tìm tên đăng nhập đã nhập', 'Form đóng; không có bản ghi mới');
-t('USR-C14', 'A.II.1-UC4', 'Thêm mới', 'Giới hạn độ dài trường tối đa 255 ký tự', 'Validate', 'Thấp', '1. Nhập 300 ký tự vào ô Tên', 'Ô chỉ nhận tối đa 255 ký tự');
+t('USR-C14', 'A.II.1-UC4', 'Thêm mới', 'Giới hạn độ dài: Họ tên tối đa 255 ký tự', 'Validate', 'Thấp', '1. Nhập 300 ký tự vào ô Họ tên', 'Ô chặn không cho gõ quá 255 ký tự');
 t('USR-C15', 'A.II.1-UC4', 'Thêm mới', '[API] Server từ chối email sai định dạng', 'Bảo mật', 'Cao', '1. Gọi POST /idm/users với email "abc"', 'HTTP 400 – không tạo user (validate phía server)', 'Auto', 'Khảo sát: API hiện trả 200 → nghi lỗi thiếu validate server');
 t('USR-C16', 'A.II.1-UC4', 'Thêm mới', '[API] Server từ chối mật khẩu không đạt quy tắc', 'Bảo mật', 'Cao', '1. Gọi POST /idm/users với mật khẩu 5 ký tự', 'HTTP 400 – không tạo user', 'Auto', 'Khảo sát: API hiện trả 200 → nghi lỗi thiếu validate server');
 t('USR-C17', 'A.II.1-UC4', 'Thêm mới', '[API] Tên rỗng trả lỗi 4xx có thông báo, không phải 500', 'Bảo mật', 'Trung bình', '1. Gọi POST /idm/users với name rỗng', 'HTTP 400 có thông báo rõ ràng, không lộ stacktrace', 'Auto', 'Khảo sát: API hiện trả 500 + stacktrace → nghi lỗi');
@@ -97,7 +106,7 @@ t('GRP-V03', 'A.II.2-UC2', 'Export', 'Xuất Excel thành viên ở chi tiết n
 t('GRP-C01', 'A.II.2-UC4', 'Thêm mới', 'Thêm nhóm đầy đủ Mã, Tên, Mô tả thành công', 'Chức năng', 'Cao', '1. Bấm "Thêm mới nhóm người dùng"\n2. Nhập mã, tên, mô tả\n3. Lưu', 'Thông báo thành công; nhóm xuất hiện trong danh sách');
 t('GRP-C02', 'A.II.2-UC4', 'Thêm mới', 'Thêm nhóm chỉ với Mã và Tên', 'Chức năng', 'Trung bình', '1. Chỉ nhập mã & tên\n2. Lưu', 'Tạo thành công, mô tả để trống');
 t('GRP-C03', 'A.II.2-UC4', 'Thêm mới', 'Bỏ trống Mã/Tên thì báo lỗi bắt buộc', 'Validate', 'Cao', '1. Bấm Lưu khi chưa nhập', 'Báo lỗi bắt buộc ở Mã nhóm và Tên nhóm; không tạo');
-t('GRP-C04', 'A.II.2-UC4', 'Thêm mới', 'Trùng mã nhóm bị từ chối', 'Nghiệp vụ', 'Cao', '1. Tạo nhóm A\n2. Tạo nhóm B cùng mã', 'Báo "Code ... đã tồn tại"; chỉ có 1 bản ghi');
+t('GRP-C04', 'A.II.2-UC4', 'Thêm mới', 'Trùng mã nhóm bị từ chối', 'Nghiệp vụ', 'Cao', '1. Tạo nhóm A\n2. Tạo nhóm B cùng mã', 'Báo "Mã [ABC] đã tồn tại. Vui lòng nhập mã khác."; chỉ 1 bản ghi');
 t('GRP-C05', 'A.II.2-UC4', 'Thêm mới', 'Hủy form thêm mới không tạo nhóm', 'Chức năng', 'Trung bình', '1. Nhập mã tên\n2. Hủy', 'Không có nhóm mới');
 t('GRP-C06', 'A.II.2-UC4', 'Thêm mới', '[API] Server từ chối tên nhóm rỗng', 'Bảo mật', 'Trung bình', '1. POST /idm/roles với name rỗng', 'HTTP 400 – không tạo nhóm', 'Auto', 'Khảo sát: API hiện trả 200 → nghi lỗi thiếu validate server');
 t('GRP-E01', 'A.II.2-UC5', 'Chỉnh sửa', 'Sửa tên nhóm thành công', 'Chức năng', 'Cao', '1. Menu → Cập nhật\n2. Đổi tên\n3. Lưu', 'Thông báo thành công; tên mới hiển thị');
@@ -128,10 +137,10 @@ t('PRV-V02', 'A.IV.1-UC5', 'Xem chi tiết', 'Cột "Số đơn vị" khớp v�
 t('PRV-V03', 'A.IV.1-UC3', 'Xem chi tiết', 'Nút "Chỉnh sửa" ở chi tiết mở form cập nhật', 'Chức năng', 'Trung bình', '1. Mở chi tiết tỉnh\n2. Bấm Chỉnh sửa', 'Form cập nhật mở với dữ liệu hiện tại');
 t('PRV-C01', 'A.IV.1-UC2', 'Thêm mới', 'Thêm tỉnh/thành thành công', 'Chức năng', 'Cao', '1. Bấm "Thêm mới tỉnh/thành"\n2. Nhập mã, tên hợp lệ\n3. Lưu', 'Thông báo thành công; tỉnh xuất hiện trong danh sách với Số đơn vị = 0');
 t('PRV-C02', 'A.IV.1-UC2', 'Thêm mới', 'Bỏ trống Mã/Tên thì báo lỗi bắt buộc', 'Validate', 'Cao', '1. Bấm Lưu khi chưa nhập', 'Báo lỗi bắt buộc; không tạo');
-t('PRV-C03', 'A.IV.1-UC2', 'Thêm mới', 'Trùng mã tỉnh bị từ chối', 'Nghiệp vụ', 'Cao', '1. Tạo tỉnh A\n2. Tạo tỉnh B cùng mã', 'Báo "Mã tỉnh đã tồn tại"; chỉ 1 bản ghi');
-t('PRV-C04', 'A.IV.1-UC2', 'Thêm mới', 'Mã tỉnh dài hơn 10 ký tự bị chặn', 'Validate', 'Trung bình', '1. Nhập mã 11 ký tự\n2. Lưu', 'Báo "Không được nhập vượt quá 10 ký tự"; không tạo');
+t('PRV-C03', 'A.IV.1-UC2', 'Thêm mới', 'Trùng mã tỉnh bị từ chối', 'Nghiệp vụ', 'Cao', '1. Tạo tỉnh A\n2. Tạo tỉnh B cùng mã', 'Báo "Mã [ABC] đã tồn tại. Vui lòng nhập mã khác."; chỉ 1 bản ghi');
+t('PRV-C04', 'A.IV.1-UC2', 'Thêm mới', 'Mã tỉnh dài hơn 50 ký tự bị chặn', 'Validate', 'Trung bình', '1. Nhập mã 51 ký tự\n2. Lưu', 'Ô nhập chặn gõ quá 50 ký tự; nếu vượt thì báo "Mã không vượt quá 50 ký tự"; không tạo');
 t('PRV-C05', 'A.IV.1-UC2', 'Thêm mới', 'Hủy form thêm mới không tạo bản ghi', 'Chức năng', 'Trung bình', '1. Nhập mã tên\n2. Hủy', 'Không có tỉnh mới');
-t('PRV-C06', 'A.IV.1-UC2', 'Thêm mới', 'Trùng tên tỉnh (khác mã)', 'Nghiệp vụ', 'Thấp', '1. Tạo tỉnh A\n2. Tạo tỉnh B khác mã, trùng tên', 'Hệ thống cảnh báo/từ chối tên trùng', 'Auto', 'Khảo sát: API hiện cho tạo trùng tên → cần BA xác nhận quy tắc');
+t('PRV-C06', 'A.IV.1-UC2', 'Thêm mới', 'Trùng tên tỉnh (khác mã)', 'Nghiệp vụ', 'Thấp', '1. Tạo tỉnh A\n2. Tạo tỉnh B khác mã, trùng tên', 'Bị từ chối (HTTP 400): tên bắt trùng trong cùng nhóm cha — tỉnh/thành không có cha nên tên là duy nhất toàn danh mục', 'Auto', 'Quy tắc chung Mã/Tên: tên bắt trùng trong cùng nhóm cha, so không phân biệt hoa/thường, có phân biệt dấu');
 t('PRV-E01', 'A.IV.1-UC3', 'Chỉnh sửa', 'Sửa tên tỉnh thành công', 'Chức năng', 'Cao', '1. Menu → Cập nhật\n2. Đổi tên\n3. Lưu', 'Thông báo thành công; tên mới hiển thị');
 t('PRV-E02', 'A.IV.1-UC3', 'Chỉnh sửa', 'Mã tỉnh không đổi sau khi sửa tên', 'Nghiệp vụ', 'Trung bình', '1. Sửa tên\n2. Kiểm tra mã', 'Mã giữ nguyên');
 t('PRV-E03', 'A.IV.1-UC3', 'Chỉnh sửa', 'Xóa trắng tên khi sửa bị chặn', 'Validate', 'Trung bình', '1. Xóa tên\n2. Lưu', 'Báo lỗi bắt buộc; không lưu');
@@ -152,7 +161,7 @@ t('COM-L12', 'A.IV.2-UC1', 'Bộ lọc', 'Lọc theo tỉnh/thành trực thuộ
 t('COM-V01', 'A.IV.2-UC5', 'Xem chi tiết', 'Chi tiết xã hiển thị thông tin và danh sách đơn vị thuộc xã', 'Chức năng', 'Cao', '1. Bấm "Xem chi tiết" ở một xã', 'Hiển thị mã, tên, tỉnh trực thuộc và bảng đơn vị; có nút Chỉnh sửa, Thêm mới đơn vị vào xã');
 t('COM-C01', 'A.IV.2-UC2', 'Thêm mới', 'Thêm xã/phường thành công (có chọn tỉnh)', 'Chức năng', 'Cao', '1. Bấm "Thêm mới xã/phường"\n2. Nhập mã, tên, chọn tỉnh\n3. Lưu', 'Thông báo thành công; xã xuất hiện trong danh sách, đúng tỉnh trực thuộc');
 t('COM-C02', 'A.IV.2-UC2', 'Thêm mới', 'Bỏ trống Mã/Tên thì báo lỗi bắt buộc', 'Validate', 'Cao', '1. Bấm Lưu khi chưa nhập', 'Báo lỗi bắt buộc; không tạo');
-t('COM-C03', 'A.IV.2-UC2', 'Thêm mới', 'Trùng mã xã bị từ chối', 'Nghiệp vụ', 'Cao', '1. Tạo xã A\n2. Tạo xã B cùng mã', 'Báo "Mã xã đã tồn tại"; chỉ 1 bản ghi');
+t('COM-C03', 'A.IV.2-UC2', 'Thêm mới', 'Trùng mã xã bị từ chối', 'Nghiệp vụ', 'Cao', '1. Tạo xã A\n2. Tạo xã B cùng mã', 'Báo "Mã [ABC] đã tồn tại. Vui lòng nhập mã khác."; chỉ 1 bản ghi');
 t('COM-C04', 'A.IV.2-UC2', 'Thêm mới', 'Hủy form thêm mới không tạo bản ghi', 'Chức năng', 'Trung bình', '1. Nhập dữ liệu\n2. Hủy', 'Không có xã mới');
 t('COM-C05', 'A.IV.2-UC2', 'Thêm mới', 'Thêm xã không chọn tỉnh', 'Nghiệp vụ', 'Trung bình', '1. Nhập mã tên, bỏ trống tỉnh\n2. Lưu', 'Theo UC: Tỉnh là thuộc tính của xã – hệ thống xử lý nhất quán (bắt buộc hoặc cho phép trống) và không lỗi', 'Auto', 'UC_1409 chưa nêu rõ tỉnh có bắt buộc không – cần BA xác nhận');
 t('COM-E01', 'A.IV.2-UC3', 'Chỉnh sửa', 'Sửa tên xã thành công', 'Chức năng', 'Cao', '1. Menu → Cập nhật\n2. Đổi tên\n3. Lưu', 'Thông báo thành công; tên mới hiển thị');
@@ -177,7 +186,7 @@ t('UTY-V01', 'A.IV.3-UC3', 'Xem chi tiết', 'Chi tiết loại đơn vị hiể
 t('UTY-V02', 'A.IV.3-UC3', 'Xem chi tiết', 'Số đơn vị trong chi tiết khớp với số dòng ở bảng đơn vị', 'Nghiệp vụ', 'Trung bình', '1. Mở chi tiết', 'Số trong tiêu đề "ĐƠN VỊ THUỘC LOẠI - N" = số dòng bảng');
 t('UTY-C01', 'A.IV.3-UC4', 'Thêm mới', 'Thêm loại đơn vị thành công (mã, tên, cấp hành chính, mô tả)', 'Chức năng', 'Cao', '1. Bấm "Thêm mới loại đơn vị"\n2. Nhập đủ\n3. Lưu', 'Thông báo thành công; xuất hiện trong danh sách với Số đơn vị = 0');
 t('UTY-C02', 'A.IV.3-UC4', 'Thêm mới', 'Bỏ trống Mã/Tên/Cấp hành chính thì báo lỗi bắt buộc', 'Validate', 'Cao', '1. Bấm Lưu khi chưa nhập', 'Báo lỗi bắt buộc ở các trường; không tạo');
-t('UTY-C03', 'A.IV.3-UC4', 'Thêm mới', 'Trùng mã loại đơn vị bị từ chối', 'Nghiệp vụ', 'Cao', '1. Tạo loại A\n2. Tạo loại B cùng mã', 'Báo "Mã loại đơn vị đã tồn tại"; chỉ 1 bản ghi');
+t('UTY-C03', 'A.IV.3-UC4', 'Thêm mới', 'Trùng mã loại đơn vị bị từ chối', 'Nghiệp vụ', 'Cao', '1. Tạo loại A\n2. Tạo loại B cùng mã', 'Báo "Mã [ABC] đã tồn tại. Vui lòng nhập mã khác."; chỉ 1 bản ghi');
 t('UTY-C04', 'A.IV.3-UC4', 'Thêm mới', 'Hủy form thêm mới không tạo bản ghi', 'Chức năng', 'Trung bình', '1. Nhập dữ liệu\n2. Hủy', 'Không có loại mới');
 t('UTY-C05', 'A.IV.3-UC4', 'Thêm mới', 'Chọn từng cấp hành chính (Trung ương/Cấp tỉnh/Cấp xã) đều lưu đúng', 'Chức năng', 'Trung bình', '1. Tạo 3 loại với 3 cấp', 'Cột Cấp hiển thị đúng từng giá trị');
 t('UTY-E01', 'A.IV.3-UC5', 'Chỉnh sửa', 'Sửa tên loại đơn vị thành công', 'Chức năng', 'Cao', '1. Menu → Cập nhật\n2. Đổi tên\n3. Lưu', 'Thông báo thành công; tên mới hiển thị');
@@ -204,7 +213,7 @@ t('ORG-V02', 'A.IV.4-UC9', 'Người dùng trong đơn vị', 'Bảng người d
 t('ORG-C01', 'A.IV.4-UC4', 'Thêm mới', 'Thêm đơn vị thành công với Mã, Tên, Loại đơn vị', 'Chức năng', 'Cao', '1. Bấm "Thêm mới đơn vị"\n2. Nhập mã, tên, chọn loại\n3. Lưu', 'Thông báo thành công; đơn vị xuất hiện, trạng thái Chưa khóa');
 t('ORG-C02', 'A.IV.4-UC4', 'Thêm mới', 'Bỏ trống Mã/Tên/Loại đơn vị thì báo lỗi bắt buộc', 'Validate', 'Cao', '1. Bấm Lưu khi chưa nhập', 'Báo lỗi bắt buộc ở 3 trường; không tạo');
 t('ORG-C03', 'A.IV.4-UC4', 'Thêm mới', 'Bỏ trống riêng Loại đơn vị thì báo lỗi', 'Validate', 'Cao', '1. Nhập mã, tên, bỏ trống loại\n2. Lưu', 'Báo lỗi bắt buộc ở Loại đơn vị; không tạo');
-t('ORG-C04', 'A.IV.4-UC4', 'Thêm mới', 'Trùng mã đơn vị bị từ chối', 'Nghiệp vụ', 'Cao', '1. Tạo đơn vị A\n2. Tạo đơn vị B cùng mã', 'Báo mã đã tồn tại; chỉ 1 bản ghi');
+t('ORG-C04', 'A.IV.4-UC4', 'Thêm mới', 'Trùng mã đơn vị bị từ chối', 'Nghiệp vụ', 'Cao', '1. Tạo đơn vị A\n2. Tạo đơn vị B cùng mã', 'Báo "Mã [ABC] đã tồn tại. Vui lòng nhập mã khác."; chỉ 1 bản ghi');
 t('ORG-C05', 'A.IV.4-UC4', 'Thêm mới', 'Thêm đơn vị con (chọn Đơn vị cha)', 'Chức năng', 'Cao', '1. Tạo đơn vị cha\n2. Tạo đơn vị con chọn đơn vị cha', 'Đơn vị con tạo thành công, gắn đúng đơn vị cha');
 t('ORG-C06', 'A.IV.4-UC4', 'Thêm mới', 'Thêm đơn vị có tham chiếu tỉnh/thành', 'Chức năng', 'Cao', '1. Tạo đơn vị, chọn tỉnh tham chiếu', 'Cột Tỉnh/thành tham chiếu hiển thị đúng tỉnh');
 t('ORG-C07', 'A.IV.4-UC4', 'Thêm mới', 'Email đơn vị sai định dạng bị chặn', 'Validate', 'Trung bình', '1. Nhập email "abc"\n2. Lưu', 'Báo lỗi định dạng email; không tạo');
@@ -241,14 +250,31 @@ for (const [P, uc, nm] of EDGE) {
 const NF = [['USR', 'V04', 'A.II.1-UC3', 'người dùng'], ['GRP', 'V04', 'A.II.2-UC3', 'nhóm'], ['PRV', 'V04', 'A.IV.1-UC5', 'tỉnh'], ['COM', 'V02', 'A.IV.2-UC5', 'xã'], ['UTY', 'V03', 'A.IV.3-UC3', 'loại đơn vị'], ['ORG', 'V03', 'A.IV.4-UC3', 'đơn vị']];
 for (const [P, n, uc, nm] of NF) t(`${P}-${n}`, uc, 'Xem chi tiết', `Mở chi tiết ${nm} với id không tồn tại không gây lỗi hệ thống`, 'Validate', 'Trung bình', '1. [API] GET /<tài nguyên>/<id lạ>\n2. Mở URL chi tiết với id lạ', 'API trả 4xx (không 500); trang không trắng, không lộ lỗi nội bộ');
 for (const [P, uc, nm] of EDGE) t(`${P}-G06`, uc, 'Thêm mới', `Bấm Lưu 2 lần liên tiếp chỉ tạo 1 bản ghi (${nm})`, 'Nghiệp vụ', 'Trung bình', '1. Điền form hợp lệ\n2. Bấm Lưu 2 lần liên tiếp rất nhanh', 'Chỉ có đúng 1 bản ghi theo mã; không báo lỗi trùng gây hiểu nhầm');
-t('USR-C19', 'A.II.1-UC4', 'Thêm mới', 'Tên đăng nhập chỉ khác hoa/thường so với tài khoản có sẵn bị coi là trùng', 'Nghiệp vụ', 'Trung bình', '1. Có user "abc"\n2. [API] Tạo user "ABC" email khác', 'Bị từ chối (4xx)', 'Auto', 'Chưa có đặc tả rõ về phân biệt hoa/thường — cần BA xác nhận');
-t('GRP-C07', 'A.II.2-UC4', 'Thêm mới', 'Mã nhóm chỉ khác hoa/thường so với nhóm có sẵn bị coi là trùng', 'Nghiệp vụ', 'Trung bình', '1. Có nhóm "ABC"\n2. [API] Tạo nhóm "abc"', 'Bị từ chối (4xx)', 'Auto', 'Cần BA xác nhận quy tắc hoa/thường');
+t('USR-C19', 'A.II.1-UC4', 'Thêm mới', 'Tên đăng nhập có phân biệt hoa/thường: "ABC" là tài khoản khác "abc"', 'Nghiệp vụ', 'Trung bình', '1. Có user "abc"\n2. [API] Tạo user "ABC" email khác', 'Không bị từ chối vì trùng (Tên đăng nhập phân biệt hoa/thường): hoặc tạo được (HTTP 200), hoặc bị từ chối do định dạng (form chỉ cho chữ thường) chứ không phải do "đã tồn tại"; user "abc" không bị ảnh hưởng', 'Auto', 'Quy tắc chung Mã/Tên: Tên đăng nhập, Email, Mật khẩu có phân biệt hoa/thường (khác với Mã)');
+t('GRP-C07', 'A.II.2-UC4', 'Thêm mới', 'Mã nhóm chỉ khác hoa/thường so với nhóm có sẵn bị coi là trùng', 'Nghiệp vụ', 'Trung bình', '1. Có nhóm "ABC"\n2. [API] Tạo nhóm "abc"', 'Bị từ chối (4xx) "Mã [abc] đã tồn tại. Vui lòng nhập mã khác."', 'Auto', 'Quy tắc chung Mã/Tên: Mã không phân biệt hoa/thường');
 t('GRP-E05', 'A.II.2-UC5', 'Chỉnh sửa', 'Mã nhóm không sửa được ở form cập nhật', 'Nghiệp vụ', 'Trung bình', '1. Menu → Cập nhật', 'Ô Mã nhóm ở trạng thái chỉ-đọc');
 t('GRP-V05', 'A.II.2-UC7', 'Xem thành viên', 'Tìm thành viên trong chi tiết nhóm', 'Chức năng', 'Trung bình', '1. Mở chi tiết nhóm có 2 thành viên\n2. Nhập tên đăng nhập 1 thành viên', 'Chỉ còn đúng thành viên đó; từ khóa lạ → rỗng');
 t('GRP-M08', 'A.II.2-UC8', 'Xóa thành viên', 'Chọn Hủy ở hộp xác nhận xóa khỏi nhóm thì giữ nguyên thành viên', 'Chức năng', 'Trung bình', '1. Chọn thành viên → Xóa khỏi nhóm\n2. Bấm Huỷ', 'Thành viên vẫn trong nhóm');
-t('PRV-E05', 'A.IV.1-UC3', 'Chỉnh sửa', 'Sửa tên tỉnh thành tên trùng tỉnh khác bị từ chối', 'Nghiệp vụ', 'Trung bình', '1. Có tỉnh A, B\n2. Sửa tên B = tên A\n3. Lưu', 'Bị từ chối; tên B giữ nguyên', 'Auto', 'Tương tự PRV-C06 (thêm trùng tên) — cần BA xác nhận quy tắc duy nhất của tên');
+t('PRV-E05', 'A.IV.1-UC3', 'Chỉnh sửa', 'Sửa tên tỉnh thành tên trùng tỉnh khác bị từ chối', 'Nghiệp vụ', 'Trung bình', '1. Có tỉnh A, B\n2. Sửa tên B = tên A\n3. Lưu', 'Bị từ chối; tên B giữ nguyên', 'Auto', 'Cùng quy tắc với PRV-C06 (tên bắt trùng trong cùng nhóm cha)');
 t('ORG-V04', 'A.IV.4-UC9', 'Người dùng trong đơn vị', 'Tìm người dùng trong chi tiết đơn vị', 'Chức năng', 'Trung bình', '1. Mở chi tiết đơn vị có 2 user\n2. Nhập tên đăng nhập 1 user', 'Chỉ còn đúng user đó');
 t('ORG-M03', 'A.IV.4-UC11', 'Thêm người dùng', 'Người dùng đang thuộc đơn vị khác được chuyển sang đơn vị mới', 'Nghiệp vụ', 'Trung bình', '1. User thuộc đơn vị A\n2. Chi tiết đơn vị B → Thêm người dùng → chọn user → Lưu', 'User chuyển sang B (theo thông báo của màn hình)');
+
+// ---- Quy tắc chung Mã/Tên: giới hạn ký tự, ký tự hợp lệ, bắt trùng (Mã toàn danh mục · Tên trong cùng nhóm cha) ----
+const RULE_PAGES = [['USR', 'A.II.1-UC4', 'người dùng', 'Tên đăng nhập', 'Họ tên'], ['GRP', 'A.II.2-UC4', 'nhóm người dùng', 'Mã', 'Tên'], ['PRV', 'A.IV.1-UC2', 'tỉnh/thành', 'Mã', 'Tên'],
+  ['COM', 'A.IV.2-UC2', 'xã/phường', 'Mã', 'Tên'], ['UTY', 'A.IV.3-UC4', 'loại đơn vị', 'Mã', 'Tên'], ['ORG', 'A.IV.4-UC4', 'đơn vị', 'Mã', 'Tên']];
+for (const [P, uc, nm, kCode, kName] of RULE_PAGES) {
+  const isU = P === 'USR';
+  t(`${P}-G07`, uc, 'Thêm mới', `[API] ${kCode} dài hơn 50 ký tự bị từ chối (${nm})`, 'Validate', 'Trung bình', `1. [API] POST với ${kCode} ≥ 51 ký tự`, `HTTP 400 "${kCode} không vượt quá 50 ký tự"; không tạo bản ghi`, 'Auto', 'Quy tắc chung: Mã tối đa 50 ký tự, Tên đăng nhập 50 ký tự; backend kiểm tra lại khi lưu');
+  if (!isU) t(`${P}-G08`, uc, 'Thêm mới', `[API] Mã chứa khoảng trắng, dấu tiếng Việt hoặc ký tự đặc biệt bị từ chối (${nm})`, 'Validate', 'Trung bình', '1. [API] POST với mã "QC AUTO 1", "MãQC1", "QC1@#", "QC1é"', 'Cả 4 bị từ chối (4xx); mã chỉ gồm chữ không dấu A–Z, số 0–9 và - _ .', 'Auto', 'Quy tắc chung Mã');
+  if (!isU) t(`${P}-G09`, uc, 'Thêm mới', `[API] Trùng mã (không phân biệt hoa/thường) báo đúng thông báo (${nm})`, 'Nghiệp vụ', 'Cao', '1. Có bản ghi mã "ABC"\n2. [API] Tạo mã "ABC", "abc", "Abc"', 'Cả 3 bị từ chối 4xx với "Mã [ABC] đã tồn tại. Vui lòng nhập mã khác."', 'Auto', 'Quy tắc chung: Mã bắt trùng toàn danh mục, mọi trạng thái (Đã khóa/Chưa khóa/Ngừng hoạt động…), không phân biệt hoa/thường');
+  t(`${P}-G10`, uc, 'Thêm mới', `[API] ${kName} đúng 255 ký tự được nhận, 256 ký tự bị từ chối (${nm})`, 'Validate', 'Trung bình', `1. [API] POST ${kName} 255 ký tự\n2. [API] POST ${kName} 256 ký tự`, `255: HTTP 200; 256: HTTP 400 "${kName} không vượt quá 255 ký tự"`, 'Auto', 'Quy tắc chung: Tên/Họ tên tối đa 255 ký tự (Tên chỉ số, Tên nhóm chỉ số tối đa 500)');
+  if (isU) t(`${P}-G11`, uc, 'Thêm mới', 'Họ tên trùng nhau vẫn được tạo (không bắt trùng)', 'Nghiệp vụ', 'Trung bình', '1. Tạo user A họ tên "X"\n2. Tạo user B cùng họ tên "X", tên đăng nhập/email khác', 'Cả hai được tạo (HTTP 200)', 'Auto', 'Quy tắc chung: không bắt trùng Họ tên người dùng');
+  else {
+    t(`${P}-G11`, uc, 'Thêm mới', `[API] Tên trùng trong cùng nhóm cha (khác hoa/thường) bị từ chối (${nm})`, 'Nghiệp vụ', 'Cao', `1. Có bản ghi tên "X" ${['COM', 'ORG'].includes(P) ? 'thuộc cha A' : ''}\n2. [API] Tạo bản ghi mã khác, tên "X" và "x" (HOA) ${['COM', 'ORG'].includes(P) ? 'cùng cha A' : ''}`, 'Bị từ chối 4xx: tên bắt trùng trong cùng nhóm cha, không phân biệt hoa/thường', 'Auto', 'Quy tắc chung: Tên bắt trùng chỉ trong cùng nhóm cha');
+    t(`${P}-G12`, uc, 'Thêm mới', `[API] Tên chỉ khác dấu ("Trùng" và "Trung") là tên khác, được tạo (${nm})`, 'Nghiệp vụ', 'Trung bình', `1. Có bản ghi tên "Trùng"\n2. [API] Tạo bản ghi tên "Trung" ${['COM', 'ORG'].includes(P) ? 'cùng cha' : ''}`, 'Được tạo (HTTP 200)', 'Auto', 'Quy tắc chung: so trùng tên có phân biệt dấu');
+    if (['COM', 'ORG'].includes(P)) t(`${P}-G13`, uc, 'Thêm mới', `[API] Tên trùng nhưng khác nhóm cha thì được tạo (${nm})`, 'Nghiệp vụ', 'Trung bình', `1. Có bản ghi tên "X" thuộc ${P === 'COM' ? 'tỉnh' : 'đơn vị cha'} A\n2. [API] Tạo bản ghi tên "X" thuộc ${P === 'COM' ? 'tỉnh' : 'đơn vị cha'} B`, 'Được tạo (HTTP 200)', 'Auto', 'Quy tắc chung: tên chỉ bắt trùng trong cùng nhóm cha');
+  }
+}
 
 import defineB from './catalog-B.mjs';
 defineB(t, listSuite);
@@ -258,11 +284,37 @@ import defineC1 from './catalog-C1.mjs';
 import defineC2 from './catalog-C2.mjs';
 import defineC3 from './catalog-C3.mjs';
 defineC1(t); defineC2(t); defineC3(t);
+import defineE1a from './catalog-E1a.mjs';
+import defineE1b from './catalog-E1b.mjs';
+import defineE1c from './catalog-E1c.mjs';
+import defineE2 from './catalog-E2.mjs';
+import defineE3 from './catalog-E3.mjs';
+import defineE4 from './catalog-E4.mjs';
+defineE1a(t); defineE1b(t); defineE1c(t); defineE2(t); defineE3(t); defineE4(t);
+import defineD from './catalog-D.mjs';
+defineD(t);
 import defineAuth from './catalog-AUTH.mjs';
 defineAuth(t);
 import defineAcc from './catalog-ACC.mjs';
 defineAcc(t);
 import definePrm from './catalog-PRM.mjs';
 definePrm(t);
+import defineATTT from './catalog-ATTT.mjs';
+defineATTT(t);
+import defineBUG from './catalog-BUG.mjs';
+defineBUG(t);
+import defineBUG_A1 from './catalog-BUG-A1.mjs';
+defineBUG_A1(t);
+import defineBUG_A2 from './catalog-BUG-A2.mjs';
+defineBUG_A2(t);
+import defineBUG_B from './catalog-BUG-B.mjs';
+defineBUG_B(t);
+import defineBUG_C from './catalog-BUG-C.mjs';
+defineBUG_C(t);
+
+// Loại testcase trong removed.json (FAIL/SKIP đã loại — node testcases/tools/remove-cases.mjs)
+import fs from 'node:fs';
+const REMOVED = fs.existsSync('testcases/docs/removed.json') ? JSON.parse(fs.readFileSync('testcases/docs/removed.json', 'utf8')) : {};
+for (let i = T.length - 1; i >= 0; i--) if (REMOVED[T[i].id]) T.splice(i, 1);
 
 export default T;

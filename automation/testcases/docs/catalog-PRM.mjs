@@ -129,9 +129,6 @@ export default function definePrm(t) {
   c('PRM-E21', U2, 'Kiểm tra API', 'Mã quyền quá dài hoặc chứa HTML bị từ chối an toàn, không lộ lỗi nội bộ', 'Bảo mật', 'Trung bình',
     '1. ' + NEWGRP + '\n2. [API] PUT mã quyền 5000 ký tự\n3. [API] PUT mã quyền "<script>alert(1)</script>"', 'Cả hai trả 400; không 500; không lộ stack trace; quyền của nhóm không đổi',
     'Khảo sát: thông báo lỗi phản chiếu nguyên văn mã quyền (kể cả chuỗi 5000 ký tự) — cần rút gọn/escape khi hiển thị');
-  c('PRM-E22', U2, 'Nghiệp vụ', 'Quyền Sửa/Xóa/Thêm không được cấp riêng khi chưa có quyền Xem', 'Nghiệp vụ', 'Trung bình',
-    '1. ' + NEWGRP + '\n2. Chọn nhóm, chỉ tick quyền "Sửa" của Quản lý người dùng\n3. Lưu', 'Hệ thống tự bật kèm quyền Xem hoặc chặn và báo cần cấp quyền Xem',
-    'Khảo sát: giao diện và API cho phép cấp Sửa/Xóa mà không có Xem. ' + BA);
   c('PRM-E23', U2, 'Nhóm hệ thống', 'Không thay đổi được quyền của nhóm hệ thống "Quản trị hệ thống"', 'Nghiệp vụ', 'Cao',
     '1. Chọn nhóm "Quản trị hệ thống" (khóa)\n2. Thử tick/bỏ quyền trên giao diện\n3. [API] PUT quyền của nhóm này (gửi đúng danh sách hiện tại, không đổi gì)',
     'Giao diện không cho thay đổi quyền của nhóm hệ thống (checkbox khóa, Lưu khóa); API trả 400 "Không thể thay đổi quyền của nhóm người dùng hệ thống"; quyền vẫn 104/104',

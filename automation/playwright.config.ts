@@ -19,6 +19,7 @@ export default defineConfig({
   testDir: './scripts',
   timeout: 30_000,
   retries: 0,
+  grepInvert: /\[ĐÃ LOẠI\]/,   // testcase đã loại (testcases/docs/removed.json)
   reporter: [['list'], ['html', { open: 'never' }]],
   use: {
     baseURL: cfg.baseURL,

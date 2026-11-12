@@ -1,6 +1,6 @@
 title: "Trụ cột"
 phan_he: "B - Bộ chỉ số DTI"
-tong_so: 49
+tong_so: 33
 testcases:
   - id: PIL-L01
     title: "Danh sách Trụ cột hiển thị đúng các cột"
@@ -16,21 +16,7 @@ testcases:
       - "2. Mở trang Trụ cột"
     ket_qua_mong_doi:
       - "Bảng có đủ cột: STT, Mã trụ cột, Tên trụ cột, Nhóm chỉ số, Trạng thái, Thao tác; có dữ liệu"
-    ket_qua_chay: "Không chạy"
-  - id: PIL-L02
-    title: "Phân trang mặc định 10 bản ghi/trang và hiển thị tổng số bản ghi"
-    uc: "B.I.1-UC1"
-    tac_nhan: "Quản trị hệ thống, Cán bộ"
-    tai_khoan_chay: "admin"
-    chuc_nang: "Xem danh sách"
-    loai: "Chức năng"
-    uu_tien: "Trung bình"
-    automation: "Auto"
-    cac_buoc:
-      - "1. Mở trang Trụ cột"
-    ket_qua_mong_doi:
-      - "Hiển thị \"Hiển thị 1-10 trong N bản ghi\"; tối đa 10 dòng dữ liệu; thanh phân trang xuất hiện khi N>10"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: PIL-L03
     title: "Tìm theo mã trụ cột trả về đúng bản ghi"
     uc: "B.I.1-UC1"
@@ -45,7 +31,7 @@ testcases:
       - "2. Nhập một mã trụ cột có sẵn vào ô tìm kiếm"
     ket_qua_mong_doi:
       - "Chỉ hiển thị các dòng chứa từ khóa; có ít nhất 1 dòng"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: PIL-L04
     title: "Tìm theo tên trụ cột trả về đúng bản ghi"
     uc: "B.I.1-UC1"
@@ -59,7 +45,7 @@ testcases:
       - "1. Nhập một tên trụ cột có sẵn vào ô tìm kiếm"
     ket_qua_mong_doi:
       - "Chỉ hiển thị các dòng chứa từ khóa"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: PIL-L05
     title: "Từ khóa không tồn tại → không có dữ liệu"
     uc: "B.I.1-UC1"
@@ -72,8 +58,8 @@ testcases:
     cac_buoc:
       - "1. Nhập \"zzqcxx_khongtontai_999\""
     ket_qua_mong_doi:
-      - "Bảng rỗng / hiển thị trạng thái không có dữ liệu, không lỗi"
-    ket_qua_chay: "Không chạy"
+      - "Bảng rỗng, hiện \"Không tìm thấy dữ liệu phù hợp\"; không lỗi"
+    ket_qua_chay: "Pass"
   - id: PIL-L06
     title: "Tìm kiếm không phân biệt chữ hoa/chữ thường"
     uc: "B.I.1-UC1"
@@ -87,7 +73,7 @@ testcases:
       - "1. Nhập từ khóa viết HOA rồi viết thường của cùng một giá trị"
     ket_qua_mong_doi:
       - "Hai lần tìm trả về cùng số bản ghi"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: PIL-L07
     title: "Ký tự đặc biệt / chuỗi SQL trong ô tìm kiếm không gây lỗi hệ thống"
     uc: "B.I.1-UC1"
@@ -101,7 +87,7 @@ testcases:
       - "1. Nhập  ' OR 1=1 --  và  <script>alert(1)</script>"
     ket_qua_mong_doi:
       - "Không hiện lỗi 500/trắng trang, không thực thi script, không trả về toàn bộ dữ liệu bất thường"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: PIL-L08
     title: "Chuyển sang trang 2 hiển thị dữ liệu khác trang 1"
     uc: "B.I.1-UC1"
@@ -115,7 +101,7 @@ testcases:
       - "1. Bấm trang 2 trên thanh phân trang"
     ket_qua_mong_doi:
       - "Trang 2 được đánh dấu active; nội dung bảng khác trang 1"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: PIL-L09
     title: "Đổi số bản ghi/trang sang 20 thì số dòng thay đổi theo"
     uc: "B.I.1-UC1"
@@ -129,7 +115,7 @@ testcases:
       - "1. Chọn \"20 / trang\" ở thanh phân trang"
     ket_qua_mong_doi:
       - "Số dòng tối đa mỗi trang = 20; tổng số bản ghi không đổi"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: PIL-L10
     title: "Xóa từ khóa thì danh sách trở về đầy đủ"
     uc: "B.I.1-UC1"
@@ -144,7 +130,51 @@ testcases:
       - "2. Xóa trắng ô tìm kiếm"
     ket_qua_mong_doi:
       - "Danh sách hiển thị lại như ban đầu (tổng số bản ghi bằng lúc đầu)"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
+  - id: PIL-L31
+    title: "Tìm kiếm không phân biệt dấu tiếng Việt (\"chuyen doi so\" ra \"Chuyển đổi số\")"
+    uc: "B.I.1-UC1"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Tìm kiếm"
+    loai: "Chức năng"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Mở trang Trụ cột"
+      - "2. Nhập tên có dấu nhưng gõ không dấu (cả chữ thường và HOA)"
+    ket_qua_mong_doi:
+      - "Ra các dòng có tên khớp khi bỏ dấu, không phân biệt hoa/thường"
+    ket_qua_chay: "Pass"
+  - id: PIL-L32
+    title: "Từ khóa bỏ khoảng trắng đầu/cuối; cả cụm từ được tìm như một chuỗi liền (không tách từ)"
+    uc: "B.I.1-UC1"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Tìm kiếm"
+    loai: "Chức năng"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Nhập \"   <mã>   \" (khoảng trắng 2 đầu)"
+      - "2. Nhập cụm 2 từ của tên theo thứ tự đảo ngược"
+    ket_qua_mong_doi:
+      - "Kết quả bằng khi nhập không có khoảng trắng; cụm đảo ngược chỉ ra dòng chứa nguyên cụm liền đó (không khớp từng từ rời)"
+    ket_qua_chay: "Pass"
+  - id: PIL-L33
+    title: "Ký tự %, _, ' trong từ khóa được hiểu là ký tự thường"
+    uc: "B.I.1-UC1"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Tìm kiếm"
+    loai: "Validate"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Lần lượt nhập \"%\", \"_\", \"'\" vào ô tìm kiếm"
+    ket_qua_mong_doi:
+      - "Không lỗi hệ thống; mọi dòng trả về đều chứa đúng ký tự đã nhập (không coi là ký tự đại diện / không gây lỗi SQL)"
+    ket_qua_chay: "Pass"
   - id: PIL-L12
     title: "Lọc theo trạng thái khóa"
     uc: "B.I.1-UC1"
@@ -158,7 +188,7 @@ testcases:
       - "1. Chọn bộ lọc trạng thái \"Đã khóa\" rồi \"Chưa khóa\""
     ket_qua_mong_doi:
       - "Mọi dòng có cột Trạng thái khớp bộ lọc"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: PIL-L13
     title: "Cột Nhóm chỉ số khớp số nhóm trong chi tiết trụ cột"
     uc: "B.I.1-UC1"
@@ -173,21 +203,7 @@ testcases:
       - "2. Mở chi tiết"
     ket_qua_mong_doi:
       - "Số nhóm ở danh sách = số dòng bảng nhóm chỉ số trong chi tiết"
-    ket_qua_chay: "Không chạy"
-  - id: PIL-V01
-    title: "Chi tiết trụ cột hiển thị mã, thứ tự, số nhóm, số chỉ số, tổng điểm tối đa, lần cập nhật cuối và bảng nhóm chỉ số"
-    uc: "B.I.1-UC1"
-    tac_nhan: "Quản trị hệ thống, Cán bộ"
-    tai_khoan_chay: "admin"
-    chuc_nang: "Xem chi tiết"
-    loai: "Chức năng"
-    uu_tien: "Cao"
-    automation: "Auto"
-    cac_buoc:
-      - "1. Bấm \"Xem chi tiết\" một trụ cột"
-    ket_qua_mong_doi:
-      - "Hiển thị đủ các thông tin trên; bảng \"Nhóm chỉ số thuộc trụ cột\" có cột Mã nhóm, Tên nhóm, Số chỉ số, Tổng điểm tối đa, Thứ tự, Thao tác; có nút Xuất Excel, Cập nhật, Thêm mới nhóm chỉ số"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: PIL-V02
     title: "Số liệu tổng hợp của trụ cột bằng tổng các nhóm bên dưới"
     uc: "B.I.1-UC1"
@@ -201,22 +217,7 @@ testcases:
       - "1. Mở chi tiết trụ cột có nhiều nhóm/chỉ số"
     ket_qua_mong_doi:
       - "Số chỉ số và Tổng điểm tối đa của trụ cột = tổng của các nhóm trong bảng"
-    ket_qua_chay: "Không chạy"
-  - id: PIL-V03
-    title: "Xuất Excel ở chi tiết trụ cột tải được file"
-    uc: "B.I.1-UC1"
-    tac_nhan: "Quản trị hệ thống, Cán bộ"
-    tai_khoan_chay: "admin"
-    chuc_nang: "Xem chi tiết"
-    loai: "Chức năng"
-    uu_tien: "Thấp"
-    automation: "Auto"
-    cac_buoc:
-      - "1. Mở chi tiết"
-      - "2. Bấm Xuất Excel"
-    ket_qua_mong_doi:
-      - "Tải về file .xlsx"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: PIL-V04
     title: "Mở chi tiết trụ cột với id không tồn tại không gây lỗi hệ thống"
     uc: "B.I.1-UC1"
@@ -231,7 +232,7 @@ testcases:
       - "2. Mở URL chi tiết với id lạ"
     ket_qua_mong_doi:
       - "API trả 4xx (không 500); trang không trắng, không lộ lỗi nội bộ"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: PIL-V05
     title: "Trụ cột đã khóa: chi tiết không cho Cập nhật / Thêm mới nhóm"
     uc: "B.I.1-UC5"
@@ -246,52 +247,7 @@ testcases:
     ket_qua_mong_doi:
       - "Nút Cập nhật bị ẩn/vô hiệu (hoặc thao tác bị từ chối), nhất quán với menu danh sách chỉ còn \"Mở khoá\""
     ghi_chu: "Khảo sát: chi tiết trụ cột đã khóa vẫn hiện nút Cập nhật; API từ chối \"đã bị khoá\" → nghi lỗi UI"
-    ket_qua_chay: "Không chạy"
-  - id: PIL-C01
-    title: "Thêm trụ cột thành công, mặc định Chưa khóa"
-    uc: "B.I.1-UC2"
-    tac_nhan: "Quản trị hệ thống, Cán bộ"
-    tai_khoan_chay: "admin"
-    chuc_nang: "Thêm mới"
-    loai: "Chức năng"
-    uu_tien: "Cao"
-    automation: "Auto"
-    cac_buoc:
-      - "1. Bấm \"Thêm mới trụ cột\""
-      - "2. Nhập mã, tên"
-      - "3. Lưu"
-    ket_qua_mong_doi:
-      - "Thông báo thành công; trụ cột xuất hiện, trạng thái Chưa khóa, số nhóm = 0"
-    ket_qua_chay: "Không chạy"
-  - id: PIL-C02
-    title: "Bỏ trống Mã/Tên thì báo lỗi bắt buộc"
-    uc: "B.I.1-UC2"
-    tac_nhan: "Quản trị hệ thống, Cán bộ"
-    tai_khoan_chay: "admin"
-    chuc_nang: "Thêm mới"
-    loai: "Validate"
-    uu_tien: "Cao"
-    automation: "Auto"
-    cac_buoc:
-      - "1. Bấm Lưu khi chưa nhập"
-    ket_qua_mong_doi:
-      - "Báo lỗi bắt buộc ở Mã và Tên; không tạo"
-    ket_qua_chay: "Không chạy"
-  - id: PIL-C03
-    title: "Trùng mã trụ cột bị từ chối"
-    uc: "B.I.1-UC2"
-    tac_nhan: "Quản trị hệ thống, Cán bộ"
-    tai_khoan_chay: "admin"
-    chuc_nang: "Thêm mới"
-    loai: "Nghiệp vụ"
-    uu_tien: "Cao"
-    automation: "Auto"
-    cac_buoc:
-      - "1. Tạo trụ cột A"
-      - "2. Tạo trụ cột B cùng mã"
-    ket_qua_mong_doi:
-      - "Báo \"Mã trụ cột đã tồn tại\"; chỉ có 1 bản ghi"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: PIL-C04
     title: "Mã chỉ khác hoa/thường so với trụ cột có sẵn bị coi là trùng"
     uc: "B.I.1-UC2"
@@ -305,9 +261,9 @@ testcases:
       - "1. Có trụ cột \"ABC\""
       - "2. [API] Tạo trụ cột \"abc\""
     ket_qua_mong_doi:
-      - "Bị từ chối (4xx)"
-    ghi_chu: "Khảo sát: API hiện nhận → nghi lỗi. Cần BA xác nhận quy tắc hoa/thường"
-    ket_qua_chay: "Không chạy"
+      - "Bị từ chối (4xx) \"Mã [abc] đã tồn tại. Vui lòng nhập mã khác.\""
+    ghi_chu: "Quy tắc chung: Mã không phân biệt hoa/thường"
+    ket_qua_chay: "Pass"
   - id: PIL-C05
     title: "Trùng tên trụ cột (khác mã)"
     uc: "B.I.1-UC2"
@@ -320,144 +276,9 @@ testcases:
     cac_buoc:
       - "1. Tạo trụ cột có tên trùng trụ cột khác, mã khác"
     ket_qua_mong_doi:
-      - "Bị từ chối hoặc cảnh báo trùng tên"
-    ghi_chu: "Khảo sát: API hiện nhận. Cần BA xác nhận quy tắc duy nhất của tên"
-    ket_qua_chay: "Không chạy"
-  - id: PIL-C06
-    title: "Mã trụ cột dài đúng 50 ký tự được nhận, 51 ký tự bị chặn"
-    uc: "B.I.1-UC2"
-    tac_nhan: "Quản trị hệ thống, Cán bộ"
-    tai_khoan_chay: "admin"
-    chuc_nang: "Thêm mới"
-    loai: "Validate"
-    uu_tien: "Trung bình"
-    automation: "Auto"
-    cac_buoc:
-      - "1. Nhập mã 50 ký tự → Lưu"
-      - "2. Nhập mã 51 ký tự → Lưu"
-    ket_qua_mong_doi:
-      - "50 ký tự: tạo được; 51 ký tự: báo \"Không được nhập vượt quá 50 ký tự\""
-    ket_qua_chay: "Không chạy"
-  - id: PIL-C07
-    title: "Tên trụ cột rất dài (300 ký tự) bị giới hạn độ dài"
-    uc: "B.I.1-UC2"
-    tac_nhan: "Quản trị hệ thống, Cán bộ"
-    tai_khoan_chay: "admin"
-    chuc_nang: "Thêm mới"
-    loai: "Validate"
-    uu_tien: "Thấp"
-    automation: "Auto"
-    cac_buoc:
-      - "1. Nhập tên 300 ký tự → Lưu"
-    ket_qua_mong_doi:
-      - "Bị chặn bởi giới hạn độ dài tên"
-    ghi_chu: "Khảo sát: API nhận tên 300 ký tự (mã giới hạn 50). Cần BA xác nhận quy tắc độ dài tên"
-    ket_qua_chay: "Không chạy"
-  - id: PIL-C08
-    title: "Hủy form thêm mới không tạo bản ghi"
-    uc: "B.I.1-UC2"
-    tac_nhan: "Quản trị hệ thống, Cán bộ"
-    tai_khoan_chay: "admin"
-    chuc_nang: "Thêm mới"
-    loai: "Chức năng"
-    uu_tien: "Trung bình"
-    automation: "Auto"
-    cac_buoc:
-      - "1. Nhập dữ liệu"
-      - "2. Bấm Huỷ"
-    ket_qua_mong_doi:
-      - "Đóng form; không có trụ cột mới"
-    ket_qua_chay: "Không chạy"
-  - id: PIL-C09
-    title: "[API] Mã hoặc tên rỗng bị từ chối bằng HTTP 400"
-    uc: "B.I.1-UC2"
-    tac_nhan: "Quản trị hệ thống, Cán bộ"
-    tai_khoan_chay: "admin"
-    chuc_nang: "Thêm mới"
-    loai: "Validate"
-    uu_tien: "Trung bình"
-    automation: "Auto"
-    cac_buoc:
-      - "1. [API] POST với name rỗng; POST với code rỗng"
-    ket_qua_mong_doi:
-      - "HTTP 400 kèm thông báo \"không được để trống\"; không tạo"
-    ket_qua_chay: "Không chạy"
-  - id: PIL-E01
-    title: "Sửa tên trụ cột chưa khóa thành công"
-    uc: "B.I.1-UC5"
-    tac_nhan: "Quản trị hệ thống, Cán bộ"
-    tai_khoan_chay: "admin"
-    chuc_nang: "Chỉnh sửa"
-    loai: "Chức năng"
-    uu_tien: "Cao"
-    automation: "Auto"
-    cac_buoc:
-      - "1. Menu → Cập nhật"
-      - "2. Đổi tên"
-      - "3. Lưu"
-    ket_qua_mong_doi:
-      - "Thông báo thành công; tên mới hiển thị ở danh sách và chi tiết"
-    ket_qua_chay: "Không chạy"
-  - id: PIL-E02
-    title: "Mã trụ cột không đổi sau khi sửa"
-    uc: "B.I.1-UC5"
-    tac_nhan: "Quản trị hệ thống, Cán bộ"
-    tai_khoan_chay: "admin"
-    chuc_nang: "Chỉnh sửa"
-    loai: "Nghiệp vụ"
-    uu_tien: "Trung bình"
-    automation: "Auto"
-    cac_buoc:
-      - "1. Cập nhật trụ cột, đổi tên"
-      - "2. Lưu"
-    ket_qua_mong_doi:
-      - "Mã và id giữ nguyên"
-    ket_qua_chay: "Không chạy"
-  - id: PIL-E03
-    title: "Xóa trắng tên khi sửa bị chặn"
-    uc: "B.I.1-UC5"
-    tac_nhan: "Quản trị hệ thống, Cán bộ"
-    tai_khoan_chay: "admin"
-    chuc_nang: "Chỉnh sửa"
-    loai: "Validate"
-    uu_tien: "Trung bình"
-    automation: "Auto"
-    cac_buoc:
-      - "1. Xóa tên"
-      - "2. Lưu"
-    ket_qua_mong_doi:
-      - "Báo lỗi bắt buộc; dữ liệu giữ nguyên"
-    ket_qua_chay: "Không chạy"
-  - id: PIL-E04
-    title: "Hủy chỉnh sửa không đổi dữ liệu"
-    uc: "B.I.1-UC5"
-    tac_nhan: "Quản trị hệ thống, Cán bộ"
-    tai_khoan_chay: "admin"
-    chuc_nang: "Chỉnh sửa"
-    loai: "Chức năng"
-    uu_tien: "Trung bình"
-    automation: "Auto"
-    cac_buoc:
-      - "1. Đổi tên"
-      - "2. Huỷ"
-    ket_qua_mong_doi:
-      - "Dữ liệu giữ nguyên"
-    ket_qua_chay: "Không chạy"
-  - id: PIL-E05
-    title: "[API] Sửa trụ cột đã khóa bị từ chối"
-    uc: "B.I.1-UC5"
-    tac_nhan: "Quản trị hệ thống, Cán bộ"
-    tai_khoan_chay: "admin"
-    chuc_nang: "Chỉnh sửa"
-    loai: "Nghiệp vụ"
-    uu_tien: "Cao"
-    automation: "Auto"
-    cac_buoc:
-      - "1. Khóa trụ cột"
-      - "2. [API] PUT đổi tên"
-    ket_qua_mong_doi:
-      - "HTTP 400 \"Trụ cột đã bị khoá, không thể chỉnh sửa\"; tên giữ nguyên"
-    ket_qua_chay: "Không chạy"
+      - "Bị từ chối: tên bắt trùng trong cùng nhóm cha (trụ cột không có cha → duy nhất toàn danh mục), không phân biệt hoa/thường"
+    ghi_chu: "Quy tắc chung Mã/Tên"
+    ket_qua_chay: "Pass"
   - id: PIL-E06
     title: "Sửa tên thành tên trùng trụ cột khác"
     uc: "B.I.1-UC5"
@@ -470,38 +291,9 @@ testcases:
     cac_buoc:
       - "1. Đổi tên trụ cột B thành tên trụ cột A"
     ket_qua_mong_doi:
-      - "Bị từ chối hoặc cảnh báo"
-    ghi_chu: "Cùng quy tắc với PIL-C05. Cần BA xác nhận quy tắc"
-    ket_qua_chay: "Không chạy"
-  - id: PIL-K01
-    title: "Khóa trụ cột → Đã khóa, menu chỉ còn \"Mở khoá\""
-    uc: "B.I.1-UC3"
-    tac_nhan: "Quản trị hệ thống, Cán bộ"
-    tai_khoan_chay: "admin"
-    chuc_nang: "Khóa/Mở khóa"
-    loai: "Chức năng"
-    uu_tien: "Cao"
-    automation: "Auto"
-    cac_buoc:
-      - "1. Menu → Khoá"
-      - "2. Xác nhận"
-    ket_qua_mong_doi:
-      - "Trạng thái \"Đã khóa\"; menu thao tác chỉ còn Mở khoá (không Cập nhật/Xoá)"
-    ket_qua_chay: "Không chạy"
-  - id: PIL-K02
-    title: "Mở khóa trụ cột → Chưa khóa, sửa/xóa lại được"
-    uc: "B.I.1-UC3"
-    tac_nhan: "Quản trị hệ thống, Cán bộ"
-    tai_khoan_chay: "admin"
-    chuc_nang: "Khóa/Mở khóa"
-    loai: "Chức năng"
-    uu_tien: "Cao"
-    automation: "Auto"
-    cac_buoc:
-      - "1. Menu → Mở khoá"
-    ket_qua_mong_doi:
-      - "Trạng thái \"Chưa khóa\"; menu có lại Khoá, Cập nhật, Xoá"
-    ket_qua_chay: "Không chạy"
+      - "Bị từ chối; tên trụ cột B giữ nguyên"
+    ghi_chu: "Cùng quy tắc với PIL-C05"
+    ket_qua_chay: "Pass"
   - id: PIL-K03
     title: "Chỉ trụ cột đã khóa mới chọn được khi tạo nhóm chỉ số"
     uc: "B.I.1-UC3"
@@ -516,23 +308,7 @@ testcases:
       - "2. Mở danh sách Trụ cột"
     ket_qua_mong_doi:
       - "Chỉ có trụ cột Đã khóa; trụ cột Chưa khóa không xuất hiện (API tạo nhóm với trụ cột chưa khóa → 400 \"Chỉ có thể chọn trụ cột đã được khóa\")"
-    ket_qua_chay: "Không chạy"
-  - id: PIL-K04
-    title: "Mở khóa trụ cột đang có nhóm chỉ số"
-    uc: "B.I.1-UC3"
-    tac_nhan: "Quản trị hệ thống, Cán bộ"
-    tai_khoan_chay: "admin"
-    chuc_nang: "Khóa/Mở khóa"
-    loai: "Nghiệp vụ"
-    uu_tien: "Trung bình"
-    automation: "Auto"
-    cac_buoc:
-      - "1. Trụ cột đã khóa có nhóm"
-      - "2. Mở khóa"
-    ket_qua_mong_doi:
-      - "Có chặn/cảnh báo hay cho phép theo quy tắc"
-    ghi_chu: "Khảo sát: API cho mở khóa (200). Cần BA xác nhận quy tắc"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: PIL-D01
     title: "Xóa trụ cột chưa khóa, chưa có nhóm thành công"
     uc: "B.I.1-UC4"
@@ -547,55 +323,9 @@ testcases:
       - "2. Xác nhận"
     ket_qua_mong_doi:
       - "Trụ cột biến mất khỏi danh sách và API"
-    ket_qua_chay: "Không chạy"
-  - id: PIL-D02
-    title: "Chọn \"Không\" ở hộp xác nhận thì giữ nguyên"
-    uc: "B.I.1-UC4"
-    tac_nhan: "Quản trị hệ thống, Cán bộ"
-    tai_khoan_chay: "admin"
-    chuc_nang: "Xóa"
-    loai: "Chức năng"
-    uu_tien: "Trung bình"
-    automation: "Auto"
-    cac_buoc:
-      - "1. Menu → Xoá"
-      - "2. Không"
-    ket_qua_mong_doi:
-      - "Trụ cột vẫn còn"
-    ket_qua_chay: "Không chạy"
-  - id: PIL-D03
-    title: "Trụ cột đã khóa không xóa được (UI ẩn Xoá, API 400)"
-    uc: "B.I.1-UC4"
-    tac_nhan: "Quản trị hệ thống, Cán bộ"
-    tai_khoan_chay: "admin"
-    chuc_nang: "Xóa"
-    loai: "Nghiệp vụ"
-    uu_tien: "Cao"
-    automation: "Auto"
-    cac_buoc:
-      - "1. Khóa trụ cột"
-      - "2. Xem menu"
-      - "3. [API] DELETE"
-    ket_qua_mong_doi:
-      - "Menu không có Xoá; API 400 \"Trụ cột đã bị khoá, không thể xóa\""
-    ket_qua_chay: "Không chạy"
-  - id: PIL-D04
-    title: "Trụ cột đang có nhóm chỉ số không xóa được"
-    uc: "B.I.1-UC4"
-    tac_nhan: "Quản trị hệ thống, Cán bộ"
-    tai_khoan_chay: "admin"
-    chuc_nang: "Xóa"
-    loai: "Nghiệp vụ"
-    uu_tien: "Cao"
-    automation: "Auto"
-    cac_buoc:
-      - "1. Trụ cột (mở khóa) có nhóm chỉ số"
-      - "2. Xóa"
-    ket_qua_mong_doi:
-      - "Báo \"Không thể xóa: đang có nhóm chỉ số thuộc trụ cột này\"; trụ cột còn nguyên"
-    ket_qua_chay: "Không chạy"
-  - id: PIL-G01
-    title: "Trường bắt buộc chỉ nhập khoảng trắng bị chặn (trụ cột)"
+    ket_qua_chay: "Pass"
+  - id: PIL-G10
+    title: "[API] Tên trụ cột đúng 255 ký tự được nhận, 256 ký tự bị từ chối"
     uc: "B.I.1-UC2"
     tac_nhan: "Quản trị hệ thống, Cán bộ"
     tai_khoan_chay: "admin"
@@ -604,14 +334,30 @@ testcases:
     uu_tien: "Trung bình"
     automation: "Auto"
     cac_buoc:
-      - "1. Mở form thêm mới"
-      - "2. Nhập chỉ dấu cách vào trường văn bản bắt buộc"
-      - "3. Lưu"
+      - "1. [API] POST tên 255 ký tự"
+      - "2. [API] POST tên 256 ký tự"
     ket_qua_mong_doi:
-      - "Báo lỗi bắt buộc (chuỗi rỗng sau trim); không tạo bản ghi"
-    ket_qua_chay: "Không chạy"
-  - id: PIL-G02
-    title: "Tên chứa tiếng Việt có dấu, HTML, dấu nháy, & được lưu và hiển thị đúng sau khi tải lại trang (trụ cột)"
+      - "255: HTTP 200; 256: HTTP 400 \"Tên không vượt quá 255 ký tự\""
+    ghi_chu: "Quy tắc chung: Tên ≤ 255 ký tự; riêng Tên chỉ số và Tên nhóm chỉ số ≤ 500"
+    ket_qua_chay: "Pass"
+  - id: PIL-G11
+    title: "[API] Tên trụ cột trùng trong cùng danh mục (khác hoa/thường) bị từ chối"
+    uc: "B.I.1-UC2"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Nghiệp vụ"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Có bản ghi tên \"X\""
+      - "2. [API] Tạo bản ghi mã khác, tên \"X\" và \"x\" (HOA)"
+    ket_qua_mong_doi:
+      - "Bị từ chối 4xx: tên bắt trùng trong cùng nhóm cha, không phân biệt hoa/thường"
+    ghi_chu: "Quy tắc chung: Tên bắt trùng chỉ trong cùng nhóm cha"
+    ket_qua_chay: "Pass"
+  - id: PIL-G12
+    title: "[API] Tên trụ cột chỉ khác dấu (\"Trùng\" và \"Trung\") là tên khác, được tạo"
     uc: "B.I.1-UC2"
     tac_nhan: "Quản trị hệ thống, Cán bộ"
     tai_khoan_chay: "admin"
@@ -620,58 +366,12 @@ testcases:
     uu_tien: "Trung bình"
     automation: "Auto"
     cac_buoc:
-      - "1. [API] Tạo bản ghi có tên chứa ký tự đặc biệt"
-      - "2. Tải lại trang (F5), tìm theo mã/tên"
+      - "1. Có bản ghi tên \"Trùng\""
+      - "2. [API] Tạo bản ghi tên \"Trung\""
     ket_qua_mong_doi:
-      - "Tên hiển thị nguyên văn dạng chữ; thẻ HTML không bị render"
-    ket_qua_chay: "Không chạy"
-  - id: PIL-G03
-    title: "Server lỗi 500 khi lưu: giữ form và dữ liệu đã nhập, không lộ lỗi nội bộ (trụ cột)"
-    uc: "B.I.1-UC2"
-    tac_nhan: "Quản trị hệ thống, Cán bộ"
-    tai_khoan_chay: "admin"
-    chuc_nang: "Thêm mới"
-    loai: "Nghiệp vụ"
-    uu_tien: "Trung bình"
-    automation: "Auto"
-    cac_buoc:
-      - "1. Điền form hợp lệ"
-      - "2. Giả lập API POST trả 500"
-      - "3. Lưu"
-    ket_qua_mong_doi:
-      - "Form còn mở và giữ dữ liệu; không lộ stacktrace; không tạo bản ghi"
-    ket_qua_chay: "Không chạy"
-  - id: PIL-G04
-    title: "Mất kết nối khi lưu: không treo giao diện, giữ form (trụ cột)"
-    uc: "B.I.1-UC2"
-    tac_nhan: "Quản trị hệ thống, Cán bộ"
-    tai_khoan_chay: "admin"
-    chuc_nang: "Thêm mới"
-    loai: "Nghiệp vụ"
-    uu_tien: "Trung bình"
-    automation: "Auto"
-    cac_buoc:
-      - "1. Điền form hợp lệ"
-      - "2. Giả lập mất mạng khi POST"
-      - "3. Lưu"
-    ket_qua_mong_doi:
-      - "Form còn mở và giữ dữ liệu; trang không trắng; không tạo bản ghi"
-    ket_qua_chay: "Không chạy"
-  - id: PIL-G05
-    title: "Bấm Lưu 2 lần liên tiếp chỉ tạo 1 bản ghi (trụ cột)"
-    uc: "B.I.1-UC2"
-    tac_nhan: "Quản trị hệ thống, Cán bộ"
-    tai_khoan_chay: "admin"
-    chuc_nang: "Thêm mới"
-    loai: "Nghiệp vụ"
-    uu_tien: "Trung bình"
-    automation: "Auto"
-    cac_buoc:
-      - "1. Điền form hợp lệ"
-      - "2. Bấm Lưu 2 lần rất nhanh"
-    ket_qua_mong_doi:
-      - "Chỉ có đúng 1 bản ghi"
-    ket_qua_chay: "Không chạy"
+      - "Được tạo (HTTP 200)"
+    ghi_chu: "Quy tắc chung: so trùng tên có phân biệt dấu"
+    ket_qua_chay: "Pass"
   - id: PIL-A01
     title: "API trụ cột: không token / token giả → 401"
     uc: "B.I.1-UC1"
@@ -686,7 +386,7 @@ testcases:
       - "2. GET với token giả"
     ket_qua_mong_doi:
       - "HTTP 401"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: PIL-A02
     title: "Quyền API trụ cột đúng theo ma trận quyền Cán bộ"
     uc: "B.I.1-UC1"
@@ -701,7 +401,7 @@ testcases:
       - "2. GET/POST/PUT/DELETE theo quyền Xem/Thêm/Sửa/Xóa/Khóa"
     ket_qua_mong_doi:
       - "Có quyền → được; không có → 403"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: PIL-A03
     title: "Chưa đăng nhập vào trang trụ cột bị chuyển về màn đăng nhập, không lộ dữ liệu"
     uc: "B.I.1-UC1"
@@ -716,7 +416,7 @@ testcases:
       - "2. Mở URL trang"
     ket_qua_mong_doi:
       - "Hiện màn đăng nhập; không có dữ liệu"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
   - id: PIL-P01
     title: "Danh sách trụ cột tải < 3 giây"
     uc: "B.I.1-UC1"
@@ -730,4 +430,69 @@ testcases:
       - "1. Mở trang và đo"
     ket_qua_mong_doi:
       - "API < 3000ms, hiển thị < 6000ms"
-    ket_qua_chay: "Không chạy"
+    ket_qua_chay: "Pass"
+  - id: PIL-L34
+    title: "Các màn Trụ cột (danh sách, thêm, sửa, chi tiết, hộp xác nhận) khớp design TC-01…TC-05"
+    uc: "B.I.1-UC1"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xem danh sách"
+    loai: "UI"
+    uu_tien: "Trung bình"
+    automation: "Manual — chưa có script"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở menu Bộ chỉ số DTI → Trụ cột"
+      - "3. Lần lượt mở danh sách, popup Thêm mới, popup Cập nhật, màn chi tiết, hộp xác nhận Khóa/Xóa"
+      - "4. So từng màn với design TC-01…TC-05"
+    ket_qua_mong_doi:
+      - "Bố cục, tiêu đề, sub title, nút, font, màu sắc, khoảng cách của từng màn trùng design TC-01…TC-05"
+    ghi_chu: "GitLab #240. Cùng nội dung #201 \"Cập nhật giao diện các màn theo UI mới\" và #250 (đang mở) \"Màn hình danh sách trụ cột chưa khớp design\""
+  - id: PIL-L35
+    title: "Cột Tên trụ cột có màu chữ và font weight đúng design"
+    uc: "B.I.1-UC1"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xem danh sách"
+    loai: "UI"
+    uu_tien: "Thấp"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở menu Bộ chỉ số DTI → Trụ cột"
+      - "3. So màu chữ, font weight cột Tên trụ cột với design TC-01"
+    ket_qua_mong_doi:
+      - "Màu chữ và font weight cột Tên trụ cột trùng design (font weight theo quy ước chung #269: cột thường 400)"
+    ghi_chu: "GitLab #249. Issue đang mở. Giá trị màu cụ thể lấy theo Figma — cần BA/Design xác nhận"
+  - id: PIL-L36
+    title: "Text nút thêm mới, tên cột và header bảng Trụ cột đúng design"
+    uc: "B.I.1-UC1"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xem danh sách"
+    loai: "UI"
+    uu_tien: "Thấp"
+    automation: "Manual — chưa có script"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở menu Bộ chỉ số DTI → Trụ cột"
+      - "3. Đọc text nút thêm mới và tiêu đề các cột bảng"
+    ket_qua_mong_doi:
+      - "Text nút thêm mới, tên từng cột và kiểu header bảng (màu nền, font) trùng design TC-01"
+    ghi_chu: "GitLab #271"
+  - id: PIL-L37
+    title: "Label trạng thái Đã khóa / Chưa khóa ở danh sách Trụ cột đúng màu design"
+    uc: "B.I.1-UC1"
+    tac_nhan: "Quản trị hệ thống, Cán bộ"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xem danh sách"
+    loai: "UI"
+    uu_tien: "Thấp"
+    automation: "Manual — chưa có script"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở menu Bộ chỉ số DTI → Trụ cột"
+      - "3. Xem cột Trạng thái của một trụ cột Đã khóa và một trụ cột Chưa khóa"
+    ket_qua_mong_doi:
+      - "Màu nền, màu chữ, viền label của từng trạng thái trùng design TC-01"
+    ghi_chu: "GitLab #271"

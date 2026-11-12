@@ -11,7 +11,7 @@ export const PAGES: Record<string, PageCfg> = {
     cols: [/stt/i, /mã nhóm chỉ số/i, /tên nhóm chỉ số/i, /trụ cột/i, /^chỉ số$/i, /trạng thái/i, /thao tác/i], codeIdx: 1, nameIdx: 2 },
   IND: { P: 'IND', name: 'Chỉ số', route: 'indicators', res: 'dti/indicators', search: /tìm kiếm tên\/mã chỉ số/i, perm: 'DTI_INDICATOR',
     cols: [/stt/i, /mã chỉ số/i, /tên chỉ số/i, /trụ cột/i, /nhóm chỉ số/i, /chỉ số con/i, /điểm tối thiểu/i, /điểm tối đa/i, /trạng thái/i, /thao tác/i], codeIdx: 1, nameIdx: 2 },
-  SET: { P: 'SET', name: 'Bộ chỉ số', route: 'indicator-sets', res: 'dti/indicator-sets', search: /tìm kiếm tên\/mã bộ chỉ số/i, perm: 'DTI_INDICATOR_SET',
+  SET: { P: 'SET', name: 'Bộ chỉ số', route: 'indicator-sets', res: 'dti/indicator-sets', search: /tìm theo mã, tên bộ chỉ số/i, perm: 'DTI_INDICATOR_SET',
     cols: [/stt/i, /mã bộ chỉ số/i, /tên bộ chỉ số/i, /phiên bản/i, /năm áp dụng/i, /nhóm chỉ số/i, /^chỉ số$/i, /trạng thái/i, /thao tác/i], codeIdx: 1, nameIdx: 2 },
   SCL: { P: 'SCL', name: 'Thang xếp loại', route: 'score-scales', res: 'dti/score-scales', search: /tìm theo mã hoặc tên thang/i, perm: 'DTI_SCORE_SCALE',
     cols: [/tên thang/i, /các mức/i, /số kỳ sử dụng/i, /trạng thái/i, /thao tác/i], codeIdx: 0, nameIdx: 0 },
@@ -23,18 +23,18 @@ export async function ensurePillar(made: Made, o: { lock?: boolean; code?: strin
   const code = o.code ?? code8();
   const r = await api('POST', 'dti/pillars', { code, name: `qc.automation Trụ cột ${code}`, displayOrder: 0 });
   if (r.status >= 300) throw new Error(`tạo trụ cột lỗi ${r.status} ${r.message}`);
-  made.addDti('dti/pillars', code);
+  made.addId('dti/pillars', r.data.id);   // mã tự sinh → dọn theo id
   if (o.lock !== false) await api('PUT', `dti/pillars/${r.data.id}/lock`, {});
-  return { ...r.data, code } as any;
+  return { ...r.data, code, realCode: r.data.code } as any;   // code = tag QCA… (nằm trong tên), realCode = mã hệ thống sinh
 }
 export async function ensureGroup(made: Made, o: { pillarId?: string; lock?: boolean } = {}) {
   const pillarId = o.pillarId ?? (await ensurePillar(made)).id;
   const code = code8();
   const r = await api('POST', 'dti/indicator-groups', { pillarId, code, name: `qc.automation Nhóm ${code}`, displayOrder: 0 });
   if (r.status >= 300) throw new Error(`tạo nhóm lỗi ${r.status} ${r.message}`);
-  made.addDti('dti/indicator-groups', code);
+  made.addId('dti/indicator-groups', r.data.id);   // mã tự sinh → dọn theo id
   if (o.lock !== false) await api('PUT', `dti/indicator-groups/${r.data.id}/lock`, {});
-  return { ...r.data, code } as any;
+  return { ...r.data, code, realCode: r.data.code } as any;   // code = tag QCA… (nằm trong tên), realCode = mã hệ thống sinh
 }
 export async function ensureIndicator(made: Made, o: { groupId?: string; pillarId?: string; parentId?: string; min?: number; max?: number; lock?: boolean } = {}) {
   let { groupId, pillarId } = o;
@@ -43,16 +43,16 @@ export async function ensureIndicator(made: Made, o: { groupId?: string; pillarI
   const code = code8();
   const r = await api('POST', 'dti/indicators', { indicatorGroupId: groupId, pillarId, parentId: o.parentId, code, name: `qc.automation Chỉ số ${code}`, minScore: o.min ?? 0, maxScore: o.max ?? 10 });
   if (r.status >= 300) throw new Error(`tạo chỉ số lỗi ${r.status} ${r.message}`);
-  made.addDti('dti/indicators', code);
+  made.addId('dti/indicators', r.data.id);   // mã tự sinh → dọn theo id
   if (o.lock) await api('PUT', `dti/indicators/${r.data.id}/lock`, {});
-  return { ...r.data, code } as any;
+  return { ...r.data, code, realCode: r.data.code } as any;   // code = tag QCA… (nằm trong tên), realCode = mã hệ thống sinh
 }
 export async function ensureSet(made: Made, o: { year?: number } = {}) {
   const code = code8();
-  const r = await api('POST', 'dti/indicator-sets', { code, name: `qc.automation Bộ ${code}`, effectiveYear: o.year ?? 2026 });
+  const r = await api('POST', 'dti/indicator-sets', { name: `qc.automation Bộ ${code}`, effectiveYear: o.year ?? 2026 });
   if (r.status >= 300) throw new Error(`tạo bộ chỉ số lỗi ${r.status} ${r.message}`);
-  made.addDti('dti/indicator-sets', code);
-  return { ...r.data, code } as any;
+  made.addId('dti/indicator-sets', r.data.id);
+  return { ...r.data, code, realCode: r.data.code } as any;   // code = tag QCA… (nằm trong tên), realCode = mã hệ thống sinh
 }
 /** Thang xếp loại: mã TXL-nnn tự sinh nên xóa theo id (đặt tên bắt đầu "qc.automation"). */
 export async function ensureScale(made: Made, o: { name?: string; levels?: any[] } = {}) {

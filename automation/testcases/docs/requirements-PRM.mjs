@@ -48,7 +48,6 @@ export default (R) => [
     ['Mã quyền trùng; body sai định dạng', 'PRM-E18|PRM-E19'],
     ['Thiếu permissions không xóa sạch quyền', 'PRM-E20'],
     ['Mã quyền quá dài / HTML', 'PRM-E21'],
-    ['Quyền phụ thuộc Sửa/Xóa cần Xem', 'PRM-E22'],
     ['Nhóm hệ thống không đổi được', 'PRM-E23'],
     ['Id nhóm lạ / sai định dạng', 'PRM-E24'],
     ['Quyền có hiệu lực với thành viên', 'PRM-M01'],

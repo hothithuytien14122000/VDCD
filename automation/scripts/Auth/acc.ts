@@ -4,6 +4,7 @@ import { Browser, BrowserContext, Page } from '@playwright/test';
 import cfg from '../../accounts.mjs';
 import { tokenOf, API_BASE } from '../api';
 import { expect } from './common';
+import { hidePwExpiry } from '../helpers';
 export { tokenOf, API_BASE };
 
 export const BAD = 'Sai!Matkhau1';          // mật khẩu hiện tại sai cố ý
@@ -15,6 +16,7 @@ const API = `${API_BASE}/api/v1`;
 export async function asUser(browser: Browser, key: string): Promise<{ ctx: BrowserContext; page: Page }> {
   if (!fs.existsSync(`auth/${key}.json`)) throw new Error(`Thiếu auth/${key}.json (chạy npm run auth)`);
   const ctx = await browser.newContext({ storageState: `auth/${key}.json`, baseURL: cfg.baseURL, viewport: { width: 1440, height: 900 } });
+  await hidePwExpiry(ctx);
   return { ctx, page: await ctx.newPage() };
 }
 export const originalPassword = (key = 'canbo') => (cfg.users.find((u: any) => u.key === key)?.password || cfg.password) as string;

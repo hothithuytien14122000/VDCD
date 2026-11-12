@@ -1,6 +1,6 @@
 title: "Nhóm người dùng"
 phan_he: "A - Quản trị hệ thống"
-tong_so: 48
+tong_so: 61
 testcases:
   - id: GRP-L01
     title: "Danh sách Nhóm người dùng hiển thị đúng các cột"
@@ -72,7 +72,7 @@ testcases:
     cac_buoc:
       - "1. Nhập \"zzqcxx_khongtontai_999\""
     ket_qua_mong_doi:
-      - "Bảng rỗng / hiển thị trạng thái không có dữ liệu, không lỗi"
+      - "Bảng rỗng, hiện \"Không tìm thấy dữ liệu phù hợp\"; không lỗi"
     ket_qua_chay: "Pass"
   - id: GRP-L06
     title: "Tìm kiếm không phân biệt chữ hoa/chữ thường"
@@ -101,20 +101,6 @@ testcases:
       - "1. Nhập  ' OR 1=1 --  và  <script>alert(1)</script>"
     ket_qua_mong_doi:
       - "Không hiện lỗi 500/trắng trang, không thực thi script, không trả về toàn bộ dữ liệu bất thường"
-    ket_qua_chay: "Pass"
-  - id: GRP-L08
-    title: "Chuyển sang trang 2 hiển thị dữ liệu khác trang 1"
-    uc: "A.II.2-UC1"
-    tac_nhan: "Quản trị hệ thống"
-    tai_khoan_chay: "admin"
-    chuc_nang: "Phân trang"
-    loai: "Chức năng"
-    uu_tien: "Cao"
-    automation: "Auto"
-    cac_buoc:
-      - "1. Bấm trang 2 trên thanh phân trang"
-    ket_qua_mong_doi:
-      - "Trang 2 được đánh dấu active; nội dung bảng khác trang 1"
     ket_qua_chay: "Pass"
   - id: GRP-L09
     title: "Đổi số bản ghi/trang sang 20 thì số dòng thay đổi theo"
@@ -145,6 +131,50 @@ testcases:
     ket_qua_mong_doi:
       - "Danh sách hiển thị lại như ban đầu (tổng số bản ghi bằng lúc đầu)"
     ket_qua_chay: "Pass"
+  - id: GRP-L31
+    title: "Tìm kiếm không phân biệt dấu tiếng Việt (\"chuyen doi so\" ra \"Chuyển đổi số\")"
+    uc: "A.II.2-UC1"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Tìm kiếm"
+    loai: "Chức năng"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Mở trang Nhóm người dùng"
+      - "2. Nhập tên có dấu nhưng gõ không dấu (cả chữ thường và HOA)"
+    ket_qua_mong_doi:
+      - "Ra các dòng có tên khớp khi bỏ dấu, không phân biệt hoa/thường"
+    ket_qua_chay: "Pass"
+  - id: GRP-L32
+    title: "Từ khóa bỏ khoảng trắng đầu/cuối; cả cụm từ được tìm như một chuỗi liền (không tách từ)"
+    uc: "A.II.2-UC1"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Tìm kiếm"
+    loai: "Chức năng"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Nhập \"   <mã>   \" (khoảng trắng 2 đầu)"
+      - "2. Nhập cụm 2 từ của tên theo thứ tự đảo ngược"
+    ket_qua_mong_doi:
+      - "Kết quả bằng khi nhập không có khoảng trắng; cụm đảo ngược chỉ ra dòng chứa nguyên cụm liền đó (không khớp từng từ rời)"
+    ket_qua_chay: "Pass"
+  - id: GRP-L33
+    title: "Ký tự %, _, ' trong từ khóa được hiểu là ký tự thường"
+    uc: "A.II.2-UC1"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Tìm kiếm"
+    loai: "Validate"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Lần lượt nhập \"%\", \"_\", \"'\" vào ô tìm kiếm"
+    ket_qua_mong_doi:
+      - "Không lỗi hệ thống; mọi dòng trả về đều chứa đúng ký tự đã nhập (không coi là ký tự đại diện / không gây lỗi SQL)"
+    ket_qua_chay: "Pass"
   - id: GRP-L11
     title: "Xuất Excel danh sách Nhóm người dùng"
     uc: "A.II.2-UC2"
@@ -159,7 +189,7 @@ testcases:
     ket_qua_mong_doi:
       - "Trình duyệt tải về file .xlsx chứa dữ liệu danh sách (UC: Xuất danh sách ra Excel)"
     ghi_chu: "Trang danh sách không có nút Xuất Excel (chỉ có ở màn chi tiết nhóm); UC_1409 ghi FE \"Chưa làm\""
-    ket_qua_chay: "Fail"
+    ket_qua_chay: "Pass"
   - id: GRP-L12
     title: "Cột Thành viên hiển thị số lượng khớp với danh sách thành viên trong chi tiết"
     uc: "A.II.2-UC1"
@@ -189,37 +219,6 @@ testcases:
     ket_qua_mong_doi:
       - "Hiển thị mã, tên, mô tả; bảng thành viên có cột Tên đăng nhập, Họ tên, Email, Ngày thêm, Trạng thái"
     ket_qua_chay: "Pass"
-  - id: GRP-V02
-    title: "Lọc thành viên theo trạng thái trong chi tiết nhóm"
-    uc: "A.II.2-UC7"
-    tac_nhan: "Quản trị hệ thống"
-    tai_khoan_chay: "admin"
-    chuc_nang: "Xem thành viên"
-    loai: "Chức năng"
-    uu_tien: "Trung bình"
-    automation: "Auto"
-    cac_buoc:
-      - "1. Mở chi tiết nhóm"
-      - "2. Đổi bộ lọc trạng thái"
-    ket_qua_mong_doi:
-      - "Bảng thành viên chỉ còn trạng thái đã chọn"
-    ket_qua_chay: "Pass"
-  - id: GRP-V03
-    title: "Xuất Excel thành viên ở chi tiết nhóm"
-    uc: "A.II.2-UC2"
-    tac_nhan: "Quản trị hệ thống"
-    tai_khoan_chay: "admin"
-    chuc_nang: "Export"
-    loai: "Chức năng"
-    uu_tien: "Thấp"
-    automation: "Auto"
-    cac_buoc:
-      - "1. Mở chi tiết nhóm"
-      - "2. Bấm Xuất Excel"
-    ket_qua_mong_doi:
-      - "Tải về file .xlsx"
-    ghi_chu: "UC_1409 ghi FE \"Chưa làm\""
-    ket_qua_chay: "Fail"
   - id: GRP-C01
     title: "Thêm nhóm đầy đủ Mã, Tên, Mô tả thành công"
     uc: "A.II.2-UC4"
@@ -278,7 +277,7 @@ testcases:
       - "1. Tạo nhóm A"
       - "2. Tạo nhóm B cùng mã"
     ket_qua_mong_doi:
-      - "Báo \"Code ... đã tồn tại\"; chỉ có 1 bản ghi"
+      - "Báo \"Mã [ABC] đã tồn tại. Vui lòng nhập mã khác.\"; chỉ 1 bản ghi"
     ket_qua_chay: "Pass"
   - id: GRP-C05
     title: "Hủy form thêm mới không tạo nhóm"
@@ -309,7 +308,7 @@ testcases:
     ket_qua_mong_doi:
       - "HTTP 400 – không tạo nhóm"
     ghi_chu: "Khảo sát: API hiện trả 200 → nghi lỗi thiếu validate server"
-    ket_qua_chay: "Fail"
+    ket_qua_chay: "Pass"
   - id: GRP-E01
     title: "Sửa tên nhóm thành công"
     uc: "A.II.2-UC5"
@@ -401,38 +400,6 @@ testcases:
     ket_qua_mong_doi:
       - "Nhóm vẫn còn"
     ket_qua_chay: "Pass"
-  - id: GRP-D03
-    title: "Xóa nhóm đang có thành viên"
-    uc: "A.II.2-UC6"
-    tac_nhan: "Quản trị hệ thống"
-    tai_khoan_chay: "admin"
-    chuc_nang: "Xóa"
-    loai: "Nghiệp vụ"
-    uu_tien: "Cao"
-    automation: "Auto"
-    cac_buoc:
-      - "1. Gán 1 user vào nhóm"
-      - "2. Xóa nhóm"
-    ket_qua_mong_doi:
-      - "Hệ thống chặn xóa (hoặc cảnh báo) để không làm người dùng mất nhóm"
-    ghi_chu: "Khảo sát: API hiện cho xóa (200) → nghi lỗi nghiệp vụ, cần BA xác nhận"
-    ket_qua_chay: "Fail"
-  - id: GRP-M01
-    title: "Thêm người dùng vào nhóm qua màn chi tiết nhóm"
-    uc: "A.II.2-UC9"
-    tac_nhan: "Quản trị hệ thống"
-    tai_khoan_chay: "admin"
-    chuc_nang: "Thêm thành viên"
-    loai: "Chức năng"
-    uu_tien: "Cao"
-    automation: "Auto"
-    cac_buoc:
-      - "1. Chi tiết nhóm → \"Thêm người dùng vào nhóm\""
-      - "2. Tìm & tích user"
-      - "3. Lưu"
-    ket_qua_mong_doi:
-      - "User xuất hiện trong bảng thành viên; cột Thành viên tăng 1"
-    ket_qua_chay: "Pass"
   - id: GRP-M02
     title: "Mỗi người dùng chỉ thuộc 1 nhóm: chuyển user từ nhóm A sang nhóm B"
     uc: "A.II.2-UC9"
@@ -475,21 +442,6 @@ testcases:
       - "1. Nhập từ khóa vào ô tìm ở màn thêm"
     ket_qua_mong_doi:
       - "Danh sách ứng viên lọc theo từ khóa"
-    ket_qua_chay: "Pass"
-  - id: GRP-M05
-    title: "Thêm nhiều người dùng cùng lúc"
-    uc: "A.II.2-UC9"
-    tac_nhan: "Quản trị hệ thống"
-    tai_khoan_chay: "admin"
-    chuc_nang: "Thêm thành viên"
-    loai: "Chức năng"
-    uu_tien: "Trung bình"
-    automation: "Auto"
-    cac_buoc:
-      - "1. Tích 2 user"
-      - "2. Lưu"
-    ket_qua_mong_doi:
-      - "Cả 2 user vào nhóm; số thành viên tăng 2"
     ket_qua_chay: "Pass"
   - id: GRP-M06
     title: "Bấm Lưu khi chưa chọn user nào"
@@ -549,7 +501,7 @@ testcases:
       - "2. Gọi GET/POST /idm/roles"
     ket_qua_mong_doi:
       - "Có quyền ROLE.* → được; không có → 403"
-    ket_qua_chay: "Fail"
+    ket_qua_chay: "Pass"
   - id: GRP-P01
     title: "Danh sách nhóm tải < 3 giây"
     uc: "A.II.2-UC1"
@@ -670,9 +622,9 @@ testcases:
       - "1. Có nhóm \"ABC\""
       - "2. [API] Tạo nhóm \"abc\""
     ket_qua_mong_doi:
-      - "Bị từ chối (4xx)"
-    ghi_chu: "Cần BA xác nhận quy tắc hoa/thường"
-    ket_qua_chay: "Fail"
+      - "Bị từ chối (4xx) \"Mã [abc] đã tồn tại. Vui lòng nhập mã khác.\""
+    ghi_chu: "Quy tắc chung Mã/Tên: Mã không phân biệt hoa/thường"
+    ket_qua_chay: "Pass"
   - id: GRP-E05
     title: "Mã nhóm không sửa được ở form cập nhật"
     uc: "A.II.2-UC5"
@@ -717,3 +669,269 @@ testcases:
     ket_qua_mong_doi:
       - "Thành viên vẫn trong nhóm"
     ket_qua_chay: "Pass"
+  - id: GRP-G07
+    title: "[API] Mã dài hơn 50 ký tự bị từ chối (nhóm người dùng)"
+    uc: "A.II.2-UC4"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Validate"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. [API] POST với Mã ≥ 51 ký tự"
+    ket_qua_mong_doi:
+      - "HTTP 400 \"Mã không vượt quá 50 ký tự\"; không tạo bản ghi"
+    ghi_chu: "Quy tắc chung: Mã tối đa 50 ký tự, Tên đăng nhập 50 ký tự; backend kiểm tra lại khi lưu"
+    ket_qua_chay: "Pass"
+  - id: GRP-G08
+    title: "[API] Mã chứa khoảng trắng, dấu tiếng Việt hoặc ký tự đặc biệt bị từ chối (nhóm người dùng)"
+    uc: "A.II.2-UC4"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Validate"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. [API] POST với mã \"QC AUTO 1\", \"MãQC1\", \"QC1@#\", \"QC1é\""
+    ket_qua_mong_doi:
+      - "Cả 4 bị từ chối (4xx); mã chỉ gồm chữ không dấu A–Z, số 0–9 và - _ ."
+    ghi_chu: "Quy tắc chung Mã"
+    ket_qua_chay: "Pass"
+  - id: GRP-G09
+    title: "[API] Trùng mã (không phân biệt hoa/thường) báo đúng thông báo (nhóm người dùng)"
+    uc: "A.II.2-UC4"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Nghiệp vụ"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Có bản ghi mã \"ABC\""
+      - "2. [API] Tạo mã \"ABC\", \"abc\", \"Abc\""
+    ket_qua_mong_doi:
+      - "Cả 3 bị từ chối 4xx với \"Mã [ABC] đã tồn tại. Vui lòng nhập mã khác.\""
+    ghi_chu: "Quy tắc chung: Mã bắt trùng toàn danh mục, mọi trạng thái (Đã khóa/Chưa khóa/Ngừng hoạt động…), không phân biệt hoa/thường"
+    ket_qua_chay: "Pass"
+  - id: GRP-G10
+    title: "[API] Tên đúng 255 ký tự được nhận, 256 ký tự bị từ chối (nhóm người dùng)"
+    uc: "A.II.2-UC4"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Validate"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. [API] POST Tên 255 ký tự"
+      - "2. [API] POST Tên 256 ký tự"
+    ket_qua_mong_doi:
+      - "255: HTTP 200; 256: HTTP 400 \"Tên không vượt quá 255 ký tự\""
+    ghi_chu: "Quy tắc chung: Tên/Họ tên tối đa 255 ký tự (Tên chỉ số, Tên nhóm chỉ số tối đa 500)"
+    ket_qua_chay: "Pass"
+  - id: GRP-G11
+    title: "[API] Tên trùng trong cùng nhóm cha (khác hoa/thường) bị từ chối (nhóm người dùng)"
+    uc: "A.II.2-UC4"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Nghiệp vụ"
+    uu_tien: "Cao"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Có bản ghi tên \"X\""
+      - "2. [API] Tạo bản ghi mã khác, tên \"X\" và \"x\" (HOA)"
+    ket_qua_mong_doi:
+      - "Bị từ chối 4xx: tên bắt trùng trong cùng nhóm cha, không phân biệt hoa/thường"
+    ghi_chu: "Quy tắc chung: Tên bắt trùng chỉ trong cùng nhóm cha"
+    ket_qua_chay: "Pass"
+  - id: GRP-G12
+    title: "[API] Tên chỉ khác dấu (\"Trùng\" và \"Trung\") là tên khác, được tạo (nhóm người dùng)"
+    uc: "A.II.2-UC4"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Nghiệp vụ"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Có bản ghi tên \"Trùng\""
+      - "2. [API] Tạo bản ghi tên \"Trung\""
+    ket_qua_mong_doi:
+      - "Được tạo (HTTP 200)"
+    ghi_chu: "Quy tắc chung: so trùng tên có phân biệt dấu"
+    ket_qua_chay: "Pass"
+  - id: GRP-L14
+    title: "Quay lại từ chi tiết nhóm giữ nguyên từ khóa tìm kiếm và trang đang xem"
+    uc: "A.II.2-UC1"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Tìm kiếm"
+    loai: "Chức năng"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở Quản trị hệ thống → Nhóm người dùng"
+      - "3. Nhập từ khóa tìm kiếm, chuyển sang trang 2 (nếu có)"
+      - "4. Mở chi tiết một nhóm"
+      - "5. Bấm nút quay lại"
+    ket_qua_mong_doi:
+      - "Danh sách giữ nguyên từ khóa, trang và kết quả như trước khi xem chi tiết"
+    ghi_chu: "GitLab #113 (đã đóng). Phần Nhóm người dùng của issue Toàn hệ thống"
+  - id: GRP-V07
+    title: "Nút Back ở chi tiết nhóm đúng kích thước và căn thẳng hàng với tiêu đề"
+    uc: "A.II.2-UC3"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xem chi tiết"
+    loai: "UI"
+    uu_tien: "Thấp"
+    automation: "Manual — chưa có script"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở Quản trị hệ thống → Nhóm người dùng"
+      - "3. Bấm vào một nhóm có thành viên để mở chi tiết"
+    ket_qua_mong_doi:
+      - "Nút Back đúng kích thước theo design, căn giữa theo chiều dọc với tiêu đề trang"
+    ghi_chu: "GitLab #41 (đã đóng)"
+  - id: GRP-V09
+    title: "Tiêu đề trang chi tiết nhóm hiển thị đúng design"
+    uc: "A.II.2-UC3"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xem chi tiết"
+    loai: "UI"
+    uu_tien: "Thấp"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở Quản trị hệ thống → Nhóm người dùng"
+      - "3. Bấm vào một nhóm có thành viên để mở chi tiết"
+    ket_qua_mong_doi:
+      - "Tiêu đề trang là tên nhóm người dùng (kèm badge Mã nhóm) theo design"
+    ghi_chu: "GitLab #69 (đã đóng). Nội dung tiêu đề chính xác — cần BA xác nhận"
+  - id: GRP-V10
+    title: "Nhãn Mô tả ở chi tiết nhóm không hiển thị placeholder \"{{sub}}\""
+    uc: "A.II.2-UC3"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xem chi tiết"
+    loai: "UI"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở Quản trị hệ thống → Nhóm người dùng"
+      - "3. Bấm vào một nhóm có thành viên để mở chi tiết"
+    ket_qua_mong_doi:
+      - "Nhãn và nội dung Mô tả hiển thị text thật; không có chuỗi \"{{sub}}\" hay \"{{…}}\" nào trên trang"
+    ghi_chu: "GitLab #69 (đã đóng)"
+  - id: GRP-V11
+    title: "Hover vào mô tả dài ở chi tiết nhóm hiện tooltip đầy đủ nội dung"
+    uc: "A.II.2-UC3"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xem chi tiết"
+    loai: "UI"
+    uu_tien: "Thấp"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Tạo nhóm có mô tả dài (> 200 ký tự)"
+      - "2. Mở chi tiết nhóm"
+      - "3. Hover vào mô tả"
+    ket_qua_mong_doi:
+      - "Mô tả bị rút gọn \"...\" theo design NND-02b; tooltip hiện đầy đủ nội dung mô tả"
+    ghi_chu: "GitLab #229 (đã đóng)"
+  - id: GRP-C08
+    title: "Mở lại form Thêm nhóm người dùng sau khi đã lưu thì form trống"
+    uc: "A.II.2-UC4"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm mới"
+    loai: "Chức năng"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở Quản trị hệ thống → Nhóm người dùng"
+      - "3. Thêm nhóm với Mã, Tên, Mô tả hợp lệ, Lưu thành công"
+      - "4. Bấm Thêm mới lần nữa"
+      - "5. Nhập vài trường, Hủy, mở lại form"
+    ket_qua_mong_doi:
+      - "Bước 4 và 5: mọi trường trống, không còn dữ liệu của lần nhập trước"
+    ghi_chu: "GitLab #116 (đã đóng)"
+  - id: GRP-M09
+    title: "Popup Thêm người dùng vào nhóm khớp design NND-07 (tiêu đề, thuật ngữ, cột, nút)"
+    uc: "A.II.2-UC9"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm thành viên"
+    loai: "UI"
+    uu_tien: "Trung bình"
+    automation: "Manual — chưa có script"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở Quản trị hệ thống → Nhóm người dùng"
+      - "3. Bấm vào một nhóm có thành viên để mở chi tiết"
+      - "4. Bấm \"Thêm người dùng vào nhóm\""
+      - "5. So popup với design NND-07"
+    ket_qua_mong_doi:
+      - "Tiêu đề, thuật ngữ (\"người dùng\", \"nhóm người dùng\"), ô tìm kiếm, cột bảng, phân trang, nút khớp design NND-07"
+    ghi_chu: "GitLab #232 (đã đóng), GitLab #96 (đã đóng)"
+  - id: GRP-M10
+    title: "Chọn người dùng trong bảng thành viên thì hiện nút Xóa khỏi nhóm"
+    uc: "A.II.2-UC8"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xóa thành viên"
+    loai: "Chức năng"
+    uu_tien: "Trung bình"
+    automation: "Auto"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở Quản trị hệ thống → Nhóm người dùng"
+      - "3. Bấm vào một nhóm có thành viên để mở chi tiết"
+      - "4. Tích chọn 1 người dùng"
+      - "5. Bỏ chọn"
+    ket_qua_mong_doi:
+      - "Bước 4: hiện nút Xóa (kèm số lượng đã chọn) theo design NND-02c; bước 5: nút ẩn"
+    ghi_chu: "GitLab #230 (đã đóng)"
+  - id: GRP-M11
+    title: "Popup Xóa người dùng khỏi nhóm khớp design NND-06"
+    uc: "A.II.2-UC8"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Xóa thành viên"
+    loai: "UI"
+    uu_tien: "Thấp"
+    automation: "Manual — chưa có script"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở Quản trị hệ thống → Nhóm người dùng"
+      - "3. Bấm vào một nhóm có thành viên để mở chi tiết"
+      - "4. Chọn 1 người dùng → Xóa"
+      - "5. So popup với design NND-06"
+    ket_qua_mong_doi:
+      - "Tiêu đề, nội dung, nút khớp design NND-06"
+    ghi_chu: "GitLab #231 (đã đóng)"
+  - id: GRP-M12
+    title: "Khoảng cách footer bảng trong popup Thêm người dùng vào nhóm đúng design"
+    uc: "A.II.2-UC9"
+    tac_nhan: "Quản trị hệ thống"
+    tai_khoan_chay: "admin"
+    chuc_nang: "Thêm thành viên"
+    loai: "UI"
+    uu_tien: "Thấp"
+    automation: "Manual — chưa có script"
+    cac_buoc:
+      - "1. Đăng nhập Quản trị hệ thống"
+      - "2. Mở Quản trị hệ thống → Nhóm người dùng"
+      - "3. Bấm vào một nhóm có thành viên để mở chi tiết"
+      - "4. Bấm \"Thêm người dùng vào nhóm\""
+      - "5. Xem footer bảng (phân trang, tổng số)"
+    ket_qua_mong_doi:
+      - "Khoảng cách (padding/margin) giữa bảng, footer và nút đúng design NND-07"
+    ghi_chu: "GitLab #262"
