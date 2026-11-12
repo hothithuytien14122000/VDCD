@@ -12,6 +12,8 @@ import { execFileSync } from 'node:child_process';
 import { test, expect, tc, api, tokenOf, code8 } from './common';
 import { hidePwExpiry } from '../helpers';
 import { API_BASE } from '../api';
+import { guardSession } from '../session-guard';
+
 
 test.describe.configure({ timeout: Number(process.env.QC_TIMEOUT ?? 120_000) });
 
@@ -230,6 +232,8 @@ function xlsxRows(file: string): string[][] {
 }
 
 // ================================================================ L — DANH SÁCH: bộ lọc Hạn tự đánh giá (#292), Xuất Excel (#288)
+guardSession(test);
+
 test.describe('Kết quả tự đánh giá › Bug GitLab › Danh sách', () => {
   test(tc('RES-L85'), async ({ browser }) => {
     await withRole(browser, 'canbo', async p => {

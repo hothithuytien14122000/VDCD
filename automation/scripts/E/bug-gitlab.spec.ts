@@ -6,6 +6,7 @@
 import { test as base, expect, Page, Locator } from '@playwright/test';
 import { tc, api, F, settle, dayStr, dmy } from './common';
 import { hidePwExpiry } from '../helpers';
+import { guardSession } from '../session-guard';
 
 const AS = 'admin';
 const VIEW = { width: 1366, height: 768 };
@@ -16,6 +17,7 @@ const test = base.extend<{ page: Page }>({
     await use(await ctx.newPage()); await ctx.close();
   },
 });
+guardSession(test, 'admin');
 test.describe.configure({ timeout: Number(process.env.QC_TIMEOUT ?? 120_000) });
 
 // ---------------------------------------------------------------- dữ liệu & API

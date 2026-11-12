@@ -12,6 +12,8 @@ import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { test, expect, tc, api, dataRows, dlg, toast, pickOption, code8 } from './common';
 import { BASE } from '../helpers';
+import { guardSession } from '../session-guard';
+
 
 test.describe.configure({ timeout: 120_000 });
 
@@ -195,6 +197,8 @@ async function download(page: Page, click: () => Promise<any>, name: string) {
 }
 
 // ====================================================================== TRỤ CỘT
+guardSession(test);
+
 test.describe('Bug GitLab B › Trụ cột', () => {
   test(tc('PIL-L35'), async ({ page }) => {
     // Phần chắc chắn: font weight cột Tên trụ cột = 400 (#269). Màu chữ theo Figma — cần BA/Design (không kiểm).

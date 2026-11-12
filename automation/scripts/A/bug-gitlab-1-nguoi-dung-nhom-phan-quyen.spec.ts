@@ -6,6 +6,8 @@
 import { Page, Locator } from '@playwright/test';
 import { test, expect, tc, dataRows, waitList, totalOf, dlg, toast, rowAction, confirmYes, btnSave, btnCancel, FILTERS, api as apiAs, uid, goto } from './common';
 import cfg from '../../accounts.mjs';
+import { guardSession } from '../session-guard';
+
 
 const AS = 'admin';
 const api = (m: string, r: string, b?: any) => apiAs(m, r, b, AS);
@@ -75,7 +77,8 @@ async function mkOrg(o: { name?: string; lock?: boolean } = {}) {
 const SEARCH_USR = /tìm kiếm theo tên/i;
 async function openUsers(page: Page) {
   await goto(page, 'users');
-  await dataRows(page).first().waitFor({ state: 'visible', timeout: 15_000 }).catch(() => {});
+  await expect(page.locator('.ant-table-thead th').first(), 'Bảng Người dùng không hiển thị (session hết hạn?)').toBeVisible({ timeout: 15_000 });
+  await dataRows(page).first().waitFor({ state: 'visible', timeout: 15_000 }).catch(() => {}); // danh sách có thể rỗng
 }
 async function findUserRow(page: Page, u: string) {
   await page.getByPlaceholder(SEARCH_USR).fill(u); await waitList(page);
@@ -110,6 +113,8 @@ const inputsOf = (d: Locator) => d.locator('input:not([type=search]):not([type=c
 const selectValues = (d: Locator) => d.locator('.ant-select .ant-select-content-value, .ant-select .ant-select-selection-item').allInnerTexts();
 
 // ================= NGƯỜI DÙNG — danh sách =================
+guardSession(test);
+
 test.describe('Bug GitLab › Người dùng › Danh sách', () => {
   test.describe.configure({ timeout: 90_000 });
   test(tc('USR-L35'), async ({ page }) => {

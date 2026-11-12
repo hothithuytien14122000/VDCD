@@ -12,6 +12,8 @@ import {
   waitList, cellText, api, code8, userBody, pickByLabel, FILTERS, tokenOf, fold,
 } from './common';
 import { API_BASE } from '../api';
+import { guardSession } from '../session-guard';
+
 
 const ADM = 'admin';
 const A = (m: string, r: string, b?: any, as = ADM) => api(m, r, b, as);
@@ -145,6 +147,8 @@ async function tableInfo(page: Page) {
 const side = (a: string) => /right|end/.test(a) ? 'right' : /center/.test(a) ? 'center' : 'left';
 
 // ======================================================================= ĐƠN VỊ HÀNH CHÍNH CẤP TỈNH
+guardSession(test);
+
 test.describe('Bug GitLab A2 › Tỉnh/thành — danh sách & giao diện chung', () => {
   test.describe.configure({ timeout: 120_000 });
 
