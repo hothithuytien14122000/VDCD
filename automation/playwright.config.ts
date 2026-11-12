@@ -2,6 +2,8 @@ import { defineConfig } from '@playwright/test';
 import fs from 'node:fs';
 
 import cfg from './accounts.mjs';
+// Spec không dùng session: scripts/Auth/* và ATTT xác thực (scripts/ATTT/xac-thuc.spec.ts)
+const AUTH_SPECS = /scripts[\\/](Auth[\\/].*|ATTT[\\/]xac-thuc)\.spec\.ts$/;
 // Mỗi user là 1 project, dùng session đã lưu trong auth/<key>.json.
 // Chỉ tạo project cho user đã có file session (tránh lỗi khi chưa đăng nhập đủ).
 const roleProjects = cfg.users
@@ -10,10 +12,10 @@ const roleProjects = cfg.users
     name: u.key,
     use: { storageState: `auth/${u.key}.json` },
     testMatch: /.*\.spec\.ts/,
-    testIgnore: /scripts\/Auth\//,   // Auth chạy ở project 'auth' riêng
+    testIgnore: AUTH_SPECS,   // Auth + ATTT xác thực chạy ở project 'auth' riêng
   }));
 // Đăng nhập / quên mật khẩu: không dùng session, chạy tuần tự (dùng chung user qc.resetpw + hộp thư Mailosaur).
-roleProjects.push({ name: 'auth', use: { storageState: { cookies: [], origins: [] } }, testMatch: /scripts\/Auth\/.*\.spec\.ts/ } as any);
+roleProjects.push({ name: 'auth', use: { storageState: { cookies: [], origins: [] } }, testMatch: AUTH_SPECS } as any);
 
 export default defineConfig({
   testDir: './scripts',

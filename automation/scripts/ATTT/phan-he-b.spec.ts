@@ -1,5 +1,5 @@
 // ATTT cấp độ 2 — PHÂN HỆ B (Bộ chỉ số DTI). Testcase ATB-* (testcases/docs/catalog-ATTT.mjs, sheet "ATTT mức 2").
-import { Made, code8, ensureGroup } from './common';
+import { Made, code8, ensureGroup } from '../B/common';
 import { test, expect, at, call, logSnapshot, newLogs, expectLogs, registerModuleSuite, cleanupCreated } from '../attt';
 
 const PIL = 'dti/pillars';

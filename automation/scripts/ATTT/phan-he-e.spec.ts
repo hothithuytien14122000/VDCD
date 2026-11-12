@@ -1,5 +1,5 @@
 // ATTT cấp độ 2 — PHÂN HỆ E (Khảo sát hài lòng). Testcase ATE-* (testcases/docs/catalog-ATTT.mjs, sheet "ATTT mức 2").
-import { payload, publicList, postPublic } from './common';
+import { payload, publicList, postPublic } from '../E/common';
 import { test, expect, at, call, rowsOf, perms, liveRoles, FAKE, registerModuleSuite } from '../attt';
 
 const SVY = 'survey/surveys';

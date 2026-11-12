@@ -1,6 +1,6 @@
 // ATTT cấp độ 2 — PHÂN HỆ A (Quản trị hệ thống). Testcase ATA-* (testcases/docs/catalog-ATTT.mjs, sheet "ATTT mức 2").
 // Bộ chung X/Q/V/W/L/S/N/H sinh bởi registerModuleSuite; phần riêng: tham số hệ thống, nhật ký truy cập, sao lưu, IP, thông tin người dùng.
-import { Made, ensureOrg, ensureRole, ensureUser, findApi, code8 } from './common';
+import { Made, ensureOrg, ensureRole, ensureUser, findApi, code8 } from '../A/common';
 import cfg from '../../accounts.mjs';
 import { test, expect, at, call, rowsOf, perms, myInfo, liveRoles, FAKE, LEAK, sensitiveKeys, logSnapshot, newLogs, expectLogs, logPage, registerModuleSuite, cleanupCreated, API_BASE, txt, authzSnapshot, newAuthz, isPrivateIp } from '../attt';
 

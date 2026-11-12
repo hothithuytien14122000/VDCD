@@ -1,4 +1,4 @@
-// Sinh testcases/TestCase/<Phân hệ>/<slug>.yaml từ catalog.json (+ kết quả chạy nếu có). Phân hệ = thư mục của scripts/ (A, B, C, Auth)
+// Sinh testcases/TestCase/<Phân hệ>/<slug>.yaml từ catalog.json (+ kết quả chạy nếu có). Phân hệ = thư mục của scripts/ (A, B, C, D, E, Auth, ATTT)
 import fs from 'node:fs';
 const T = JSON.parse(fs.readFileSync('testcases/docs/catalog.json', 'utf8'));
 const runs = fs.existsSync('results') ? fs.readdirSync('results').filter(d => /^\d{4}-/.test(d)).sort() : [];   // lần chạy mới nhất
@@ -7,8 +7,9 @@ const PAGE = { USR: 'Người dùng', GRP: 'Nhóm người dùng', PRM: 'Ma tr�
 const q = s => JSON.stringify(String(s ?? ''));
 const lines = s => String(s ?? '').split('\n').map(x => x.trim()).filter(Boolean);
 // Tên file theo tiếng Việt không dấu, khớp tên file script trong scripts/<Phân hệ>/
-const SLUG = { USR: 'nguoi-dung', GRP: 'nhom-nguoi-dung', PRM: 'ma-tran-phan-quyen', PRV: 'don-vi-hanh-chinh-cap-tinh', COM: 'don-vi-hanh-chinh-cap-xa', UTY: 'loai-don-vi', ORG: 'don-vi', PIL: 'tru-cot', IGR: 'nhom-chi-so', IND: 'chi-so', SET: 'bo-chi-so', SCL: 'thang-xep-loai', CMP: 'quan-ly-tu-danh-gia', RES: 'ket-qua-tu-danh-gia', LGN: 'dang-nhap', RPW: 'quen-mat-khau', CPW: 'doi-mat-khau', LGO: 'dang-xuat', SVY: 'dot-khao-sat', PUB: 'khao-sat-cong-khai', ANS: 'phieu-tra-loi', SRT: 'ket-qua-khao-sat', DSH: 'dashboard-don-vi', RNK: 'bang-xep-hang', SSD: 'so-sanh-don-vi', ATA: 'attt', ATB: 'attt', ATC: 'attt', ATE: 'attt', ATU: 'attt', ATG: 'ho-so-ha-tang' };
-const GROUP = k => (k === 'ATG' ? 'ATTT' : k === 'ATU' ? 'Auth' : /^AT[ABCE]$/.test(k) ? k[2] : ['LGN', 'RPW', 'CPW', 'LGO'].includes(k) ? 'Auth' : ['SVY', 'PUB', 'ANS', 'SRT'].includes(k) ? 'E' : ['DSH', 'RNK', 'SSD'].includes(k) ? 'D' : ['RES'].includes(k) ? 'C' : ['PIL', 'IGR', 'IND', 'SET', 'SCL', 'CMP'].includes(k) ? 'B' : 'A');
+const SLUG = { USR: 'nguoi-dung', GRP: 'nhom-nguoi-dung', PRM: 'ma-tran-phan-quyen', PRV: 'don-vi-hanh-chinh-cap-tinh', COM: 'don-vi-hanh-chinh-cap-xa', UTY: 'loai-don-vi', ORG: 'don-vi', PIL: 'tru-cot', IGR: 'nhom-chi-so', IND: 'chi-so', SET: 'bo-chi-so', SCL: 'thang-xep-loai', CMP: 'quan-ly-tu-danh-gia', RES: 'ket-qua-tu-danh-gia', LGN: 'dang-nhap', RPW: 'quen-mat-khau', CPW: 'doi-mat-khau', LGO: 'dang-xuat', SVY: 'dot-khao-sat', PUB: 'khao-sat-cong-khai', ANS: 'phieu-tra-loi', SRT: 'ket-qua-khao-sat', DSH: 'dashboard-don-vi', RNK: 'bang-xep-hang', SSD: 'so-sanh-don-vi', ATA: 'phan-he-a', ATB: 'phan-he-b', ATC: 'phan-he-c', ATE: 'phan-he-e', ATU: 'xac-thuc', ATG: 'ho-so-ha-tang' };
+// Mọi testcase ATTT (ATA/ATB/ATC/ATE/ATU/ATG) gom vào thư mục ATTT; thư mục phân hệ chỉ chứa testcase theo page
+const GROUP = k => (/^AT[ABCEUG]$/.test(k) ? 'ATTT' : ['LGN', 'RPW', 'CPW', 'LGO'].includes(k) ? 'Auth' : ['SVY', 'PUB', 'ANS', 'SRT'].includes(k) ? 'E' : ['DSH', 'RNK', 'SSD'].includes(k) ? 'D' : ['RES'].includes(k) ? 'C' : ['PIL', 'IGR', 'IND', 'SET', 'SCL', 'CMP'].includes(k) ? 'B' : 'A');
 const PHAN_HE = { ATTT: 'ATTT - An toàn thông tin cấp độ 2 (chung)', E: 'E - Khảo sát hài lòng', D: 'D - Dashboard và Báo cáo thống kê', Auth: 'AUTH - Xác thực', C: 'C - Đánh giá CĐS', B: 'B - Bộ chỉ số DTI', A: 'A - Quản trị hệ thống' };
 for (const [k, name] of Object.entries(PAGE)) {
   const dir = `testcases/TestCase/${GROUP(k)}`; fs.mkdirSync(dir, { recursive: true });

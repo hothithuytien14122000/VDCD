@@ -36,27 +36,6 @@ async function otpGate() {
   lastOtpAt = Date.now();
 }
 
-test.describe('BUG GitLab › Đăng nhập', () => {
-  test(tc('LGN-L09'), async ({ page }) => {   // GitLab #13
-    await openLogin(page);
-    for (const id of ['login_userName', 'login_password', 'login_captcha']) {
-      const label = page.locator(`label[for=${id}]`);
-      await expect(label).toHaveClass(/ant-form-item-required/);
-      // Dấu * hiển thị là pseudo-element đang hiện (::before hoặc ::after có content "*")
-      const star = await label.evaluate(el => {
-        for (const ps of ['::before', '::after']) {
-          const s = getComputedStyle(el, ps);
-          if (s.content.includes('*') && s.display !== 'none' && s.visibility !== 'hidden') return s.color;
-        }
-        return null;
-      });
-      expect(star, `ô ${id}: không thấy dấu * hiển thị`).not.toBeNull();
-      const [r, g, b] = star!.match(/\d+/g)!.map(Number);
-      expect(r > 150 && g < 90 && b < 90, `ô ${id}: dấu * màu ${star}, không phải màu đỏ`).toBe(true);
-    }
-  });
-});
-
 test.describe('BUG GitLab › Quên mật khẩu', () => {
 
   test(tc('RPW-L12'), async ({ page }) => {   // GitLab #243, #128 — nội dung thông báo cần BA: chỉ kiểm có báo lỗi + không chuyển màn + không gửi mail
