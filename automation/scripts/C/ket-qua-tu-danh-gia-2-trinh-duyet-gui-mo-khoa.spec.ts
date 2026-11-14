@@ -864,6 +864,10 @@ test.describe('Xin mở khóa', () => {
 import os from 'node:os';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
+import { BrowserContext } from '@playwright/test';
+import { code8 } from './common';
+import { hidePwExpiry } from '../helpers';
+import { guardSession } from '../session-guard';
 const FQ = (f: any) => encodeURIComponent(JSON.stringify(f));
 const SCALE_LEVELS = async () => {
   const s = (await api('GET', 'dti/score-scales?page=1&size=50')).data?.content?.find((x: any) => x.code === 'TXL-001');
@@ -1559,4 +1563,282 @@ test.describe('Phân quyền và bảo mật', () => {
     for (const who of ['cbdp', 'ldp']) { const x = await fetch(`${API_BASE}/api/v1/${R}/${r.id}/export`, { headers: { Authorization: `Bearer ${tokenOf(who)}` } }); if (x.status < 400 || x.status >= 500) bad.push(`${who} xuất chi tiết ngoài phạm vi: HTTP ${x.status}`); }
     expect(bad).toEqual([]);
   });
+});
+
+// ===== Case bổ sung từ bug GitLab (gộp từ ket-qua-tu-danh-gia-4-bug-gitlab.spec.ts) — bọc trong describe để helper/hook chỉ áp dụng cho các case này =====
+test.describe(() => {
+test.describe.configure({ timeout: Number(process.env.QC_TIMEOUT ?? 120_000) });
+
+// ---------------------------------------------------------------- Hằng số dữ liệu
+const RES = 'dti/assessment-results', CAMP = 'dti/self-assessment-campaigns';
+const SCALE = '6f1c6e0e-5a56-4a0e-9a53-0d1f2b6b7c01';     // TXL-001 Thang xếp loại mặc định
+const SET_BA = '5ff891ae-818e-444a-9b00-5a22da75503c';    // BA-TEST: 1 chỉ số, tối đa 8
+const SET_MI = 'f534a9a2-6fb6-44f3-9ac1-47195582db9b';    // QCARES1S: 1 chỉ số cha + 3 chỉ số con (5–8, 5–10, 0–8)
+const ORG = { BO: 'bf944505-046b-45fb-a4d1-3082974159e7', DP: 'ef735c7e-5ef1-4e88-a037-acb4f10bbd5f' } as const;   // QA - Đơn vị Bộ / QA - Địa phương
+type OrgK = keyof typeof ORG;
+const ROLE = { BO: { cb: 'canbo', ld: 'ldd' }, DP: { cb: 'cbdp', ld: 'ldp' } } as const;
+const FX_NAME = 'qc.automation BUGC fixture';
+const F = (o: any) => encodeURIComponent(JSON.stringify(o));
+const norm = (s: string) => (s ?? '').replace(/\s+/g, ' ').trim();
+
+// Ngày theo giờ Việt Nam (UTC+7) dạng YYYY-MM-DD
+const vnDay = (offsetDays = 0) => new Date(Date.now() + 7 * 3600e3 + offsetDays * 86400e3).toISOString().slice(0, 10);
+const TODAY = vnDay(0), TOMORROW = vnDay(1);
+const dmy = (ymd: string) => ymd.split('-').reverse().join('/');
+const ymdOf = (dmyStr: string) => { const m = dmyStr.match(/(\d{2})\/(\d{2})\/(\d{4})/); return m ? `${m[3]}-${m[2]}-${m[1]}` : ''; };
+
+// ---------------------------------------------------------------- API tiện ích
+const must = (r: any, w: string) => { if (r.status >= 300) throw new Error(`${w}: HTTP ${r.status} ${r.message}`); return r; };
+const getRes = async (id: string, as = 'canbo') => (await api('GET', `${RES}/${id}`, undefined, as)).data;
+const histOf = async (id: string, as = 'canbo') => ((await api('GET', `${RES}/${id}/history`, undefined, as)).data ?? []) as any[];
+async function lstAll(filter: any, as = 'canbo'): Promise<any[]> {
+  const out: any[] = [];
+  for (let p = 1; p <= 10; p++) {
+    const d = (await api('GET', `${RES}?page=${p}&size=100&filter=${F(filter)}`, undefined, as)).data ?? {};
+    out.push(...(d.content ?? []));
+    if (p >= (d.totalPages ?? 1)) break;
+  }
+  return out;
+}
+const leaves = (d: any) => (d.indicators as any[]).filter(i => i.isLeaf && i.isScored);
+const scoreOf = (i: any) => Math.min(Math.max(i.minScore ?? 0, 1), i.maxScore);
+const asScore = (i: any) => ({ indicatorSetIndicatorId: i.indicatorSetIndicatorId, score: i.score, note: i.note, attachmentIds: (i.attachments ?? []).map((a: any) => a.id) });
+const saveScores = (id: string, scores: any[], as: string) => api('PUT', `${RES}/${id}/scores`, { scores }, as);
+async function upload(docType: string, entityId: string | null, name: string, bytes: Buffer, as = 'canbo') {
+  const fd = new FormData();
+  fd.append('file', new Blob([bytes], { type: 'application/pdf' }), name);
+  if (entityId) fd.append('entityId', entityId);
+  const r = await fetch(`${API_BASE}/api/v1/upload/blob/${docType}`, { method: 'POST', headers: { Authorization: `Bearer ${tokenOf(as)}` }, body: fd });
+  const j: any = await r.json().catch(() => ({}));
+  return { status: r.status, message: String(j?.message ?? ''), data: j?.data };
+}
+const PDF = Buffer.from('%PDF-1.4\n1 0 obj<<>>endobj\ntrailer<<>>\n%%EOF\n');
+/** PDF hợp lệ về chữ ký tệp, kích thước tùy ý (đệm bằng dòng chú thích) — ghi ra /tmp. */
+function bigPdf(mb: number, name: string) {
+  const file = path.join(os.tmpdir(), name);
+  if (!fs.existsSync(file) || fs.statSync(file).size !== mb * 1024 * 1024) {
+    const head = Buffer.from('%PDF-1.4\n1 0 obj<<>>endobj\n%'), tail = Buffer.from('\ntrailer<<>>\n%%EOF\n');
+    const pad = Buffer.alloc(mb * 1024 * 1024 - head.length - tail.length, 0x41);
+    fs.writeFileSync(file, Buffer.concat([head, pad, tail]));
+  }
+  return file;
+}
+
+// ---------------------------------------------------------------- Dữ liệu thử (kỳ qc.automation BUGC …)
+/** Tạo kỳ đột xuất (Cán bộ) → phân công → trình → Lãnh đạo Bộ phê duyệt. */
+async function mkCamp(name: string, setId: string, startDate: string, endDate: string, orgs: string[], remind = 3) {
+  const c = must(await api('POST', CAMP, { name, type: 'AdHoc', indicatorSetId: setId, scaleId: SCALE, reminderDaysBeforeDue: remind, organizationIds: orgs, startDate, endDate }, 'canbo'), `tạo kỳ "${name}"`);
+  const id = c.data.id as string;
+  try {
+    await api('PUT', `${CAMP}/${id}/organizations`, orgs, 'canbo');
+    must(await api('POST', `${CAMP}/${id}/submit`, undefined, 'canbo'), `trình kỳ "${name}"`);
+  } catch (e) { await api('DELETE', `${CAMP}/${id}`, undefined, 'canbo'); throw e; }   // kỳ nháp lỗi → xóa, không để rác
+  must(await api('POST', `${CAMP}/${id}/approve`, undefined, 'lanhdaobo'), `phê duyệt kỳ "${name}"`);
+  return id;
+}
+const campRows = async (kw: string) => (await lstAll({ campaignType: 'AdHoc', phase: 'all', fullTextSearch: kw })).filter(x => String(x.campaignName).startsWith(kw));
+/** Kỳ hạn nộp = một ngày cụ thể (theo giờ VN, bắt đầu hôm qua 00:00:00 → hạn 23:59:59; nhắc trước 1 ngày), giao cho QA - Đơn vị Bộ; mỗi ngày chạy tạo 1 lần. */
+async function ensureDueCamp(day: string, tag: string) {
+  const name = `qc.automation BUGC hạn ${tag} ${day}`;
+  let rows = await campRows(name);
+  if (!rows.length) { await mkCamp(name, SET_BA, `${vnDay(-1)}T00:00:00`, `${day}T23:59:59`, [ORG.BO], 1); rows = await campRows(name); }
+  return { name, rows };
+}
+const DONE = ['Approved', 'Submitted', 'UnlockRequested', 'NotSent'];
+/** Kết quả thử của đơn vị (BO/DP) còn trong vòng chấm/duyệt; hết thì tạo kỳ thử mới (bộ chỉ số QCARES1S). */
+async function take(org: OrgK): Promise<string> {
+  const pick = async () => (await campRows(FX_NAME)).filter(x => x.organizationId === ORG[org] && !DONE.includes(x.status));
+  let rows = await pick();
+  if (!rows.length) { await mkCamp(`${FX_NAME} ${code8()}`, SET_MI, '2026-11-01T00:00:00', '2027-12-31T23:59:59', [ORG.BO, ORG.DP]); rows = await pick(); }
+  if (!rows.length) throw new Error(`không có kết quả thử của ${org}`);
+  return rows[0].id;
+}
+async function scoreAll(id: string, as: string) {
+  const d = await getRes(id, as);
+  const sc = leaves(d).map(i => ({ ...asScore(i), score: i.score ?? scoreOf(i) }));
+  must(await saveScores(id, sc, as), 'chấm đủ điểm');
+}
+/** Đưa kết quả thử về trạng thái cho phép chấm (Chưa thực hiện / Đang chấm / Bị từ chối). */
+async function toEditable(id: string, org: OrgK) {
+  const st = (await getRes(id)).status;
+  if (st === 'PendingApproval') must(await api('POST', `${RES}/${id}/reject`, { reason: 'qc.automation BUGC đưa về chấm lại' }, ROLE[org].ld), 'từ chối');
+  else if (DONE.includes(st)) throw new Error(`kết quả ${id} đang ${st}, không đưa về chấm được`);
+  return id;
+}
+async function toPending(id: string, org: OrgK) {
+  const st = (await getRes(id)).status;
+  if (st === 'PendingApproval') return id;
+  await scoreAll(id, ROLE[org].cb);
+  must(await api('POST', `${RES}/${id}/submit-for-approval`, undefined, ROLE[org].cb), 'trình duyệt');
+  return id;
+}
+async function editable(org: OrgK = 'BO') { const id = await take(org); return toEditable(id, org); }
+async function pending(org: OrgK = 'BO') { const id = await take(org); return toPending(id, org); }
+/** Kết quả thử "Đã phê duyệt" chưa gửi Bộ (để thử tải văn bản xác nhận). */
+async function approvedBO() {
+  const ok = (await campRows(FX_NAME)).find(x => x.organizationId === ORG.BO && x.status === 'Approved' && !(x.lastSentDate));
+  if (ok) return ok.id as string;
+  const id = await pending('BO');
+  must(await api('POST', `${RES}/${id}/approve`, undefined, 'ldd'), 'phê duyệt');
+  return id;
+}
+
+// ---------------------------------------------------------------- Giao diện
+/** Request ghi (PUT/POST) tới kết quả bị lỗi mạng — dùng để chứng minh thao tác đã thực sự gửi đi khi mất kết nối. */
+const FAILED: string[] = [];
+const failedNote = () => (FAILED.length ? ` [request lỗi mạng: ${FAILED.splice(0).join('; ')}]` : ' [không ghi nhận request ghi nào]');
+const BASE_URL = () => (test.info().project.use as any).baseURL as string;
+const ROUTE = '/vi/assessment-results';
+/** Mở một phiên trình duyệt theo tài khoản (múi giờ VN như người dùng thật); lỗi → chụp ảnh đính kèm vào kết quả test. */
+async function withRole(browser: Browser, key: string, fn: (p: Page, ctx: BrowserContext) => Promise<void>, vp = { width: 1920, height: 1080 }) {
+  const ctx = await browser.newContext({ storageState: `auth/${key}.json`, baseURL: BASE_URL(), timezoneId: 'Asia/Ho_Chi_Minh', locale: 'vi-VN', viewport: vp });
+  await hidePwExpiry(ctx);
+  const page = await ctx.newPage();
+  page.on('requestfailed', r => { if (/\/api\/v1\/dti\/assessment-results\//.test(r.url()) && r.method() !== 'GET') FAILED.push(`${r.method()} ${r.url().replace(/^.*\/api\/v1\//, '')} → ${r.failure()?.errorText}`); });
+  try { await fn(page, ctx); }
+  catch (e) {
+    const file = test.info().outputPath(`loi-${key}-${Date.now()}.png`);
+    await page.screenshot({ path: file, fullPage: true }).catch(() => {});
+    await test.info().attach(`ảnh lỗi (${key})`, { path: file, contentType: 'image/png' }).catch(() => {});
+    throw e;
+  } finally { await ctx.close(); }
+}
+const settle = async (p: Page, ms = 700) => { await p.waitForLoadState('networkidle', { timeout: 8000 }).catch(() => {}); await p.waitForTimeout(ms); };
+const content = (p: Page) => p.locator('.ant-layout-content').first();
+const bodyText = async (p: Page) => norm(await content(p).innerText());
+async function openList(p: Page, qs = '') {
+  await p.goto(`${ROUTE}${qs}`, { waitUntil: 'networkidle' });
+  await p.locator('tbody tr.ant-table-row, .ant-empty, .ant-table-placeholder').first().waitFor({ timeout: 15_000 }).catch(() => {});
+  await settle(p, 400);
+}
+async function tabAll(p: Page) { await p.getByRole('tab', { name: /^Tất cả/ }).first().click(); await settle(p); }
+async function segment(p: Page, s: 'Định kỳ' | 'Đột xuất') { await content(p).getByText(s, { exact: true }).first().click(); await settle(p); }
+const filterSels = (p: Page) => content(p).locator('.ant-select:not(.ant-pagination-options .ant-select)');
+const statusSel = (p: Page) => filterSels(p).nth(0);
+const deadlineSel = (p: Page) => filterSels(p).nth(1);
+const openDD = (p: Page) => p.locator('.ant-select-dropdown:not(.ant-select-dropdown-hidden)').last();
+async function optionsOf(p: Page, sel: Locator) {
+  await sel.click(); await openDD(p).waitFor({ state: 'visible', timeout: 6000 });
+  const o = (await openDD(p).locator('.ant-select-item-option').allInnerTexts()).map(norm);
+  await p.keyboard.press('Escape'); await p.waitForTimeout(300);
+  return o;
+}
+async function choose(p: Page, sel: Locator, label: string) {
+  await sel.click(); await openDD(p).waitFor({ state: 'visible', timeout: 6000 });
+  await openDD(p).locator('.ant-select-item-option', { hasText: new RegExp(`^\\s*${label}\\s*$`) }).first().click();
+  await settle(p);
+}
+async function search(p: Page, kw: string) { await content(p).getByPlaceholder(/tìm theo kỳ/i).fill(kw); await settle(p, 1000); }
+async function totalOf(p: Page) {
+  const t = norm(await p.locator('.ant-pagination').first().innerText().catch(() => ''));
+  const m = t.match(/trong\s+(\d+)/i); return m ? Number(m[1]) : await p.locator('tbody tr.ant-table-row').count();
+}
+type Row = { cells: string[]; text: string };
+const rowsData = (p: Page): Promise<Row[]> => p.locator('tbody tr.ant-table-row').evaluateAll(trs => trs.map(tr => ({
+  cells: [...tr.querySelectorAll(':scope > td')].map(t => (t as HTMLElement).innerText.trim()),
+  text: (tr as HTMLElement).innerText.replace(/\s+/g, ' ').trim(),
+})));
+/** Mọi dòng của bộ lọc hiện tại (duyệt hết các trang). Cột: 0 STT, 1 Mã kỳ, 2 Kỳ, 3 Đơn vị, 4 Hạn nộp, 5 Tiến độ, 6 Điểm, 7 Trạng thái. */
+async function allRows(p: Page): Promise<Row[]> {
+  const out: Row[] = [];
+  for (let i = 0; i < 30; i++) {
+    out.push(...await rowsData(p));
+    const next = p.locator('.ant-pagination-next').first();
+    if (!(await next.count()) || (await next.getAttribute('aria-disabled')) === 'true' || /disabled/.test((await next.getAttribute('class')) ?? '')) break;
+    await next.click(); await settle(p, 500);
+  }
+  return out;
+}
+const dueOf = (r: Row) => ymdOf(r.cells[4] ?? '');
+const statusOf = (r: Row) => norm((r.cells[7] ?? '').split('\n')[0]);
+/** Thông báo nổi (message/notification) + lỗi trong hộp thoại đang mở — không lấy banner trạng thái cố định của trang. */
+const toasts = async (p: Page) => norm((await p.locator('.ant-message-notice, .ant-notification-notice, .ant-modal:visible .ant-alert, .ant-modal:visible .ant-form-item-explain-error').allInnerTexts()).join(' | '));
+const modal = (p: Page) => p.locator('.ant-modal:visible').last();
+async function openDetail(p: Page, id: string) {
+  await p.goto(`${ROUTE}/${id}`, { waitUntil: 'networkidle' });
+  await p.getByText(/Hạn nộp:/).first().waitFor({ timeout: 15_000 }).catch(() => {});
+  await settle(p, 500);
+}
+const EDIT_BTN = /^\s*(Chấm điểm|Bắt đầu chấm|Tiếp tục chấm|Chấm lại)\s*$/;
+/** Mở chi tiết rồi bấm nút vào chế độ chấm điểm (form có Lưu nháp / Trình duyệt). */
+async function openScoring(p: Page, id: string) {
+  await openDetail(p, id);
+  await content(p).locator('button', { hasText: EDIT_BTN }).first().click();
+  await p.getByRole('button', { name: 'Lưu nháp' }).waitFor({ timeout: 10_000 });
+  await settle(p, 500);
+}
+const rowOf = (p: Page, text: string) => content(p).locator('tbody tr', { hasText: text }).last();
+const DRAFT = (p: Page) => p.getByRole('button', { name: 'Lưu nháp' });
+/** Đọc file xlsx (giải nén bằng unzip hệ thống) → mảng dòng. */
+function xlsxRows(file: string): string[][] {
+  const z = (n: string) => { try { return execFileSync('unzip', ['-p', file, n], { maxBuffer: 64 << 20 }).toString('utf8'); } catch { return ''; } };
+  const dec = (s: string) => s.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&apos;/g, "'").replace(/&amp;/g, '&');
+  const shared = [...z('xl/sharedStrings.xml').matchAll(/<si>([\s\S]*?)<\/si>/g)].map(m => dec([...m[1].matchAll(/<t[^>]*>([\s\S]*?)<\/t>/g)].map(x => x[1]).join('')));
+  const sheet = z('xl/worksheets/sheet1.xml');
+  return [...sheet.matchAll(/<row[^>]*>([\s\S]*?)<\/row>/g)].map(r => [...r[1].matchAll(/<c ([^>]*?)(?:\/>|>([\s\S]*?)<\/c>)/g)].map(c => {
+    const t = /t="(\w+)"/.exec(c[1])?.[1], body = c[2] ?? '';
+    if (t === 's') return shared[Number(/<v>(\d+)<\/v>/.exec(body)?.[1])] ?? '';
+    if (t === 'inlineStr') return dec([...body.matchAll(/<t[^>]*>([\s\S]*?)<\/t>/g)].map(x => x[1]).join(''));
+    return dec(/<v>([\s\S]*?)<\/v>/.exec(body)?.[1] ?? '');
+  }));
+}
+
+// ================================================================ L — DANH SÁCH: bộ lọc Hạn tự đánh giá (#292), Xuất Excel (#288)
+guardSession(test);
+
+// ================================================================ S — CHẤM ĐIỂM (#288, #290, #291, #150, #164, #211, #286, #179)
+
+// ================================================================ T/A — TRÌNH DUYỆT / PHÊ DUYỆT (#179, #200, #210)
+test.describe('Kết quả tự đánh giá › Trình duyệt / Phê duyệt', () => {
+
+  test(tc('RES-A36'), async () => {
+    const id = await pending('BO'); const h0 = (await histOf(id)).filter(h => h.action === 'Approved' || /phê duyệt/i.test(h.actionName)).length;
+    const rs = await Promise.all([1, 2].map(() => api('POST', `${RES}/${id}/approve`, undefined, 'ldd')));
+    const codes = rs.map(r => r.status).sort();
+    const h = (await histOf(id)).filter(x => x.action === 'Approved' || /phê duyệt/i.test(x.actionName));
+    const g = await getRes(id);
+    expect({ codes: codes.map(c => (c === 200 ? 200 : c >= 400 && c < 500 ? '4xx' : c)), status: g.status, approveRows: h.length - h0 },
+      `2 request đồng thời: ${rs.map(r => `${r.status} "${r.message}"`).join(' ; ')}`).toEqual({ codes: [200, '4xx'], status: 'Approved', approveRows: 1 });
+  });
+
+  test(tc('RES-A37'), async ({ browser }) => {
+    const id = await pending('DP'); const d = await getRes(id, 'cbdp');
+    await withRole(browser, 'ldp', async p => {
+      await openList(p, `?campaignType=AdHoc&phase=all&keyword=${encodeURIComponent(d.campaignName)}`);
+      if (!(await p.locator('tbody tr.ant-table-row', { hasText: d.organizationName }).count())) await tabAll(p);
+      const row = p.locator('tbody tr.ant-table-row', { hasText: d.campaignName }).filter({ hasText: d.organizationName }).first();
+      const det = p.waitForResponse(r => new RegExp(`${RES}/${id}(\\?|$)`).test(r.url()) && r.request().method() === 'GET', { timeout: 15_000 });
+      await row.getByRole('button', { name: 'Xem chi tiết' }).click();
+      const dr = await det;
+      expect(dr.status(), 'API chi tiết').toBe(200);
+      await settle(p);
+      expect(await bodyText(p)).not.toMatch(/404|Không tìm thấy/);
+      await expect(content(p).locator('button', { hasText: /^\s*Phê duyệt\s*$/ })).toBeVisible();
+      await expect(content(p).locator('button', { hasText: /^\s*Từ chối\s*$/ })).toBeVisible();
+      await content(p).locator('button', { hasText: /^\s*Phê duyệt\s*$/ }).click();
+      await modal(p).getByRole('button', { name: /Xác nhận phê duyệt/ }).click(); await p.waitForTimeout(2000);
+      expect(await toasts(p)).toMatch(/Phê duyệt thành công/i);
+      expect((await getRes(id, 'cbdp')).status).toBe('Approved');
+    });
+  });
+});
+
+/** Mở tab Hồ sơ gửi Bộ của kết quả thử; nếu còn văn bản đã tải lần trước (chưa gửi) thì Xoá để hiện lại ô tải tệp. */
+async function openDossier(p: Page, id: string) {
+  await openDetail(p, id); await p.getByRole('tab', { name: /Hồ sơ gửi Bộ/ }).click(); await settle(p);
+  const sec = content(p).getByText('Văn bản xác nhận kết quả tự đánh giá').first().locator('xpath=..');
+  const del = sec.locator('button', { hasText: /^\s*Xo[áa]\s*$/ });
+  if (await del.count()) {
+    await del.first().click(); await p.waitForTimeout(600);
+    const m = p.locator('.ant-modal-confirm:visible, .ant-popconfirm:visible, .ant-modal:visible').last();
+    if (await m.count()) await m.getByRole('button', { name: /^\s*(Xo[áa]|Xác nhận|Đồng ý|OK|Có)\s*$/i }).last().click().catch(() => {});
+    await settle(p);
+  }
+}
+
+// ================================================================ F — HỒ SƠ GỬI BỘ / MINH CHỨNG: dung lượng tệp (#296)
+
+// ================================================================ V/D — CHI TIẾT (#163, #165, #212)
+
+// ================================================================ R/W — NHẮC NHỞ (#222, #223), YÊU CẦU ĐÁNH GIÁ LẠI (#287)
 });

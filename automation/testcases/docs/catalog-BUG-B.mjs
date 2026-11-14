@@ -3,7 +3,7 @@
 // issue đã có case kiểm đúng hành vi thì chỉ truy vết ở requirements-BUG-B.mjs.
 // Mỗi case ghi số issue ở cột Ghi chú. Chưa có script automation → Manual.
 export default function defineBUG_B(t) {
-  // Case đã có script (scripts/B/<page>-bug-gitlab.spec.ts) → Auto
+  // Case đã có script (scripts/B/<page>.spec.ts) → Auto
   const AUTO = new Set(['ATB-V06', 'ATB-V07', 'ATB-V08', 'ATB-V09', 'CMP-C43', 'CMP-C44', 'CMP-C46', 'CMP-C47', 'CMP-E23', 'CMP-L35', 'CMP-L36',
     'CMP-T21', 'CMP-T22', 'CMP-T23', 'CMP-U31', 'CMP-U32', 'CMP-U33', 'CMP-V19', 'CMP-V20', 'IGR-L37', 'IGR-V04', 'IGR-V05', 'IGR-V07', 'IGR-V08',
     'IND-C15', 'IND-C16', 'IND-E13', 'IND-L35', 'IND-N07', 'IND-V04', 'IND-V05', 'IND-V06', 'PIL-L35', 'PIL-V06', 'SCL-C27', 'SCL-C28', 'SCL-C29',

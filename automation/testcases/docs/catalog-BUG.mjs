@@ -2,7 +2,7 @@
 // Mỗi case ghi số issue ở cột Ghi chú để truy vết. Chưa có script automation → Manual.
 // Truy vết yêu cầu: requirements-BUG.mjs.
 export default function defineBUG(t) {
-  // Case đã có script (scripts/C/ket-qua-tu-danh-gia-4-bug-gitlab.spec.ts) → Auto
+  // Case đã có script (scripts/C/ket-qua-tu-danh-gia-*.spec.ts) → Auto
   const AUTO = new Set(['RES-L85', 'RES-L86', 'RES-L87', 'RES-L88', 'RES-L89', 'RES-L90', 'RES-S100', 'RES-S101', 'RES-S102', 'RES-S103', 'RES-F44', 'RES-F45', 'RES-F46',
     'GRP-L13', 'GRP-V06', 'PRV-L12', 'COM-L13', 'UTY-L13', 'UTY-C06', 'UTY-C07', 'SET-V09', 'SET-V10', 'SET-V11', 'SET-V12', 'SET-V13', 'SET-V14']);
   const m = (id, uc, fn, title, type, pri, steps, exp, issue, note = '') =>

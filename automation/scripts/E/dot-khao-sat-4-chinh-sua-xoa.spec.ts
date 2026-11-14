@@ -2,6 +2,13 @@
 // Dữ liệu: mỗi test tự tạo đợt Nháp/Bị từ chối qua API (superadmin, đơn vị aaaaaa) và dọn sau; đợt đã duyệt dùng fixture cố định (không xóa được).
 import type { Page } from '@playwright/test';
 import { test, expect, tc, api, skipped, settle, mk, payload, rmSurvey, cleanMade, allSurveys, getSurvey, setStatus, dayStr, NAME, LIST, openList, search, total, rowMenu, confirmBtn, modal, toastText, dataRows, FAKE, fixture } from './common';
+import { test as base } from '@playwright/test';
+import { expect as __g_expect } from '@playwright/test';
+import { Locator } from '@playwright/test';
+import { F } from './common';
+import { dmy } from './common';
+import { hidePwExpiry } from '../helpers';
+import { guardSession } from '../session-guard';
 
 test.afterEach(async () => { await cleanMade(); });
 const edit = (id: string) => `/${LIST}/${id}/edit`;
@@ -175,3 +182,110 @@ test.describe('Đợt khảo sát — xóa', () => {
   });
 });
 void FAKE; void total;
+
+// ===== Case bổ sung từ bug GitLab (gộp từ dot-khao-sat-6-bug-gitlab.spec.ts) — bọc trong describe để helper/hook chỉ áp dụng cho các case này =====
+test.describe(() => {
+const expect = __g_expect;
+const AS = 'admin';
+const VIEW = { width: 1366, height: 768 };
+const test = base.extend<{ page: Page }>({
+  page: async ({ browser, baseURL }, use) => {
+    const ctx = await browser.newContext({ storageState: `auth/${AS}.json`, baseURL, viewport: VIEW });
+    await hidePwExpiry(ctx);
+    await use(await ctx.newPage()); await ctx.close();
+  },
+});
+guardSession(test, 'admin');
+test.describe.configure({ timeout: Number(process.env.QC_TIMEOUT ?? 120_000) });
+
+// ---------------------------------------------------------------- dữ liệu & API
+const LISTR = '/#/vi/survey-campaigns';
+const ORG_BO = 'bf944505-046b-45fb-a4d1-3082974159e7';   // QC_BO - QA - Đơn vị Bộ (đơn vị của admin)
+const TAG = 'qc.automation SVYBUG';
+const nm = (k: string) => `${TAG} ${k} ${Date.now().toString(36)}`;
+const norm = (s: string) => (s ?? '').replace(/\s+/g, ' ').trim();
+const must = (r: any, w: string) => { if (r.status >= 300) throw new Error(`${w}: HTTP ${r.status} ${r.message}`); return r; };
+const getS = async (id: string) => must(await api('GET', `survey/surveys/${id}`, undefined, AS), 'GET đợt').data;
+async function listAll(filter: any): Promise<any[]> {
+  const out: any[] = [];
+  for (let p = 1; p <= 20; p++) {
+    const d = (await api('GET', `survey/surveys?page=${p}&size=100&filter=${F(filter)}`, undefined, AS)).data ?? {};
+    out.push(...(d.content ?? [])); if (p >= (d.totalPages ?? 1)) break;
+  }
+  return out;
+}
+async function mkDraft(o: any = {}) {
+  const body = { name: nm('draft'), organizationIds: [ORG_BO], startDate: dayStr(1), endDate: dayStr(30), methods: [1], voteTarget: 5, description: '', status: 1,
+    groups: [{ name: 'Nhóm 1', questions: [{ content: 'Câu 1' }, { content: 'Câu 2' }] }], ...o };
+  const r = must(await api('POST', 'survey/surveys', body, AS), 'Tạo đợt'); return r.data.id as string;
+}
+const putBody = (d: any, status: number) => ({ ...d, organizationIds: d.organizations.map((o: any) => o.organizationId), status });
+async function mkRejected(reason: string, o: any = {}) {
+  const id = await mkDraft(o);
+  must(await api('PUT', `survey/surveys/${id}`, putBody(await getS(id), 2), AS), 'Trình phê duyệt');
+  must(await api('PUT', `survey/surveys/${id}/status`, { status: 4, reason }, AS), 'Từ chối');
+  return id;
+}
+async function cleanup() {
+  for (const s of await listAll({ keyword: TAG })) {
+    if (!String(s.name).startsWith(TAG)) continue;
+    if (s.statusName === 'Chờ phê duyệt') await api('PUT', `survey/surveys/${s.id}/status`, { status: 4, reason: 'dọn dữ liệu test' }, AS);
+    if (['Nháp', 'Bị từ chối', 'Chờ phê duyệt'].includes(s.statusName)) await api('DELETE', `survey/surveys/${s.id}`, undefined, AS);
+  }
+}
+test.beforeAll(async () => {
+  const r = await api('GET', 'survey/surveys?page=1&size=1', undefined, AS);
+  if (r.status !== 200) throw new Error(`BLOCKED: tài khoản admin không có quyền API khảo sát (HTTP ${r.status})`);
+});
+test.afterAll(async () => { await cleanup(); });
+
+// ---------------------------------------------------------------- UI helpers
+const main = (page: Page) => page.locator('main').first();
+const rows = (page: Page) => page.locator('tbody tr.ant-table-row');
+async function openList(page: Page) {
+  page.setDefaultTimeout(10_000);
+  await page.goto(LISTR); await settle(page); await rows(page).first().waitFor({ state: 'visible', timeout: 15_000 });
+}
+async function openDetail(page: Page, id: string) { await page.goto(`${LISTR}/${id}`); await settle(page); await main(page).getByText('Thông tin chung').first().waitFor(); }
+async function openCreate(page: Page) { page.setDefaultTimeout(10_000); await page.goto(`${LISTR}/create`); await settle(page); await page.locator('#survey-name').waitFor(); }
+const contentTab = async (page: Page) => { await page.locator('[role=tab]', { hasText: 'Nội dung khảo sát' }).click(); await page.waitForTimeout(400); };
+const qInputs = (page: Page) => page.getByPlaceholder('Nhập nội dung câu hỏi');
+async function setDate(page: Page, id: string, v: string) { const i = page.locator(`#${id}`); await i.click(); await i.fill(v); await i.press('Enter'); await page.keyboard.press('Escape'); }
+const codesOnPage = async (page: Page) => (await rows(page).locator('td:nth-child(2)').allInnerTexts()).map(norm);
+const box = async (l: Locator) => (await l.boundingBox())!;
+/** Tiêu đề khối (h2, có thể kèm số đếm phía sau) và khối <section> chứa nó. */
+const heading = (page: Page, title: string) => main(page).locator('h2').filter({ hasText: new RegExp(`^\\s*${title}`) }).first();
+const cardOf = (page: Page, title: string) => heading(page, title).locator('xpath=ancestor::section[1]');
+
+// ================================================================ E.UC1.1 Danh sách
+
+// ================================================================ E.UC1.2 Chi tiết
+
+// ================================================================ E.UC1.3 Tạo mới
+
+// ================================================================ E.UC1.4 Chỉnh sửa
+test.describe('Đợt khảo sát › chỉnh sửa', () => {
+  // #100 lịch sử xử lý thiếu ghi nhận sửa
+  test(tc('SVY-E31'), async ({ page }) => {
+    const id = await mkDraft(); const before = await getS(id);
+    page.setDefaultTimeout(10_000);
+    await page.goto(`${LISTR}/${id}/edit`); await settle(page); await page.locator('#survey-name').waitFor();
+    const nn = nm('E31 sửa'); await page.locator('#survey-name').fill(nn);
+    await page.locator('#survey-save-draft-btn').click(); await settle(page);
+    const after = await getS(id);
+    expect(after.name, 'đã lưu chỉnh sửa').toBe(nn);
+    expect(after.histories.length, 'Lịch sử xử lý có thêm sự kiện mới').toBe(before.histories.length + 1);
+    const newest = after.histories.at(-1);
+    expect(after.histories.slice(0, before.histories.length).map((h: any) => h.createdOnDate), 'các sự kiện cũ còn nguyên').toEqual(before.histories.map((h: any) => h.createdOnDate));
+    await openDetail(page, id);
+    const hist = cardOf(page, 'Lịch sử xử lý'); await expect(hist).toBeVisible();
+    const lines = (await hist.innerText()).split('\n').map(norm).filter(Boolean);
+    const i = lines.findIndex(l => l.includes(' · '));
+    const first = `${lines[i]} | ${lines[i + 1] ?? ''}`;
+    test.info().annotations.push({ type: 'đo', description: `Dòng lịch sử mới nhất: "${first}"` });
+    expect(lines[i], 'dòng mới nhất là sự kiện chỉnh sửa, có người sửa').toMatch(new RegExp(`^${newest.createdByUserName} · (Chỉnh sửa|Cập nhật)$`));
+    expect(lines[i + 1], 'có thời điểm lưu').toMatch(new RegExp(`^${dmy(dayStr(0))} \\d{2}:\\d{2}$`));
+    if (!/Chỉnh sửa/.test(lines[i])) test.info().annotations.push({ type: 'lệch nhãn', description: `Sự kiện ghi là "Cập nhật" (exp: "Chỉnh sửa") — nhãn theo SRS BR-7 cần BA xác nhận` });
+  });
+});
+});

@@ -4,7 +4,7 @@
 // Mỗi case ghi số issue ở cột Ghi chú. Chưa có script automation → Manual.
 export default function defineBUG_C(t) {
   // note bắt đầu bằng "(đã đóng)" → "GitLab #n (đã đóng). …"; ngược lại → "GitLab #n. …"
-  // Case đã có script (scripts/C/ket-qua-tu-danh-gia-4-bug-gitlab.spec.ts) → Auto
+  // Case đã có script (scripts/C/ket-qua-tu-danh-gia-*.spec.ts) → Auto
   const AUTO = new Set(['RES-L91', 'RES-L92', 'RES-L94', 'RES-L95', 'RES-L96', 'RES-L97', 'RES-S104', 'RES-S105', 'RES-S106', 'RES-S107', 'RES-S108', 'RES-S109',
     'RES-G24', 'RES-T37', 'RES-A36', 'RES-A37', 'RES-A38', 'RES-V25', 'RES-V26', 'RES-V27', 'RES-D52', 'RES-Z35', 'RES-R33', 'RES-R34', 'RES-W30', 'RES-W31',
     'SVY-L67', 'SVY-L69', 'SVY-V28', 'SVY-V29', 'SVY-V30', 'SVY-V31', 'SVY-C72', 'SVY-C73', 'SVY-C74', 'SVY-C75', 'SVY-E31']);

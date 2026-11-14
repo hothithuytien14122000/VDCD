@@ -7,7 +7,7 @@ export default function defineBUG_A1(t) {
   const ref = issue => [].concat(issue).map(n => `GitLab #${n}${OPEN.has(n) ? '' : ' (đã đóng)'}`).join(', ');
   const m = (id, uc, fn, title, type, pri, steps, exp, issue, note = '') =>
     t(id, uc, fn, title, type, pri, steps, exp, 'Manual — chưa có script', `${ref(issue)}${note ? '. ' + note : ''}`);
-  // Case đã có script (scripts/Auth/<page>-bug-gitlab.spec.ts)
+  // Case đã có script (scripts/Auth/<page>.spec.ts)
   const a = (id, uc, fn, title, type, pri, steps, exp, issue, note = '') =>
     t(id, uc, fn, title, type, pri, steps, exp, 'Auto', `${ref(issue)}${note ? '. ' + note : ''}`);
   const BA = 'cần BA xác nhận';

@@ -3,6 +3,19 @@
 import crypto from 'node:crypto';
 import { Page } from '@playwright/test';
 import { test, expect, tc, apiStatus, AUTH_API, LOGIN_URL, API_BASE, authGet, authPost, lgn, openLogin, openForgot, expectNotice, notices, PW } from './common';
+import { latestMailId } from '../mail';
+import { waitMail } from '../mail';
+import { testMail } from '../mail';
+import { mailEnabled } from './common';
+import { RESET_EMAIL } from './common';
+import { RESET_USER } from './common';
+import { resetPw } from './common';
+import { requestOtp } from './common';
+import { restorePassword } from './common';
+import { btn } from './common';
+import { typeOtp } from './common';
+import { toOtpScreen } from './common';
+import { toNewPasswordScreen } from './common';
 
 const TOKEN_KEY = 'b316682e-54f3-4ae1-89e3-bbc505e19e54';   // khóa localStorage lưu token (xem login.mjs)
 const imgHash = async (p: Page) => crypto.createHash('md5').update((await lgn.captchaImg(p).getAttribute('src')) ?? '').digest('hex');
@@ -135,4 +148,55 @@ test.describe('Đăng nhập › Phiên', () => {
   test(tc('LGN-S03'), async () => {
     expect(await apiStatus({ resource: 'idm/users', rawToken: 'a.b.c' })).toBe(401);
   });
+});
+
+// ===== Case bổ sung từ bug GitLab (gộp từ dang-nhap-bug-gitlab.spec.ts) — bọc trong describe để helper/hook chỉ áp dụng cho các case này =====
+test.describe(() => {
+test.describe.configure({ timeout: 180_000 });   // chạy tuần tự nhờ --workers=1 (dùng chung hộp thư qc.resetpw)
+
+const emailIn = (p: Page) => p.getByPlaceholder('Nhập email đăng ký');
+const newPw = (p: Page) => p.getByPlaceholder('Nhập mật khẩu mới');
+const otpBtn = (p: Page) => btn(p, /^xác nhận$/i);
+const bodyText = (p: Page) => p.locator('body').innerText();
+const note = (type: string, description: string) => test.info().annotations.push({ type, description });
+
+/** Hộp thư Mailosaur có đọc được không (API key còn hiệu lực). Không đọc được mail → không lấy được OTP → case phụ thuộc BLOCKED. */
+let mailbox: string | null | undefined;
+async function mailboxError() {
+  if (mailbox !== undefined) return mailbox;
+  if (!mailEnabled()) return (mailbox = 'Thiếu MAILOSAUR_API_KEY / MAILOSAUR_SERVER_ID trong .env');
+  const r = await fetch(`https://mailosaur.com/api/messages?server=${process.env.MAILOSAUR_SERVER_ID}&page=0&itemsPerPage=1`,
+    { headers: { Authorization: 'Basic ' + Buffer.from(`${process.env.MAILOSAUR_API_KEY}:`).toString('base64') } }).catch(() => null);
+  return (mailbox = r?.ok ? null : `BLOCKED: không đọc được hộp thư Mailosaur (HTTP ${r?.status ?? 'lỗi mạng'}) → không lấy được OTP`);
+}
+async function needMailbox() { const e = await mailboxError(); test.skip(!!e, e ?? ''); }
+
+// Giới hạn tần suất gửi OTP (xem RPW-L11) → giãn cách các lần xin OTP cho qc.resetpw.
+let lastOtpAt = 0;
+async function otpGate() {
+  const wait = lastOtpAt + 65_000 - Date.now();
+  if (wait > 0) await new Promise(r => setTimeout(r, wait));
+  lastOtpAt = Date.now();
+}
+
+test.describe('Đăng nhập', () => {
+  test(tc('LGN-L09'), async ({ page }) => {   // GitLab #13
+    await openLogin(page);
+    for (const id of ['login_userName', 'login_password', 'login_captcha']) {
+      const label = page.locator(`label[for=${id}]`);
+      await expect(label).toHaveClass(/ant-form-item-required/);
+      // Dấu * hiển thị là pseudo-element đang hiện (::before hoặc ::after có content "*")
+      const star = await label.evaluate(el => {
+        for (const ps of ['::before', '::after']) {
+          const s = getComputedStyle(el, ps);
+          if (s.content.includes('*') && s.display !== 'none' && s.visibility !== 'hidden') return s.color;
+        }
+        return null;
+      });
+      expect(star, `ô ${id}: không thấy dấu * hiển thị`).not.toBeNull();
+      const [r, g, b] = star!.match(/\d+/g)!.map(Number);
+      expect(r > 150 && g < 90 && b < 90, `ô ${id}: dấu * màu ${star}, không phải màu đỏ`).toBe(true);
+    }
+  });
+});
 });

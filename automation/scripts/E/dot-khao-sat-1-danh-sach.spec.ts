@@ -1,6 +1,14 @@
 // E.UC1.1 DANH SÁCH ĐỢT KHẢO SÁT — script bám testcase SVY-L01…L66 (bảng, tab/bộ lọc, tìm kiếm, tiến độ, phân trang, phạm vi, quyền).
 // Dữ liệu: đọc từ môi trường có sẵn (không tạo mới) vì API tạo đợt đang lỗi 400 phạm vi dữ liệu → các case cần dữ liệu đặc thù (làm tròn %, vượt mục tiêu…) được đối chiếu với đợt thật hoặc skip có lý do.
 import { test, expect, tc, dataRows, api, openList, settle, searchBox, total, rowTexts, tab, pickSelect, search, STATUS, allSurveys, skipped, F, LIST, NOT_YET } from './common';
+import { test as base } from '@playwright/test';
+import { expect as __g_expect } from '@playwright/test';
+import { Page } from '@playwright/test';
+import { Locator } from '@playwright/test';
+import { dayStr } from './common';
+import { dmy } from './common';
+import { hidePwExpiry } from '../helpers';
+import { guardSession } from '../session-guard';
 
 const T = { stt: /STT/i, ma: /MÃ/i, ten: /TÊN ĐỢT/i, ht: /HÌNH THỨC/i, tg: /THỜI GIAN/i, td: /TIẾN ĐỘ/i, tt: /TRẠNG THÁI/i, thaotac: /THAO TÁC/i };
 const vn = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/g, 'd').toLowerCase();
@@ -222,3 +230,126 @@ test.describe('Đợt khảo sát — danh sách', () => {
 
 async function surveys10() { return (await (await import('./common')).surveys({}, 'admin', 10, 1)).content as any[]; }
 void F; void LIST; void NOT_YET;
+
+// ===== Case bổ sung từ bug GitLab (gộp từ dot-khao-sat-6-bug-gitlab.spec.ts) — bọc trong describe để helper/hook chỉ áp dụng cho các case này =====
+test.describe(() => {
+const expect = __g_expect;
+const AS = 'admin';
+const VIEW = { width: 1366, height: 768 };
+const test = base.extend<{ page: Page }>({
+  page: async ({ browser, baseURL }, use) => {
+    const ctx = await browser.newContext({ storageState: `auth/${AS}.json`, baseURL, viewport: VIEW });
+    await hidePwExpiry(ctx);
+    await use(await ctx.newPage()); await ctx.close();
+  },
+});
+guardSession(test, 'admin');
+test.describe.configure({ timeout: Number(process.env.QC_TIMEOUT ?? 120_000) });
+
+// ---------------------------------------------------------------- dữ liệu & API
+const LISTR = '/#/vi/survey-campaigns';
+const ORG_BO = 'bf944505-046b-45fb-a4d1-3082974159e7';   // QC_BO - QA - Đơn vị Bộ (đơn vị của admin)
+const TAG = 'qc.automation SVYBUG';
+const nm = (k: string) => `${TAG} ${k} ${Date.now().toString(36)}`;
+const norm = (s: string) => (s ?? '').replace(/\s+/g, ' ').trim();
+const must = (r: any, w: string) => { if (r.status >= 300) throw new Error(`${w}: HTTP ${r.status} ${r.message}`); return r; };
+const getS = async (id: string) => must(await api('GET', `survey/surveys/${id}`, undefined, AS), 'GET đợt').data;
+async function listAll(filter: any): Promise<any[]> {
+  const out: any[] = [];
+  for (let p = 1; p <= 20; p++) {
+    const d = (await api('GET', `survey/surveys?page=${p}&size=100&filter=${F(filter)}`, undefined, AS)).data ?? {};
+    out.push(...(d.content ?? [])); if (p >= (d.totalPages ?? 1)) break;
+  }
+  return out;
+}
+async function mkDraft(o: any = {}) {
+  const body = { name: nm('draft'), organizationIds: [ORG_BO], startDate: dayStr(1), endDate: dayStr(30), methods: [1], voteTarget: 5, description: '', status: 1,
+    groups: [{ name: 'Nhóm 1', questions: [{ content: 'Câu 1' }, { content: 'Câu 2' }] }], ...o };
+  const r = must(await api('POST', 'survey/surveys', body, AS), 'Tạo đợt'); return r.data.id as string;
+}
+const putBody = (d: any, status: number) => ({ ...d, organizationIds: d.organizations.map((o: any) => o.organizationId), status });
+async function mkRejected(reason: string, o: any = {}) {
+  const id = await mkDraft(o);
+  must(await api('PUT', `survey/surveys/${id}`, putBody(await getS(id), 2), AS), 'Trình phê duyệt');
+  must(await api('PUT', `survey/surveys/${id}/status`, { status: 4, reason }, AS), 'Từ chối');
+  return id;
+}
+async function cleanup() {
+  for (const s of await listAll({ keyword: TAG })) {
+    if (!String(s.name).startsWith(TAG)) continue;
+    if (s.statusName === 'Chờ phê duyệt') await api('PUT', `survey/surveys/${s.id}/status`, { status: 4, reason: 'dọn dữ liệu test' }, AS);
+    if (['Nháp', 'Bị từ chối', 'Chờ phê duyệt'].includes(s.statusName)) await api('DELETE', `survey/surveys/${s.id}`, undefined, AS);
+  }
+}
+test.beforeAll(async () => {
+  const r = await api('GET', 'survey/surveys?page=1&size=1', undefined, AS);
+  if (r.status !== 200) throw new Error(`BLOCKED: tài khoản admin không có quyền API khảo sát (HTTP ${r.status})`);
+});
+test.afterAll(async () => { await cleanup(); });
+
+// ---------------------------------------------------------------- UI helpers
+const main = (page: Page) => page.locator('main').first();
+const rows = (page: Page) => page.locator('tbody tr.ant-table-row');
+async function openList(page: Page) {
+  page.setDefaultTimeout(10_000);
+  await page.goto(LISTR); await settle(page); await rows(page).first().waitFor({ state: 'visible', timeout: 15_000 });
+}
+async function openDetail(page: Page, id: string) { await page.goto(`${LISTR}/${id}`); await settle(page); await main(page).getByText('Thông tin chung').first().waitFor(); }
+async function openCreate(page: Page) { page.setDefaultTimeout(10_000); await page.goto(`${LISTR}/create`); await settle(page); await page.locator('#survey-name').waitFor(); }
+const contentTab = async (page: Page) => { await page.locator('[role=tab]', { hasText: 'Nội dung khảo sát' }).click(); await page.waitForTimeout(400); };
+const qInputs = (page: Page) => page.getByPlaceholder('Nhập nội dung câu hỏi');
+async function setDate(page: Page, id: string, v: string) { const i = page.locator(`#${id}`); await i.click(); await i.fill(v); await i.press('Enter'); await page.keyboard.press('Escape'); }
+const codesOnPage = async (page: Page) => (await rows(page).locator('td:nth-child(2)').allInnerTexts()).map(norm);
+const box = async (l: Locator) => (await l.boundingBox())!;
+/** Tiêu đề khối (h2, có thể kèm số đếm phía sau) và khối <section> chứa nó. */
+const heading = (page: Page, title: string) => main(page).locator('h2').filter({ hasText: new RegExp(`^\\s*${title}`) }).first();
+const cardOf = (page: Page, title: string) => heading(page, title).locator('xpath=ancestor::section[1]');
+
+// ================================================================ E.UC1.1 Danh sách
+test.describe('Đợt khảo sát › danh sách', () => {
+  // #60 Remove sort "Trạng thái"
+  test(tc('SVY-L67'), async ({ page }) => {
+    await openList(page);
+    const th = page.locator('thead th', { hasText: /^\s*Trạng thái\s*$/ }).first();
+    await expect(th).toBeVisible();
+    await expect(th.locator('.ant-table-column-sorter'), 'tiêu đề Trạng thái không có biểu tượng sắp xếp').toHaveCount(0);
+    expect(await th.getAttribute('class') ?? '').not.toContain('ant-table-column-has-sorters');
+    const before = await codesOnPage(page);
+    await th.click(); await settle(page);
+    expect(await codesOnPage(page), 'bấm tiêu đề Trạng thái không đổi thứ tự dòng').toEqual(before);
+    await th.click(); await settle(page);
+    expect(await codesOnPage(page)).toEqual(before);
+    test.info().annotations.push({ type: 'note', description: '#74 (sau đó) nêu thiếu sort theo Trạng thái — có sort hay không cần BA xác nhận; test kiểm theo exp hiện tại (không sort)' });
+  });
+
+  // #166 thừa text phụ
+  test(tc('SVY-L69'), async ({ page }) => {
+    await openList(page);
+    const api1 = (await api('GET', `survey/surveys?page=1&size=20&filter=${F({})}`, undefined, AS)).data.content as any[];
+    const heads = (await page.locator('thead th').allInnerTexts()).map(norm);
+    const col = (re: RegExp) => heads.findIndex(h => re.test(h));
+    const ci = { ma: col(/^Mã$/), ten: col(/^Tên đợt/), ht: col(/^Hình thức/), tg: col(/^Thời gian/), td: col(/^Tiến độ/), tt: col(/^Trạng thái/) };
+    for (const [k, v] of Object.entries(ci)) expect(v, `thiếu cột ${k}`).toBeGreaterThanOrEqual(0);
+    const n = await rows(page).count(); expect(n).toBeGreaterThan(0);
+    const problems: string[] = [];
+    for (let i = 0; i < n; i++) {
+      const cells = (await rows(page).nth(i).locator('td').allInnerTexts()).map(s => s.trim());
+      const s = api1.find(x => x.code === norm(cells[ci.ma]));
+      if (!s) { problems.push(`dòng ${i + 1}: ô Mã "${cells[ci.ma]}" có text ngoài mã đợt`); continue; }
+      const lines = (c: string) => c.split('\n').map(norm).filter(Boolean);
+      if (norm(cells[ci.ten]) !== norm(s.name)) problems.push(`${s.code}: ô Tên đợt "${norm(cells[ci.ten])}" ≠ tên "${norm(s.name)}"`);
+      if (lines(cells[ci.ht]).some(l => !s.methodNames.includes(l))) problems.push(`${s.code}: ô Hình thức có dòng phụ: ${JSON.stringify(lines(cells[ci.ht]))}`);
+      if (!/^\d{2}\/\d{2}\/\d{4}\s*[–-]?\s*\d{2}\/\d{2}\/\d{4}$/.test(norm(cells[ci.tg]))) problems.push(`${s.code}: ô Thời gian có text phụ: "${norm(cells[ci.tg])}"`);
+      if (!/^(-|\d[\d.]* \/ [\d.]+ \d+%)$/.test(norm(cells[ci.td]))) problems.push(`${s.code}: ô Tiến độ có text phụ: "${norm(cells[ci.td])}"`);
+      if (norm(cells[ci.tt]) !== s.statusName) problems.push(`${s.code}: ô Trạng thái "${norm(cells[ci.tt])}" ≠ "${s.statusName}"`);
+    }
+    expect(problems, 'các ô chỉ hiển thị giá trị chính, không có dòng chữ phụ').toEqual([]);
+  });
+});
+
+// ================================================================ E.UC1.2 Chi tiết
+
+// ================================================================ E.UC1.3 Tạo mới
+
+// ================================================================ E.UC1.4 Chỉnh sửa
+});

@@ -2,6 +2,15 @@
 // Dữ liệu: dùng các đợt có sẵn (chọn theo trạng thái/hình thức qua API) vì không tạo được đợt mới (lỗi 400 phạm vi dữ liệu).
 import { test, expect, tc, api, raw, FAKE, allSurveys, skipped, settle, LIST } from './common';
 import fs from 'node:fs';
+import { test as base } from '@playwright/test';
+import { expect as __g_expect } from '@playwright/test';
+import { Page } from '@playwright/test';
+import { Locator } from '@playwright/test';
+import { F } from './common';
+import { dayStr } from './common';
+import { dmy } from './common';
+import { hidePwExpiry } from '../helpers';
+import { guardSession } from '../session-guard';
 
 const detailUrl = (id: string) => `/#/vi/survey-campaigns/${id}`;
 const main = (page: any) => page.locator('main').first();
@@ -219,3 +228,157 @@ test.describe('Đợt khảo sát — phân quyền & bảo mật', () => {
   });
 });
 void expect;
+
+// ===== Case bổ sung từ bug GitLab (gộp từ dot-khao-sat-6-bug-gitlab.spec.ts) — bọc trong describe để helper/hook chỉ áp dụng cho các case này =====
+test.describe(() => {
+const expect = __g_expect;
+const AS = 'admin';
+const VIEW = { width: 1366, height: 768 };
+const test = base.extend<{ page: Page }>({
+  page: async ({ browser, baseURL }, use) => {
+    const ctx = await browser.newContext({ storageState: `auth/${AS}.json`, baseURL, viewport: VIEW });
+    await hidePwExpiry(ctx);
+    await use(await ctx.newPage()); await ctx.close();
+  },
+});
+guardSession(test, 'admin');
+test.describe.configure({ timeout: Number(process.env.QC_TIMEOUT ?? 120_000) });
+
+// ---------------------------------------------------------------- dữ liệu & API
+const LISTR = '/#/vi/survey-campaigns';
+const ORG_BO = 'bf944505-046b-45fb-a4d1-3082974159e7';   // QC_BO - QA - Đơn vị Bộ (đơn vị của admin)
+const TAG = 'qc.automation SVYBUG';
+const nm = (k: string) => `${TAG} ${k} ${Date.now().toString(36)}`;
+const norm = (s: string) => (s ?? '').replace(/\s+/g, ' ').trim();
+const must = (r: any, w: string) => { if (r.status >= 300) throw new Error(`${w}: HTTP ${r.status} ${r.message}`); return r; };
+const getS = async (id: string) => must(await api('GET', `survey/surveys/${id}`, undefined, AS), 'GET đợt').data;
+async function listAll(filter: any): Promise<any[]> {
+  const out: any[] = [];
+  for (let p = 1; p <= 20; p++) {
+    const d = (await api('GET', `survey/surveys?page=${p}&size=100&filter=${F(filter)}`, undefined, AS)).data ?? {};
+    out.push(...(d.content ?? [])); if (p >= (d.totalPages ?? 1)) break;
+  }
+  return out;
+}
+async function mkDraft(o: any = {}) {
+  const body = { name: nm('draft'), organizationIds: [ORG_BO], startDate: dayStr(1), endDate: dayStr(30), methods: [1], voteTarget: 5, description: '', status: 1,
+    groups: [{ name: 'Nhóm 1', questions: [{ content: 'Câu 1' }, { content: 'Câu 2' }] }], ...o };
+  const r = must(await api('POST', 'survey/surveys', body, AS), 'Tạo đợt'); return r.data.id as string;
+}
+const putBody = (d: any, status: number) => ({ ...d, organizationIds: d.organizations.map((o: any) => o.organizationId), status });
+async function mkRejected(reason: string, o: any = {}) {
+  const id = await mkDraft(o);
+  must(await api('PUT', `survey/surveys/${id}`, putBody(await getS(id), 2), AS), 'Trình phê duyệt');
+  must(await api('PUT', `survey/surveys/${id}/status`, { status: 4, reason }, AS), 'Từ chối');
+  return id;
+}
+async function cleanup() {
+  for (const s of await listAll({ keyword: TAG })) {
+    if (!String(s.name).startsWith(TAG)) continue;
+    if (s.statusName === 'Chờ phê duyệt') await api('PUT', `survey/surveys/${s.id}/status`, { status: 4, reason: 'dọn dữ liệu test' }, AS);
+    if (['Nháp', 'Bị từ chối', 'Chờ phê duyệt'].includes(s.statusName)) await api('DELETE', `survey/surveys/${s.id}`, undefined, AS);
+  }
+}
+test.beforeAll(async () => {
+  const r = await api('GET', 'survey/surveys?page=1&size=1', undefined, AS);
+  if (r.status !== 200) throw new Error(`BLOCKED: tài khoản admin không có quyền API khảo sát (HTTP ${r.status})`);
+});
+test.afterAll(async () => { await cleanup(); });
+
+// ---------------------------------------------------------------- UI helpers
+const main = (page: Page) => page.locator('main').first();
+const rows = (page: Page) => page.locator('tbody tr.ant-table-row');
+async function openList(page: Page) {
+  page.setDefaultTimeout(10_000);
+  await page.goto(LISTR); await settle(page); await rows(page).first().waitFor({ state: 'visible', timeout: 15_000 });
+}
+async function openDetail(page: Page, id: string) { await page.goto(`${LISTR}/${id}`); await settle(page); await main(page).getByText('Thông tin chung').first().waitFor(); }
+async function openCreate(page: Page) { page.setDefaultTimeout(10_000); await page.goto(`${LISTR}/create`); await settle(page); await page.locator('#survey-name').waitFor(); }
+const contentTab = async (page: Page) => { await page.locator('[role=tab]', { hasText: 'Nội dung khảo sát' }).click(); await page.waitForTimeout(400); };
+const qInputs = (page: Page) => page.getByPlaceholder('Nhập nội dung câu hỏi');
+async function setDate(page: Page, id: string, v: string) { const i = page.locator(`#${id}`); await i.click(); await i.fill(v); await i.press('Enter'); await page.keyboard.press('Escape'); }
+const codesOnPage = async (page: Page) => (await rows(page).locator('td:nth-child(2)').allInnerTexts()).map(norm);
+const box = async (l: Locator) => (await l.boundingBox())!;
+/** Tiêu đề khối (h2, có thể kèm số đếm phía sau) và khối <section> chứa nó. */
+const heading = (page: Page, title: string) => main(page).locator('h2').filter({ hasText: new RegExp(`^\\s*${title}`) }).first();
+const cardOf = (page: Page, title: string) => heading(page, title).locator('xpath=ancestor::section[1]');
+
+// ================================================================ E.UC1.1 Danh sách
+
+// ================================================================ E.UC1.2 Chi tiết
+test.describe('Đợt khảo sát › chi tiết', () => {
+  const LONG = Array.from({ length: 60 }, (_, i) => `Lý do từ chối dài số ${String(i).padStart(2, '0')}`).join(' ').slice(0, 1000);
+
+  // #66 lý do từ chối dài
+
+  // #103 Quay lại giữ bộ lọc và trang
+  test(tc('SVY-V29'), async ({ page }) => {
+    const KW = 'KS-2026';
+    const n = (await api('GET', `survey/surveys?page=1&size=1&filter=${F({ keyword: KW, status: 5 })}`, undefined, AS)).data?.totalElements ?? 0;
+    test.skip(n < 2, `không đủ đợt Đang diễn ra khớp "${KW}" để có trang 2 (${n})`);
+    await openList(page);
+    await page.locator('#search').fill(KW); await page.locator('#search').press('Enter'); await settle(page);
+    await page.locator('.ant-select', { has: page.locator('#survey-status-filter') }).click();
+    await page.locator('.ant-select-dropdown:not(.ant-select-dropdown-hidden) .ant-select-item-option', { hasText: /^Đang diễn ra$/ }).first().click(); await settle(page);
+    // bảo đảm có trang 2: nếu tổng ≤ kích thước trang thì đổi sang 10/trang
+    if (!(await page.locator('.ant-pagination-item-2').count())) {
+      await page.locator('.ant-pagination-options .ant-select').first().click();
+      await page.locator('.ant-select-dropdown:not(.ant-select-dropdown-hidden) .ant-select-item-option', { hasText: /^10\b/ }).first().click(); await settle(page);
+    }
+    await page.locator('.ant-pagination-item-2').click(); await settle(page);
+    await expect(page.locator('.ant-pagination-item-active')).toHaveText('2');
+    const codes = await codesOnPage(page); expect(codes.length).toBeGreaterThan(0);
+    for (const t of await rows(page).locator('td').filter({ hasText: /Đang diễn ra|Nháp|Chờ phê duyệt|Bị từ chối|Đã phê duyệt|Đã kết thúc/ }).allInnerTexts()) expect(norm(t)).toBe('Đang diễn ra');
+    await rows(page).first().getByRole('button', { name: 'Xem chi tiết' }).click(); await settle(page);
+    await expect(page).toHaveURL(/survey-campaigns\/[0-9a-f-]{36}/);
+    await main(page).getByRole('button', { name: 'Quay lại' }).first().click(); await settle(page);
+    await rows(page).first().waitFor({ state: 'visible', timeout: 10_000 }).catch(() => {});
+    const got = {
+      keyword: await page.locator('#search').inputValue(),
+      status: norm(await page.locator('#survey-status-filter').locator('xpath=ancestor::div[contains(@class,"ant-select")][1]').innerText()),
+      page: norm(await page.locator('.ant-pagination-item-active').innerText().catch(() => '')),
+      codes: await codesOnPage(page),
+    };
+    expect({ keyword: got.keyword, status: got.status, page: got.page }, `sau Quay lại: ${JSON.stringify(got)}`).toEqual({ keyword: KW, status: 'Đang diễn ra', page: '2' });
+    expect(got.codes).toEqual(codes);
+  });
+
+  // #166 khối từ chối chiếm chỗ
+  test(tc('SVY-V30'), async ({ page }) => {
+    const id = await mkRejected('Bổ sung câu hỏi về thời gian chờ tại bộ phận một cửa'); const d = await getS(id); await openDetail(page, id);
+    const t = norm(await main(page).innerText());
+    const rej = d.histories.filter((h: any) => h.statusName === 'Bị từ chối').at(-1);
+    expect(t, 'khối từ chối có lý do').toContain(d.rejectReason);
+    expect(t, 'khối từ chối có người từ chối').toContain(`Từ chối bởi ${rej.createdByUserName}`);
+    expect(t, 'khối từ chối có thời điểm').toMatch(new RegExp(`Từ chối bởi ${rej.createdByUserName} · ${dmy(dayStr(0))} \\d{2}:\\d{2}`));
+    const head = heading(page, 'Nội dung khảo sát');
+    const b = await box(head);
+    const reason = await box(main(page).getByText('Lý do từ chối', { exact: true }).first());
+    test.info().annotations.push({ type: 'đo', description: `khung 1366×768: "Lý do từ chối" y=${Math.round(reason.y)}, "Nội dung khảo sát" y=${Math.round(b.y)}` });
+    expect(b.y + b.height, `nội dung khảo sát phải thấy trong màn hình đầu tiên (tiêu đề ở y=${Math.round(b.y)}px > ${VIEW.height}px)`).toBeLessThanOrEqual(VIEW.height);
+  });
+
+  // #166 Thông tin chung chiếm chỗ
+  test(tc('SVY-V31'), async ({ page }) => {
+    // Đợt điển hình (1 hình thức, có mô tả) — phép đo chính. Đợt 3 hình thức (thẻ hình thức xếp dọc) chỉ ghi nhận số đo để BA xem.
+    const measure = async (o: any) => {
+      const id = await mkDraft(o); await openDetail(page, id);
+      const card = cardOf(page, 'Thông tin chung'); await expect(card).toBeVisible();
+      const labels = ['Mã đợt', 'Hình thức', 'Đơn vị thực hiện', 'Thời gian', 'Phiếu mục tiêu', 'Người tạo', 'Mô tả'];
+      const xs: number[] = [];
+      for (const l of labels) xs.push(Math.round((await box(card.getByText(l, { exact: true }).first())).x));
+      return { xs, cols: new Set(xs).size, h: Math.round((await box(card)).height) };
+    };
+    const m3 = await measure({ methods: [1, 2, 3], description: 'Mô tả đợt khảo sát thử' });
+    const m1 = await measure({ methods: [1], description: 'Mô tả đợt khảo sát thử' });
+    test.info().annotations.push({ type: 'đo', description: `1 hình thức: ${m1.cols} cột, cao ${m1.h}px; 3 hình thức: ${m3.cols} cột, cao ${m3.h}px (nửa màn hình = ${VIEW.height / 2}px)` });
+    expect(m1.cols, `các trường trình bày dạng lưới nhiều cột (x nhãn: ${m1.xs.join(',')})`).toBeGreaterThanOrEqual(2);
+    expect(m3.cols).toBeGreaterThanOrEqual(2);
+    expect(m1.h, `khối Thông tin chung cao ${m1.h}px — không quá nửa màn hình (${VIEW.height / 2}px)`).toBeLessThanOrEqual(VIEW.height / 2);
+  });
+});
+
+// ================================================================ E.UC1.3 Tạo mới
+
+// ================================================================ E.UC1.4 Chỉnh sửa
+});

@@ -6,17 +6,17 @@ import { spawnSync } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
 const PH = {
-  A: { ten: 'Phân hệ A — Quản trị hệ thống', dir: 'scripts/A' },
-  B: { ten: 'Phân hệ B — Bộ chỉ số DTI', dir: 'scripts/B' },
-  C: { ten: 'Phân hệ C — Đánh giá CĐS', dir: 'scripts/C' },
-  D: { ten: 'Phân hệ D — Dashboard và Báo cáo thống kê', dir: 'scripts/D' },
-  E: { ten: 'Phân hệ E — Khảo sát hài lòng', dir: 'scripts/E' },
-  ATTT: { ten: 'ATTT cấp độ 2 — kiểm tra ATTT của mọi phân hệ (A, B, C, E, chung)', dir: 'scripts/ATTT' },
+  A: { ten: 'Phân hệ A — Quản trị hệ thống', dir: 'scripts/A/' },
+  B: { ten: 'Phân hệ B — Bộ chỉ số DTI', dir: 'scripts/B/' },
+  C: { ten: 'Phân hệ C — Đánh giá CĐS', dir: 'scripts/C/' },
+  D: { ten: 'Phân hệ D — Dashboard và Báo cáo thống kê', dir: 'scripts/D/' },
+  E: { ten: 'Phân hệ E — Khảo sát hài lòng', dir: 'scripts/E/' },
+  ATTT: { ten: 'ATTT cấp độ 2 — kiểm tra ATTT của mọi phân hệ (A, B, C, E, chung)', dir: 'scripts/ATTT/' },
 };
 const k = (process.argv[2] || '').toUpperCase(); const p = PH[k];
 if (!p) { console.error('Dùng: run-phan-he.mjs <A|B|C> [workers] [slug page]'); process.exit(1); }
 const workers = process.argv[3] || '1';
-const target = process.argv[4] ? `${p.dir}/${process.argv[4]}.spec.ts` : p.match ?? p.dir;
+const target = process.argv[4] ? `${p.dir}${process.argv[4]}.spec.ts` : p.match ?? p.dir;
 const raw = `results/_raw-${k}.json`; const rawDir = 'results/raw'; fs.mkdirSync(`${rawDir}/screenshots`, { recursive: true });
 const t0 = Date.now();
 spawnSync('npx', ['playwright', 'test', '--project=admin', target, `--workers=${workers}`, '--reporter=list,json'], { stdio: 'inherit', env: { ...process.env, RUN_WRITE: '1', PLAYWRIGHT_JSON_OUTPUT_NAME: raw } });

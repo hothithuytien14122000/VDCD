@@ -6,7 +6,7 @@
 export default function defineBUG_A2(t) {
   // Issue còn mở tại thời điểm truy vết (12/11/2026); còn lại đã đóng
   const OPEN = new Set([22, 239, 268]);
-  // Case đã có script (scripts/A/<page>-bug-gitlab.spec.ts, ATTT: scripts/ATTT/phan-he-a-bug-gitlab.spec.ts) → Auto
+  // Case đã có script (scripts/A/<page>.spec.ts, ATTT: scripts/ATTT/phan-he-a.spec.ts) → Auto
   const AUTO = new Set(['PRV-L13', 'PRV-L15', 'PRV-L16', 'PRV-L17', 'PRV-L18', 'PRV-L19', 'PRV-L20', 'PRV-L21', 'PRV-L22', 'PRV-V05', 'PRV-V06', 'PRV-V07',
     'PRV-C07', 'PRV-C09', 'PRV-C11', 'PRV-C13', 'PRV-C14', 'PRV-E06', 'PRV-E07', 'PRV-E08', 'PRV-D04', 'PRV-D05', 'COM-V03', 'COM-V04', 'COM-V05',
     'UTY-E05', 'UTY-E06', 'ORG-L15', 'ORG-L16', 'ORG-L17', 'ORG-L18', 'ORG-V06', 'ORG-C11', 'ORG-C12', 'ORG-C13', 'ORG-C14', 'ORG-E05', 'ORG-K03',
